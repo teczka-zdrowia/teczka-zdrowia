@@ -1,0 +1,32 @@
+$background: #e7ebf6;
+$background-light: #edf0f7;
+$primrary-light: #fafafa;
+$lightgrey: rgba(213, 213, 213, 0.3);
+$lightviolet: #9394eb;
+$darkviolet: #6a6ee1;
+$primrary-light: #fafafa;
+
+$primrary-font: Montserrat;
+$font-awesome: "Font Awesome 5 Free";
+
+%text--center {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.center--absolute {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+%text--overflow {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
