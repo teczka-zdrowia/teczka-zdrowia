@@ -1,8 +1,10 @@
 <template>
   <div id="app">
     <div v-if="isValid && isValidRoute">
-      <AppSidebar></AppSidebar>
-      <AppHeader/>
+      <AppSidebar v-if="this.$store.getters.window.width > 959"/>
+      <AppSidebarMobile v-if="this.$store.getters.window.width < 960"/>
+      <AppHeader v-if="this.$store.getters.window.width > 959"/>
+      <AppHeaderMobile v-if="this.$store.getters.window.width < 960"/>
       <div class="app__router">
         <router-view/>
       </div>
@@ -14,14 +16,18 @@
 <script>
 import AppHeader from "./components/layout/AppHeader";
 import AppSidebar from "./components/layout/AppSidebar";
+import AppHeaderMobile from "./components/layout/AppHeaderMobile";
+import AppSidebarMobile from "./components/layout/AppSidebarMobile";
 import Auth from "./components/modals/Auth";
 
 export default {
   name: "App",
   components: {
-    AppHeader: AppHeader,
-    AppSidebar: AppSidebar,
-    Auth: Auth
+    AppHeader,
+    AppHeaderMobile,
+    AppSidebar,
+    AppSidebarMobile,
+    Auth
   },
   computed: {
     isValid: function() {
@@ -36,6 +42,13 @@ export default {
     if (!this.isValid) {
       this.$router.push("/Auth");
     }
+
+    window.onresize = () => {
+      this.$store.dispatch("updateWindowWidthAndHeight", {
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
   }
 };
 </script>
@@ -91,7 +104,8 @@ button {
   left: 5em;
   padding: 4em;
   width: calc(100% - 13em);
-  height: calc(100% - 14em);
+  min-height: calc(100% - 14em);
+  height: auto;
   background: linear-gradient(to bottom right, $background, $background-light);
 }
 
@@ -100,15 +114,17 @@ button {
   border-bottom: 0.5px solid rgba(145, 145, 156, 0.3);
 }
 
-@media only screen and (max-width: 900px) {
-  .sidebar,
-  .header {
-    display: none !important;
+@media only screen and (max-width: 960px) {
+  .app {
+    width: 100vw;
   }
   .app__router {
     left: 0;
-    padding: 2em;
-    width: calc(100% - 4em);
+    padding: 0.5rem;
+    padding-top: 5.5rem;
+    width: calc(100% - 1rem);
+    height: auto;
+    overflow: hidden;
   }
 }
 </style>

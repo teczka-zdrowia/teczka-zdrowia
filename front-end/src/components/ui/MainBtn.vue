@@ -42,5 +42,9 @@ $primrary-light: #fafafa;
   &:hover {
     background-position: right center;
   }
+  &:disabled {
+    background: #afb0c7;
+    transition: 0.2s ease-in-out;
+  }
 }
 </style>

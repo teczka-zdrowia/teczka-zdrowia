@@ -37,7 +37,7 @@ $font-awesome: "Font Awesome 5 Free";
 }
 
 .block--functional--white {
-  padding: 2em;
+  padding: 2rem;
   border-radius: 0.5em;
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
   background: #fafafc;
@@ -94,6 +94,12 @@ $font-awesome: "Font Awesome 5 Free";
     visibility: visible;
     opacity: 1;
     transition: visibility 0s, opacity 0.2s ease-in-out;
+  }
+}
+
+@media only screen and (max-width: 960px) {
+  .block--functional--white {
+    padding: 1.5rem;
   }
 }
 </style>

@@ -1,12 +1,19 @@
 <template>
   <div class="sidebar">
-    <div class="logo">
-      <i class="fas fa-briefcase-medical"></i>
-    </div>
-    <div class="nav">
+    <i
+      v-on:click="isShowed = !isShowed"
+      class="sidebar__btn fas"
+      v-bind:class="[isShowed ? 'fa-angle-left' : 'fa-angle-right']"
+    ></i>
+    <div class="nav" v-bind:class="[isShowed ? 'showed' : '']" v-on:click="isShowed = !isShowed">
       <router-link to="/Dashboard" class="nav__el">
         <i class="fas fa-home">
           <div class="nav__tooltip">Strona domowa</div>
+        </i>
+      </router-link>
+      <router-link to="/Map" class="nav__el">
+        <i class="fas fa-map-marked">
+          <div class="nav__tooltip">Mapa gabinetów</div>
         </i>
       </router-link>
       <router-link to="/Offices" class="nav__el">
@@ -19,7 +26,7 @@
           <div class="nav__tooltip">Panel specjalisty</div>
         </i>
       </router-link>
-      <router-link to="/About" class="nav__el active">
+      <router-link to="/About" class="nav__el">
         <i class="fas fa-file-medical-alt">
           <div class="nav__tooltip">Moja kartoteka</div>
         </i>
@@ -40,7 +47,12 @@
 
 <script>
 export default {
-  name: "AppSidebar"
+  name: "AppSidebar",
+  data: function() {
+    return {
+      isShowed: false
+    };
+  }
 };
 </script>
 
@@ -76,29 +88,30 @@ $darkviolet: #6a6ee1;
   align-items: center;
 }
 
+.sidebar__btn {
+  position: fixed;
+  top: 1rem;
+  left: 1.5rem;
+  font-size: 3rem;
+  color: #91919c;
+  cursor: pointer;
+  z-index: 1000000;
+}
+
 .sidebar {
   @extend %shadow--lightgrey;
-  position: fixed;
-  top: 0;
   left: 0;
   width: 5em;
-  height: 100%;
-  background: #fcfcfc;
-  z-index: 100;
-  .logo {
-    @extend %drop--lightgrey;
-    @extend %text--center;
-    height: 3em;
-    font-size: 2em;
-    i {
-      color: $darkviolet;
-    }
-  }
+  height: auto;
   .nav {
-    width: 100%;
-    height: auto;
-    padding: 4em 0;
-    position: relative;
+    width: 5em;
+    height: 100%;
+    padding: 6rem 0;
+    background: #fcfcfc;
+    margin-left: -5em;
+    position: fixed;
+    transition: all 0.2s ease-in-out;
+    z-index: 100000;
     .nav__el {
       margin-bottom: 1.5em;
       @media only screen and (max-height: 767px) {
@@ -119,12 +132,12 @@ $darkviolet: #6a6ee1;
           @extend %shadow--grey;
           color: $lightviolet;
           background: #f5f5f5;
-          .nav__tooltip {
+          /*.nav__tooltip {
             box-shadow: 0 0 20px 0px $grey;
             visibility: visible;
             opacity: 1;
             transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
-          }
+          }*/
         }
         .nav__tooltip {
           position: absolute;
@@ -151,6 +164,19 @@ $darkviolet: #6a6ee1;
         }
       }
     }
+    &.showed {
+      margin-left: 0;
+      transition: all 0.2s ease-in-out;
+    }
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  .header {
+    padding: 1rem 2rem;
+  }
+  .sidebar__btn {
+    top: 1rem;
   }
 }
 </style>

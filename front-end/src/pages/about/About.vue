@@ -1,48 +1,24 @@
 <template>
   <div class="about">
     <div class="about__top">
-      <BaseInfo class="about__base"></BaseInfo>
-      <div class="about__additional">
-        <VioletBlock>
-          <div class="list">
-            <div class="list__el">
-              <div class="list__title">Grupa krwi:</div>
-              <div class="list__content">AB+</div>
-            </div>
-            <div class="list__el">
-              <div class="list__title">Alergie:</div>
-              <div class="list__content">Mleko, orzechy</div>
-            </div>
-            <div class="list__el">
-              <div class="list__title">Choroby:</div>
-              <div class="list__content">Cukrzyca</div>
-            </div>
+      <BaseInfo class="about__base"/>
+      <Block class="about__actions">
+        <i class="fas fa-cog actions__settings"></i>
+        <div class="actions__buttons">
+          <div class="action">
+            <i class="fas fa-unlock"></i>
+            <div class="action__title">Zmień hasło</div>
           </div>
-        </VioletBlock>
-      </div>
-      <div class="about__other">
-        <RedBlock>
-          <div class="list">
-            <div class="list__el">
-              <div class="list__title" style="width: 100%; font-weight: 700;">Najczęstsze wizyty</div>
-            </div>
-            <div class="list__el">
-              <div class="list__title">dr Tomasz Ołuf</div>
-              <div class="list__content">dentysta</div>
-            </div>
-            <div class="list__el">
-              <div class="list__title">dr Ozjasz Goldberg</div>
-              <div class="list__content">psycholog</div>
-            </div>
-          </div>
-        </RedBlock>
-      </div>
+          <div class="action action--red">USUŃ KONTO</div>
+        </div>
+      </Block>
     </div>
-    <History class="about__history"></History>
+    <History/>
   </div>
 </template>
-
+ 
 <script>
+import WhiteFunctionalBlock from "../../components/ui/WhiteFunctionalBlock";
 import BaseInfo from "./BaseInfo";
 import History from "./History";
 import VioletBlock from "../../components/ui/VioletBlock";
@@ -54,7 +30,8 @@ export default {
     BaseInfo: BaseInfo,
     History: History,
     VioletBlock: VioletBlock,
-    RedBlock: RedBlock
+    RedBlock: RedBlock,
+    Block: WhiteFunctionalBlock
   }
 };
 </script>
@@ -62,78 +39,96 @@ export default {
 <style lang="scss">
 @import "../../main";
 
-.about {
-  .about__top {
+.about__top {
+  display: flex;
+  width: 100%;
+}
+
+.about__actions {
+  margin-left: 2em;
+  width: calc(37% - 2em);
+  height: auto;
+  .actions__settings {
+    @extend %text--center;
+    background: #ececff;
+    height: 100%;
+    width: 33%;
+    font-size: 1.5em;
+    color: #3e3e45;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    margin-right: 1rem;
+  }
+  .block__content {
     display: flex;
+    height: 100%;
+  }
+  .actions__buttons {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     width: 100%;
   }
-  @media only screen and (max-width: 1200px) {
-    .about__top {
-      display: grid;
-      grid-template-columns: 50% 50%;
-      grid-template-rows: auto;
-      grid-template-areas:
-        "base base"
-        "additional other";
-      * {
-        width: auto;
+  .action {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.5rem;
+    background: #ececff;
+    display: flex;
+    font-weight: 600;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    i {
+      @extend %text--center;
+      background: #9394eb;
+      color: #fafafc;
+      padding: 0 1rem;
+    }
+    .action__title {
+      @extend %text--center;
+      color: #6a6ee1;
+      margin: auto;
+    }
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+    &.action--red {
+      @extend %text--center;
+      background: transparent;
+      color: #d91e18;
+      font-weight: 700;
+      border: 3px solid #d91e18;
+      width: calc(100% - 6px);
+      height: calc(100% - 6px);
+      transition: 0.2s ease-in-out;
+      &:hover {
+        background: #d91e18;
+        color: #fafafc;
       }
-
-      .about__additional {
-        grid-area: additional;
-        margin-left: 0;
+    }
+    &:hover {
+      background: #9394eb;
+      i:before {
+        content: "\f023";
       }
-      .about__other {
-        grid-area: other;
-        display: block;
-      }
-      .info--base {
-        grid-area: base;
+      .action__title {
+        color: #fafafc;
       }
     }
   }
 }
 
-.about__additional,
-.about__other {
-  margin-left: 2em;
-  width: calc((50% - 2em) / 2);
-  height: auto;
-  .block--violet .list__content {
-    color: #d8d8e0;
+@media only screen and (max-width: 959px) {
+  .about__top {
+    display: block;
   }
-  .block--red .list__content {
-    color: #ffe6e7;
-  }
-}
-
-.list {
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: auto;
-  grid-row-gap: auto;
-}
-
-.list__el {
-  @extend %text--center;
-  justify-content: left;
-  display: flex;
-  font-weight: 600;
-  font-size: 0.9em;
-}
-
-.list__title {
-  width: 50%;
-  color: #fafafa;
-}
-
-@media only screen and (max-width: 1350px) {
-  .about__additional {
-    width: 33%;
-  }
-  .about__other {
-    display: none;
+  .about__actions {
+    margin-left: 0;
+    width: calc(100% - 3em);
+    .block__content {
+      height: 6em;
+    }
   }
 }
 </style>

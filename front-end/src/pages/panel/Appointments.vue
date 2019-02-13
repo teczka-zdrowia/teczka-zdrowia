@@ -28,7 +28,10 @@
       <div class="appointment__block appointment__acceptation acceptation--true">
         <i class="fas fa-check"></i>
       </div>
-      <div class="appointment__block appointment__actions">
+      <div
+        class="appointment__block appointment__actions"
+        v-if="this.$store.getters.window.width > 799"
+      >
         <i class="fas fa-ellipsis-h"></i>
         <div class="actions__content">
           <div class="actions__action">
@@ -38,6 +41,12 @@
             <i class="fas fa-times"></i>
           </div>
         </div>
+      </div>
+      <div
+        class="appointment__block appointment__actions"
+        v-if="this.$store.getters.window.width < 799"
+      >
+        <i class="fas fa-angle-down"></i>
       </div>
     </div>
     <div class="appointment">
@@ -68,7 +77,10 @@
       <div class="appointment__block appointment__acceptation acceptation--true">
         <i class="fas fa-check"></i>
       </div>
-      <div class="appointment__block appointment__actions">
+      <div
+        class="appointment__block appointment__actions"
+        v-if="this.$store.getters.window.width > 799"
+      >
         <i class="fas fa-ellipsis-h"></i>
         <div class="actions__content">
           <div class="actions__action">
@@ -78,6 +90,12 @@
             <i class="fas fa-times"></i>
           </div>
         </div>
+      </div>
+      <div
+        class="appointment__block appointment__actions"
+        v-if="this.$store.getters.window.width < 799"
+      >
+        <i class="fas fa-angle-down"></i>
       </div>
     </div>
     <div class="appointment">
@@ -108,7 +126,10 @@
       <div class="appointment__block appointment__acceptation acceptation--true">
         <i class="fas fa-check"></i>
       </div>
-      <div class="appointment__block appointment__actions">
+      <div
+        class="appointment__block appointment__actions"
+        v-if="this.$store.getters.window.width > 799"
+      >
         <i class="fas fa-ellipsis-h"></i>
         <div class="actions__content">
           <div class="actions__action">
@@ -118,6 +139,12 @@
             <i class="fas fa-times"></i>
           </div>
         </div>
+      </div>
+      <div
+        class="appointment__block appointment__actions"
+        v-if="this.$store.getters.window.width < 799"
+      >
+        <i class="fas fa-angle-down"></i>
       </div>
     </div>
   </div>
@@ -291,6 +318,7 @@ export default {
   top: 100%;
   right: 0;
   width: 100%;
+  height: auto;
   transition: 0.2s ease-in-out;
   border-bottom-left-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
@@ -319,6 +347,45 @@ export default {
     }
     &:last-child i {
       color: #e74c3c;
+    }
+  }
+}
+
+@media only screen and (max-width: 56rem) {
+  .appointment__acceptation {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .appointment__few {
+    display: none;
+  }
+  .appointment__when {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .block__text {
+    display: none;
+  }
+  .appointment > div:first-child {
+    padding: 0;
+    background: transparent;
+    height: 100%;
+    img {
+      height: 5em;
+      margin-right: 0;
+    }
+  }
+}
+
+@media only screen and (max-width: 350px) {
+  .appointment > div:first-child {
+    margin-right: 0;
+    img {
+      display: none;
     }
   }
 }

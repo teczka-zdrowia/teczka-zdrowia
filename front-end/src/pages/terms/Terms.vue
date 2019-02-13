@@ -29,6 +29,9 @@ export default {
 
 .terms {
   width: 50%;
+  @media only screen and (max-width: 960px) {
+    width: 75%;
+  }
   margin: auto;
   margin-top: 5em;
   margin-bottom: 2.5em;
@@ -40,6 +43,9 @@ export default {
     @extend %text--center;
     color: $darkviolet;
     font-size: 2em;
+    @media only screen and (max-width: 400px) {
+      font-size: 1.5em;
+    }
     i {
       margin-right: 0.5em;
     }

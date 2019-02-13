@@ -4,11 +4,11 @@
       <img :src="this.$store.getters.userInfo.img">
       <div class="info__content">
         <div class="info__name">
-          {{ this.$store.getters.userInfo.name }}
-          {{ this.$store.getters.userInfo.surname }}
-          <button
-            class="info__btn"
-          >
+          <p>
+            {{ this.$store.getters.userInfo.name }}
+            {{ this.$store.getters.userInfo.surname }}
+          </p>
+          <button class="info__btn">
             <i class="fas" v-bind:class="[isShowed ? 'fa-angle-up' : 'fa-angle-down']"></i>
           </button>
         </div>
@@ -20,15 +20,15 @@
         class="info__menu"
         v-bind:style="[isShowed ? {'visibility': 'visible', 'opacity': 1, 'z-index': 99999999} : {'visibility': 'hidden', 'opacity': 0, 'z-index': 0}]"
       >
-        <router-link to="/About" class="menu__el" v-on:click="isShowed = !isShowed">
+        <router-link to="/About" class="menu__el" v-on:click.native="isShowed = !isShowed">
           <i class="fas fa-user"></i>
           <div class="menu__title">Profil</div>
         </router-link>
-        <div class="menu__el" v-on:click="isShowed = !isShowed">
+        <div class="menu__el" v-on:click.native="isShowed = !isShowed">
           <i class="fas fa-cog"></i>
           <div class="menu__title">Ustawienia</div>
         </div>
-        <div class="menu__el" v-on:click="logout; isShowed = !isShowed">
+        <div class="menu__el" v-on:click.native="logout; isShowed = !isShowed">
           <i class="fas fa-sign-out-alt"></i>
           <div class="menu__title">Wyloguj</div>
         </div>
@@ -92,6 +92,12 @@ $grey: rgba(213, 213, 213, 0.5);
   transition: 0.2s ease-in-out;
   height: auto;
   margin-bottom: -30%;
+  @media only screen and (max-width: 960px) {
+    height: 3em;
+    width: 4em;
+    margin-left: auto;
+    margin-right: 0;
+  }
   * {
     pointer-events: none;
   }
@@ -107,17 +113,27 @@ $grey: rgba(213, 213, 213, 0.5);
     margin-right: 1em;
     float: left;
     filter: drop-shadow(0 0 10px $lightgrey);
+    @media only screen and (max-width: 960px) {
+      margin-right: 0;
+    }
   }
   .info__content {
     height: 90%;
     margin: 1.25% 0;
     display: grid;
     flex-direction: column;
+
     .info__name {
       @extend %text--center;
       font-weight: 700;
       color: #3e3e45;
       justify-content: left;
+      p {
+        margin: 0;
+        @media only screen and (max-width: 960px) {
+          display: none;
+        }
+      }
       .info__btn {
         cursor: pointer;
         color: #91919c;
@@ -130,6 +146,9 @@ $grey: rgba(213, 213, 213, 0.5);
       font-weight: 600;
       color: #67676e;
       justify-content: left;
+      @media only screen and (max-width: 960px) {
+        display: none;
+      }
     }
   }
 }
@@ -140,6 +159,10 @@ $grey: rgba(213, 213, 213, 0.5);
   left: -10px;
   width: calc(100% + 20px);
   height: auto;
+  @media only screen and (max-width: 960px) {
+    width: auto;
+    left: 0;
+  }
 }
 
 .info__menu {

@@ -2,7 +2,7 @@
   <div class="dashboard">
     <div class="row">
       <div class="column">
-        <Block class="prescriptions" title="Recepta" info="Na podstawie historii wizyt">
+        <Block class="prescriptions" title="Obecne zalecenia">
           <div class="prescription">
             <i class="fas fa-prescription"></i>
             <div class="prescription__content">
@@ -18,9 +18,9 @@
             </div>
           </div>
         </Block>
-        <AirData class="air"></AirData>
+        <!--<AirData class="air"></AirData>-->
       </div>
-      <div class="map">
+      <div class="map" v-if="this.$store.getters.window.width > 959">
         <div class="map__content">
           <l-map ref="map" :zoom="zoom" :center="[52.0715018,21.5211664]">
             <l-tile-layer :url="url"></l-tile-layer>
@@ -54,16 +54,7 @@
       </div>
     </div>
     <div class="row">
-      <Block class="messages" title="Ostatnie wiadomości">
-        <a class="message" href="#">
-          <img
-            class="message__img"
-            src="https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/"
-          >
-          <div class="message__name">Jan Iksiński</div>
-          <div class="message__last">Dzień dobry</div>
-          <div class="message__hour">18:00</div>
-        </a>
+      <!--<Block class="messages" title="Ostatnie wiadomości">
         <a class="message" href="#">
           <img
             class="message__img"
@@ -92,9 +83,9 @@
           <div class="message__hour">18:00</div>
         </a>
         <div class="message--last">Więcej</div>
-      </Block>
-      <Block class="appointments" title="Wizyty">
-        <div class="appointments__actions">
+      </Block>-->
+      <Block class="appointments" title="Wizyty" ref="appointments">
+        <div class="appointments__actions" v-if="this.$store.getters.window.width > 959">
           <div class="appointments__types">
             <MainBtn
               v-on:click.native="showUpcoming = true"
@@ -114,18 +105,27 @@
             </MainBtn>
           </div>
           <div class="appointments__sort">
-            <div class="appointments__option">
-              <div class="option__title">Sortuj przez:</div>
-              <select class="option__select">
-                <option selected>Data</option>
-                <option>Specjalista</option>
-                <option>Gabinet</option>
-                <option>Opis</option>
-              </select>
-            </div>
+            <div class="sort__title">Sortuj przez:</div>
+            <select class="sort__select">
+              <option selected>Data</option>
+              <option>Specjalista</option>
+              <option>Gabinet</option>
+              <option>Opis</option>
+            </select>
           </div>
         </div>
-        <Appointments class="appointments__content" ref="appointments"></Appointments>
+        <div class="appointments__actions" v-if="this.$store.getters.window.width < 960">
+          <MainBtn class="actions__options">
+            <i class="fas fa-cog"></i>
+            Opcje
+          </MainBtn>
+        </div>
+        <Appointments
+          class="appointments__content"
+          :maxAppointments="maxAppointments"
+          v-if="this.$store.getters.window.width > 959"
+        ></Appointments>
+        <AppointmentsMobile v-if="this.$store.getters.window.width < 960"></AppointmentsMobile>
       </Block>
     </div>
   </div>
@@ -137,6 +137,7 @@ import VioletBlock from "../../components/ui/VioletBlock";
 import MainSelect from "../../components/ui/MainSelect";
 import MainBtn from "../../components/ui/MainBtn";
 import Appointments from "./Appointments";
+import AppointmentsMobile from "./AppointmentsMobile";
 import AirData from "./AirData";
 import { LMap, LTileLayer, LMarker, LControlAttribution } from "vue2-leaflet";
 import { L } from "vue2-leaflet";
@@ -156,10 +157,11 @@ export default {
   name: "Dashboard",
   components: {
     Block: WhiteFunctionalBlock,
-    VioletBlock: VioletBlock,
-    MainSelect: MainSelect,
-    MainBtn: MainBtn,
+    VioletBlock,
+    MainSelect,
+    MainBtn,
     Appointments,
+    AppointmentsMobile,
     AirData,
     LMap,
     LTileLayer,
@@ -200,8 +202,8 @@ export default {
           12
         );
       });
-
-      this.maxAppointments = Math.round(
+      console.log(this.$refs.appointments.$el.offsetWidth);
+      this.maxAppointments = Math.floor(
         this.$refs.appointments.$el.offsetWidth / 300
       );
     });
@@ -224,7 +226,9 @@ export default {
 
 .appointments {
   display: table;
-  width: calc(67% - 5em);
+  //width: calc(67% - 5em);
+  width: calc(100% - 4em);
+  position: relative;
   .appointments__actions {
     display: flex;
     width: 100%;
@@ -272,27 +276,72 @@ export default {
       }
     }
     .appointments__sort {
+      display: flex;
+      overflow: hidden;
+    }
+
+    .sort__title {
       @extend %text--center;
-      .option__title {
-        @extend %text--center;
-        color: #91919c;
-        margin-right: auto;
+      padding: 0.5em 1em;
+      color: #6a6ee1;
+      font-weight: 600;
+    }
+    .sort__select {
+      font-weight: 600;
+      padding: 0.5em 1em;
+      border-radius: 0.5em;
+      color: #fafafc;
+      background: #6a6ee1;
+      background: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        from(#9394eb),
+        to(#6a6ee1)
+      );
+      background: linear-gradient(to right, #9394eb, #6a6ee1);
+      -webkit-filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
+      filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
+      border: 0;
+      option {
         font-weight: 600;
+        background: #6a6ee1;
       }
-      .option__select {
-        @extend %text--center;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        font-weight: 600;
-        color: #3e3e45;
+    }
+    .actions__pages {
+      left: -1.5rem;
+      position: absolute;
+      width: calc(100% + 3rem);
+      display: flex;
+      justify-content: space-between;
+      top: 50%;
+      button {
+        border-radius: 100%;
+        width: 0.5em;
+        height: 3em;
+        //background: #ededff;
+        //color: #6a6ee1;
+        i {
+          @extend %text--center;
+          font-size: 1.25em;
+        }
+      }
+    }
+    .actions__options {
+      background: #ededff;
+      color: #6a6ee1;
+      padding: 1em;
+      width: 100%;
+      margin-bottom: 2rem;
+      cursor: pointer;
+      i {
+        margin-right: 1em;
       }
     }
   }
   .appointments__content {
     width: 100%;
     display: flex;
-    justify-content: space-between;
     margin-top: 2em;
   }
 }
@@ -303,8 +352,10 @@ export default {
 }
 
 .prescriptions {
-  margin-bottom: 1em;
+  min-height: 19rem;
+  //margin-bottom: 1em;
 }
+
 .prescription {
   width: 100%;
   font-weight: 600;
@@ -342,7 +393,7 @@ export default {
 .air {
   @extend %text--center;
   font-size: 1.25em;
-  height: auto;
+  height: auto !important;
   padding: 1.5em 2em;
   font-weight: 600;
   color: #ffe6e7;
@@ -360,13 +411,17 @@ export default {
   width: calc(67% - 1em);
   overflow: hidden;
   position: relative;
+  z-index: 10;
 }
 
 .map__content {
   height: 100%;
   width: 100%;
+  min-height: 23rem;
 }
 .map__actions {
+  min-width: 14em;
+  max-height: 19em;
   position: absolute;
   padding: 1em;
   width: 33%;
@@ -377,11 +432,10 @@ export default {
 }
 
 .actions__content {
-  max-width: 14em;
   margin-left: auto;
   padding: 2em;
   width: calc(100% - 4em);
-  height: calc(100% - 4em);
+  height: auto;
   background: #fafafc;
   border-radius: 0.5em;
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
@@ -479,5 +533,37 @@ export default {
 
 .leaflet-top .leaflet-control:not(:has(a)) {
   margin-top: 1em;
+}
+
+@media only screen and (max-width: 1400px) {
+  .row:last-child {
+    display: block;
+    .column {
+      width: 100%;
+    }
+  }
+  .messages {
+    width: calc(100% - 4em);
+    margin-bottom: 1em;
+  }
+  .appointments {
+    display: block;
+    width: calc(100% - 4em);
+  }
+}
+
+@media only screen and (max-width: 960px) {
+  .row {
+    display: block;
+    .column {
+      width: 100%;
+    }
+  }
+  .prescriptions {
+    min-height: unset;
+  }
+  .appointments {
+    width: calc(100% - 3rem);
+  }
 }
 </style>

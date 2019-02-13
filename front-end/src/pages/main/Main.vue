@@ -1,26 +1,53 @@
 <template>
-  <div class="main center--absolute">
-    <p>Główna strona dostępna bez logowania, wkrótce coś tu będzie.</p>
-    <router-link to="/Auth"><MainBtn>Logowanie</MainBtn></router-link>
+  <div class="main">
+    <div class="main__content">
+      <Logo/>
+      <div class="coming">Już wkrótce</div>
+    </div>
   </div>
 </template>
 
 <script>
 import MainBtn from "../../components/ui/MainBtn";
+import Logo from "../../components/ui/Logo";
 
 export default {
   name: "Main",
   components: {
-      MainBtn: MainBtn
+    MainBtn,
+    Logo
   }
-}
+};
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+@import "../../main";
 
 .main {
-    font-weight: 600;
-    font-size: 1.5em;
+  @extend %text--center;
+  height: 100vh;
+  width: 100%;
+  background: $darkviolet;
+  background: linear-gradient(to right, $lightviolet, $darkviolet);
 }
 
+.logo {
+  margin-bottom: 3em;
+}
+
+.coming {
+  @extend %text--center;
+  padding: 1em;
+  color: #fafafc;
+  font-weight: 600;
+  border: 3px solid #fafafc;
+  font-size: 2em;
+  cursor: default;
+  transition: 0.2s ease-in-out;
+  border-radius: 0.5rem;
+  &:hover {
+    background: #fafafc;
+    color: $darkviolet;
+  }
+}
 </style>

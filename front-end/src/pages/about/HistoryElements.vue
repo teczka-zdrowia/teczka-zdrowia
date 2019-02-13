@@ -109,6 +109,17 @@
       </div>
     </div>
   </div>
+
+  <!--
+
+  !!! !!! !!!
+
+  HISTORY ELEMENTS PRZEPROJEKOWAĆ
+  NA WZÓR PANEL.VUE
+
+  !!! !!! !!!
+
+  -->
 </template>
 
 <script>
@@ -140,7 +151,6 @@ export default {
   margin-bottom: 1em;
   & > div {
     @extend %text--center;
-    white-space: inherit;
     font-weight: 600;
     color: #67676e;
     justify-content: left;
@@ -154,7 +164,9 @@ export default {
     }
   }
   .list__doctor {
-    width: 20%;
+    min-width: auto;
+    padding-right: 1em;
+    overflow: inherit;
     height: 100%;
     display: flex;
     justify-content: left;
@@ -173,23 +185,27 @@ export default {
   .list__specialization {
     margin-left: 1em;
     color: #91919c;
-    width: 10%;
+    width: 33%;
   }
   .list__date {
-    width: 15%;
+    width: 66%;
+    max-width: 9em;
   }
   .list__place {
-    width: 25%;
+    width: 66%;
   }
   .list__desc {
-    width: 30%;
+    width: 66%;
   }
   .list__more {
-    width: 5%;
+    width: 3.5em;
+    min-width: 3.5em;
+    max-width: 3.5em;
+    margin-left: auto;
     .list__btn {
       @extend %text--center;
       padding: 0.5em;
-      border-radius: 100%;
+      border-radius: 0.5rem;
       width: 2em;
       height: 2em;
       transition: 0.2s ease-in-out;
@@ -229,43 +245,15 @@ export default {
     .list__specialization {
       display: none;
     }
-    .list__place {
-      width: 30%;
-    }
-    .list__doctor {
-      width: 20%;
-    }
-    .list__more {
-      width: unset;
-    }
   }
   @media only screen and (max-width: 1200px) {
     .list__place {
       display: none;
     }
-    .list__date {
-      width: 20%;
-    }
-    .list__desc {
-      width: 40%;
-    }
-    .list__doctor {
-      width: 35%;
-    }
   }
   @media only screen and (max-width: 900px) {
-    .list__el div {
-      margin: auto;
-    }
-    .list__date {
-      width: 45%;
-      justify-content: center;
-    }
     .list__desc {
       display: none;
-    }
-    .list__doctor {
-      width: 45%;
     }
   }
 }
@@ -311,7 +299,6 @@ export default {
   .summary__signature {
     @extend %text--center;
     max-width: 20em;
-    width: 80%;
     height: auto;
     width: calc(100% - 6em);
     border-radius: 0.5em;
@@ -321,7 +308,7 @@ export default {
     display: block;
     font-weight: 700;
     color: #67676e;
-    padding: 1em;
+    padding: 1.25em;
     position: relative;
     overflow: hidden;
     font-size: 0.8em;
@@ -461,6 +448,39 @@ export default {
     }
     i {
       margin-left: 0.75em;
+    }
+  }
+}
+
+@media only screen and (max-width: 959px) {
+  .more__summary {
+    margin-bottom: 1em;
+  }
+  .more__container .more__content .more__row {
+    margin: 0;
+  }
+  .doctor__img {
+    display: none;
+  }
+  .summary__print {
+    width: 100%;
+    i {
+      margin-left: 0 !important;
+    }
+    &::after {
+      content: "Drukuj";
+      color: #fafafc;
+    }
+  }
+}
+
+@media only screen and (max-width: 520px) {
+  .list__el .list__doctor {
+    .doctor__img {
+      display: none;
+    }
+    .doctor__name {
+      margin-left: 0;
     }
   }
 }

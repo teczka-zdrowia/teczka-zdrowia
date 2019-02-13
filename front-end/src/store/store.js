@@ -7,6 +7,14 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
+    window: {
+      width: 0,
+      height: 0
+    },
+    showModals: {
+      user: false,
+      auth: false
+    },
     userInfo: {
       jwt:
         'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3RcLyIsImF1ZCI6Imh0dHA6XC9cL2xvY2FsaG9zdFwvIiwiaWF0IjoxNTQ3NDkxMTA2LCJuYmYiOjE1NDc0OTExMDYsImV4cCI6MTU0NzU3NzUwNiwiZGF0YSI6eyJpZCI6IjgiLCJuYW1lIjoiQWRyaWFuIiwic3VybmFtZSI6Ik9yXHUwMTQyXHUwMGYzdyIsImlzUGFpZCI6IjEifX0.kxo8DvoDa3WdQNzXDr02TUnc7d3onsoYJNhavnCHSs4',
@@ -24,22 +32,7 @@ export const store = new Vuex.Store({
       isDeleted: false,
       isValid: true
     },
-    showModals: { user: false, auth: false },
     places: [],
-    upcoming: [
-      {
-        doctor: {
-          img:
-            'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
-          name: 'Jan Iksiński',
-          spec: 'psycholog'
-        },
-        place: 'Medmax Warszawa',
-        date: '2019-03-26 16:48:40.000000',
-        note: 'xxx',
-        status: null
-      }
-    ],
     userHistory: [
       {
         doctor: {
@@ -94,10 +87,52 @@ export const store = new Vuex.Store({
         place: 'Medmax Warszawa',
         desc: 'Ból klatki piersiowej',
         isAccepted: true
+      },
+      {
+        doctor: {
+          img:
+            'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
+          name: 'Jan Iksiński',
+          spec: 'psycholog'
+        },
+        date: '16.10.2018',
+        time: '18:31',
+        place: 'Medmax Warszawa',
+        desc: 'Ból klatki piersiowej',
+        isAccepted: true
+      },
+      {
+        doctor: {
+          img:
+            'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
+          name: 'Jan Iksiński',
+          spec: 'psycholog'
+        },
+        date: '16.10.2018',
+        time: '18:32',
+        place: 'Medmax Warszawa',
+        desc: 'Ból klatki piersiowej',
+        isAccepted: true
+      },
+      {
+        doctor: {
+          img:
+            'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
+          name: 'Jan Iksiński',
+          spec: 'psycholog'
+        },
+        date: '16.10.2018',
+        time: '18:33',
+        place: 'Medmax Warszawa',
+        desc: 'Ból klatki piersiowej',
+        isAccepted: true
       }
     ]
   },
   actions: {
+    updateWindowWidthAndHeight ({ commit }, params) {
+      commit('SET_WINDOW_DIMENSIONS', params)
+    },
     updateName ({ commit }, params) {
       commit('SET_NAME', params)
     },
@@ -130,6 +165,10 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
+    SET_WINDOW_DIMENSIONS (state, { width, height }) {
+      state.window.width = width
+      state.window.height = height
+    },
     SET_JWT (state, JWT) {
       state.userInfo.jwt = JWT
     },
@@ -143,14 +182,14 @@ export const store = new Vuex.Store({
     SET_ISVALID (state, status) {
       state.userInfo.isValid = status
     },
-    SET_PLACES (state, places) {
-      state.places = places
-    },
     TOGGLE_HISTORY_ELEMENT (state, id) {
       state.userHistory[id].isOpened = !state.userHistory[id].isOpened
     }
   },
   getters: {
+    window (state) {
+      return state.window
+    },
     userInfo (state) {
       return state.userInfo
     },
@@ -163,11 +202,8 @@ export const store = new Vuex.Store({
     userAppointments (state) {
       return state.appointments
     },
-    getPlaces (state) {
+    userPlaces (state) {
       return state.places
-    },
-    modalsShowed (state) {
-      return state.showModals
     }
   },
   plugins: [createPersistedState()]

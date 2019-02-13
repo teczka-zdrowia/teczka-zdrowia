@@ -1,7 +1,7 @@
 <template>
   <div class="panel">
     <div class="row">
-      <div class="column basic">
+      <div class="column basic" v-if="this.$store.getters.window.width > 1399">
         <div class="calendar__title">Kalendarz</div>
         <Block class="calendar">
           <Calendar></Calendar>
@@ -10,7 +10,7 @@
       <div class="appointments">
         <div class="appointments__top">
           <div class="appointments__title">Wizyty</div>
-          <div class="appointments__types">
+          <div class="appointments__types" v-if="this.$store.getters.window.width > 799">
             <MainBtn
               v-on:click.native="showUpcoming = true"
               v-bind:class="[showUpcoming ? 'active' : '']"
@@ -20,7 +20,7 @@
               v-bind:class="[!showUpcoming ? 'active' : '']"
             >Minione</MainBtn>
           </div>
-          <div class="appointments__sort">
+          <div class="appointments__sort" v-if="this.$store.getters.window.width > 799">
             <div class="sort__title">Sortuj przez:</div>
             <select class="sort__select">
               <option selected>Data</option>
@@ -29,6 +29,12 @@
               <option>Opis</option>
             </select>
           </div>
+          <MainBtn class="actions__options--violet" v-if="this.$store.getters.window.width < 799">
+            <i class="fas fa-calendar-alt"></i>
+          </MainBtn>
+          <MainBtn class="actions__options" v-if="this.$store.getters.window.width < 799">
+            <i class="fas fa-cog"></i>
+          </MainBtn>
         </div>
         <div class="appointemtns__content">
           <Appointments></Appointments>
@@ -185,6 +191,53 @@ export default {
   option {
     font-weight: 600;
     background: #6a6ee1;
+  }
+}
+
+.actions__options {
+  background: #ededff;
+  color: #6a6ee1;
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  i {
+    margin-right: 0;
+    vertical-align: middle;
+  }
+  &--violet {
+    height: 100%;
+    width: 100%;
+    margin-right: 1em;
+    padding: 0;
+    i {
+      margin-right: 0;
+      vertical-align: middle;
+    }
+  }
+}
+
+@media only screen and (max-width: 1400px) {
+  .appointments {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 800px) and (min-width: 520px) {
+  .actions__options {
+    &:after {
+      content: "Opcje";
+    }
+    i {
+      margin-right: 1em;
+    }
+  }
+  .actions__options--violet {
+    &:after {
+      content: "Kalendarz";
+    }
+    i {
+      margin-right: 1em;
+    }
   }
 }
 </style>

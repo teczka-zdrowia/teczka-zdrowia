@@ -1,9 +1,8 @@
 <template>
   <div>
     <div class="payment--info">
-      <div class="info__title">Status płatności</div>
       <VioletBlock class="info__content" v-if="this.$store.getters.userInfo.isPaid">
-        Opłacona do
+        Opłacono do
         <b>{{ paidUntil }}</b>
         ({{daysUntil}})
       </VioletBlock>
@@ -33,7 +32,16 @@
             </div>
           </div>
           <div class="choose__options">
-            <div class="choose__option">Przelew</div>
+            <div class="choose__option">
+              <i class="far fa-credit-card"></i>
+              Karta
+            </div>
+          </div>
+          <div class="choose__options">
+            <div class="choose__option">
+              <i class="fas fa-money-check"></i>
+              Przelew
+            </div>
           </div>
         </div>
       </div>
@@ -78,22 +86,10 @@ export default {
 
 .payment--info {
   margin: auto;
-  width: 50em;
+  width: 50rem;
   height: auto;
   display: flex;
   margin-bottom: 1em;
-}
-
-.info__title {
-  padding: 2.5%;
-  font-weight: 600;
-  text-align: center;
-  width: calc(33% - 5%);
-  background: #fafafc;
-  border-radius: 0.5em;
-  overflow: hidden;
-  box-shadow: 0 0 20px 0px $lightgrey;
-  margin-right: 1em;
 }
 .info__content {
   padding: 2.5%;
@@ -102,7 +98,8 @@ export default {
 
 .payment {
   margin: auto;
-  width: 50em;
+  margin-bottom: 1em;
+  width: 50rem;
   height: auto;
   background: #fafafc;
   border-radius: 0.5em;
@@ -111,7 +108,6 @@ export default {
   display: flex;
   & > div {
     width: 50%;
-    height: 100%;
     padding: 5%;
   }
 }
@@ -158,7 +154,7 @@ export default {
     margin: auto;
     margin-top: 1.5em;
     .choose__option {
-      width: 6em;
+      width: 6.5em;
       display: inline-block;
       border-radius: 0.5em;
       padding: 0.5em;
@@ -167,11 +163,33 @@ export default {
       font-weight: 700;
       cursor: pointer;
       i {
+        vertical-align: middle;
         margin-right: 0.5em;
       }
       &:not(:last-child) {
         margin-bottom: 0.5em;
       }
+    }
+  }
+}
+
+@media only screen and (max-width: 56rem) {
+  .payment--info,
+  .payment {
+    width: 100%;
+    .block--violet {
+      width: 100%;
+      padding: 1em;
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .payment {
+    display: block;
+    .payment__about,
+    .payment__container {
+      width: 90%;
     }
   }
 }

@@ -2,22 +2,32 @@
   <div class="history" v-if="this.$store.getters.userHistoryCount > 0">
     <div class="history__top">
       <div class="history__title">Historia wizyt</div>
-      <div class="history__option">
-        <div class="option__title">Sortuj przez:</div>
-        <select class="option__select">
-          <option selected>Data</option>
-          <option>Specjalista</option>
-          <option>Gabinet</option>
-          <option>Opis</option>
-        </select>
+      <div class="history__options" v-if="this.$store.getters.window.width > 799">
+        <div class="history__option">
+          <div class="option__title">Sortuj przez:</div>
+          <select class="option__select">
+            <option selected>Data</option>
+            <option>Specjalista</option>
+            <option>Gabinet</option>
+            <option>Opis</option>
+          </select>
+        </div>
+        <div class="history__option">
+          <div class="option__title">Na stronę:</div>
+          <select class="option__select">
+            <option selected>5</option>
+            <option>10</option>
+            <option>15</option>
+          </select>
+        </div>
       </div>
-      <div class="history__option">
-        <div class="option__title">Na stronę:</div>
-        <select class="option__select">
-          <option selected>5</option>
-          <option>10</option>
-          <option>15</option>
-        </select>
+      <div class="history__options" v-if="this.$store.getters.window.width < 799">
+        <div class="history__option">
+          <MainBtn class="options--mobile">
+            <i class="fas fa-cog"></i>
+            Opcje
+          </MainBtn>
+        </div>
       </div>
     </div>
     <HistoryElements></HistoryElements>
@@ -46,7 +56,7 @@ export default {
 
 .history__top {
   @extend %text--center;
-  justify-content: left;
+  justify-content: space-between;
   font-weight: 600;
   margin: 2em 0 1em;
 }
@@ -55,20 +65,54 @@ export default {
   font-size: 1.5em;
   margin-right: 1.5em;
 }
+
+.history__options {
+  display: flex;
+}
+
 .history__option {
-  @extend %text--center;
-  margin-right: 1.5em;
-  .option__title {
-    @extend %text--center;
-    color: #91919c;
-    margin-right: 1em;
+  display: flex;
+  border-radius: 0.5em;
+  overflow: hidden;
+  &:not(:last-child) {
+    margin-right: 2em;
   }
-  .option__select {
-    @extend %text--center;
-    background: transparent;
-    border: none;
+}
+
+.option__title {
+  @extend %text--center;
+  padding: 0.5em 1em;
+  background: #fafafc;
+  color: #6a6ee1;
+}
+.option__select {
+  font-weight: 600;
+  padding: 0.5em 1em;
+  color: #fafafc;
+  background: #6a6ee1;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    from(#9394eb),
+    to(#6a6ee1)
+  );
+  background: linear-gradient(to right, #9394eb, #6a6ee1);
+  -webkit-filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
+  filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
+  border: 0;
+  option {
     font-weight: 600;
-    color: #3e3e45;
+    background: #6a6ee1;
+  }
+}
+
+.options--mobile {
+  height: 100%;
+  width: 100%;
+  i {
+    margin-right: 1em;
+    vertical-align: middle;
   }
 }
 </style>

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div class="appointment" v-for="(item, index) in this.$store.getters.userAppointments">
+    <div
+      class="appointment"
+      v-for="(item, index) in this.$store.getters.userAppointments"
+      v-if="index < maxAppointments"
+    >
       <div class="appointment__user">
         <img class="user__img" :src="item.doctor.img">
         <div class="user__name">{{ item.doctor.name }}</div>
@@ -48,6 +52,7 @@
 import MainBtn from "../../components/ui/MainBtn";
 
 export default {
+  props: ["maxAppointments"],
   name: "Appointments",
   components: {
     MainBtn
@@ -69,6 +74,7 @@ export default {
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
   background: #fff;
   width: 100%;
+  max-width: 300px;
   &:not(:last-child) {
     margin-right: 1em;
   }
@@ -76,21 +82,37 @@ export default {
 
 .appointment__user {
   display: grid;
-  grid-template-columns: 3.5em auto;
+  grid-template-columns: 4em auto;
   grid-template-areas:
     "img name"
     "img spec";
   grid-column-gap: 1em;
-  height: 3.5em;
+  height: 4em;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+  border-radius: 0.5rem;
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 60px 0 rgba(145, 145, 156, 0.3);
+    .user__img {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+  &:active {
+    transform: scale(1.025);
+  }
 }
 
 .user__img {
   grid-area: img;
-  height: 3.5em;
+  height: 4em;
+  transition: 0.2s ease-in-out;
   border-radius: 1em;
   -webkit-filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
   filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
 }
+
 .user__name {
   @extend %text--center;
   grid-area: name;
@@ -119,6 +141,11 @@ export default {
   }
   div:first-child {
     margin-right: 1em;
+  }
+  @media only screen and (max-width: 480px) {
+    i {
+      display: none;
+    }
   }
 }
 .content__el {
@@ -162,6 +189,13 @@ export default {
   }
   &--cancel {
     color: #e74c3c;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .appointment {
+    width: calc(100% - 2em);
+    max-width: 100%;
   }
 }
 </style>

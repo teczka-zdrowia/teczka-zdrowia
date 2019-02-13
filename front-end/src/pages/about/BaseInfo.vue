@@ -1,97 +1,39 @@
 <template>
   <div class="info--base">
-    <div class="base__img">
-      <img :src="this.$store.getters.userInfo.img">
-      <div class="img__edit" v-if="isEdit">
-        <i class="fas fa-camera"></i>
-      </div>
+    <div class="base__top">
+      <img class="user__img" :src="this.$store.getters.userInfo.img">
+      <div class="user__name">{{data.name}} {{data.surname}}</div>
+      <div class="user__specialization">{{ this.$store.getters.userInfo.spec }}</div>
     </div>
-    <div class="data">
-      <div class="data__top">
-        <div class="data__name" v-if="!isEdit">{{data.name}} {{data.surname}}</div>
-        <div class="data__name--input" v-if="isEdit">
-          <input type="text" name="name" v-model="data.name" placeholder="Jan" required>
-          <input type="text" name="surname" v-model="data.surname" placeholder="Kowalski" required>
-          <input type="text" name="specialization" v-model="data.spec" placeholder="Fizjoterapeuta">
+    <div class="base__more">
+      <div class="more__el">
+        <div class="more__title">
+          <i class="fas fa-birthday-cake"></i>
+          <span>Urodziny</span>
         </div>
-        <div class="data__actions">
-          <div class="data__action data__edit" v-if="!isEdit" v-on:click="isEdit = true">
-            <i class="fas fa-pen"></i>
-          </div>
-          <div class="data__actions--edit" v-if="isEdit">
-            <div class="data__action--edit data__cancel" v-on:click="isEdit = false">
-              <i class="fas fa-times"></i>
-            </div>
-            <div class="data__action--edit data__save">
-              <i class="fas fa-check"></i>
-            </div>
-          </div>
-        </div>
+        <div class="more__content">{{ userBirthdate }} ({{ userAge }} lat)</div>
       </div>
-      <div class="data__more" v-if="!isEdit">
-        <div class="more__el">
-          <div class="more__title">Urodziny:</div>
-          <div class="more__content">{{ userBirthdate }} ({{ userAge }} lat)</div>
+      <div class="more__el">
+        <div class="more__title">
+          <i class="fas fa-at"></i>
+          <span>Email</span>
         </div>
-        <div class="more__el">
-          <div class="more__title">PESEL:</div>
-          <div class="more__content" v-if="isPESEL">{{ data.pesel }}</div>
-          <div class="more__content more__pesel" v-else v-on:click="isPESEL = true">Odkryj</div>
-        </div>
-        <div class="more__el">
-          <div class="more__title">Email:</div>
-          <div class="more__content">{{ data.email }}</div>
-        </div>
-        <div class="more__el">
-          <div class="more__title">Telefon:</div>
-          <div class="more__content">{{ userPhone }}</div>
-        </div>
+        <div class="more__content">{{ data.email }}</div>
       </div>
-      <div class="data__more" v-if="isEdit">
-        <div class="more__el">
-          <div class="more__title">Urodziny:</div>
-          <div class="more__input">
-            <input type="date" name="birthdate" v-model="newData.birthdate" required>
-          </div>
+      <div class="more__el">
+        <div class="more__title">
+          <i class="fas fa-phone"></i>
+          <span>Telefon</span>
         </div>
-        <div class="more__el">
-          <div class="more__title">PESEL:</div>
-          <div class="more__input">
-            <input
-              type="text"
-              name="pesel"
-              v-model="newData.pesel"
-              placeholder="12345678912"
-              required
-            >
-          </div>
+        <div class="more__content">{{ userPhone }}</div>
+      </div>
+      <div class="more__el">
+        <div class="more__title">
+          <i class="fas fa-id-card-alt"></i>
+          <span>PESEL</span>
         </div>
-        <div class="more__el">
-          <div class="more__title">Email:</div>
-          <div class="more__input">
-            <input
-              type="email"
-              name="email"
-              v-model="newData.email"
-              placeholder="jan@kowalski.com"
-              required
-            >
-          </div>
-        </div>
-        <div class="more__el">
-          <div class="more__title">Telefon:</div>
-          <div class="more__input">
-            <input
-              type="tel"
-              name="phone"
-              v-model="newData.phone"
-              placeholder="123654789"
-              minlength="9"
-              maxlength="15"
-              required
-            >
-          </div>
-        </div>
+        <div class="more__content" v-if="isPESEL">{{ data.pesel }}</div>
+        <div class="more__content more__pesel" v-else v-on:click="isPESEL = true">Odkryj</div>
       </div>
     </div>
   </div>
@@ -167,214 +109,117 @@ input::-webkit-inner-spin-button {
 }
 
 .info--base {
-  width: 50%;
-  padding: 2em;
+  width: 66%;
+  padding: 2rem;
   background: #fafafc;
-  border-radius: 0.5em;
+  border-radius: 0.5rem;
   box-shadow: 0 0 20px 0px $lightgrey;
   display: table;
-  @media only screen and (max-width: 1350px) {
-    width: 66%;
-  }
-  @media only screen and (max-width: 1200px) {
-    width: auto;
-    margin-bottom: 1em;
-  }
 }
 
-.base__img {
-  height: 5rem;
-  width: 5rem;
-  overflow: hidden;
-  border-radius: 1em;
-  float: left;
-  position: relative;
-  img {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-  }
-  @media only screen and (max-width: 800px) {
-    margin: 0;
-    margin-bottom: 1em;
-    margin-left: 10%;
-  }
-}
-.img__edit {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  background: rgba(203, 205, 255, 0.5);
-  transition: 0.2s ease-in-out;
+.base__top {
+  display: grid;
+  grid-template-columns: 4rem auto;
+  grid-template-areas:
+    "img name"
+    "img spec";
+  grid-column-gap: 1em;
+  height: 4rem;
   cursor: pointer;
-  &:hover {
-    background: rgba(203, 205, 255, 0.7);
-  }
-  i {
-    padding: 0.5em;
-    right: 0;
-    color: #9b9dff;
-    border-bottom-left-radius: 0.5em;
-    position: absolute;
-    background: rgba(203, 205, 255, 0.9);
-  }
-}
-.data {
-  width: 80%;
-  float: right;
-  @media only screen and (max-width: 800px) {
-    float: unset;
-    margin: auto;
-  }
+  transition: 0.2s ease-in-out;
+  width: 100%;
+  font-size: 1.25em;
+  margin-bottom: 1em;
 }
 
-.data__top {
-  display: flex;
-  width: 100%;
+.user__img {
+  grid-area: img;
+  height: 4rem;
+  transition: 0.2s ease-in-out;
+  border-radius: 1rem;
+  -webkit-filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
+  filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
 }
-.data__name {
-  @extend %text--overflow;
-  font-size: 1.5em;
+
+.user__name {
+  @extend %text--center;
+  grid-area: name;
   font-weight: 700;
   color: #3e3e45;
-  display: inline-block;
-  width: 75%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+  justify-content: left;
 }
-.data__name--input {
-  display: flex;
-  margin-right: 2em;
-  input {
-    font-weight: 600;
-    height: 1.5em;
-    border: 5px solid #efefff;
-    background: #efefff;
-    border-radius: 0.5em;
-    margin: -5px;
-    text-align: center;
-    width: calc(100% - 10px);
-    cursor: pointer;
-    color: #3e3e45;
-    &:first-child,
-    &:nth-child(2) {
-      margin-right: 5%;
-    }
-    &:last-child {
-      color: #67676e;
-    }
-  }
-}
-.data__specialization {
-  @extend %text--overflow;
+.user__specialization {
   @extend %text--center;
+  grid-area: spec;
   font-weight: 600;
-  color: #91919c;
-  float: right;
-}
-.data__actions {
-  float: right;
-  margin-left: auto;
-  display: flex;
+  color: #67676e;
+  justify-content: left;
 }
 
-.data__action {
-  padding: 0.5em;
-  font-size: 0.9em;
-  border-radius: 0.5em;
-  cursor: pointer;
-  display: inline-block;
-  margin-left: 1em;
-  background: #ececff;
-  width: 1em;
-  height: 1em;
-  i {
-    color: #6a6ee1;
-    @extend %text--center;
-  }
-  &:hover {
-    background: #ececff;
+@media only screen and (max-width: 959px) {
+  .info--base {
+    padding: 1.5rem;
+    width: calc(100% - 3rem);
+    margin-bottom: 1em;
   }
 }
-.data__actions--edit {
-  font-size: 0.9em;
-  border-radius: 0.5em;
-  cursor: pointer;
-  overflow: hidden;
-  display: flex;
-  height: auto;
-  margin: -2.5px;
-}
-.data__action--edit {
-  padding: 0.5em;
-  width: 1em;
-  height: 1em;
-  background: #ececff;
-  i {
-    @extend %text--center;
-  }
-  &:hover {
-    background: #ececff;
-  }
-  &.data__save {
-    color: #2ecc71;
-  }
-  &.data__cancel {
-    color: #e74c3c;
-    border-right: 0.5px solid rgba(145, 145, 156, 0.3);
-  }
-}
-.data__more {
-  font-size: 0.9em;
-  margin-top: 1.25em;
-  display: grid;
-  grid-template-columns: auto auto;
-  grid-column-gap: 1em;
-  grid-row-gap: 1em;
-  @media only screen and (max-width: 800px) {
-    grid-template-columns: auto;
-    grid-row-gap: 0.5em;
-  }
+
+/* --- MF --- */
+
+.base__more {
 }
 
 .more__el {
+  width: 100%;
   display: flex;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  &:not(:last-child) {
+    margin-bottom: 1em;
+  }
+}
+
+.more__title,
+.more__content {
+  padding: 1rem;
   font-weight: 600;
 }
 
 .more__title {
-  width: 6em;
-  color: #3e3e45;
-}
-.more__content {
-  color: #91919c;
-}
-.more__pesel {
-  border: 5px solid $lightviolet;
-  background: $lightviolet;
-  color: #fff;
-  border-radius: 0.5em;
-  margin: -5px auto;
-  margin-left: 10%;
-  text-align: center;
-  width: calc(90% - 10px);
-  cursor: pointer;
-  @media only screen and (max-width: 800px) {
-    width: auto;
-    margin-left: 0;
+  @extend %text--center;
+  justify-content: left;
+  width: 1.5rem;
+  background: #9394eb;
+  color: #fafafc;
+  span {
+    display: none;
   }
 }
-.more__input input {
-  border: 5px solid #efefff;
-  background: #efefff;
-  color: #fff;
-  border-radius: 0.5em;
-  margin: -5px;
-  text-align: center;
-  width: calc(90% - 10px);
-  cursor: pointer;
+
+.more__content {
+  width: calc(100% - 3rem);
+  background: #ececff;
   color: #91919c;
-  font-weight: 600;
+  &.more__pesel {
+    @extend %text--center;
+    background: #9394eb;
+    color: #fafafc;
+    cursor: pointer;
+  }
+}
+
+@media only screen and (min-width: 425px) {
+  .more__title {
+    width: 7rem;
+    i {
+      margin-right: 0.75em;
+    }
+    span {
+      display: unset;
+    }
+  }
+  .more__content {
+    width: calc(100% - 11rem);
+  }
 }
 </style>

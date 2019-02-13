@@ -7,7 +7,7 @@ import Main from '@/pages/main/Main'
 import Panel from '@/pages/panel/Panel'
 import Terms from '@/pages/terms/Terms'
 import Payment from '@/pages/payment/Payment'
-import Cabinetes from '@/pages/cabinetes/Cabinetes'
+import Offices from '@/pages/offices/Offices'
 
 Vue.use(Router)
 
@@ -40,9 +40,9 @@ export default new Router({
       component: Panel
     },
     {
-      path: '/Cabinetes',
-      name: 'Cabinetes',
-      component: Cabinetes
+      path: '/Offices',
+      name: 'Offices',
+      component: Offices
     },
     {
       path: '/About',
