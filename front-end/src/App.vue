@@ -5,9 +5,8 @@
       <AppSidebarMobile v-if="this.$store.getters.window.width < 960"/>
       <AppHeader v-if="this.$store.getters.window.width > 959"/>
       <AppHeaderMobile v-if="this.$store.getters.window.width < 960"/>
-      <div class="app__router">
-        <router-view/>
-      </div>
+
+      <router-view class="app__router" v-bind:class="{ 'app--absolute' : isRouteMap }"></router-view>
     </div>
     <router-view v-else/>
   </div>
@@ -34,8 +33,11 @@ export default {
       return this.$store.getters.userInfo.isValid;
     },
     isValidRoute: function() {
-      const paths = ["/", "/Auth", "/Terms"];
+      const paths = ["/", "/Auth", "/Terms", "/dTm6Gz"];
       return paths.indexOf(this.$route.path) > -1 ? false : true;
+    },
+    isRouteMap: function() {
+      return this.$route.path == "/Map";
     }
   },
   mounted() {
@@ -55,6 +57,11 @@ export default {
 
 <style lang="scss">
 @import "main";
+
+html,
+body {
+  overscroll-behavior-y: contain;
+}
 
 *:focus {
   outline: none;
@@ -125,6 +132,10 @@ button {
     width: calc(100% - 1rem);
     height: auto;
     overflow: hidden;
+    &.app--absolute {
+      height: calc(100vh - 6rem);
+      padding: 0;
+    }
   }
 }
 </style>

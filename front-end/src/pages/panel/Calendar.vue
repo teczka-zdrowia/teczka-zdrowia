@@ -51,7 +51,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .calendar {
   .vdpHeader {
     border-radius: 0.5em;

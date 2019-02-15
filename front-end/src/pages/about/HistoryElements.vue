@@ -109,17 +109,6 @@
       </div>
     </div>
   </div>
-
-  <!--
-
-  !!! !!! !!!
-
-  HISTORY ELEMENTS PRZEPROJEKOWAĆ
-  NA WZÓR PANEL.VUE
-
-  !!! !!! !!!
-
-  -->
 </template>
 
 <script>

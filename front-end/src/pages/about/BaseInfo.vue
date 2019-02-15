@@ -1,9 +1,50 @@
 <template>
   <div class="info--base">
     <div class="base__top">
-      <img class="user__img" :src="this.$store.getters.userInfo.img">
-      <div class="user__name">{{data.name}} {{data.surname}}</div>
-      <div class="user__specialization">{{ this.$store.getters.userInfo.spec }}</div>
+      <div class="user__img">
+        <img :src="this.$store.getters.userInfo.img">
+        <div class="img__edit" v-if="isEdit">
+          <i class="fas fa-camera"></i>
+        </div>
+      </div>
+      <div class="user__name" v-if="!isEdit">{{data.name}} {{data.surname}}</div>
+      <div class="user__name" v-if="isEdit">
+        <input type="text" name="name" v-model="newData.name" placeholder="Jan" required>
+        <input type="text" name="surname" v-model="newData.surname" placeholder="Kowalski" required>
+      </div>
+      <div class="user__specialization" v-if="!isEdit">{{ this.$store.getters.userInfo.spec }}</div>
+      <input
+        v-if="isEdit"
+        class="user__specialization"
+        type="text"
+        minlength="1"
+        name="spec"
+        v-model="newData.spec"
+        placeholder="Fizjoterapeuta"
+      >
+      <div class="more__actions" v-if="this.$store.getters.window.width > 960">
+        <MainBtn
+          class="more__action more__action--edit"
+          v-on:click.native="isEdit = true"
+          v-if="!isEdit"
+        >
+          <i class="fas fa-pen"></i>
+        </MainBtn>
+        <MainBtn
+          class="more__action more__action--cancel"
+          v-on:click.native="isEdit = false"
+          v-if="isEdit"
+        >
+          <i class="fas fa-times"></i>
+        </MainBtn>
+        <MainBtn
+          class="more__action more__action--save"
+          v-on:click.native="isEdit = false"
+          v-if="isEdit"
+        >
+          <i class="fas fa-check"></i>
+        </MainBtn>
+      </div>
     </div>
     <div class="base__more">
       <div class="more__el">
@@ -11,40 +52,105 @@
           <i class="fas fa-birthday-cake"></i>
           <span>Urodziny</span>
         </div>
-        <div class="more__content">{{ userBirthdate }} ({{ userAge }} lat)</div>
+        <div class="more__content" v-if="!isEdit">{{ userBirthdate }} ({{ userAge }} lat)</div>
+        <div class="more__content more__content--fullcolor" v-if="isEdit">Na podstawie PESEL</div>
       </div>
       <div class="more__el">
         <div class="more__title">
           <i class="fas fa-at"></i>
           <span>Email</span>
         </div>
-        <div class="more__content">{{ data.email }}</div>
+        <div class="more__content" v-if="!isEdit">{{ data.email }}</div>
+        <input
+          v-if="isEdit"
+          class="more__content"
+          type="email"
+          name="email"
+          v-model="newData.email"
+          placeholder="jan@kowalski.com"
+          required
+        >
       </div>
       <div class="more__el">
         <div class="more__title">
           <i class="fas fa-phone"></i>
           <span>Telefon</span>
         </div>
-        <div class="more__content">{{ userPhone }}</div>
+        <div class="more__content" v-if="!isEdit">{{ userPhone }}</div>
+        <input
+          v-if="isEdit"
+          class="more__content"
+          type="tel"
+          name="phone"
+          v-model="newData.phone"
+          placeholder="123654789"
+          minlength="9"
+          maxlength="15"
+          required
+        >
       </div>
       <div class="more__el">
         <div class="more__title">
           <i class="fas fa-id-card-alt"></i>
           <span>PESEL</span>
         </div>
-        <div class="more__content" v-if="isPESEL">{{ data.pesel }}</div>
-        <div class="more__content more__pesel" v-else v-on:click="isPESEL = true">Odkryj</div>
+        <div class="more__content" v-if="isPESEL && !isEdit">{{ data.pesel }}</div>
+        <div
+          class="more__content more__pesel"
+          v-if="!isPESEL && !isEdit"
+          v-on:click="isPESEL = true"
+        >Odkryj</div>
+        <input
+          v-if="isEdit"
+          class="more__content"
+          type="text"
+          name="pesel"
+          v-model="newData.pesel"
+          placeholder="12345678912"
+          required
+        >
+      </div>
+      <div class="more__actions" v-if="this.$store.getters.window.width < 960">
+        <MainBtn
+          class="more__action more__action--edit"
+          v-on:click.native="isEdit = true"
+          v-if="!isEdit"
+        >
+          <i class="fas fa-pen"></i>
+          Edytuj
+        </MainBtn>
+        <MainBtn
+          class="more__action more__action--cancel"
+          v-on:click.native="isEdit = false"
+          v-if="isEdit"
+        >
+          <i class="fas fa-times"></i>
+          Anuluj
+        </MainBtn>
+        <MainBtn
+          class="more__action more__action--save"
+          v-on:click.native="isEdit = false"
+          v-if="isEdit"
+        >
+          <i class="fas fa-check"></i>
+          Zapisz
+        </MainBtn>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import MainBtn from "../../components/ui/MainBtn";
+
 let moment = require("moment");
 moment.locale("pl");
 
 export default {
   name: "BaseInfo",
+  components: {
+    MainBtn
+  },
   data: function() {
     return {
       isEdit: false,
@@ -109,12 +215,11 @@ input::-webkit-inner-spin-button {
 }
 
 .info--base {
-  width: 66%;
+  width: 100%;
   padding: 2rem;
   background: #fafafc;
   border-radius: 0.5rem;
   box-shadow: 0 0 20px 0px $lightgrey;
-  display: table;
 }
 
 .base__top {
@@ -125,7 +230,6 @@ input::-webkit-inner-spin-button {
     "img spec";
   grid-column-gap: 1em;
   height: 4rem;
-  cursor: pointer;
   transition: 0.2s ease-in-out;
   width: 100%;
   font-size: 1.25em;
@@ -137,8 +241,35 @@ input::-webkit-inner-spin-button {
   height: 4rem;
   transition: 0.2s ease-in-out;
   border-radius: 1rem;
+  overflow: hidden;
   -webkit-filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
   filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
+  position: relative;
+  img {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+  }
+}
+
+.img__edit {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: rgba(203, 205, 255, 0.5);
+  transition: 0.2s ease-in-out;
+  cursor: pointer;
+  &:hover {
+    background: rgba(203, 205, 255, 0.7);
+  }
+  i {
+    padding: 0.5em;
+    right: 0;
+    color: #9b9dff;
+    border-bottom-left-radius: 0.5em;
+    position: absolute;
+    background: rgba(203, 205, 255, 0.9);
+  }
 }
 
 .user__name {
@@ -147,13 +278,52 @@ input::-webkit-inner-spin-button {
   font-weight: 700;
   color: #3e3e45;
   justify-content: left;
+  input {
+    height: 100%;
+    width: 50%;
+    text-align: center;
+    background: #e6e6f7;
+    color: #3e3e45;
+    font-weight: 700;
+    &:first-child {
+      border-top-left-radius: 0.5rem;
+    }
+    &:last-child {
+      border-top-right-radius: 0.5rem;
+    }
+  }
 }
+
 .user__specialization {
   @extend %text--center;
   grid-area: spec;
   font-weight: 600;
   color: #67676e;
   justify-content: left;
+}
+
+input.user__specialization {
+  text-align: center;
+  background: #ececff;
+  border-bottom-right-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  width: 100%;
+}
+
+@media only screen and (max-width: 350px) {
+  .user__name {
+    display: block;
+    width: 100%;
+    input {
+      width: 100%;
+      &:first-child {
+        border-top-right-radius: 0.5rem;
+      }
+      &:last-child {
+        border-top-right-radius: 0;
+      }
+    }
+  }
 }
 
 @media only screen and (max-width: 959px) {
@@ -165,9 +335,6 @@ input::-webkit-inner-spin-button {
 }
 
 /* --- MF --- */
-
-.base__more {
-}
 
 .more__el {
   width: 100%;
@@ -187,7 +354,6 @@ input::-webkit-inner-spin-button {
 
 .more__title {
   @extend %text--center;
-  justify-content: left;
   width: 1.5rem;
   background: #9394eb;
   color: #fafafc;
@@ -197,6 +363,7 @@ input::-webkit-inner-spin-button {
 }
 
 .more__content {
+  @extend %text--center;
   width: calc(100% - 3rem);
   background: #ececff;
   color: #91919c;
@@ -206,11 +373,42 @@ input::-webkit-inner-spin-button {
     color: #fafafc;
     cursor: pointer;
   }
+  &--fullcolor {
+    background: #9394eb;
+    color: #fafafc;
+  }
 }
 
-@media only screen and (min-width: 425px) {
+.more__actions {
+  display: flex;
+  width: 100%;
+  & > *:not(:first-child) {
+    margin-left: 1rem;
+  }
+}
+
+.more__action {
+  padding: 1rem !important;
+  width: 100% !important;
+  background: #ededff !important;
+  &--edit {
+    color: #6a6ee1 !important;
+  }
+  &--cancel {
+    color: #c0392b !important;
+  }
+  &--save {
+    color: #27ae60 !important;
+  }
+  i {
+    margin-right: 1em;
+  }
+}
+
+@media only screen and (min-width: 425px) and (max-width: 960px) {
   .more__title {
     width: 7rem;
+    justify-content: left;
     i {
       margin-right: 0.75em;
     }
@@ -220,6 +418,55 @@ input::-webkit-inner-spin-button {
   }
   .more__content {
     width: calc(100% - 11rem);
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .more__title {
+    width: 7rem;
+    justify-content: left;
+    i {
+      margin-right: 0.75em;
+    }
+    span {
+      display: unset;
+    }
+  }
+  .more__content {
+    width: calc(100% - 11rem);
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .base__more {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    column-gap: 1rem;
+    row-gap: 1rem;
+  }
+  .more__title,
+  .more__content {
+    padding: 0.75rem 1rem;
+  }
+  .more__el {
+    &:not(:last-child) {
+      margin-bottom: 0;
+    }
+  }
+  .more__actions {
+    width: 100%;
+    grid-area: actions;
+  }
+  .more__action {
+    i {
+      margin-right: 0;
+    }
+  }
+  .base__top {
+    grid-template-columns: 4rem auto 10rem;
+    grid-template-areas:
+      "img name actions"
+      "img spec actions";
   }
 }
 </style>

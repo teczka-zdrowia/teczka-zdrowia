@@ -227,8 +227,9 @@ export default {
   padding: 1rem;
   height: 3rem;
   width: calc(100% - 2rem);
-  background: $primrary-light;
-  position: sticky;
+  background: #fafafa;
+  position: absolute;
+  right: 0;
   top: 0;
   z-index: 1000;
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
@@ -244,19 +245,18 @@ export default {
     display: block;
   }
   .auth__content {
-    width: 90%;
+    width: calc(100% - 1rem);
+    padding-top: 7rem;
   }
   .auth__title {
     margin-top: 0;
+    text-align: center;
   }
   .login__actions {
     display: block;
     button {
       margin-bottom: 1em;
     }
-  }
-  .login__options {
-    font-size: 0.9em;
   }
 
   .auth__header {
@@ -266,7 +266,10 @@ export default {
 
 @media only screen and (max-width: 375px) {
   .login__options {
-    font-size: 0.8em;
+    display: block;
+  }
+  .login__remember {
+    margin-bottom: 0.5em;
   }
 }
 </style>

@@ -202,7 +202,6 @@ export default {
           12
         );
       });
-      console.log(this.$refs.appointments.$el.offsetWidth);
       this.maxAppointments = Math.floor(
         this.$refs.appointments.$el.offsetWidth / 300
       );

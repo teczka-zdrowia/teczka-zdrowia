@@ -6,6 +6,7 @@ import Auth from '@/pages/auth/Auth'
 import Main from '@/pages/main/Main'
 import Panel from '@/pages/panel/Panel'
 import Terms from '@/pages/terms/Terms'
+import Map from '@/pages/map/Map'
 import Payment from '@/pages/payment/Payment'
 import Offices from '@/pages/offices/Offices'
 
@@ -20,7 +21,7 @@ export default new Router({
       component: Main
     },
     {
-      path: '/Auth',
+      path: '/dTm6Gz',
       name: 'Auth',
       component: Auth
     },
@@ -33,6 +34,11 @@ export default new Router({
       path: '/Dashboard',
       name: 'Dashboard',
       component: Dashboard
+    },
+    {
+      path: '/Map',
+      name: 'Map',
+      component: Map
     },
     {
       path: '/Panel',

@@ -162,6 +162,7 @@ $grey: rgba(213, 213, 213, 0.5);
   @media only screen and (max-width: 960px) {
     width: auto;
     left: 0;
+    height: 0;
   }
 }
 

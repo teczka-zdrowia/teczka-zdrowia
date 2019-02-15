@@ -2,7 +2,16 @@
   <div class="history" v-if="this.$store.getters.userHistoryCount > 0">
     <div class="history__top">
       <div class="history__title">Historia wizyt</div>
-      <div class="history__options" v-if="this.$store.getters.window.width > 799">
+      <div class="history__options" v-if="this.$store.getters.window.width > 1199">
+        <div class="history__option">
+          <div class="option__title">Gabinet:</div>
+          <select class="option__select">
+            <option selected>Wszystkie</option>
+            <option>Gabinet X</option>
+            <option>Gabinet Y</option>
+            <option>Gabinet Z</option>
+          </select>
+        </div>
         <div class="history__option">
           <div class="option__title">Sortuj przez:</div>
           <select class="option__select">
@@ -21,7 +30,7 @@
           </select>
         </div>
       </div>
-      <div class="history__options" v-if="this.$store.getters.window.width < 799">
+      <div class="history__options" v-if="this.$store.getters.window.width < 1200">
         <div class="history__option">
           <MainBtn class="options--mobile">
             <i class="fas fa-cog"></i>

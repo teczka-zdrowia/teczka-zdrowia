@@ -2,23 +2,41 @@
   <form class="signup" @submit.prevent="signup">
     <div class="login__type">
       <div class="type__top">
-        <div class="type__btn" v-on:click="isTypeShowed = !isTypeShowed">
+        <div class="type__btn" v-on:click="showType = !showType">
           <div class="type__title">Wybierz typ konta</div>
           <div class="type__btn--action">
-            <i class="fas" v-bind:class="[isTypeShowed ? 'fa-angle-up' : 'fa-angle-down']"></i>
+            <i class="fas" v-bind:class="[showType ? 'fa-angle-up' : 'fa-angle-down']"></i>
           </div>
         </div>
-        <div class="type__info">
+        <div class="type__info" v-on:click="showMoreInfo = !showMoreInfo">
           <i class="fas fa-question"></i>
+        </div>
+      </div>
+      <div class="info__content" v-if="showMoreInfo">
+        <div class="info__el">
+          <i class="fas fa-user"></i>
+          <div class="el__content">
+            <div class="el__title">Pacjent</div>
+            <div class="el__desc">Dostęp do kartoteki, mapy specjalistów i historii wizyt</div>
+            <div class="el__cost">DARMOWE</div>
+          </div>
+        </div>
+        <div class="info__el">
+          <i class="fas fa-user-md"></i>
+          <div class="el__content">
+            <div class="el__title">Specjalista</div>
+            <div class="el__desc">Zarządzanie pacjentami, gabinetami i wizytami</div>
+            <div class="el__cost">PIERWSZE 30 DNI ZA ZERO</div>
+          </div>
         </div>
       </div>
       <div
         class="type__content"
-        v-bind:style="[isTypeShowed ? {'height': '100%', 'visibility': 'visible', 'opacity': 1} : {'height': '0', 'visibility': 'hidden', 'opacity': 0}]"
+        v-bind:style="[showType ? {'height': '100%', 'visibility': 'visible', 'opacity': 1} : {'height': '0', 'visibility': 'hidden', 'opacity': 0}]"
       >
         <div
           class="type__el"
-          v-on:click="profileType = 1; isTypeShowed = !isTypeShowed"
+          v-on:click="profileType = 1; showType = !showType"
           v-bind:class="[profileType == 1 ? 'selected' : '']"
         >
           <div class="el__title">
@@ -28,7 +46,7 @@
         </div>
         <div
           class="type__el"
-          v-on:click="profileType = 2; isTypeShowed = !isTypeShowed"
+          v-on:click="profileType = 2; showType = !showType"
           v-bind:class="[profileType == 2 ? 'selected' : '']"
         >
           <div class="el__title">
@@ -125,7 +143,7 @@
         <input v-model="isTermsAccepted" type="checkbox" id="termsAccepted" required>
         <label for="termsAccepted" class="checkbox--login__remember"></label>
         <p>Akceptuję
-          <router-link to="/terms" target="_blank">regulamin</router-link>
+          <router-link to="/Terms" target="_blank">regulamin</router-link>
         </p>
       </div>
     </div>
@@ -142,7 +160,8 @@ export default {
   data: function() {
     return {
       isTermsAccepted: false,
-      isTypeShowed: true,
+      showMoreInfo: false,
+      showType: true,
       profileType: 0,
       data: {
         login: "",
@@ -206,7 +225,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import "../../main";
 
 input[type="date"]::-webkit-inner-spin-button {
@@ -260,6 +279,51 @@ input::-webkit-inner-spin-button {
   width: 5%;
   background: #e8e8ec;
   cursor: pointer;
+}
+
+.info__content {
+  padding: 1rem;
+  width: calc(100% - 2rem);
+  background: #e8e8ec;
+}
+
+.info__el {
+  display: flex;
+  i {
+    margin: auto;
+    margin-right: 1rem;
+    margin-left: 0;
+    padding: 0.5em;
+    font-size: 1.5em;
+    width: 1em;
+    height: 1em;
+    text-align: center;
+    color: #6a6ee1;
+    background: #eeeef5;
+    border-radius: 0.5em;
+  }
+  .el__title {
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: #3e3e45;
+  }
+  .el__desc {
+    line-height: 1.2;
+    font-weight: 600;
+    color: #67676e;
+    margin-bottom: 0.25rem;
+  }
+  .el__cost {
+    font-weight: 700;
+    color: #3e3e45;
+  }
+  &:not(:last-child) {
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(213, 213, 213, 0.6);
+  }
+  &:not(:first-child) {
+    padding-top: 0.5rem;
+  }
 }
 
 .type__content {

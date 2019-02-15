@@ -85,13 +85,18 @@ export default {
   color: #3e3e45;
   justify-content: left;
   max-width: 10em;
+  margin-top: auto;
+  margin-bottom: 0.33em;
 }
+
 .user__specialization {
   @extend %text--center;
   grid-area: spec;
   font-weight: 600;
   color: #67676e;
   justify-content: left;
+  margin-bottom: auto;
+  margin-top: 0.33em;
 }
 
 .appointment__when {
@@ -119,7 +124,7 @@ export default {
   width: 100%;
 }
 
-@media only screen and (max-width: 425px) {
+@media only screen and (max-width: 520px) {
   .appointment {
     display: block;
     height: auto;
