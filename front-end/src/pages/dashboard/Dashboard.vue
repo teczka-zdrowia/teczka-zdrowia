@@ -9,18 +9,34 @@
               <div class="prescription__title">Witamina C</div>
               <div class="prescription__info">5mg • 2x dziennie</div>
             </div>
+            <div class="prescription__timeleft">
+              Pozostało
+              <span>16</span> dni
+            </div>
           </div>
           <div class="prescription">
             <i class="fas fa-prescription"></i>
             <div class="prescription__content">
-              <div class="prescription__title">Witamina C</div>
-              <div class="prescription__info">5mg • 2x dziennie</div>
+              <div class="prescription__title">Sport</div>
+              <div class="prescription__info">2h tygodniowo</div>
             </div>
+            <div class="prescription__timeleft">
+              Pozostało
+              <span>9</span> dni
+            </div>
+          </div>
+          <div class="prescription">
+            <i class="fas fa-prescription"></i>
+            <div class="prescription__content">
+              <div class="prescription__title">Witamina D</div>
+              <div class="prescription__info">60 tabletek</div>
+            </div>
+            <div class="prescription__timeleft">Do wyczerpania paczki</div>
           </div>
         </Block>
         <!--<AirData class="air"></AirData>-->
       </div>
-      <div class="map" v-if="this.$store.getters.window.width > 959">
+      <div class="map" v-if="!isMobile">
         <div class="map__content">
           <l-map ref="map" :zoom="zoom" :center="[52.0715018,21.5211664]">
             <l-tile-layer :url="url"></l-tile-layer>
@@ -85,7 +101,7 @@
         <div class="message--last">Więcej</div>
       </Block>-->
       <Block class="appointments" title="Wizyty" ref="appointments">
-        <div class="appointments__actions" v-if="this.$store.getters.window.width > 959">
+        <div class="appointments__actions" v-if="!isMobile">
           <div class="appointments__types">
             <MainBtn
               v-on:click.native="showUpcoming = true"
@@ -114,7 +130,7 @@
             </select>
           </div>
         </div>
-        <div class="appointments__actions" v-if="this.$store.getters.window.width < 960">
+        <div class="appointments__actions" v-if="isMobile">
           <MainBtn class="actions__options">
             <i class="fas fa-cog"></i>
             Opcje
@@ -123,9 +139,9 @@
         <Appointments
           class="appointments__content"
           :maxAppointments="maxAppointments"
-          v-if="this.$store.getters.window.width > 959"
+          v-if="!isMobile"
         ></Appointments>
-        <AppointmentsMobile v-if="this.$store.getters.window.width < 960"></AppointmentsMobile>
+        <AppointmentsMobile v-if="isMobile"></AppointmentsMobile>
       </Block>
     </div>
   </div>
@@ -195,17 +211,24 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.initMap();
-      navigator.geolocation.getCurrentPosition(pos => {
-        this.map = this.$refs.map.mapObject.setView(
-          [pos.coords.latitude, pos.coords.longitude],
-          12
+      if (this.$store.getters.window.width > 960) {
+        this.initMap();
+        navigator.geolocation.getCurrentPosition(pos => {
+          this.map = this.$refs.map.mapObject.setView(
+            [pos.coords.latitude, pos.coords.longitude],
+            12
+          );
+        });
+        this.maxAppointments = Math.floor(
+          this.$refs.appointments.$el.offsetWidth / 300
         );
-      });
-      this.maxAppointments = Math.floor(
-        this.$refs.appointments.$el.offsetWidth / 300
-      );
+      }
     });
+  },
+  computed: {
+    isMobile: function() {
+      return this.$store.getters.window.width < 960;
+    }
   }
 };
 </script>
@@ -236,7 +259,7 @@ export default {
     .appointments__pages {
       display: flex;
       button {
-        background: #ededff;
+        background: #eeeef3;
         color: #6a6ee1;
         &:hover {
           color: $primrary-light;
@@ -318,7 +341,7 @@ export default {
         border-radius: 100%;
         width: 0.5em;
         height: 3em;
-        //background: #ededff;
+        //background: #eeeef3;
         //color: #6a6ee1;
         i {
           @extend %text--center;
@@ -327,7 +350,7 @@ export default {
       }
     }
     .actions__options {
-      background: #ededff;
+      background: #eeeef3;
       color: #6a6ee1;
       padding: 1em;
       width: 100%;
@@ -335,6 +358,12 @@ export default {
       cursor: pointer;
       i {
         margin-right: 1em;
+        transition: transform 0.2s ease-in-out;
+      }
+      &:hover {
+        i {
+          transform: rotate(90deg);
+        }
       }
     }
   }
@@ -351,16 +380,22 @@ export default {
 }
 
 .prescriptions {
-  min-height: 19rem;
+  min-height: 24rem;
   //margin-bottom: 1em;
 }
 
 .prescription {
   width: 100%;
   font-weight: 600;
-  margin-bottom: 1em;
-  display: flex;
+  display: grid;
+  grid-template-columns: 3rem auto;
+  grid-template-areas:
+    "icon info"
+    "timeleft timeleft";
+  grid-column-gap: 1em;
+  grid-row-gap: 0.5rem;
   i {
+    grid-area: icon;
     margin-right: 1rem;
     padding: 0.5em;
     font-size: 1.5em;
@@ -368,12 +403,16 @@ export default {
     height: 1em;
     text-align: center;
     color: #6a6ee1;
-    background: #f0f0ff;
+    background: #eeeef3;
     border-radius: 0.5em;
+  }
+  &:not(:last-child) {
+    margin-bottom: 1.5rem;
   }
 }
 
 .prescription__content {
+  grid-area: info;
   height: 100%;
   margin: auto 0;
   white-space: normal;
@@ -387,6 +426,23 @@ export default {
 
 .prescription__info {
   color: #67676e;
+}
+
+.prescription__timeleft {
+  @extend %text--center;
+  grid-area: timeleft;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  background: #eeeef3;
+  color: #3e3e45;
+  font-weight: 600;
+  max-width: 100%;
+  min-width: 9.5em;
+  span {
+    margin: 0 6px;
+    color: #3e3e45;
+    font-weight: 700;
+  }
 }
 
 .air {
@@ -411,6 +467,7 @@ export default {
   overflow: hidden;
   position: relative;
   z-index: 10;
+  min-height: 24rem;
 }
 
 .map__content {
@@ -563,6 +620,12 @@ export default {
   }
   .appointments {
     width: calc(100% - 3rem);
+  }
+}
+
+@media only screen and (min-width: 520px) {
+  .prescription__timeleft {
+    max-width: 50%;
   }
 }
 </style>

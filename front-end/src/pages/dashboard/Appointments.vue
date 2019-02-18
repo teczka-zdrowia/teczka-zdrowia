@@ -74,7 +74,6 @@ export default {
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
   background: #fff;
   width: 100%;
-  max-width: 300px;
   &:not(:last-child) {
     margin-right: 1em;
   }
@@ -90,7 +89,7 @@ export default {
   height: 4em;
   cursor: pointer;
   transition: 0.2s ease-in-out;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
   &:hover {
     transform: scale(1.05);
     box-shadow: 0 0 60px 0 rgba(145, 145, 156, 0.3);
@@ -153,7 +152,7 @@ export default {
   text-align: left;
   justify-content: left;
   padding: 1em;
-  background: #f7f7ff;
+  background: #fafafc;
   display: inline-flex;
   width: auto;
   font-weight: 600;
@@ -179,7 +178,7 @@ export default {
   display: flex;
   font-weight: 700;
   border-radius: 3em;
-  background: #ededff;
+  background: #eeeef3;
   i {
     @extend %text--center;
     font-size: 1.5em;

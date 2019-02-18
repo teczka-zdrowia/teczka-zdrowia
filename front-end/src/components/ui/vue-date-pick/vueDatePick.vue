@@ -168,29 +168,29 @@ export default {
     pickMinutes: { type: Boolean, default: true },
     pickSeconds: { type: Boolean, default: false },
     isDateDisabled: { type: Function, default: () => false },
-    nextMonthCaption: { type: String, default: "Next month" },
-    prevMonthCaption: { type: String, default: "Previous month" },
-    setTimeCaption: { type: String, default: "Set time:" },
+    nextMonthCaption: { type: String, default: "Następny miesiąc" },
+    prevMonthCaption: { type: String, default: "Poprzedni miesiąc" },
+    setTimeCaption: { type: String, default: "Ustaw czas:" },
     mobileBreakpointWidth: { type: Number, default: 500 },
     weekdays: {
       type: Array,
-      default: () => ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+      default: () => ["Pn", "Wt", "Śr", "Cz", "Pt", "Sb", "Nd"]
     },
     months: {
       type: Array,
       default: () => [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December"
+        "Styczeń",
+        "Luty",
+        "Marzec",
+        "Kwiecień",
+        "Maj",
+        "Czerwiec",
+        "Lipiec",
+        "Sierpień",
+        "Wrzesień",
+        "Październik",
+        "Listopad",
+        "Grudzień"
       ]
     }
   },
@@ -1071,5 +1071,41 @@ $vdpColor: #7485c2 !default;
 
 .vdpTimeCaption {
   margin-right: 0.5em;
+}
+
+.vdpHeader {
+  border-radius: 0.5em;
+  overflow: hidden;
+  .vdpPeriodControl button {
+    font-weight: 600;
+    color: #3e3e45;
+  }
+}
+
+.vdpInnerWrap {
+  width: 100%;
+  border: 0;
+  background: #fafafc;
+  font-weight: 600;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border: 0;
+}
+
+.vdpCell.today {
+  color: #6a6ee1;
+}
+
+.vdpCell.selected .vdpCellContent {
+  color: #fff;
+  background: #6a6ee1;
+}
+
+@media (hover: hover) {
+  .vdpCell.selectable:hover .vdpCellContent {
+    color: #fff;
+    background: #6a6ee1;
+  }
 }
 </style>

@@ -69,7 +69,7 @@ export default {
 
 .actions__settings {
   @extend %text--center;
-  background: #ececff;
+  background: #eeeef3;
   height: 100%;
   width: 33%;
   font-size: 1.5em;
@@ -97,7 +97,7 @@ export default {
   width: 100%;
   height: 100%;
   border-radius: 0.5rem;
-  background: #ececff;
+  background: #eeeef3;
   display: flex;
   font-weight: 600;
   overflow: hidden;

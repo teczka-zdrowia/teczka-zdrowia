@@ -265,11 +265,12 @@ export default {
 }
 
 @media only screen and (max-width: 375px) {
-  .login__options {
-    display: block;
-  }
-  .login__remember {
-    margin-bottom: 0.5em;
+  .login__forgot {
+    position: absolute;
+    bottom: -7rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    width: 100%;
   }
 }
 </style>

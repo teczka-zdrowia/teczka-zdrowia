@@ -49,7 +49,7 @@ label.input--main {
   width: 90%;
   padding: 5%;
   border-radius: 0.5em;
-  background: #f8f8ff;
+  background: #fdfdff;
   display: inline-block;
   color: #91919c;
   position: relative;

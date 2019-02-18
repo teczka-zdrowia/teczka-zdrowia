@@ -256,19 +256,19 @@ input::-webkit-inner-spin-button {
   position: absolute;
   height: 100%;
   width: 100%;
-  background: rgba(203, 205, 255, 0.5);
+  background: rgba(238, 238, 243, 0.5);
   transition: 0.2s ease-in-out;
   cursor: pointer;
   &:hover {
-    background: rgba(203, 205, 255, 0.7);
+    background: rgba(230, 230, 232, 0.7);
   }
   i {
     padding: 0.5em;
     right: 0;
-    color: #9b9dff;
+    color: #9394eb;
     border-bottom-left-radius: 0.5em;
     position: absolute;
-    background: rgba(203, 205, 255, 0.9);
+    background: rgba(230, 230, 232, 0.9);
   }
 }
 
@@ -282,7 +282,7 @@ input::-webkit-inner-spin-button {
     height: 100%;
     width: 50%;
     text-align: center;
-    background: #e6e6f7;
+    background: #e6e6e8;
     color: #3e3e45;
     font-weight: 700;
     &:first-child {
@@ -304,7 +304,7 @@ input::-webkit-inner-spin-button {
 
 input.user__specialization {
   text-align: center;
-  background: #ececff;
+  background: #eeeef3;
   border-bottom-right-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
   width: 100%;
@@ -337,7 +337,7 @@ input.user__specialization {
 /* --- MF --- */
 
 .more__el {
-  width: 100%;
+  width: calc(100% - 0.5rem);
   display: flex;
   border-radius: 0.5rem;
   overflow: hidden;
@@ -365,7 +365,7 @@ input.user__specialization {
 .more__content {
   @extend %text--center;
   width: calc(100% - 3rem);
-  background: #ececff;
+  background: #eeeef3;
   color: #91919c;
   &.more__pesel {
     @extend %text--center;
@@ -390,7 +390,7 @@ input.user__specialization {
 .more__action {
   padding: 1rem !important;
   width: 100% !important;
-  background: #ededff !important;
+  background: #eeeef3 !important;
   &--edit {
     color: #6a6ee1 !important;
   }

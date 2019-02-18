@@ -16,7 +16,7 @@
           <div class="nav__tooltip">Mapa gabinetów</div>
         </i>
       </router-link>
-      <router-link to="/Offices" class="nav__el">
+      <router-link to="/Places" class="nav__el">
         <i class="fas fa-hospital">
           <div class="nav__tooltip">Moje gabinety</div>
         </i>

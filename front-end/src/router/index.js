@@ -8,7 +8,9 @@ import Panel from '@/pages/panel/Panel'
 import Terms from '@/pages/terms/Terms'
 import Map from '@/pages/map/Map'
 import Payment from '@/pages/payment/Payment'
-import Offices from '@/pages/offices/Offices'
+import Places from '@/pages/places/Places'
+import Redirect404 from '@/pages/404/Redirect404'
+import Error404 from '@/pages/404/Error404'
 
 Vue.use(Router)
 
@@ -46,9 +48,9 @@ export default new Router({
       component: Panel
     },
     {
-      path: '/Offices',
-      name: 'Offices',
-      component: Offices
+      path: '/Places',
+      name: 'Places',
+      component: Places
     },
     {
       path: '/About',
@@ -59,6 +61,16 @@ export default new Router({
       path: '/Payment',
       name: 'Payment',
       component: Payment
+    },
+    {
+      path: '/404',
+      name: 'Error404',
+      component: Error404
+    },
+    {
+      path: '*',
+      name: 'Redirect404',
+      component: Redirect404
     }
   ]
 })

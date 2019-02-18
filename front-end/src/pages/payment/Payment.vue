@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="payment--info">
-      <VioletBlock class="info__content" v-if="this.$store.getters.userInfo.isPaid">
+      <VioletBlock class="info__content" v-if="isPaid">
         Opłacono do
         <b>{{ paidUntil }}</b>
         ({{daysUntil}})
       </VioletBlock>
-      <RedBlock class="info__content" v-if="!this.$store.getters.userInfo.isPaid">Nieopłacona</RedBlock>
+      <RedBlock class="info__content" v-if="!isPaid">Nieopłacona</RedBlock>
     </div>
     <div class="payment">
       <div class="payment__about">
@@ -72,6 +72,9 @@ export default {
       ).diff(moment(), "days");
 
       return days > 1 ? `pozostało ${days} dni` : `pozostał ${days} dzień`;
+    },
+    isPaid: function() {
+      return this.$store.getters.userInfo.isPaid;
     }
   },
   components: {

@@ -212,7 +212,7 @@ export default {
           color: #6a6ee1;
         }
         &:hover {
-          background: #ececff;
+          background: #eeeef3;
         }
       }
     }
@@ -222,7 +222,7 @@ export default {
         background: linear-gradient(to right, $lightviolet, $darkviolet);
         filter: drop-shadow(0 0 10px $lightgrey);
         i {
-          color: #ececff;
+          color: #eeeef3;
         }
         &:hover {
           background-position: right center;

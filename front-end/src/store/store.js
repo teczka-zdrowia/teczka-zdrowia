@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { api } from '../api/api'
-import createPersistedState from 'vuex-persistedstate'
+// import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
@@ -18,8 +18,7 @@ export const store = new Vuex.Store({
     userInfo: {
       jwt:
         'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3RcLyIsImF1ZCI6Imh0dHA6XC9cL2xvY2FsaG9zdFwvIiwiaWF0IjoxNTQ3NDkxMTA2LCJuYmYiOjE1NDc0OTExMDYsImV4cCI6MTU0NzU3NzUwNiwiZGF0YSI6eyJpZCI6IjgiLCJuYW1lIjoiQWRyaWFuIiwic3VybmFtZSI6Ik9yXHUwMTQyXHUwMGYzdyIsImlzUGFpZCI6IjEifX0.kxo8DvoDa3WdQNzXDr02TUnc7d3onsoYJNhavnCHSs4',
-      img:
-        'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
+      img: 'https://thispersondoesnotexist.com/',
       name: 'Adrian',
       surname: 'Orłów',
       pesel: '96011999231',
@@ -32,12 +31,10 @@ export const store = new Vuex.Store({
       isDeleted: false,
       isValid: true
     },
-    places: [],
     userHistory: [
       {
         doctor: {
-          img:
-            'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
+          img: 'https://thispersondoesnotexist.com/',
           name: 'Jan Iksiński',
           spec: 'psycholog'
         },
@@ -49,8 +46,7 @@ export const store = new Vuex.Store({
       },
       {
         doctor: {
-          img:
-            'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
+          img: 'https://thispersondoesnotexist.com/',
           name: 'Anna Igrecka',
           spec: 'doktor'
         },
@@ -64,8 +60,7 @@ export const store = new Vuex.Store({
     appointments: [
       {
         doctor: {
-          img:
-            'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
+          img: 'https://thispersondoesnotexist.com/',
           name: 'Jan Iksiński',
           spec: 'psycholog'
         },
@@ -77,8 +72,7 @@ export const store = new Vuex.Store({
       },
       {
         doctor: {
-          img:
-            'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
+          img: 'https://thispersondoesnotexist.com/',
           name: 'Jan Iksiński',
           spec: 'psycholog'
         },
@@ -90,8 +84,7 @@ export const store = new Vuex.Store({
       },
       {
         doctor: {
-          img:
-            'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
+          img: 'https://thispersondoesnotexist.com/',
           name: 'Jan Iksiński',
           spec: 'psycholog'
         },
@@ -103,8 +96,7 @@ export const store = new Vuex.Store({
       },
       {
         doctor: {
-          img:
-            'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
+          img: 'https://thispersondoesnotexist.com/',
           name: 'Jan Iksiński',
           spec: 'psycholog'
         },
@@ -116,8 +108,7 @@ export const store = new Vuex.Store({
       },
       {
         doctor: {
-          img:
-            'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
+          img: 'https://thispersondoesnotexist.com/',
           name: 'Jan Iksiński',
           spec: 'psycholog'
         },
@@ -127,7 +118,39 @@ export const store = new Vuex.Store({
         desc: 'Ból klatki piersiowej',
         isAccepted: true
       }
-    ]
+    ],
+    places: {
+      selected: null,
+      list: [
+        {
+          id: 1,
+          name: 'MedMax',
+          address: 'Kwiatowa 45',
+          city: 'Jaworzno',
+          isActive: true,
+          isDeleted: false,
+          isAdmin: false
+        },
+        {
+          id: 6,
+          name: 'MaxMed',
+          address: 'Różowa 100',
+          city: 'Wrocław',
+          isActive: true,
+          isDeleted: false,
+          isAdmin: true
+        },
+        {
+          id: 2,
+          name: 'MedMax 2',
+          address: 'Lipowa 6',
+          city: 'Warszawa',
+          isActive: false,
+          isDeleted: false,
+          isAdmin: true
+        }
+      ]
+    }
   },
   actions: {
     updateWindowWidthAndHeight ({ commit }, params) {
@@ -162,6 +185,9 @@ export const store = new Vuex.Store({
     },
     toggleHistoryElement ({ commit }, id) {
       commit('TOGGLE_HISTORY_ELEMENT', id)
+    },
+    setSelectedPlace ({ commit }, id) {
+      commit('SET_SELECTED_PLACE', id)
     }
   },
   mutations: {
@@ -184,6 +210,9 @@ export const store = new Vuex.Store({
     },
     TOGGLE_HISTORY_ELEMENT (state, id) {
       state.userHistory[id].isOpened = !state.userHistory[id].isOpened
+    },
+    SET_SELECTED_PLACE (state, id) {
+      state.places.selected = id
     }
   },
   getters: {
@@ -202,9 +231,11 @@ export const store = new Vuex.Store({
     userAppointments (state) {
       return state.appointments
     },
+    selectedPlace (state) {
+      return state.places.list.find(place => place.id === state.places.selected)
+    },
     userPlaces (state) {
-      return state.places
+      return state.places.list.filter(place => !place.isDeleted)
     }
-  },
-  plugins: [createPersistedState()]
+  }
 })

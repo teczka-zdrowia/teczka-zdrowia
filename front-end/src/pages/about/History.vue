@@ -122,6 +122,12 @@ export default {
   i {
     margin-right: 1em;
     vertical-align: middle;
+    transition: transform 0.2s ease-in-out;
+  }
+  &:hover {
+    i {
+      transform: rotate(90deg);
+    }
   }
 }
 </style>

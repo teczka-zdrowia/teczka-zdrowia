@@ -111,6 +111,7 @@ export default {
 
 .calendar {
   padding: 0em !important;
+  background: transparent !important;
 }
 
 .appointments {

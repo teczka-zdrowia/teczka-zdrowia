@@ -33,12 +33,18 @@ export default {
       return this.$store.getters.userInfo.isValid;
     },
     isValidRoute: function() {
-      const paths = ["/", "/Auth", "/Terms", "/dTm6Gz"];
+      const paths = ["/", "/Auth", "/Terms", "/dTm6Gz", "/404"];
       return paths.indexOf(this.$route.path) > -1 ? false : true;
     },
     isRouteMap: function() {
       return this.$route.path == "/Map";
     }
+  },
+  created() {
+    this.$store.dispatch("updateWindowWidthAndHeight", {
+      width: window.innerWidth,
+      height: window.innerHeight
+    });
   },
   mounted() {
     if (!this.isValid) {
