@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import MainInput from "../../components/ui/MainInput";
-import MainBtn from "../../components/ui/MainBtn";
+import MainInput from "../../components/ui/basic/MainInput";
+import MainBtn from "../../components/ui/basic/MainBtn";
 
 export default {
   name: "Login",

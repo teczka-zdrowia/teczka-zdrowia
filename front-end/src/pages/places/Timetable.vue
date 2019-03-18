@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import MainBtn from "../../components/ui/MainBtn";
+import MainBtn from "../../components/ui/basic/MainBtn";
 
 export default {
   name: "AppointmentsMobile",
@@ -118,14 +118,14 @@ export default {
 
 .select__title {
   @extend %text--center;
-  padding: 1rem;
+  padding: 0.75rem 1.5rem;
   background: #fafafc;
   color: #6a6ee1;
   font-weight: 600;
 }
 .select__content {
   font-weight: 600;
-  padding: 1rem;
+  padding: 0.75rem 1.5rem;
   color: #fafafc;
   background: #6a6ee1;
   background: -webkit-gradient(

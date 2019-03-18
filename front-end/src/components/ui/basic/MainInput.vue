@@ -15,35 +15,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$lightgrey: rgba(213, 213, 213, 0.3);
-$lightviolet: #9394eb;
-$darkviolet: #6a6ee1;
-$primrary-light: #fafafa;
-$font-awesome: "Font Awesome 5 Free";
-
-%text--center {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-@mixin placeholder {
-  &::-webkit-input-placeholder {
-    @content;
-  }
-  &:-moz-placeholder {
-    @content;
-  }
-  &::-moz-placeholder {
-    @content;
-  }
-  &:-ms-input-placeholder {
-    @content;
-  }
-}
+@import "../../../main";
 
 label.input--main {
   width: 90%;

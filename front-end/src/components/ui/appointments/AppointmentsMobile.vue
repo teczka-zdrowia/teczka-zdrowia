@@ -1,33 +1,37 @@
 <template>
   <div>
-    <div class="appointment" v-for="(item, index) in this.$store.getters.userAppointments">
-      <div class="appointment__user">
-        <img class="user__img" :src="item.doctor.img">
-        <div class="user__name">{{ item.doctor.name }}</div>
-        <div class="user__specialization">{{ item.doctor.spec }}</div>
-      </div>
-      <div class="appointment__when">
-        <div class="when__date">
-          <i class="fas fa-calendar-day"></i>
-          <p>25.10.2019</p>
-        </div>
-        <div class="when__time">
-          <i class="far fa-clock"></i>
-          <p>18:30</p>
-        </div>
-      </div>
-    </div>
+    <AppointmentMobile
+      v-for="(item, index) in this.$store.getters.userAppointments"
+      :key="index"
+      :data="item"
+    />
+    <router-link to="/Appointments" v-if="showMore">
+      <MainBtn class="appointments__more">Pokaż więcej</MainBtn>
+    </router-link>
   </div>
 </template>
 
 <script>
+import AppointmentMobile from "./AppointmentMobile";
+import MainBtn from "../basic/MainBtn";
+
 export default {
-  name: "AppointmentsMobile"
+  name: "AppointmentsMobile",
+  props: {
+    showMore: {
+      type: Boolean,
+      default: false
+    }
+  },
+  components: {
+    MainBtn,
+    AppointmentMobile
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../../main";
+@import "../../../main";
 
 .appointment {
   white-space: nowrap;
@@ -122,6 +126,13 @@ export default {
   justify-content: left;
   height: 50%;
   width: 100%;
+}
+
+.appointments__more {
+  background: #eeeef3 !important;
+  color: #6a6ee1 !important;
+  width: 100% !important;
+  height: 3em !important;
 }
 
 @media only screen and (max-width: 520px) {

@@ -4,14 +4,7 @@
       <MainBtn class="options__btn options__btn--add">
         <i class="fas fa-plus"></i>
       </MainBtn>
-      <MainBtn
-        class="options__btn options__btn--options"
-        v-if="this.$store.getters.window.width < 959"
-      >
-        <i class="fas fa-cog"></i>
-        Opcje
-      </MainBtn>
-      <div class="options__select" v-if="this.$store.getters.window.width > 960">
+      <div class="options__select options__select--mobile">
         <div class="select__title">Sortuj:</div>
         <select class="select__content">
           <option selected>A - Z</option>
@@ -60,7 +53,7 @@
 </template>
 
 <script>
-import MainBtn from "../../components/ui/MainBtn";
+import MainBtn from "../../components/ui/basic/MainBtn";
 
 export default {
   name: "Offices",
@@ -81,7 +74,7 @@ export default {
 }
 
 .options__btn {
-  padding: 1rem 0;
+  padding: 0.75rem 1.5rem;
   width: calc(50% - 0.5rem);
   i {
     margin-right: 0.75rem;
@@ -178,21 +171,27 @@ export default {
   display: flex;
   border-radius: 0.5em;
   overflow: hidden;
+  width: 50%;
   &:not(:last-child) {
     margin-right: 2em;
   }
 }
 
+.select__title,
+.select__content {
+  width: 50%;
+}
+
 .select__title {
   @extend %text--center;
-  padding: 0.5em 1em;
+  padding: 0.75rem 1.5rem;
   background: #fafafc;
   color: #6a6ee1;
   font-weight: 600;
 }
 .select__content {
   font-weight: 600;
-  padding: 0.5em 1em;
+  padding: 0.75rem 1.5rem;
   color: #fafafc;
   background: #6a6ee1;
   background: -webkit-gradient(
@@ -221,7 +220,15 @@ export default {
       content: "Nowy pacjent";
     }
     width: auto;
-    padding: 1rem;
+    padding: 0 1.5rem;
+    height: auto;
+  }
+  .options__select {
+    width: unset;
+  }
+  .select__title,
+  .select__content {
+    width: unset;
   }
 }
 </style>

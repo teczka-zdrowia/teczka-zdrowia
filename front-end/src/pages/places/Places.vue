@@ -36,7 +36,7 @@
           </div>
         </div>
       </div>
-      <div class="nav__el" v-on:click="cardsShowed = !cardsShowed">
+      <div class="nav__el" v-if="selectedPlace" v-on:click="cardsShowed = !cardsShowed">
         <div class="nav__title" v-if="selectedPlace">{{ cards[selectedCard] }}</div>
         <i
           class="fas"
@@ -59,7 +59,7 @@
               class="card"
               v-on:click="selectedCard = 3"
               v-bind:class="[selectedCard == 3 ? 'selected': '']"
-              v-if="selectedPlace.isAdmin"
+              v-if="selectedPlace && selectedPlace.isAdmin"
             >Administracja</div>
           </div>
         </div>
@@ -128,9 +128,9 @@
 </template>
 
 <script>
-import WhiteFunctionalBlock from "../../components/ui/WhiteFunctionalBlock";
-import MainBtn from "../../components/ui/MainBtn";
-import MainSelect from "../../components/ui/MainSelect";
+import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
+import MainBtn from "../../components/ui/basic/MainBtn";
+import MainSelect from "../../components/ui/basic/MainSelect";
 import Patients from "./Patients";
 import Timetable from "./Timetable";
 import Management from "./Management";
@@ -169,6 +169,11 @@ export default {
     },
     isMobile: function() {
       return this.$store.getters.window.width < 960;
+    }
+  },
+  watch: {
+    $route(to, from) {
+      this.$store.dispatch("setSelectedPlace", false);
     }
   }
 };
@@ -218,6 +223,8 @@ export default {
     width: calc(100vw - 1.5rem);
     box-shadow: 0 60px 20px 0px rgba(213, 213, 213, 0.3);
     transition: all 0.2s ease-in-out;
+    overflow: auto;
+    max-height: calc(100vh - 11rem);
     &.showed {
       visibility: visible;
       opacity: 1;

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import RedBlock from "../../components/ui/RedBlock";
+import RedBlock from "../../components/ui/blocks/RedBlock";
 
 export default {
   name: "AirData",

@@ -9,6 +9,7 @@ import Terms from '@/pages/terms/Terms'
 import Map from '@/pages/map/Map'
 import Payment from '@/pages/payment/Payment'
 import Places from '@/pages/places/Places'
+import Appointments from '@/pages/appointments/Appointments'
 import Redirect404 from '@/pages/404/Redirect404'
 import Error404 from '@/pages/404/Error404'
 
@@ -56,6 +57,11 @@ export default new Router({
       path: '/About',
       name: 'About',
       component: About
+    },
+    {
+      path: '/Appointments',
+      name: 'Appointments',
+      component: Appointments
     },
     {
       path: '/Payment',

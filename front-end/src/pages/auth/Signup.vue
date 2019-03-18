@@ -2,57 +2,56 @@
   <form class="signup" @submit.prevent="signup">
     <div class="login__type">
       <div class="type__top">
-        <div class="type__btn" v-on:click="showType = !showType">
+        <div class="type__btn">
           <div class="type__title">Wybierz typ konta</div>
-          <div class="type__btn--action">
-            <i class="fas" v-bind:class="[showType ? 'fa-angle-up' : 'fa-angle-down']"></i>
-          </div>
-        </div>
-        <div class="type__info" v-on:click="showMoreInfo = !showMoreInfo">
-          <i class="fas fa-question"></i>
         </div>
       </div>
-      <div class="info__content" v-if="showMoreInfo">
-        <div class="info__el">
-          <i class="fas fa-user"></i>
-          <div class="el__content">
+      <div class="type__content">
+        <div class="type__el">
+          <div
+            class="el__btn"
+            v-on:click="profileType = 1;"
+            v-bind:class="{'selected' : profileType == 1}"
+          >
+            <div class="el__icon">
+              <i class="fas fa-user"></i>
+            </div>
             <div class="el__title">Pacjent</div>
-            <div class="el__desc">Dostęp do kartoteki, mapy specjalistów i historii wizyt</div>
-            <div class="el__cost">DARMOWE</div>
+          </div>
+          <div class="el__info" v-on:click="showPatientInfo = !showPatientInfo">
+            <i class="fas fa-question"></i>
           </div>
         </div>
-        <div class="info__el">
-          <i class="fas fa-user-md"></i>
-          <div class="el__content">
+        <div
+          class="type__el type__el--info"
+          v-if="showPatientInfo"
+          v-on:click="showPatientInfo = !showPatientInfo"
+        >
+          <div>Pełen dostęp do historii wizyt i kartoteki</div>
+          <div>BEZPŁATNIE</div>
+        </div>
+        <div class="type__el">
+          <div
+            class="el__btn"
+            v-on:click="profileType = 2;"
+            v-bind:class="{'selected' : profileType == 2}"
+          >
+            <div class="el__icon">
+              <i class="fas fa-user-md"></i>
+            </div>
             <div class="el__title">Specjalista</div>
-            <div class="el__desc">Zarządzanie pacjentami, gabinetami i wizytami</div>
-            <div class="el__cost">PIERWSZE 30 DNI ZA ZERO</div>
+          </div>
+          <div class="el__info" v-on:click="showSpecInfo = !showSpecInfo">
+            <i class="fas fa-question"></i>
           </div>
         </div>
-      </div>
-      <div
-        class="type__content"
-        v-bind:style="[showType ? {'height': '100%', 'visibility': 'visible', 'opacity': 1} : {'height': '0', 'visibility': 'hidden', 'opacity': 0}]"
-      >
         <div
-          class="type__el"
-          v-on:click="profileType = 1; showType = !showType"
-          v-bind:class="[profileType == 1 ? 'selected' : '']"
+          class="type__el type__el--info"
+          v-if="showSpecInfo"
+          v-on:click="showSpecInfo = !showSpecInfo"
         >
-          <div class="el__title">
-            <i class="fas fa-user"></i>
-          </div>
-          <div class="el__cost">Pacjent</div>
-        </div>
-        <div
-          class="type__el"
-          v-on:click="profileType = 2; showType = !showType"
-          v-bind:class="[profileType == 2 ? 'selected' : '']"
-        >
-          <div class="el__title">
-            <i class="fas fa-user-md"></i>
-          </div>
-          <div class="el__cost">Specjalista</div>
+          <div>Pełne zarządzanie gabinetem</div>
+          <div>30 DNI BEZPŁATNIE</div>
         </div>
       </div>
     </div>
@@ -152,16 +151,16 @@
 </template>
 
 <script>
-import MainInput from "../../components/ui/MainInput";
-import MainBtn from "../../components/ui/MainBtn";
+import MainInput from "../../components/ui/basic/MainInput";
+import MainBtn from "../../components/ui/basic/MainBtn";
 
 export default {
   name: "Signup",
   data: function() {
     return {
       isTermsAccepted: false,
-      showMoreInfo: false,
-      showType: true,
+      showPatientInfo: false,
+      showSpecInfo: false,
       profileType: 0,
       data: {
         login: "",
@@ -269,101 +268,74 @@ input::-webkit-inner-spin-button {
   display: flex;
   color: #3e3e45;
   font-weight: 600;
-  width: 75%;
+  width: 90%;
   cursor: pointer;
-}
-
-.type__info {
-  @extend %text--center;
-  padding: 5%;
-  width: 5%;
-  background: #e8e8ec;
-  cursor: pointer;
-}
-
-.info__content {
-  padding: 1rem;
-  width: calc(100% - 2rem);
-  background: #e8e8ec;
-}
-
-.info__el {
-  display: flex;
-  i {
-    margin: auto;
-    margin-right: 1rem;
-    margin-left: 0;
-    padding: 0.5em;
-    font-size: 1.5em;
-    width: 1em;
-    height: 1em;
-    text-align: center;
-    color: #6a6ee1;
-    background: #eeeef5;
-    border-radius: 0.5em;
-  }
-  .el__title {
-    font-weight: 700;
-    margin-bottom: 0.25rem;
-    color: #3e3e45;
-  }
-  .el__desc {
-    line-height: 1.2;
-    font-weight: 600;
-    color: #67676e;
-    margin-bottom: 0.25rem;
-  }
-  .el__cost {
-    font-weight: 700;
-    color: #3e3e45;
-  }
-  &:not(:last-child) {
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(213, 213, 213, 0.6);
-  }
-  &:not(:first-child) {
-    padding-top: 0.5rem;
-  }
 }
 
 .type__content {
   width: 100%;
-  height: 0;
-  opacity: 0;
-  visibility: hidden;
-  display: flex;
+  display: block;
   background: #fff;
 }
 
 .type__el {
   width: 100%;
   cursor: pointer;
-  transition: 0.2s ease-in-out;
-  .el__title {
+  display: flex;
+  .el__icon {
     @extend %text--center;
-    font-size: 2em;
-    padding: 1em;
+    font-size: 1.5rem;
+    padding: 1.5rem;
     color: #3e3e45;
     transition: 0.2s ease-in-out;
   }
-  .el__cost {
+  .el__title {
     @extend %text--center;
     font-weight: 600;
     width: 100%;
     padding: 1em 0;
   }
-  &:hover {
-    background: #f5f5f5;
-    &,
-    .el__title {
-      color: #7f82e6;
+  .el__info {
+    @extend %text--center;
+    font-size: 1.5rem;
+    padding: 1.5rem;
+    min-width: 1.5rem;
+    color: #3e3e45;
+    background: #e8e8ec;
+    cursor: pointer;
+  }
+  &--info {
+    @extend %text--center;
+    flex-direction: column;
+    text-align: center;
+    font-weight: 600;
+    color: #3e3e45;
+    background: #e8e8ec;
+    padding: 1rem;
+    width: calc(100% - 2rem);
+    user-select: none;
+    div:last-child {
+      margin-top: 0.5rem;
+      color: #6a6ee1;
     }
   }
-  &.selected {
-    background: #f5f5f5;
-    &,
-    .el__title {
-      color: #5356ae;
+  .el__btn {
+    transition: 0.2s ease-in-out;
+    display: flex;
+    width: 100%;
+    &:hover {
+      background: #f5f5f5;
+      &,
+      .el__icon {
+        color: #7f82e6;
+      }
+    }
+    &.selected {
+      background: #f5f5f5;
+      &,
+      .el__icon {
+        color: #5356ae;
+      }
     }
   }
 }

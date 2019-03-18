@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import Logo from "../../components/ui/Logo";
+import Logo from "../../components/ui/basic/logo/Logo";
 
 export default {
   name: "PageNotFound"

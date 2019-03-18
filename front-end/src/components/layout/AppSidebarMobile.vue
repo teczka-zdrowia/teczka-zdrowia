@@ -26,9 +26,9 @@
           <div class="nav__tooltip">Panel specjalisty</div>
         </i>
       </router-link>
-      <router-link to="/About" class="nav__el">
-        <i class="fas fa-file-medical-alt">
-          <div class="nav__tooltip">Moja kartoteka</div>
+      <router-link to="/Appointments" class="nav__el">
+        <i class="fas fa-calendar-check">
+          <div class="nav__tooltip">Wizyty</div>
         </i>
       </router-link>
       <router-link to="/Payment" class="nav__el">

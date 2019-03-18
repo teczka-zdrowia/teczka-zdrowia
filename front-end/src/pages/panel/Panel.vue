@@ -45,9 +45,9 @@
 </template>
 
 <script>
-import WhiteFunctionalBlock from "../../components/ui/WhiteFunctionalBlock";
-import VioletBlock from "../../components/ui/VioletBlock";
-import MainBtn from "../../components/ui/MainBtn";
+import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
+import VioletBlock from "../../components/ui/blocks/VioletBlock";
+import MainBtn from "../../components/ui/basic/MainBtn";
 import Appointments from "./Appointments";
 import Calendar from "./Calendar";
 

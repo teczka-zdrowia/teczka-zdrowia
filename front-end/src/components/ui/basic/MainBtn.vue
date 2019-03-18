@@ -11,19 +11,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$lightgrey: rgba(213, 213, 213, 0.3);
-$lightviolet: #9394eb;
-$darkviolet: #6a6ee1;
-$primrary-light: #fafafa;
-
-%text--center {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
+@import "../../../main.scss";
 
 .button {
   @extend %text--center;

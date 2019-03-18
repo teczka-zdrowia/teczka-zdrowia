@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import MainBtn from "../ui/MainBtn";
+import MainBtn from "../ui/basic/MainBtn";
 import UserInfo from "../ui/UserInfo";
 
 export default {

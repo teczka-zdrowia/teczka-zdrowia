@@ -35,10 +35,10 @@
 </template>
 
 <script>
-import Logo from "../../components/ui/Logo";
+import Logo from "../../components/ui/basic/logo/Logo";
 import Login from "./Login";
 import Signup from "./Signup";
-import MainBtn from "../../components/ui/MainBtn";
+import MainBtn from "../../components/ui/basic/MainBtn";
 
 export default {
   name: "Auth",

@@ -21,20 +21,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$lightgrey: rgba(213, 213, 213, 0.3);
-$lightviolet: #9394eb;
-$darkviolet: #6a6ee1;
-$primrary-light: #fafafa;
-$font-awesome: "Font Awesome 5 Free";
-
-%text--center {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
+@import "../../../main.scss";
 
 .block--functional--white {
   padding: 2rem;
@@ -100,6 +87,7 @@ $font-awesome: "Font Awesome 5 Free";
 @media only screen and (max-width: 960px) {
   .block--functional--white {
     padding: 1.5rem;
+    width: calc(100% - 3rem);
   }
 }
 </style>

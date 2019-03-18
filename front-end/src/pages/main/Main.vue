@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import MainBtn from "../../components/ui/MainBtn";
-import Logo from "../../components/ui/Logo";
+import MainBtn from "../../components/ui/basic/MainBtn";
+import Logo from "../../components/ui/basic/logo/Logo";
 
 export default {
   name: "Main",

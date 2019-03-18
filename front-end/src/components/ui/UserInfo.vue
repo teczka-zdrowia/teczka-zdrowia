@@ -69,18 +69,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$lightgrey: rgba(213, 213, 213, 0.3);
-$primrary-light: #fafafa;
-$grey: rgba(213, 213, 213, 0.5);
-
-%text--center {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
+@import "../../main";
 
 .info {
   position: relative;

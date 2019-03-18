@@ -13,25 +13,22 @@
         </div>
       </Block>
     </div>
-    <History/>
   </div>
 </template>
  
 <script>
-import WhiteFunctionalBlock from "../../components/ui/WhiteFunctionalBlock";
+import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
 import BaseInfo from "./BaseInfo";
-import History from "./History";
-import VioletBlock from "../../components/ui/VioletBlock";
-import RedBlock from "../../components/ui/RedBlock";
+import VioletBlock from "../../components/ui/blocks/VioletBlock";
+import RedBlock from "../../components/ui/blocks/RedBlock";
 
 export default {
   name: "About",
   components: {
-    BaseInfo: BaseInfo,
-    History: History,
-    VioletBlock: VioletBlock,
-    RedBlock: RedBlock,
-    Block: WhiteFunctionalBlock
+    Block: WhiteFunctionalBlock,
+    BaseInfo,
+    VioletBlock,
+    RedBlock
   }
 };
 </script>

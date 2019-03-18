@@ -53,8 +53,8 @@
 let moment = require("moment");
 moment.locale("pl");
 
-import VioletBlock from "../../components/ui/VioletBlock";
-import RedBlock from "../../components/ui/RedBlock";
+import VioletBlock from "../../components/ui/blocks/VioletBlock";
+import RedBlock from "../../components/ui/blocks/RedBlock";
 
 export default {
   name: "Payment",

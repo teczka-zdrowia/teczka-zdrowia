@@ -141,7 +141,7 @@
 </template>
 
 <script>
-import MainBtn from "../../components/ui/MainBtn";
+import MainBtn from "../../components/ui/basic/MainBtn";
 
 let moment = require("moment");
 moment.locale("pl");

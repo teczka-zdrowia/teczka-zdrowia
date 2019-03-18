@@ -13,7 +13,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../main";
+@import "../../../../main";
 
 .logo {
   color: #fafafa;

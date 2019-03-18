@@ -1,59 +1,56 @@
 <template>
-  <div>
-    <div
-      class="appointment"
-      v-for="(item, index) in this.$store.getters.userAppointments"
-      v-if="index < maxAppointments"
-    >
-      <div class="appointment__user">
-        <img class="user__img" :src="item.doctor.img">
-        <div class="user__name">{{ item.doctor.name }}</div>
-        <div class="user__specialization">{{ item.doctor.spec }}</div>
+  <div class="appointment">
+    <div class="appointment__user">
+      <img class="user__img" :src="data.doctor.img">
+      <div class="user__name">{{ data.doctor.name }}</div>
+      <div class="user__phone">
+        <a :href="`tel:${data.doctor.phone}`">
+          <i class="fas fa-phone"></i>
+          Zadzwoń
+        </a>
       </div>
-      <div class="appointment__content">
+    </div>
+    <div class="appointment__content">
+      <div class="content__el">
+        <i class="fas fa-map-marker-alt"></i>
+        {{ data.place }}
+      </div>
+      <div class="content__few">
         <div class="content__el">
-          <i class="fas fa-map-marker-alt"></i>
-          {{ item.place }}
-        </div>
-        <div class="content__few">
-          <div class="content__el">
-            <i class="fas fa-calendar-day"></i>
-            {{ item.date }}
-          </div>
-          <div class="content__el">
-            <i class="far fa-clock"></i>
-            {{ item.time }}
-          </div>
+          <i class="fas fa-calendar-day"></i>
+          {{ data.date }}
         </div>
         <div class="content__el">
-          <i class="far fa-comment-alt"></i>
-          {{ item.desc }}
+          <i class="far fa-clock"></i>
+          {{ data.time }}
         </div>
       </div>
-      <div class="appointment__actions">
-        <MainBtn
-          class="appointment__btn appointment__btn--accept"
-          v-on:click="updateAcceptation(true)"
-        >
-          <i class="fa-check-circle" v-bind:class="[item.isAccepted == true ? 'fas' : 'far']"></i>
-        </MainBtn>
-        <MainBtn
-          class="appointment__btn appointment__btn--cancel"
-          v-on:click="updateAcceptation(false)"
-        >
-          <i class="fa-times-circle" v-bind:class="[item.isAccepted == false ? 'fas' : 'far']"></i>
-        </MainBtn>
+      <div class="content__el">
+        <i class="far fa-comment-alt"></i>
+        {{ data.desc }}
       </div>
+    </div>
+    <div class="appointment__actions">
+      <MainBtn
+        class="appointment__btn"
+        v-bind:class="[data.isAccepted == true ? 'appointment__btn--accepted' : '']"
+        v-on:click="updateAcceptation(true)"
+      >Będę</MainBtn>
+      <MainBtn
+        class="appointment__btn"
+        v-bind:class="[data.isAccepted == false ? 'appointment__btn--cancelled' : '']"
+        v-on:click="updateAcceptation(false)"
+      >Nie będę</MainBtn>
     </div>
   </div>
 </template>
 
 <script>
-import MainBtn from "../../components/ui/MainBtn";
+import MainBtn from "../basic/MainBtn";
 
 export default {
-  props: ["maxAppointments"],
-  name: "Appointments",
+  props: ["data"],
+  name: "AppointmentDekstop",
   components: {
     MainBtn
   },
@@ -66,7 +63,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../main";
+@import "../../../main";
 
 .appointment {
   padding: 1em;
@@ -79,12 +76,24 @@ export default {
   }
 }
 
+.appointments__more {
+  width: 100%;
+  button {
+    width: 100%;
+    padding: 1em;
+    border-radius: 0.5em;
+    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+    background: #eeeef3 !important;
+    color: #6a6ee1 !important;
+  }
+}
+
 .appointment__user {
   display: grid;
   grid-template-columns: 4em auto;
   grid-template-areas:
     "img name"
-    "img spec";
+    "img phone";
   grid-column-gap: 1em;
   height: 4em;
   cursor: pointer;
@@ -119,12 +128,25 @@ export default {
   color: #3e3e45;
   justify-content: left;
 }
-.user__specialization {
+.user__phone {
   @extend %text--center;
-  grid-area: spec;
+  grid-area: phone;
   font-weight: 600;
-  color: #67676e;
   justify-content: left;
+  border-bottom-right-radius: 0.5rem;
+  border-top-left-radius: 0.5rem;
+  background: #27ae60;
+  color: #fff;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  a {
+    color: #fff;
+    margin: auto;
+  }
+  i {
+    margin-right: 0.5rem;
+  }
 }
 .appointment__content {
   margin-top: 2em;
@@ -169,7 +191,9 @@ export default {
 .appointment__actions {
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 0.5em;
 }
 
 .appointment__btn {
@@ -177,17 +201,22 @@ export default {
   padding: 0.75em;
   display: flex;
   font-weight: 700;
-  border-radius: 3em;
   background: #eeeef3;
+  color: #67676e;
+  border-radius: 0;
+  filter: none;
   i {
     @extend %text--center;
     font-size: 1.5em;
+    margin-right: 0.7rem;
   }
-  &--accept {
-    color: $darkviolet;
+  &--accepted {
+    background: $darkviolet;
+    color: #fafafa;
   }
-  &--cancel {
-    color: #e74c3c;
+  &--cancelled {
+    background: #e74c3c;
+    color: #fafafa;
   }
 }
 

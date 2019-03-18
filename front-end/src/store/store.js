@@ -18,7 +18,7 @@ export const store = new Vuex.Store({
     userInfo: {
       jwt:
         'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3RcLyIsImF1ZCI6Imh0dHA6XC9cL2xvY2FsaG9zdFwvIiwiaWF0IjoxNTQ3NDkxMTA2LCJuYmYiOjE1NDc0OTExMDYsImV4cCI6MTU0NzU3NzUwNiwiZGF0YSI6eyJpZCI6IjgiLCJuYW1lIjoiQWRyaWFuIiwic3VybmFtZSI6Ik9yXHUwMTQyXHUwMGYzdyIsImlzUGFpZCI6IjEifX0.kxo8DvoDa3WdQNzXDr02TUnc7d3onsoYJNhavnCHSs4',
-      img: 'https://thispersondoesnotexist.com/',
+      img: 'https://thispersondoesnotexist.com/image',
       name: 'Adrian',
       surname: 'Orłów',
       pesel: '96011999231',
@@ -34,7 +34,7 @@ export const store = new Vuex.Store({
     userHistory: [
       {
         doctor: {
-          img: 'https://thispersondoesnotexist.com/',
+          img: 'https://thispersondoesnotexist.com/image',
           name: 'Jan Iksiński',
           spec: 'psycholog'
         },
@@ -46,7 +46,7 @@ export const store = new Vuex.Store({
       },
       {
         doctor: {
-          img: 'https://thispersondoesnotexist.com/',
+          img: 'https://thispersondoesnotexist.com/image',
           name: 'Anna Igrecka',
           spec: 'doktor'
         },
@@ -60,9 +60,10 @@ export const store = new Vuex.Store({
     appointments: [
       {
         doctor: {
-          img: 'https://thispersondoesnotexist.com/',
+          img: 'https://thispersondoesnotexist.com/image',
           name: 'Jan Iksiński',
-          spec: 'psycholog'
+          spec: 'psycholog',
+          phone: '123 456 789'
         },
         date: '16.10.2018',
         time: '18:30',
@@ -72,9 +73,10 @@ export const store = new Vuex.Store({
       },
       {
         doctor: {
-          img: 'https://thispersondoesnotexist.com/',
+          img: 'https://thispersondoesnotexist.com/image',
           name: 'Jan Iksiński',
-          spec: 'psycholog'
+          spec: 'psycholog',
+          phone: '123 456 789'
         },
         date: '16.10.2018',
         time: '18:30',
@@ -84,33 +86,36 @@ export const store = new Vuex.Store({
       },
       {
         doctor: {
-          img: 'https://thispersondoesnotexist.com/',
+          img: 'https://thispersondoesnotexist.com/image',
           name: 'Jan Iksiński',
-          spec: 'psycholog'
+          spec: 'psycholog',
+          phone: '123 456 789'
         },
         date: '16.10.2018',
         time: '18:31',
         place: 'Medmax Warszawa',
         desc: 'Ból klatki piersiowej',
-        isAccepted: true
+        isAccepted: null
       },
       {
         doctor: {
-          img: 'https://thispersondoesnotexist.com/',
+          img: 'https://thispersondoesnotexist.com/image',
           name: 'Jan Iksiński',
-          spec: 'psycholog'
+          spec: 'psycholog',
+          phone: '123 456 789'
         },
         date: '16.10.2018',
         time: '18:32',
         place: 'Medmax Warszawa',
         desc: 'Ból klatki piersiowej',
-        isAccepted: true
+        isAccepted: false
       },
       {
         doctor: {
-          img: 'https://thispersondoesnotexist.com/',
+          img: 'https://thispersondoesnotexist.com/image',
           name: 'Jan Iksiński',
-          spec: 'psycholog'
+          spec: 'psycholog',
+          phone: '123 456 789'
         },
         date: '16.10.2018',
         time: '18:33',
@@ -150,7 +155,37 @@ export const store = new Vuex.Store({
           isAdmin: true
         }
       ]
-    }
+    },
+    prescriptions: [
+      {
+        id: 1,
+        title: 'Witamina C',
+        info: '5mg • 2x dziennie',
+        days: '16',
+        isActive: true
+      },
+      {
+        id: 10,
+        title: 'Sport',
+        info: '2h tygodniowo',
+        days: '9',
+        isActive: true
+      },
+      {
+        id: 66,
+        title: 'Witamina D',
+        info: '60 tabletek',
+        days: false,
+        isActive: true
+      },
+      {
+        id: 92,
+        title: 'Witamina D',
+        info: '600 tabletek',
+        days: false,
+        isActive: false
+      }
+    ]
   },
   actions: {
     updateWindowWidthAndHeight ({ commit }, params) {
@@ -236,6 +271,9 @@ export const store = new Vuex.Store({
     },
     userPlaces (state) {
       return state.places.list.filter(place => !place.isDeleted)
+    },
+    userPrescriptions (state) {
+      return state.prescriptions.filter(prescription => prescription.isActive)
     }
   }
 })
