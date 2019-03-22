@@ -11,12 +11,9 @@
           v-bind:class="[showUpcoming == false ? 'active' : '']"
         >Minione</MainBtn>
       </div>
-      <div class="appointments__right">
-        <input class="appointments__search" type="text" placeholder="  Szukaj">
-        <div class="appointments__sort">
-          <i class="fas fa-filter"></i>
-        </div>
-        <div class="appointments__sort__content">
+      <MainSearch class="appointments__right">
+        <input class="input" slot="input" type="text" placeholder="  Szukaj">
+        <div class="select" slot="select">
           <label>
             Sortuj przez:
             <select>
@@ -42,7 +39,7 @@
             </select>
           </label>
         </div>
-      </div>
+      </MainSearch>
     </div>
     <AppointmentsDesktop
       ref="appointmentsContent"
@@ -57,6 +54,7 @@
 
 <script>
 import MainBtn from "../basic/MainBtn";
+import MainSearch from "../basic/MainSearch";
 import AppointmentsDesktop from "./AppointmentsDesktop";
 import AppointmentsMobile from "./AppointmentsMobile";
 
@@ -80,6 +78,7 @@ export default {
   },
   components: {
     MainBtn,
+    MainSearch,
     AppointmentsDesktop,
     AppointmentsMobile
   },
@@ -153,85 +152,6 @@ export default {
   background: #fff;
   width: 100%;
   margin-right: 1em;
-}
-
-.appointments__right {
-  display: flex;
-  position: relative;
-}
-
-.appointments__search {
-  border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
-  background: #eeeef3;
-  padding: 0.75rem;
-  font-weight: 600;
-  width: calc(100% - 3rem);
-  transition: 0.2s ease-in-out;
-  &:focus {
-    @include placeholder {
-      opacity: 0;
-    }
-  }
-  @include placeholder {
-    transition: 0.2s ease-in-out;
-    color: #6a6ee1;
-    font-family: Montserrat, "Font Awesome 5 Free";
-  }
-}
-
-.appointments__sort {
-  @extend %text--center;
-  border-top-right-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
-  transition: 0.2s ease-in-out;
-  color: #3e3e45;
-  background: #e4e4ec;
-  padding: 0 1rem;
-  cursor: pointer;
-  &:hover {
-    & ~ .appointments__sort__content {
-      visibility: visible;
-      opacity: 1;
-    }
-  }
-}
-
-.appointments__sort__content {
-  z-index: 100;
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  top: calc(100% + 0.5rem);
-  padding: 1rem 0.75rem;
-  width: calc(100% - 1.5rem);
-  background: #e4e4ec;
-  border-radius: 0.5rem;
-  transition: all 0.2s ease-in-out;
-  label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 600;
-    &:not(:last-child) {
-      margin-bottom: 1rem;
-    }
-    select {
-      cursor: pointer;
-      padding: 0.25rem;
-      border-radius: 0.5rem;
-      width: 50%;
-      background: #fafafc;
-      border: 0;
-    }
-  }
-  &:hover {
-    visibility: visible;
-    opacity: 1;
-    & ~ .appointments__sort {
-      border-radius: 0;
-    }
-  }
 }
 
 @media only screen and (min-width: 960px) {

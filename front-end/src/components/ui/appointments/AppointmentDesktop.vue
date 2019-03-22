@@ -1,15 +1,6 @@
 <template>
   <div class="appointment">
-    <div class="appointment__user">
-      <img class="user__img" :src="data.doctor.img">
-      <div class="user__name">{{ data.doctor.name }}</div>
-      <div class="user__phone">
-        <a :href="`tel:${data.doctor.phone}`">
-          <i class="fas fa-phone"></i>
-          Zadzwoń
-        </a>
-      </div>
-    </div>
+    <MainUserInfo class="list__info__el" :name="data.doctor.name" :img="data.doctor.img" :phone="data.doctor.phone" :isBig="true" :isBigPhone="true" :userId="1"/>
     <div class="appointment__content">
       <div class="content__el">
         <i class="fas fa-map-marker-alt"></i>
@@ -47,11 +38,13 @@
 
 <script>
 import MainBtn from "../basic/MainBtn";
+import MainUserInfo from "../basic/MainUserInfo";
 
 export default {
   props: ["data"],
   name: "AppointmentDekstop",
   components: {
+    MainUserInfo,
     MainBtn
   },
   methods: {
@@ -88,66 +81,6 @@ export default {
   }
 }
 
-.appointment__user {
-  display: grid;
-  grid-template-columns: 4em auto;
-  grid-template-areas:
-    "img name"
-    "img phone";
-  grid-column-gap: 1em;
-  height: 4em;
-  cursor: pointer;
-  transition: 0.2s ease-in-out;
-  border-radius: 1rem;
-  &:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 60px 0 rgba(145, 145, 156, 0.3);
-    .user__img {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-  }
-  &:active {
-    transform: scale(1.025);
-  }
-}
-
-.user__img {
-  grid-area: img;
-  height: 4em;
-  transition: 0.2s ease-in-out;
-  border-radius: 1em;
-  -webkit-filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
-  filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
-}
-
-.user__name {
-  @extend %text--center;
-  grid-area: name;
-  font-weight: 700;
-  color: #3e3e45;
-  justify-content: left;
-}
-.user__phone {
-  @extend %text--center;
-  grid-area: phone;
-  font-weight: 600;
-  justify-content: left;
-  border-bottom-right-radius: 0.5rem;
-  border-top-left-radius: 0.5rem;
-  background: #27ae60;
-  color: #fff;
-  display: flex;
-  height: 100%;
-  width: 100%;
-  a {
-    color: #fff;
-    margin: auto;
-  }
-  i {
-    margin-right: 0.5rem;
-  }
-}
 .appointment__content {
   margin-top: 2em;
   margin-bottom: 1em;

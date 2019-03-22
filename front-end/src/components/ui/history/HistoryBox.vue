@@ -2,12 +2,9 @@
   <div class="history" v-if="this.$store.getters.userHistoryCount > 0">
     <div class="history__top">
       <div class="history__title">Historia</div>
-      <div class="history__right">
-        <input class="history__search" type="text" placeholder="  Szukaj">
-        <div class="history__sort">
-          <i class="fas fa-filter"></i>
-        </div>
-        <div class="history__sort__content">
+      <MainSearch class="history__right">
+        <input class="input" slot="input" type="text" placeholder="  Szukaj">
+        <div class="select" slot="select">
           <label>
             Sortuj przez:
             <select>
@@ -33,7 +30,7 @@
             </select>
           </label>
         </div>
-      </div>
+      </MainSearch>
     </div>
     <HistoryElements></HistoryElements>
   </div>
@@ -41,13 +38,15 @@
 
 <script>
 import MainBtn from "../basic/MainBtn";
+import MainSearch from "../basic/MainSearch";
 import HistoryElements from "./HistoryElements";
 
 export default {
   name: "History",
   components: {
-    MainBtn: MainBtn,
-    HistoryElements: HistoryElements
+    MainBtn,
+    MainSearch,
+    HistoryElements
   }
 };
 </script>

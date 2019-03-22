@@ -83,11 +83,4 @@ export default {
     transition: visibility 0s, opacity 0.2s ease-in-out;
   }
 }
-
-@media only screen and (max-width: 960px) {
-  .block--functional--white {
-    padding: 1.5rem;
-    width: calc(100% - 3rem);
-  }
-}
 </style>

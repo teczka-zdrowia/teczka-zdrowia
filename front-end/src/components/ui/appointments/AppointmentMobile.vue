@@ -1,15 +1,7 @@
 <template>
   <div class="appointment">
-    <div class="appointment__user">
-      <img class="user__img" :src="data.doctor.img">
-      <div class="user__name">{{ data.doctor.name }}</div>
-      <div class="user__phone">
-        <a :href="`tel:${data.doctor.phone}`">
-          <i class="fas fa-phone"></i>
-          Zadzwoń
-        </a>
-      </div>
-    </div>
+    <MainUserInfo class="appointments__user" :name="data.doctor.name" :img="data.doctor.img" :phone="data.doctor.phone" :isClickable="false" 
+     :userId="1"/>
     <div class="appointment__when">
       <div class="when__date">
         <i class="fas fa-calendar-day"></i>
@@ -25,11 +17,13 @@
 
 <script>
 import MainBtn from "../basic/MainBtn";
+import MainUserInfo from "../basic/MainUserInfo";
 
 export default {
   name: "AppointmentsMobile",
   props: ["data"],
   components: {
+    MainUserInfo,
     MainBtn
   }
 };
@@ -64,66 +58,6 @@ export default {
   }
 }
 
-.appointment__user {
-  display: grid;
-  grid-template-columns: 5rem auto;
-  grid-template-areas:
-    "img name"
-    "img phone";
-  grid-column-gap: 1em;
-  height: 5rem;
-  cursor: pointer;
-  transition: 0.2s ease-in-out;
-  width: 100%;
-}
-
-.user__img {
-  grid-area: img;
-  height: 4rem;
-  margin: auto;
-  transition: 0.2s ease-in-out;
-  border-radius: 1rem;
-  -webkit-filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
-  filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
-}
-
-.user__name {
-  @extend %text--center;
-  grid-area: name;
-  font-weight: 700;
-  color: #3e3e45;
-  justify-content: left;
-  max-width: 10em;
-  margin-top: auto;
-  margin-bottom: 0.33em;
-}
-
-.user__phone {
-  @extend %text--center;
-  grid-area: phone;
-  font-weight: 600;
-  -webkit-box-pack: left;
-  -ms-flex-pack: left;
-  justify-content: left;
-  border-radius: 0.5rem;
-  background: #27ae60;
-  color: #fff;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  height: 2rem;
-  width: 8rem;
-  margin: auto;
-  margin-left: 0;
-  margin-top: 0;
-  a {
-    color: #fff;
-    margin: auto;
-  }
-  i {
-    margin-right: 0.5rem;
-  }
-}
 
 .appointment__when {
   height: 100%;
@@ -157,6 +91,14 @@ export default {
   height: 3em !important;
 }
 
+.appointments__user {
+  grid-template-columns: 5rem auto !important;
+  height: 5rem !important;
+  .user__img {
+    height: 4rem !important;
+  }
+}
+
 @media only screen and (max-width: 520px) {
   .appointment {
     display: block;
@@ -169,7 +111,7 @@ export default {
     max-width: unset;
   }
   .user__img {
-    height: 3.5em;
+    height: 3.5em !important;
   }
 }
 </style>

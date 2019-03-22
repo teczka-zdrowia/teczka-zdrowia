@@ -3,7 +3,15 @@
     <div class="row">
       <div class="column">
         <Block class="prescriptions" title="Obecne zalecenia">
-          <Prescriptions/>
+          <MainPrescription
+          v-for="prescription in userPrescriptions"
+          :key="prescription.id"
+          :prescriptionId="prescription.id"
+          :title="prescription.title"
+          :info="prescription.info"
+          :days="prescription.days"
+          :showCancelBtn="true"
+          :isTimeleft="true"/>
         </Block>
       </div>
       <Map v-if="!isMobile"/>
@@ -22,10 +30,10 @@ import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBloc
 import VioletBlock from "../../components/ui/blocks/VioletBlock";
 import MainSelect from "../../components/ui/basic/MainSelect";
 import MainBtn from "../../components/ui/basic/MainBtn";
+import MainPrescription from "../../components/ui/basic/MainPrescription";
 import AppointmentsBox from "../../components/ui/appointments/AppointmentsBox";
 import AirData from "./AirData";
 import Map from "../map/Map";
-import Prescriptions from "./Prescriptions";
 
 export default {
   name: "Dashboard",
@@ -36,7 +44,7 @@ export default {
     MainBtn,
     AppointmentsBox,
     AirData,
-    Prescriptions,
+    MainPrescription,
     Map
   },
   data: function() {
@@ -47,6 +55,9 @@ export default {
   computed: {
     isMobile: function() {
       return this.$store.getters.window.width < 960;
+    },
+    userPrescriptions: function() {
+      return this.$store.getters.userPrescriptions;
     }
   }
 };
