@@ -1,7 +1,21 @@
 <template>
   <div class="appointment">
-    <MainUserInfo class="appointments__user" :name="data.doctor.name" :img="data.doctor.img" :phone="data.doctor.phone" :isClickable="false" 
-     :userId="1"/>
+    <MainUserInfo
+      class="appointment__user"
+      :name="data.doctor.name"
+      :img="data.doctor.img"
+      :phone="data.doctor.phone"
+      :isClickable="false"
+      :userId="1"
+    />
+    <div class="appointment__doctor" v-if="showAddedBy">
+      <div class="doctor__title">
+        <p>Dodano przez:</p>
+      </div>
+      <div class="doctor__name">
+        <p>Ola Długonazwiskowa</p>
+      </div>
+    </div>
     <div class="appointment__when">
       <div class="when__date">
         <i class="fas fa-calendar-day"></i>
@@ -20,8 +34,16 @@ import MainBtn from "../basic/MainBtn";
 import MainUserInfo from "../basic/MainUserInfo";
 
 export default {
-  name: "AppointmentsMobile",
-  props: ["data"],
+  name: "AppointmentMobile",
+  props: {
+    data: {
+      type: Object
+    },
+    showAddedBy: {
+      type: Boolean,
+      default: false
+    }
+  },
   components: {
     MainUserInfo,
     MainBtn
@@ -58,7 +80,6 @@ export default {
   }
 }
 
-
 .appointment__when {
   height: 100%;
   width: 100%;
@@ -91,15 +112,49 @@ export default {
   height: 3em !important;
 }
 
-.appointments__user {
+.appointment__user {
   grid-template-columns: 5rem auto !important;
   height: 5rem !important;
+  margin-right: 1rem;
   .user__img {
     height: 4rem !important;
   }
 }
 
-@media only screen and (max-width: 520px) {
+.appointment__doctor {
+  height: 100%;
+  width: 100%;
+  max-width: 14em;
+  margin-left: auto;
+  background: #eeeef3;
+  font-weight: 600;
+  p {
+    color: #67676e;
+    margin: 1rem 1rem;
+    text-align: center;
+  }
+  & ~ .appointment__when {
+    margin-left: unset;
+  }
+}
+
+.doctor__title p {
+  color: #3e3e45;
+}
+
+.doctor__name p {
+  white-space: normal;
+  word-break: break-all;
+}
+
+.doctor__title,
+.doctor__name {
+  @extend %text--center;
+  height: 50%;
+  width: 100%;
+}
+
+@media only screen and (max-width: 650px) {
   .appointment {
     display: block;
     height: auto;
@@ -112,6 +167,21 @@ export default {
   }
   .user__img {
     height: 3.5em !important;
+  }
+  .appointment__doctor {
+    display: flex;
+    width: 100%;
+    max-width: unset;
+    margin-left: 0;
+    .doctor__title {
+      width: auto;
+      p {
+        margin: 0.75rem 0.75rem;
+      }
+    }
+    p {
+      margin: 0.75rem 0;
+    }
   }
 }
 </style>

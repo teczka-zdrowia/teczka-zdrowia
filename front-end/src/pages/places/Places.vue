@@ -121,6 +121,7 @@
           </div>
           <Timetable v-if="selectedCard == 1"/>
           <Patients v-if="selectedCard == 2"/>
+          <Management v-if="selectedCard == 3"/>
         </div>
       </div>
     </div>

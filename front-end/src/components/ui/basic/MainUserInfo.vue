@@ -118,14 +118,13 @@ export default {
   border-radius: 0.5rem;
   background: #27ae60;
   color: #fff;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   height: 2rem;
   width: 8rem;
   margin: auto;
   margin-left: 0;
   margin-top: 0;
+  transition: .2s ease-in-out;
   a {
     color: #fff;
     margin: auto;
@@ -141,6 +140,9 @@ export default {
     color: #fff;
     height: 100%;
     width: 100%;
+  }
+  &:hover {
+    background: #229a55;
   }
 }
 

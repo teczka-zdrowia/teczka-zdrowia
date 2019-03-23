@@ -135,7 +135,7 @@ export default {
   height: 3em !important;
 }
 
-@media only screen and (max-width: 520px) {
+@media only screen and (max-width: 650px) {
   .appointment {
     display: block;
     height: auto;
