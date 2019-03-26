@@ -66,14 +66,17 @@
       </div>
     </div>
     <div class="row" v-bind:class="{ 'block--blur' : placesShowed || cardsShowed }">
-      <Block class="places__list" title="Twoje gabinety" v-if="!isMobile">
+      <div class="places__list" v-if="!isMobile">
         <div>
+          <div class="places__title">
+            Moje gabinety
+          </div>
           <div class="places">
             <div
               class="place"
               :key="index"
               v-for="(place, index) in this.$store.getters.userPlaces"
-              v-bind:class="{ 'disabled' : !place.isActive }"
+              v-bind:class="{ 'disabled' : !place.isActive, 'selected' : place == selectedPlace }"
             >
               <i class="fas fa-briefcase place__icon"></i>
               <div class="place__content">
@@ -97,7 +100,7 @@
             <i class="fas fa-plus"></i>Nowy gabinet
           </MainBtn>
         </div>
-      </Block>
+      </div>
       <div class="places__actions">
         <div v-if="!selectedCard" class="places__info">Wybierz gabinet</div>
         <div v-if="selectedCard" class="actions__content">
@@ -278,6 +281,19 @@ export default {
   height: 100%;
 }
 
+.places__title {
+  padding: 1em;
+  display: flex;
+  font-weight: 700;
+  text-align: center;
+  border-radius: .5rem;
+  font-size: 1.25rem;
+  box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+  background: #fdfdfd;
+  color: #3e3e45;
+  margin-bottom: 1rem;
+}
+
 .places__btn {
   width: 100% !important;
   padding: 1rem 0 !important;
@@ -292,12 +308,16 @@ export default {
 .place {
   font-weight: 600;
   display: flex;
-  &:not(:first-child) {
-    padding-top: 1em;
-  }
+  padding: 1rem;
+  border-radius: .5rem;
+  box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+  background: #eeeef3;
+  transition: .2s ease-in-out;
   &:not(:last-child) {
-    padding-bottom: 1em;
-    border-bottom: 1px solid rgba(213, 213, 213, 0.6);
+    margin-bottom: 1rem;
+  }
+  &.selected {
+    background: #fafafc;
   }
   &.disabled {
     filter: grayscale(100%);
@@ -346,10 +366,9 @@ export default {
   cursor: pointer;
   transition: 0.2s ease-in-out;
   &--white {
-    background: #eeeef3;
     color: #6a6ee1;
     &:hover {
-      background: #e6e6e8;
+      background: #eeeef3;
     }
   }
   &--violet {
@@ -418,7 +437,7 @@ export default {
     display: flex;
   }
   .places__list {
-    width: calc(33% - 4em);
+    width: 33%;
     margin-bottom: 0;
     margin-right: 1rem;
   }

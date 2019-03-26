@@ -74,6 +74,18 @@
               Zapisz
             </MainBtn>
           </div>
+          <div class="settings__actions">
+            <MainBtn
+              class="settings__action settings__action--lock"
+            >
+              <i class="fas fa-lock"></i>
+              Ukryj
+            </MainBtn>
+            <MainBtn class="settings__action settings__action--delete">
+              <i class="far fa-trash-alt"></i>
+              Usuń
+            </MainBtn>
+          </div>
         </div>
       </Block>
       <Block class="management__block" title="Statystyki">
@@ -275,12 +287,16 @@ export default {
   & > *:not(:first-child) {
     margin-left: 1rem;
   }
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
 }
 
 .settings__action {
   padding: 1rem !important;
   width: 100% !important;
   background: #eeeef3 !important;
+  font-weight: 600;
   &--edit {
     color: #6a6ee1 !important;
   }
@@ -289,6 +305,14 @@ export default {
   }
   &--save {
     color: #27ae60 !important;
+  }
+  &--lock {
+    color: #eeeef3 !important;
+    background: #67676e !important;
+  }
+  &--delete {
+    background: #e74c3c !important;
+    color: #fafafa !important;
   }
   i {
     margin-right: 1em;
