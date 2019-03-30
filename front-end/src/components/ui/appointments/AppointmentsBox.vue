@@ -67,7 +67,7 @@ export default {
     },
     showMore: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   data: function() {
@@ -140,18 +140,10 @@ export default {
 }
 .appointments__content {
   width: 100%;
-  display: flex;
   margin-top: 2em;
-  overflow: auto;
-}
-
-.appointment {
-  padding: 1em;
-  border-radius: 0.5em;
-  box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
-  background: #fff;
-  width: 100%;
-  margin-right: 1em;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 1rem;
 }
 
 @media only screen and (min-width: 960px) {

@@ -2,7 +2,7 @@
   <div class="appointments">
     <div class="row">
       <Block class="appointments--block" title="Wizyty">
-        <AppointmentsBox :showActions="true" :showMore="false"/>
+        <AppointmentsBox :showActions="true"/>
       </Block>
     </div>
     <div class="row">

@@ -1,7 +1,7 @@
 <template>
   <div class="places">
     <div class="places__nav--mobile" v-if="isMobile">
-      <div class="nav__el" v-on:click="placesShowed = !placesShowed">
+      <div class="nav__el" v-on:click="placesShowed = !placesShowed; cardsShowed = false">
         <div class="nav__title" v-if="!selectedPlace">Gabinet</div>
         <div class="nav__title" v-else>{{ selectedPlace.name }}</div>
         <i class="fas" v-bind:class="[ placesShowed ? 'fa-angle-up' : 'fa-angle-down' ]"></i>
@@ -12,8 +12,8 @@
               :key="index"
               v-for="(place, index) in this.$store.getters.userPlaces"
               v-bind:class="{ 'disabled' : !place.isActive }"
+              v-on:click="selectPlace(place.id)"
             >
-              <i class="fas fa-briefcase place__icon"></i>
               <div class="place__content">
                 <div class="place__title">{{ place.name }}</div>
                 <div class="place__info">{{ place.address }}, {{ place.city }}</div>
@@ -22,7 +22,6 @@
                 class="fas fa-angle-right place__select place__select--white"
                 title="Wybierz gabinet"
                 v-if="place.isActive"
-                v-on:click="selectPlace(place.id)"
               ></i>
               <i
                 class="fas fa-unlock place__select place__select--white"
@@ -36,7 +35,11 @@
           </div>
         </div>
       </div>
-      <div class="nav__el" v-if="selectedPlace" v-on:click="cardsShowed = !cardsShowed">
+      <div
+        class="nav__el"
+        v-if="selectedPlace"
+        v-on:click="cardsShowed = !cardsShowed; placesShowed = false"
+      >
         <div class="nav__title" v-if="selectedPlace">{{ cards[selectedCard] }}</div>
         <i
           class="fas"
@@ -48,17 +51,17 @@
             <div
               class="card"
               v-on:click="selectedCard = 1"
-              v-bind:class="[selectedCard == 1 ? 'selected': '']"
+              v-bind:class="{'selected': selectedCard == 1}"
             >Terminarz</div>
             <div
               class="card"
               v-on:click="selectedCard = 2"
-              v-bind:class="[selectedCard == 2 ? 'selected': '']"
+              v-bind:class="{'selected': selectedCard == 2}"
             >Pacjenci</div>
             <div
               class="card"
               v-on:click="selectedCard = 3"
-              v-bind:class="[selectedCard == 3 ? 'selected': '']"
+              v-bind:class="{'selected': selectedCard == 3}"
               v-if="selectedPlace && selectedPlace.isAdmin"
             >Administracja</div>
           </div>
@@ -68,9 +71,7 @@
     <div class="row" v-bind:class="{ 'block--blur' : placesShowed || cardsShowed }">
       <div class="places__list" v-if="!isMobile">
         <div>
-          <div class="places__title">
-            Moje gabinety
-          </div>
+          <div class="places__title">Moje gabinety</div>
           <div class="places">
             <div
               class="place"
@@ -108,17 +109,17 @@
             <div
               class="actions__top__el"
               v-on:click="selectedCard = 1"
-              v-bind:class="[selectedCard == 1 ? 'selected': '']"
+              v-bind:class="{'selected': selectedCard == 1}"
             >Terminarz</div>
             <div
               class="actions__top__el"
               v-on:click="selectedCard = 2"
-              v-bind:class="[selectedCard == 2 ? 'selected': '']"
+              v-bind:class="{'selected': selectedCard == 2}"
             >Pacjenci</div>
             <div
               class="actions__top__el"
               v-on:click="selectedCard = 3"
-              v-bind:class="[selectedCard == 3 ? 'selected': '']"
+              v-bind:class="{'selected': selectedCard == 3}"
               v-if="selectedPlace.isAdmin"
             >Administracja</div>
           </div>
@@ -186,82 +187,6 @@ export default {
 <style lang="scss" scoped>
 @import "../../main";
 
-.places__nav--mobile {
-  background: #f5f5f5;
-  position: fixed;
-  z-index: 100;
-  top: 5rem;
-  left: 0;
-  height: 3.5rem;
-  width: 100%;
-  display: flex;
-  .nav__el {
-    @extend %text--center;
-    cursor: pointer;
-    font-weight: 700;
-    color: #3e3e45;
-    font-size: 1rem;
-    width: 100%;
-    height: 100%;
-    position: relative;
-    max-width: 50%;
-    i {
-      margin-left: 0.75em;
-    }
-  }
-  .nav__title {
-    max-width: 85%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .nav__list {
-    visibility: hidden;
-    opacity: 0;
-    z-index: 0;
-    background: #f5f5f5;
-    position: absolute;
-    top: 100%;
-    padding: 2rem 0.75rem;
-    font-size: 1rem;
-    width: calc(100vw - 1.5rem);
-    box-shadow: 0 60px 20px 0px rgba(213, 213, 213, 0.3);
-    transition: all 0.2s ease-in-out;
-    overflow: auto;
-    max-height: calc(100vh - 11rem);
-    &.showed {
-      visibility: visible;
-      opacity: 1;
-      z-index: 10;
-      transition: all 0.2s ease-in-out;
-    }
-    &--left {
-      left: 0;
-    }
-    &--right {
-      left: -100%;
-    }
-  }
-  .cards {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    .card {
-      @extend %text--center;
-      font-weight: 700;
-      font-size: 1.25em;
-      color: #67676e;
-      padding: 1em 0;
-      width: 100%;
-      cursor: pointer;
-      &:not(:last-child) {
-        border-bottom: 1px solid rgba(213, 213, 213, 0.6);
-      }
-    }
-  }
-}
-
 .row {
   margin-bottom: 1em;
   display: block;
@@ -286,7 +211,7 @@ export default {
   display: flex;
   font-weight: 700;
   text-align: center;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   font-size: 1.25rem;
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
   background: #fdfdfd;
@@ -309,10 +234,10 @@ export default {
   font-weight: 600;
   display: flex;
   padding: 1rem;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
   background: #eeeef3;
-  transition: .2s ease-in-out;
+  transition: 0.2s ease-in-out;
   &:not(:last-child) {
     margin-bottom: 1rem;
   }
@@ -428,6 +353,103 @@ export default {
     &.selected {
       background: #fdfdfd;
       color: #3e3e45;
+    }
+  }
+}
+
+.places__nav--mobile {
+  background: #f5f5f5;
+  position: fixed;
+  z-index: 100;
+  top: 5rem;
+  left: 0;
+  height: 3.5rem;
+  width: 100%;
+  display: flex;
+  .nav__el {
+    @extend %text--center;
+    cursor: pointer;
+    font-weight: 700;
+    color: #3e3e45;
+    font-size: 1rem;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    max-width: 50%;
+    i {
+      margin-left: 0.75em;
+    }
+  }
+  .nav__title {
+    max-width: 85%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .nav__list {
+    visibility: hidden;
+    opacity: 0;
+    z-index: 0;
+    background: #f5f5f5;
+    position: absolute;
+    top: 100%;
+    padding: 2rem 0.75rem;
+    font-size: 1rem;
+    width: calc(100vw - 1.5rem);
+    box-shadow: 0 60px 20px 0px rgba(213, 213, 213, 0.3);
+    transition: all 0.2s ease-in-out;
+    overflow: auto;
+    max-height: calc(100vh - 11rem);
+    &.showed {
+      visibility: visible;
+      opacity: 1;
+      z-index: 10;
+      transition: all 0.2s ease-in-out;
+    }
+    &--left {
+      left: 0;
+    }
+    &--right {
+      left: -100%;
+    }
+  }
+  .cards {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    .card {
+      @extend %text--center;
+      font-weight: 700;
+      font-size: 1.25em;
+      color: #67676e;
+      padding: 1.5em 0;
+      width: 100%;
+      cursor: pointer;
+      &:not(:last-child) {
+        border-bottom: 1px solid rgba(213, 213, 213, 0.6);
+      }
+    }
+  }
+  .place {
+    box-shadow: none;
+    justify-content: space-between;
+    position: relative;
+    .place__select {
+      padding: 0.5em 0;
+    }
+    &:not(:hover) {
+      background: transparent;
+    }
+    &:not(:last-of-type) {
+      &::after {
+        content: "";
+        position: absolute;
+        top: calc(100% + 0.5rem);
+        width: calc(100% - 2rem);
+        height: 1px;
+        background: rgba(213, 213, 213, 0.6);
+      }
     }
   }
 }

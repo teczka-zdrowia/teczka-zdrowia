@@ -6,7 +6,10 @@
       v-for="(item, index) in this.$store.getters.userAppointments"
     />
     <router-link to="/Appointments" class="appointments__more" v-if="showMore">
-      <MainBtn>Pokaż więcej</MainBtn>
+      <MainBtn>
+        Pokaż więcej
+        <i class="fas fa-long-arrow-alt-right"></i>
+      </MainBtn>
     </router-link>
   </div>
 </template>
@@ -24,7 +27,7 @@ export default {
     },
     showMore: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   components: {
@@ -51,6 +54,9 @@ export default {
     box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
     background: #eeeef3 !important;
     color: #6a6ee1 !important;
+  }
+  i {
+    margin-left: 0.75rem;
   }
 }
 </style>

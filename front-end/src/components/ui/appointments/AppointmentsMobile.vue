@@ -6,7 +6,10 @@
       :data="item"
     />
     <router-link to="/Appointments" v-if="showMore">
-      <MainBtn class="appointments__more">Pokaż więcej</MainBtn>
+      <MainBtn class="appointments__more">
+        Pokaż więcej
+        <i class="fas fa-long-arrow-alt-right"></i>
+      </MainBtn>
     </router-link>
   </div>
 </template>
@@ -20,7 +23,7 @@ export default {
   props: {
     showMore: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   components: {
@@ -133,6 +136,9 @@ export default {
   color: #6a6ee1 !important;
   width: 100% !important;
   height: 3em !important;
+  i {
+    margin-left: 0.75rem;
+  }
 }
 
 @media only screen and (max-width: 650px) {

@@ -1,6 +1,14 @@
 <template>
   <div class="appointment">
-    <MainUserInfo class="list__info__el" :name="data.doctor.name" :img="data.doctor.img" :phone="data.doctor.phone" :isBig="true" :isBigPhone="true" :userId="1"/>
+    <MainUserInfo
+      class="list__info__el"
+      :name="data.doctor.name"
+      :img="data.doctor.img"
+      :phone="data.doctor.phone"
+      :isBig="true"
+      :isBigPhone="true"
+      :userId="1"
+    />
     <div class="appointment__content">
       <div class="content__el">
         <i class="fas fa-map-marker-alt"></i>
@@ -59,26 +67,11 @@ export default {
 @import "../../../main";
 
 .appointment {
-  padding: 1em;
+  padding: 1rem;
   border-radius: 0.5em;
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
   background: #fff;
-  width: 100%;
-  &:not(:last-child) {
-    margin-right: 1em;
-  }
-}
-
-.appointments__more {
-  width: 100%;
-  button {
-    width: 100%;
-    padding: 1em;
-    border-radius: 0.5em;
-    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
-    background: #eeeef3 !important;
-    color: #6a6ee1 !important;
-  }
+  width: calc(100% - 2rem);
 }
 
 .appointment__content {

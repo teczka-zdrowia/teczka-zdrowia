@@ -48,6 +48,12 @@
       :data="item"
       :showAddedBy="true"
     />
+    <div class="appointments__bottom">
+      <div class="appointments__more">
+        Pokaż więcej
+        <i class="fas fa-arrow-down"></i>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -117,6 +123,33 @@ export default {
     &:first-child {
       margin-right: 1em;
     }
+  }
+}
+
+.appointments__bottom {
+  margin-top: 0.5em;
+  height: 3em;
+  display: flex;
+  justify-content: center;
+}
+
+.appointments__more {
+  @extend %text--center;
+  border: 0;
+  transition: 0.2s ease-in-out;
+  border-radius: 0.5em;
+  border-radius: 0.25em;
+  padding: 0.5em 1.5em;
+  background: none;
+  color: #1a1b37;
+  font-weight: 600;
+  background: #fafafc;
+  cursor: pointer;
+  &:hover {
+    background: #ffffff;
+  }
+  i {
+    margin-left: 0.75em;
   }
 }
 

@@ -2,7 +2,7 @@
   <div class="search">
     <slot class="input" name="input"></slot>
     <div class="icon">
-        <i class="fas fa-filter"></i>
+      <i class="fas fa-filter"></i>
     </div>
     <slot class="select" name="select"></slot>
   </div>
@@ -70,6 +70,7 @@ export default {
   background: #e4e4ec;
   border-radius: 0.5rem;
   transition: all 0.2s ease-in-out;
+  box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
   label {
     display: flex;
     justify-content: space-between;
