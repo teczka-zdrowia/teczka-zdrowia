@@ -4,14 +4,15 @@
       <div class="column">
         <Block class="prescriptions" title="Obecne zalecenia">
           <MainPrescription
-          v-for="prescription in userPrescriptions"
-          :key="prescription.id"
-          :prescriptionId="prescription.id"
-          :title="prescription.title"
-          :info="prescription.info"
-          :days="prescription.days"
-          :showCancelBtn="true"
-          :isTimeleft="true"/>
+            v-for="prescription in userPrescriptions"
+            :key="prescription.id"
+            :prescriptionId="prescription.id"
+            :title="prescription.title"
+            :info="prescription.info"
+            :days="prescription.days"
+            :showCancelBtn="true"
+            :isTimeleft="true"
+          />
         </Block>
       </div>
       <Map v-if="!isMobile"/>
@@ -219,9 +220,6 @@ export default {
   }
   .prescriptions {
     min-height: unset;
-  }
-  .appointments {
-    width: calc(100% - 3rem);
   }
 }
 </style>
