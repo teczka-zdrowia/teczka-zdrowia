@@ -1,5 +1,8 @@
 <template>
-  <div class="vdpComponent" v-bind:class="{vdpWithInput: hasInputElement}">
+  <div
+    class="vdpComponent"
+    v-bind:class="{vdpWithInput: hasInputElement}"
+  >
     <input
       v-if="hasInputElement"
       type="text"
@@ -59,7 +62,11 @@
                   type="button"
                 >{{ currentPeriod.year }}</button>
                 <select v-model="currentPeriod.year">
-                  <option v-for="year in yearRange" v-bind:value="year" v-bind:key="year">{{ year }}</option>
+                  <option
+                    v-for="year in yearRange"
+                    v-bind:value="year"
+                    v-bind:key="year"
+                  >{{ year }}</option>
                 </select>
               </div>
             </div>
@@ -67,7 +74,11 @@
           <table class="vdpTable">
             <thead>
               <tr>
-                <th class="vdpHeadCell" v-for="weekday in weekdays" v-bind:key="weekday">
+                <th
+                  class="vdpHeadCell"
+                  v-for="weekday in weekdays"
+                  v-bind:key="weekday"
+                >
                   <span class="vdpHeadCellContent">{{weekday}}</span>
                 </th>
               </tr>
@@ -101,7 +112,10 @@
               </tr>
             </tbody>
           </table>
-          <div v-if="pickTime && currentTime" class="vdpTimeControls">
+          <div
+            v-if="pickTime && currentTime"
+            class="vdpTimeControls"
+          >
             <span class="vdpTimeCaption">{{ setTimeCaption }}</span>
             <div class="vdpTimeUnit">
               <pre><span>{{ currentTime.hoursPadded }}</span><br></pre>
@@ -113,8 +127,14 @@
                 v-bind:value="currentTime.hoursPadded"
               >
             </div>
-            <span v-if="pickMinutes" class="vdpTimeSeparator">:</span>
-            <div v-if="pickMinutes" class="vdpTimeUnit">
+            <span
+              v-if="pickMinutes"
+              class="vdpTimeSeparator"
+            >:</span>
+            <div
+              v-if="pickMinutes"
+              class="vdpTimeUnit"
+            >
               <pre><span>{{ currentTime.minutesPadded }}</span><br></pre>
               <input
                 v-if="pickMinutes"
@@ -125,8 +145,14 @@
                 v-bind:value="currentTime.minutesPadded"
               >
             </div>
-            <span v-if="pickSeconds" class="vdpTimeSeparator">:</span>
-            <div v-if="pickSeconds" class="vdpTimeUnit">
+            <span
+              v-if="pickSeconds"
+              class="vdpTimeSeparator"
+            >:</span>
+            <div
+              v-if="pickSeconds"
+              class="vdpTimeUnit"
+            >
               <pre><span>{{ currentTime.secondsPadded }}</span><br></pre>
               <input
                 v-if="pickSeconds"
@@ -976,8 +1002,8 @@ $vdpColor: #7485c2 !default;
 }
 
 .vdpCell.highlighted .vdpCellContent {
-  color: #fff;
-  background: #6a6de1cc;
+  color: #67676e;
+  background: #eeeef3;
   border-radius: 0.5em;
 }
 
@@ -1074,7 +1100,7 @@ $vdpColor: #7485c2 !default;
 }
 
 .vdpHeader {
-  border-radius: 0.5em;
+  border-radius: 0;
   overflow: hidden;
   .vdpPeriodControl button {
     font-weight: 600;
@@ -1084,13 +1110,13 @@ $vdpColor: #7485c2 !default;
 
 .vdpInnerWrap {
   width: 100%;
-  border: 0;
   background: #fafafc;
   font-weight: 600;
   box-shadow: none;
   -webkit-box-shadow: none;
   box-shadow: none;
   border: 0;
+  border-radius: 0;
 }
 
 .vdpCell.today {

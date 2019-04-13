@@ -1,14 +1,17 @@
 <template>
   <div id="app">
     <div v-if="isValid && isValidRoute">
-      <AppSidebar v-if="this.$store.getters.window.width > 959"/>
-      <AppSidebarMobile v-if="this.$store.getters.window.width < 960"/>
-      <AppHeader v-if="this.$store.getters.window.width > 959"/>
-      <AppHeaderMobile v-if="this.$store.getters.window.width < 960"/>
+      <AppSidebar v-if="!isMobile" />
+      <AppSidebarMobile v-if="isMobile" />
+      <AppHeader v-if="!isMobile" />
+      <AppHeaderMobile v-if="isMobile" />
 
-      <router-view class="app__router" v-bind:class="{ 'app--absolute' : isRouteMap }"></router-view>
+      <router-view
+        class="app__router"
+        v-bind:class="{ 'app--absolute' : isRouteMap }"
+      ></router-view>
     </div>
-    <router-view v-else/>
+    <router-view v-else />
   </div>
 </template>
 
@@ -30,7 +33,7 @@ export default {
   },
   computed: {
     isValid: function() {
-      return this.$store.getters.userInfo.isValid;
+      return this.$store.getters["userInfo/isValid"];
     },
     isValidRoute: function() {
       const paths = ["/", "/Auth", "/Terms", "/dTm6Gz", "/404"];
@@ -38,10 +41,14 @@ export default {
     },
     isRouteMap: function() {
       return this.$route.path == "/Map";
+    },
+    isMobile: function() {
+      return this.$store.getters["window/isMobile"];
     }
   },
   created() {
-    this.$store.dispatch("updateWindowWidthAndHeight", {
+    console.log(this.$store);
+    this.$store.dispatch("window/updateWidthAndHeight", {
       width: window.innerWidth,
       height: window.innerHeight
     });
@@ -52,7 +59,7 @@ export default {
     }
 
     window.onresize = () => {
-      this.$store.dispatch("updateWindowWidthAndHeight", {
+      this.$store.dispatch("window/updateWidthAndHeight", {
         width: window.innerWidth,
         height: window.innerHeight
       });

@@ -1,16 +1,34 @@
 <template>
   <div class="places">
-    <div class="places__nav--mobile" v-if="isMobile">
-      <div class="nav__el" v-on:click="placesShowed = !placesShowed; cardsShowed = false">
-        <div class="nav__title" v-if="!selectedPlace">Gabinet</div>
-        <div class="nav__title" v-else>{{ selectedPlace.name }}</div>
-        <i class="fas" v-bind:class="[ placesShowed ? 'fa-angle-up' : 'fa-angle-down' ]"></i>
-        <div class="nav__list nav__list--left" v-bind:class="{ showed : placesShowed }">
+    <div
+      class="places__nav--mobile"
+      v-if="isMobile"
+    >
+      <div
+        class="nav__el"
+        v-on:click="placesShowed = !placesShowed; cardsShowed = false"
+      >
+        <div
+          class="nav__title"
+          v-if="!selectedPlace"
+        >Gabinet</div>
+        <div
+          class="nav__title"
+          v-else
+        >{{ selectedPlace.name }}</div>
+        <i
+          class="fas"
+          v-bind:class="[ placesShowed ? 'fa-angle-up' : 'fa-angle-down' ]"
+        ></i>
+        <div
+          class="nav__list nav__list--left"
+          v-bind:class="{ showed : placesShowed }"
+        >
           <div class="places">
             <div
               class="place"
               :key="index"
-              v-for="(place, index) in this.$store.getters.userPlaces"
+              v-for="(place, index) in userPlaces"
               v-bind:class="{ 'disabled' : !place.isActive }"
               v-on:click="selectPlace(place.id)"
             >
@@ -40,13 +58,19 @@
         v-if="selectedPlace"
         v-on:click="cardsShowed = !cardsShowed; placesShowed = false"
       >
-        <div class="nav__title" v-if="selectedPlace">{{ cards[selectedCard] }}</div>
+        <div
+          class="nav__title"
+          v-if="selectedPlace"
+        >{{ cards[selectedCard] }}</div>
         <i
           class="fas"
           v-if="selectedCard"
           v-bind:class="[ cardsShowed ? 'fa-angle-up' : 'fa-angle-down' ]"
         ></i>
-        <div class="nav__list nav__list--right" v-bind:class="{ showed : cardsShowed }">
+        <div
+          class="nav__list nav__list--right"
+          v-bind:class="{ showed : cardsShowed }"
+        >
           <div class="cards">
             <div
               class="card"
@@ -68,15 +92,21 @@
         </div>
       </div>
     </div>
-    <div class="row" v-bind:class="{ 'block--blur' : placesShowed || cardsShowed }">
-      <div class="places__list" v-if="!isMobile">
+    <div
+      class="row"
+      v-bind:class="{ 'block--blur' : placesShowed || cardsShowed }"
+    >
+      <div
+        class="places__list"
+        v-if="!isMobile"
+      >
         <div>
           <div class="places__title">Moje gabinety</div>
           <div class="places">
             <div
               class="place"
               :key="index"
-              v-for="(place, index) in this.$store.getters.userPlaces"
+              v-for="(place, index) in userPlaces"
               v-bind:class="{ 'disabled' : !place.isActive, 'selected' : place == selectedPlace }"
             >
               <i class="fas fa-briefcase place__icon"></i>
@@ -103,9 +133,18 @@
         </div>
       </div>
       <div class="places__actions">
-        <div v-if="!selectedCard" class="places__info">Wybierz gabinet</div>
-        <div v-if="selectedCard" class="actions__content">
-          <div class="actions__top" v-if="!isMobile">
+        <div
+          v-if="!selectedCard"
+          class="places__info"
+        >Wybierz gabinet</div>
+        <div
+          v-if="selectedCard"
+          class="actions__content"
+        >
+          <div
+            class="actions__top"
+            v-if="!isMobile"
+          >
             <div
               class="actions__top__el"
               v-on:click="selectedCard = 1"
@@ -123,9 +162,9 @@
               v-if="selectedPlace.isAdmin"
             >Administracja</div>
           </div>
-          <Timetable v-if="selectedCard == 1"/>
-          <Patients v-if="selectedCard == 2"/>
-          <Management v-if="selectedCard == 3"/>
+          <Timetable v-if="selectedCard == 1" />
+          <Patients v-if="selectedCard == 2" />
+          <Management v-if="selectedCard == 3" />
         </div>
       </div>
     </div>
@@ -163,22 +202,25 @@ export default {
   },
   methods: {
     selectPlace: function(id) {
-      this.$store.dispatch("setSelectedPlace", id);
+      this.$store.dispatch("userPlaces/setSelected", id);
 
       this.selectedCard = 1;
     }
   },
   computed: {
+    userPlaces: function() {
+      return this.$store.getters["userPlaces/list"];
+    },
     selectedPlace: function() {
-      return this.$store.getters.selectedPlace;
+      return this.$store.getters["userPlaces/selected"];
     },
     isMobile: function() {
-      return this.$store.getters.window.width < 960;
+      return this.$store.getters["window/isMobile"];
     }
   },
   watch: {
     $route(to, from) {
-      this.$store.dispatch("setSelectedPlace", false);
+      this.$store.dispatch("userPlaces/setSelected", false);
     }
   }
 };

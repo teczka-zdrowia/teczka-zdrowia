@@ -173,8 +173,8 @@ export default {
 
 .login__remember {
   display: flex;
-  input {
-    display: none;
+  & > input {
+    display: none !important;
   }
   .checkbox--login__remember {
     height: 1em;

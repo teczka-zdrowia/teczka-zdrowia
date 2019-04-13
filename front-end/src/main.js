@@ -4,8 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Toasted from 'vue-toasted'
-import { store } from './store/store'
-import { api } from './api/api'
+import { store } from './store'
+import { api } from './api'
 
 Vue.use(Toasted, {
   iconPack: 'fontawesome',

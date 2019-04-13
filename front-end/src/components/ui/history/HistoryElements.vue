@@ -1,7 +1,7 @@
 <template>
   <div class="history__list">
     <HistoryElement
-      v-for="(item, index) in this.$store.getters.userHistory"
+      v-for="(item, index) in userHistory"
       :key="index"
       :data="item"
     />
@@ -21,6 +21,11 @@ export default {
   name: "HistoryElements",
   components: {
     HistoryElement
+  },
+  computed: {
+    userHistory: function() {
+      return this.$store.getters["userHistory/all"];
+    }
   }
 };
 </script>

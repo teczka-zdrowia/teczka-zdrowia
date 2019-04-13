@@ -2,47 +2,60 @@
   <div>
     <div class="list__el">
       <div class="list__info">
-        <MainUserInfo class="list__info__el" :name="data.doctor.name" :img="data.doctor.img" :phone="data.doctor.phone" :isBig="true" :userId="1"/>
+        <MainUserInfo
+          class="list__info__el"
+          :name="data.doctor.name"
+          :img="data.doctor.img"
+          :phone="data.doctor.phone"
+          :isBig="true"
+          :userId="1"
+        />
         <div class="list__info__el list__info__el--column">
           <div class="list__info__el list__info__el--date">25.10.2019</div>
           <div class="list__info__el--line"></div>
           <div class="list__info__el list__info__el--place">MedMax Warszawa</div>
         </div>
       </div>
-      <div class="list__more" v-on:click="data.isOpened = !data.isOpened">
+      <div
+        class="list__more"
+        v-on:click="data.isOpened = !data.isOpened"
+      >
         <div class="list__btn">
-          <i class="fas" v-bind:class="[data.isOpened ? 'fa-angle-up' : 'fa-angle-down']"></i>
+          <i
+            class="fas"
+            v-bind:class="[data.isOpened ? 'fa-angle-up' : 'fa-angle-down']"
+          ></i>
         </div>
       </div>
     </div>
-    <div class="more__container" v-if="data.isOpened"> 
+    <div
+      class="more__container"
+      v-if="data.isOpened"
+    >
       <div class="more__content">
         <div class="more__column more__column--left">
           <div class="more__row">
             <div class="more__row__title">Notatka</div>
-            <div
-              class="more__row__text"
-            >Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero.</div>
+            <div class="more__row__text">Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero.</div>
           </div>
           <div class="more__row">
             <div class="more__row__title">Zabiegi</div>
-            <div
-              class="more__row__text"
-            >Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.</div>
+            <div class="more__row__text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.</div>
           </div>
         </div>
         <div class="more__column more__column--right">
           <div class="more__row">
             <div class="more__row__title">Zalecenia</div>
             <MainPrescription
-            v-for="prescription in userPrescriptions"
-            :key="prescription.id"
-            :prescriptionId="prescription.id"
-            :title="prescription.title"
-            :info="prescription.info"
-            :days="prescription.days"
-            :showCancelBtn="false"
-            :isTimeleft="false"/>
+              v-for="prescription in userPrescriptions"
+              :key="prescription.id"
+              :prescriptionId="prescription.id"
+              :title="prescription.title"
+              :info="prescription.info"
+              :days="prescription.days"
+              :showCancelBtn="false"
+              :isTimeleft="false"
+            />
           </div>
           <div class="more__row">
             <div class="more__row__title">Załączniki</div>
@@ -90,7 +103,7 @@ export default {
   },
   computed: {
     userPrescriptions: function() {
-      return this.$store.getters.userPrescriptions;
+      return this.$store.getters["userPrescriptions/active"];
     }
   }
 };

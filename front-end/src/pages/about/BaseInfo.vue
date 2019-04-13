@@ -3,16 +3,40 @@
     <div class="base__top">
       <div class="user__img">
         <img :src="this.$store.getters.userInfo.img">
-        <div class="img__edit" v-if="isEdit">
+        <div
+          class="img__edit"
+          v-if="isEdit"
+        >
           <i class="fas fa-camera"></i>
         </div>
       </div>
-      <div class="user__name" v-if="!isEdit">{{data.name}} {{data.surname}}</div>
-      <div class="user__name" v-if="isEdit">
-        <input type="text" name="name" v-model="newData.name" placeholder="Jan" required>
-        <input type="text" name="surname" v-model="newData.surname" placeholder="Kowalski" required>
+      <div
+        class="user__name"
+        v-if="!isEdit"
+      >{{data.name}} {{data.surname}}</div>
+      <div
+        class="user__name"
+        v-if="isEdit"
+      >
+        <input
+          type="text"
+          name="name"
+          v-model="newData.name"
+          placeholder="Jan"
+          required
+        >
+        <input
+          type="text"
+          name="surname"
+          v-model="newData.surname"
+          placeholder="Kowalski"
+          required
+        >
       </div>
-      <div class="user__specialization" v-if="!isEdit">{{ this.$store.getters.userInfo.spec }}</div>
+      <div
+        class="user__specialization"
+        v-if="!isEdit"
+      >{{ this.$store.getters.userInfo.spec }}</div>
       <input
         v-if="isEdit"
         class="user__specialization"
@@ -22,7 +46,10 @@
         v-model="newData.spec"
         placeholder="Fizjoterapeuta"
       >
-      <div class="more__actions" v-if="this.$store.getters.window.width > 960">
+      <div
+        class="more__actions"
+        v-if="this.$store.getters.window.width > 960"
+      >
         <MainBtn
           class="more__action more__action--edit"
           v-on:click.native="isEdit = true"
@@ -52,15 +79,24 @@
           <i class="fas fa-birthday-cake"></i>
           <span>Urodziny</span>
         </div>
-        <div class="more__content" v-if="!isEdit">{{ userBirthdate }} ({{ userAge }} lat)</div>
-        <div class="more__content more__content--fullcolor" v-if="isEdit">Na podstawie PESEL</div>
+        <div
+          class="more__content"
+          v-if="!isEdit"
+        >{{ userBirthdate }} ({{ userAge }} lat)</div>
+        <div
+          class="more__content more__content--fullcolor"
+          v-if="isEdit"
+        >Na podstawie PESEL</div>
       </div>
       <div class="more__el">
         <div class="more__title">
           <i class="fas fa-at"></i>
           <span>Email</span>
         </div>
-        <div class="more__content" v-if="!isEdit">{{ data.email }}</div>
+        <div
+          class="more__content"
+          v-if="!isEdit"
+        >{{ data.email }}</div>
         <input
           v-if="isEdit"
           class="more__content"
@@ -76,7 +112,10 @@
           <i class="fas fa-phone"></i>
           <span>Telefon</span>
         </div>
-        <div class="more__content" v-if="!isEdit">{{ userPhone }}</div>
+        <div
+          class="more__content"
+          v-if="!isEdit"
+        >{{ userPhone }}</div>
         <input
           v-if="isEdit"
           class="more__content"
@@ -94,7 +133,10 @@
           <i class="fas fa-id-card-alt"></i>
           <span>PESEL</span>
         </div>
-        <div class="more__content" v-if="isPESEL && !isEdit">{{ data.pesel }}</div>
+        <div
+          class="more__content"
+          v-if="isPESEL && !isEdit"
+        >{{ data.pesel }}</div>
         <div
           class="more__content more__pesel"
           v-if="!isPESEL && !isEdit"
@@ -110,7 +152,10 @@
           required
         >
       </div>
-      <div class="more__actions" v-if="this.$store.getters.window.width < 960">
+      <div
+        class="more__actions"
+        v-if="this.$store.getters.window.width < 960"
+      >
         <MainBtn
           class="more__action more__action--edit"
           v-on:click.native="isEdit = true"
@@ -143,7 +188,7 @@
 <script>
 import MainBtn from "../../components/ui/basic/MainBtn";
 
-let moment = require("moment");
+const moment = require("moment");
 moment.locale("pl");
 
 export default {

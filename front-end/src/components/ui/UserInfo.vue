@@ -1,18 +1,23 @@
 <template>
   <div>
-    <div class="info" v-on:click="isShowed = !isShowed">
-      <img :src="this.$store.getters.userInfo.img">
+    <div
+      class="info"
+      v-on:click="isShowed = !isShowed"
+    >
+      <img :src="this.$store.getters['userInfo/image']">
       <div class="info__content">
         <div class="info__name">
           <p>
-            {{ this.$store.getters.userInfo.name }}
-            {{ this.$store.getters.userInfo.surname }}
+            {{ this.$store.getters['userInfo/fullName'] }}
           </p>
           <button class="info__btn">
-            <i class="fas" v-bind:class="[isShowed ? 'fa-angle-up' : 'fa-angle-down']"></i>
+            <i
+              class="fas"
+              v-bind:class="[isShowed ? 'fa-angle-up' : 'fa-angle-down']"
+            ></i>
           </button>
         </div>
-        <div class="info__specialization">{{ this.$store.getters.userInfo.spec }}</div>
+        <div class="info__specialization">{{ this.$store.getters['userInfo/specialization'] }}</div>
       </div>
     </div>
     <div class="wrapper">
@@ -20,15 +25,25 @@
         class="info__menu"
         v-bind:style="[isShowed ? {'visibility': 'visible', 'opacity': 1, 'z-index': 99999999} : {'visibility': 'hidden', 'opacity': 0, 'z-index': 0}]"
       >
-        <router-link to="/About" class="menu__el" v-on:click.native="isShowed = !isShowed">
+        <router-link
+          to="/About"
+          class="menu__el"
+          v-on:click.native="isShowed = !isShowed"
+        >
           <i class="fas fa-user"></i>
           <div class="menu__title">Profil</div>
         </router-link>
-        <div class="menu__el" v-on:click.native="isShowed = !isShowed">
+        <div
+          class="menu__el"
+          v-on:click.native="isShowed = !isShowed"
+        >
           <i class="fas fa-cog"></i>
           <div class="menu__title">Ustawienia</div>
         </div>
-        <div class="menu__el" v-on:click.native="logout; isShowed = !isShowed">
+        <div
+          class="menu__el"
+          v-on:click.native="logout; isShowed = !isShowed"
+        >
           <i class="fas fa-sign-out-alt"></i>
           <div class="menu__title">Wyloguj</div>
         </div>

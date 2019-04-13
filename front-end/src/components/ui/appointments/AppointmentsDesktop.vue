@@ -3,9 +3,13 @@
     <AppointmentDesktop
       :key="index"
       :data="item"
-      v-for="(item, index) in this.$store.getters.userAppointments"
+      v-for="(item, index) in userAppointments"
     />
-    <router-link to="/Appointments" class="appointments__more" v-if="showMore">
+    <router-link
+      to="/Appointments"
+      class="appointments__more"
+      v-if="showMore"
+    >
       <MainBtn>
         Pokaż więcej
         <i class="fas fa-long-arrow-alt-right"></i>
@@ -37,6 +41,11 @@ export default {
   methods: {
     updateAcceptation: function(val) {
       //TO DO
+    }
+  },
+  computed: {
+    userAppointments: function() {
+      return this.$store.getters["userAppointments/all"];
     }
   }
 };

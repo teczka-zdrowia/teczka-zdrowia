@@ -2,7 +2,10 @@
   <div class="dashboard">
     <div class="row">
       <div class="column">
-        <Block class="prescriptions" title="Obecne zalecenia">
+        <Block
+          class="prescriptions"
+          title="Obecne zalecenia"
+        >
           <MainPrescription
             v-for="prescription in userPrescriptions"
             :key="prescription.id"
@@ -15,12 +18,18 @@
           />
         </Block>
       </div>
-      <Map v-if="!isMobile"/>
+      <Map v-if="!isMobile" />
     </div>
     <div class="row">
       <!--<Block class="messages" title="Ostatnie wiadomości"> <a class="message" href="#"> <img class="message__img" src="https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/" > <div class="message__name">Jan Iksiński</div> <div class="message__last">Dzień dobry</div> <div class="message__hour">18:00</div> </a> <a class="message" href="#"> <img class="message__img" src="https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/" > <div class="message__name">Jan Iksiński</div> <div class="message__last">Dzień dobry</div> <div class="message__hour">18:00</div> </a> <a class="message" href="#"> <img class="message__img" src="https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/" > <div class="message__name">Jan Iksiński</div> <div class="message__last">Dzień dobry</div> <div class="message__hour">18:00</div> </a> <div class="message--last">Więcej</div> </Block>-->
-      <Block class="appointments" title="Najbliższe wizyty">
-        <AppointmentsBox :showActions="false" :showMore="true"/>
+      <Block
+        class="appointments"
+        title="Najbliższe wizyty"
+      >
+        <AppointmentsBox
+          :showActions="false"
+          :showMore="true"
+        />
       </Block>
     </div>
   </div>
@@ -55,10 +64,10 @@ export default {
   },
   computed: {
     isMobile: function() {
-      return this.$store.getters.window.width < 960;
+      return this.$store.getters["window/isMobile"];
     },
     userPrescriptions: function() {
-      return this.$store.getters.userPrescriptions;
+      return this.$store.getters["userPrescriptions/active"];
     }
   }
 };

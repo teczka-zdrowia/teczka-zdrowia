@@ -1,44 +1,16 @@
 <template>
   <div class="panel">
     <div class="row">
-      <div class="column basic" v-if="this.$store.getters.window.width > 1399">
-        <div class="calendar__title">Kalendarz</div>
+      <div class="column">
         <Block class="calendar">
-          <Calendar></Calendar>
+          <div class="calendar__title">Kalendarz</div>
+          <Calendar />
         </Block>
+        <Patients />
       </div>
       <div class="appointments">
-        <div class="appointments__top">
-          <div class="appointments__title">Wizyty</div>
-          <div class="appointments__types" v-if="this.$store.getters.window.width > 799">
-            <MainBtn
-              v-on:click.native="showUpcoming = true"
-              v-bind:class="[showUpcoming ? 'active' : '']"
-            >Nadchodzące</MainBtn>
-            <MainBtn
-              v-on:click.native="showUpcoming = false"
-              v-bind:class="[!showUpcoming ? 'active' : '']"
-            >Minione</MainBtn>
-          </div>
-          <div class="appointments__sort" v-if="this.$store.getters.window.width > 799">
-            <div class="sort__title">Sortuj przez:</div>
-            <select class="sort__select">
-              <option selected>Data</option>
-              <option>Specjalista</option>
-              <option>Gabinet</option>
-              <option>Opis</option>
-            </select>
-          </div>
-          <MainBtn class="actions__options--violet" v-if="this.$store.getters.window.width < 799">
-            <i class="fas fa-calendar-alt"></i>
-          </MainBtn>
-          <MainBtn class="actions__options" v-if="this.$store.getters.window.width < 799">
-            <i class="fas fa-cog"></i>
-          </MainBtn>
-        </div>
-        <div class="appointemtns__content">
-          <Appointments></Appointments>
-        </div>
+        <Places />
+        <Appointments />
       </div>
     </div>
   </div>
@@ -46,41 +18,25 @@
 
 <script>
 import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
-import VioletBlock from "../../components/ui/blocks/VioletBlock";
-import MainBtn from "../../components/ui/basic/MainBtn";
-import Appointments from "./Appointments";
 import Calendar from "./Calendar";
-
-var parser = require("xml-js");
+import Appointments from "./Appointments";
+import Patients from "./Patients";
+import Places from "./Places";
 
 export default {
-  name: "Dashboard",
+  name: "Panel",
   components: {
     Block: WhiteFunctionalBlock,
-    VioletBlock: VioletBlock,
-    MainBtn: MainBtn,
+    Calendar,
     Appointments,
-    Calendar
-  },
-  data: function() {
-    return {
-      date: "2019-01-01",
-      showUpcoming: true
-    };
+    Patients,
+    Places
   }
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../../main";
-
-.panel__title {
-  color: #3e3e45;
-  font-weight: 600;
-  width: 100%;
-  font-size: 1.5em;
-  margin-bottom: 1em;
-}
 
 .row {
   margin-bottom: 1em;
@@ -90,155 +46,24 @@ export default {
   &:last-child {
     margin-bottom: 3em;
   }
-  .column {
-    display: block;
-    position: relative;
-  }
 }
 
-.basic {
-  width: 25%;
+.calendar {
+  padding: 0 !important;
+  width: auto;
+  max-width: 22rem;
+  display: table;
 }
 
 .calendar__title {
   color: #3e3e45;
-  font-weight: 600;
-  width: 100%;
+  font-weight: 700;
+  width: calc(100% - 3rem);
   font-size: 1.5em;
-  margin-bottom: 1em;
-  height: 2rem;
-}
-
-.calendar {
-  padding: 0em !important;
-  background: transparent !important;
+  padding: 1.5rem;
 }
 
 .appointments {
-  display: block;
-  position: relative;
-  width: calc(75% - 1em);
-}
-
-.appointments__top {
-  @extend %text--center;
-  justify-content: space-between;
-  margin-bottom: 1em;
-  font-weight: 600;
-  height: 2.5em;
-}
-
-.appointments__title {
-  color: #3e3e45;
-  font-size: 1.5em;
-  margin-right: 1.5em;
-}
-
-.appointments__types {
-  display: flex;
-  height: 100%;
-  button {
-    background: #ededff;
-    color: #6a6ee1;
-    border-radius: 0.5em;
-    &:hover {
-      color: $primrary-light;
-      background: $darkviolet;
-      background: linear-gradient(to right, $lightviolet, $darkviolet);
-      filter: drop-shadow(0 0 10px $lightgrey);
-    }
-    &:first-child {
-      margin-right: 1em;
-    }
-  }
-  button.active {
-    color: $primrary-light;
-    background: $darkviolet;
-    background: linear-gradient(to right, $lightviolet, $darkviolet);
-    filter: drop-shadow(0 0 10px $lightgrey);
-    transition: 0.2s ease-in-out;
-    background-position: right center;
-  }
-}
-
-.appointments__sort {
-  display: flex;
-  border-radius: 0.5em;
-  overflow: hidden;
-}
-
-.sort__title {
-  @extend %text--center;
-  padding: 0.5em 1em;
-  background: #fafafc;
-  color: #6a6ee1;
-}
-.sort__select {
-  font-weight: 600;
-  padding: 0.5em 1em;
-  color: #fafafc;
-  background: #6a6ee1;
-  background: -webkit-gradient(
-    linear,
-    left top,
-    right top,
-    from(#9394eb),
-    to(#6a6ee1)
-  );
-  background: linear-gradient(to right, #9394eb, #6a6ee1);
-  -webkit-filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
-  filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
-  border: 0;
-  option {
-    font-weight: 600;
-    background: #6a6ee1;
-  }
-}
-
-.actions__options {
-  background: #ededff;
-  color: #6a6ee1;
-  height: 100%;
-  width: 100%;
-  padding: 0;
-  i {
-    margin-right: 0;
-    vertical-align: middle;
-  }
-  &--violet {
-    height: 100%;
-    width: 100%;
-    margin-right: 1em;
-    padding: 0;
-    i {
-      margin-right: 0;
-      vertical-align: middle;
-    }
-  }
-}
-
-@media only screen and (max-width: 1400px) {
-  .appointments {
-    width: 100%;
-  }
-}
-
-@media only screen and (max-width: 800px) and (min-width: 520px) {
-  .actions__options {
-    &:after {
-      content: "Opcje";
-    }
-    i {
-      margin-right: 1em;
-    }
-  }
-  .actions__options--violet {
-    &:after {
-      content: "Kalendarz";
-    }
-    i {
-      margin-right: 1em;
-    }
-  }
+  width: calc(100% - 23rem);
 }
 </style>

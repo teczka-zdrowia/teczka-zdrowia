@@ -1,13 +1,21 @@
 <template>
   <div class="map">
-    <div class="map__content" v-bind:class="{ 'block--blur' : showSearch}">
-      <l-map ref="map" :zoom.sync="zoom" :options="mapOptions" :center="[52.0715018,19.5211664]">
+    <div
+      class="map__content"
+      v-bind:class="{ 'block--blur' : showSearch}"
+    >
+      <l-map
+        ref="map"
+        :zoom.sync="zoom"
+        :options="mapOptions"
+        :center="[52.0715018,19.5211664]"
+      >
         <l-tile-layer :url="url"></l-tile-layer>
-        <l-control-zoom :position="'bottomleft'"/>
+        <l-control-zoom :position="'bottomleft'" />
       </l-map>
     </div>
-    <MapNavMobile v-if="isMobile"/>
-    <MapNav v-else/>
+    <MapNavMobile v-if="isMobile" />
+    <MapNav v-else />
   </div>
 </template>
 
@@ -78,7 +86,7 @@ export default {
   },
   computed: {
     isMobile: function() {
-      return this.$store.getters.window.width < 960;
+      return this.$store.getters["window/isMobile"];
     }
   }
 };

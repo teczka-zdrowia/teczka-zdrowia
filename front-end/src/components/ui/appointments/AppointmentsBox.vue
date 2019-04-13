@@ -1,19 +1,30 @@
 <template>
   <div>
-    <div class="appointments__actions" v-if="showActions">
+    <div
+      class="appointments__actions"
+      v-if="showActions"
+    >
       <div class="appointments__types">
         <MainBtn
           v-on:click.native="showUpcoming = true"
-          v-bind:class="[showUpcoming == true ? 'active' : '']"
+          v-bind:class="{active : showUpcoming}"
         >Nadchodzące</MainBtn>
         <MainBtn
           v-on:click.native="showUpcoming = false"
-          v-bind:class="[showUpcoming == false ? 'active' : '']"
+          v-bind:class="{active : !showUpcoming}"
         >Minione</MainBtn>
       </div>
       <MainSearch class="appointments__right">
-        <input class="input" slot="input" type="text" placeholder="  Szukaj">
-        <div class="select" slot="select">
+        <input
+          class="input"
+          slot="input"
+          type="text"
+          placeholder="  Szukaj"
+        >
+        <div
+          class="select"
+          slot="select"
+        >
           <label>
             Sortuj przez:
             <select>
@@ -38,6 +49,14 @@
               <option>20</option>
             </select>
           </label>
+          <label class="label--highlight">
+            Gabinet:
+            <select>
+              <option selected>Wszystkie</option>
+              <option>Gabinet długonazwowy</option>
+              <option>Lorem ipsum</option>
+            </select>
+          </label>
         </div>
       </MainSearch>
     </div>
@@ -48,7 +67,10 @@
       :showMore="showMore"
       v-if="!isMobile"
     />
-    <AppointmentsMobile :showMore="showMore" v-if="isMobile"/>
+    <AppointmentsMobile
+      :showMore="showMore"
+      v-if="isMobile"
+    />
   </div>
 </template>
 
@@ -84,7 +106,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      if (this.$store.getters.window.width > 960) {
+      if (this.$store.getters["window/isMobile"] > 960) {
         this.maxAppointments = Math.floor(
           this.$refs.appointmentsContent.$el.offsetWidth / 300
         );
@@ -93,7 +115,7 @@ export default {
   },
   computed: {
     isMobile: function() {
-      return this.$store.getters.window.width < 960;
+      return this.$store.getters["window/isMobile"];
     }
   }
 };

@@ -12,8 +12,16 @@
         >Minione</MainBtn>
       </div>
       <MainSearch class="appointments__right">
-        <input class="input" slot="input" type="text" placeholder="  Szukaj">
-        <div class="select" slot="select">
+        <input
+          class="input"
+          slot="input"
+          type="text"
+          placeholder="  Szukaj"
+        >
+        <div
+          class="select"
+          slot="select"
+        >
           <label>
             Sortuj przez:
             <select>
@@ -44,39 +52,40 @@
     <Appointment
       class="appointment"
       :key="index"
-      v-for="(item, index) in this.$store.getters.userAppointments"
+      v-for="(item, index) in userAppointments"
       :data="item"
       :showAddedBy="true"
     />
-    <div class="appointments__bottom">
-      <div class="appointments__more">
-        Pokaż więcej
-        <i class="fas fa-arrow-down"></i>
-      </div>
-    </div>
+    <MainShowMore :isLoading="isLoading" />
   </div>
 </template>
 
 <script>
 import MainBtn from "../../components/ui/basic/MainBtn";
 import MainSearch from "../../components/ui/basic/MainSearch";
+import MainShowMore from "../../components/ui/basic/MainShowMore";
 import AppointmentMobile from "../../components/ui/appointments/AppointmentMobile";
 
 export default {
   name: "AppointmentsMobile",
   data: function() {
     return {
-      showUpcoming: true
+      showUpcoming: true,
+      isLoading: false
     };
   },
   components: {
     Appointment: AppointmentMobile,
     MainSearch,
-    MainBtn
+    MainBtn,
+    MainShowMore
   },
   computed: {
     isMobile: function() {
-      return this.$store.getters.window.width < 960;
+      return this.$store.getters["window/isMobile"];
+    },
+    userAppointments: function() {
+      return this.$store.getters["userAppointments/all"];
     }
   }
 };

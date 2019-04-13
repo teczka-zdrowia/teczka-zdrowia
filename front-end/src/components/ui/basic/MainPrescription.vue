@@ -1,20 +1,31 @@
 <template>
   <div class="prescription">
-      <i class="fas fa-prescription"></i>
-      <div class="prescription__content">
-        <div class="prescription__title">{{ title }}</div>
-        <div class="prescription__info">{{ info }}</div>
+    <i class="fas fa-prescription"></i>
+    <div class="prescription__content">
+      <div class="prescription__title">{{ title }}</div>
+      <div class="prescription__info">{{ info }}</div>
+    </div>
+    <div
+      class="prescription__cancel"
+      title="Zakończ zalecenie"
+      v-if="showCancelBtn"
+      v-on:click="cancelPrescription(prescriptionId)"
+    >
+      <i class="fas fa-times"></i>
+    </div>
+    <div
+      class="prescription__timeleft"
+      v-if="days > 0"
+    >
+      <div v-if="isTimeleft">
+        Pozostało
       </div>
-      <div class="prescription__cancel" title="Zakończ zalecenie" v-if="showCancelBtn" v-on:click="cancelPrescription(prescriptionId)">
-        <i class="fas fa-times"></i>
-      </div>
-      <div class="prescription__timeleft" v-if="days > 0">
-        <div v-if="timeleft">
-            Pozostało
-        </div>
-        <span>{{ days }}</span> dni
-      </div>
-      <div class="prescription__timeleft" v-if="days == 0">Czas nieokreślony</div>
+      <span>{{ days }}</span> dni
+    </div>
+    <div
+      class="prescription__timeleft"
+      v-if="days == 0"
+    >Czas nieokreślony</div>
   </div>
 </template>
 
@@ -33,7 +44,6 @@ export default {
       default: false
     },
     days: {
-      type: Number,
       default: 0
     },
     isTimeleft: {
@@ -45,9 +55,9 @@ export default {
     }
   },
   methods: {
-      cancelPrescription: function (id) {
-          // TODO
-      }
+    cancelPrescription: function(id) {
+      // TODO
+    }
   }
 };
 </script>

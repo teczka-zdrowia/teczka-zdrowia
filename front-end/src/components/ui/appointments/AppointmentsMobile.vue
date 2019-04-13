@@ -1,11 +1,14 @@
 <template>
   <div>
     <AppointmentMobile
-      v-for="(item, index) in this.$store.getters.userAppointments"
+      v-for="(item, index) in userAppointments"
       :key="index"
       :data="item"
     />
-    <router-link to="/Appointments" v-if="showMore">
+    <router-link
+      to="/Appointments"
+      v-if="showMore"
+    >
       <MainBtn class="appointments__more">
         Pokaż więcej
         <i class="fas fa-long-arrow-alt-right"></i>
@@ -29,6 +32,11 @@ export default {
   components: {
     MainBtn,
     AppointmentMobile
+  },
+  computed: {
+    userAppointments: function() {
+      return this.$store.getters["userAppointments/all"];
+    }
   }
 };
 </script>

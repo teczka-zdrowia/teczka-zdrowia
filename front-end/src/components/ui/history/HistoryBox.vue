@@ -1,10 +1,21 @@
 <template>
-  <div class="history" v-if="this.$store.getters.userHistoryCount > 0">
+  <div
+    class="history"
+    v-if="this.$store.getters['userHistory/count'] > 0"
+  >
     <div class="history__top">
       <div class="history__title">Historia</div>
       <MainSearch class="history__right">
-        <input class="input" slot="input" type="text" placeholder="  Szukaj">
-        <div class="select" slot="select">
+        <input
+          class="input"
+          slot="input"
+          type="text"
+          placeholder="  Szukaj"
+        >
+        <div
+          class="select"
+          slot="select"
+        >
           <label>
             Sortuj przez:
             <select>
@@ -27,6 +38,14 @@
               <option selected>5</option>
               <option>10</option>
               <option>20</option>
+            </select>
+          </label>
+          <label class="label--highlight">
+            Gabinet:
+            <select>
+              <option selected>Wszystkie</option>
+              <option>Gabinet długonazwowy</option>
+              <option>Lorem ipsum</option>
             </select>
           </label>
         </div>

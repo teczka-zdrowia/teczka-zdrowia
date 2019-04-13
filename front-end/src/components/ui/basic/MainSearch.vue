@@ -1,10 +1,16 @@
 <template>
   <div class="search">
-    <slot class="input" name="input"></slot>
+    <slot
+      class="input"
+      name="input"
+    ></slot>
     <div class="icon">
       <i class="fas fa-filter"></i>
     </div>
-    <slot class="select" name="select"></slot>
+    <slot
+      class="select"
+      name="select"
+    ></slot>
   </div>
 </template>
 
@@ -86,6 +92,11 @@ export default {
       width: 50%;
       background: #fafafc;
       border: 0;
+    }
+    &.label--highlight {
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      background: #eeeef3;
     }
   }
   &:hover {

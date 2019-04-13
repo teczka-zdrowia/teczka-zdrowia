@@ -8,7 +8,16 @@
       :isClickable="false"
       :userId="1"
     />
-    <div class="appointment__doctor" v-if="showAddedBy">
+    <div
+      class="appointment__place"
+      v-if="showPlace"
+    >
+      {{ data.place }}
+    </div>
+    <div
+      class="appointment__doctor"
+      v-if="showAddedBy"
+    >
       <div class="doctor__title">
         <p>Dodano przez:</p>
       </div>
@@ -40,6 +49,10 @@ export default {
       type: Object
     },
     showAddedBy: {
+      type: Boolean,
+      default: false
+    },
+    showPlace: {
       type: Boolean,
       default: false
     }
@@ -121,6 +134,21 @@ export default {
   }
 }
 
+.appointment__place {
+  @extend %text--center;
+  height: calc(100% - 2rem);
+  width: calc(100% - 2rem);
+  max-width: 10em;
+  margin-left: auto;
+  background: #eeeef3;
+  color: #67676e;
+  padding: 1rem;
+  font-weight: 600;
+  & ~ .appointment__when {
+    margin-left: unset;
+  }
+}
+
 .appointment__doctor {
   height: 100%;
   width: 100%;
@@ -154,6 +182,18 @@ export default {
   width: 100%;
 }
 
+@media only screen and (max-width: 1200px) {
+  .appointment__place {
+    &,
+    & ~ .appointment__when {
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      max-width: unset !important;
+    }
+  }
+}
+
 @media only screen and (max-width: 650px) {
   .appointment {
     display: block;
@@ -168,7 +208,8 @@ export default {
   .user__img {
     height: 3.5em !important;
   }
-  .appointment__doctor {
+  .appointment__doctor,
+  .appointment__place {
     display: flex;
     width: 100%;
     max-width: unset;
@@ -182,6 +223,9 @@ export default {
     p {
       margin: 0.75rem 0;
     }
+  }
+  .appointment__place {
+    padding: 1rem 0;
   }
 }
 </style>

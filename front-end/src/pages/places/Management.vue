@@ -1,13 +1,19 @@
 <template>
   <div class="management">
     <div>
-      <Block class="management__block" title="Ustawienia">
+      <Block
+        class="management__block"
+        title="Ustawienia"
+      >
         <div class="settings">
           <div class="settings__el">
             <div class="settings__title">
               <span>Nazwa</span>
             </div>
-            <div class="settings__content" v-if="!isEdit">{{ data.name }}</div>
+            <div
+              class="settings__content"
+              v-if="!isEdit"
+            >{{ data.name }}</div>
             <input
               v-if="isEdit"
               v-model="newData.name"
@@ -22,7 +28,10 @@
             <div class="settings__title">
               <span>Adres</span>
             </div>
-            <div class="settings__content" v-if="!isEdit">{{ data.address }}</div>
+            <div
+              class="settings__content"
+              v-if="!isEdit"
+            >{{ data.address }}</div>
             <input
               v-if="isEdit"
               v-model="newData.address"
@@ -37,7 +46,10 @@
             <div class="settings__title">
               <span>Miasto</span>
             </div>
-            <div class="settings__content" v-if="!isEdit">{{ data.city }}</div>
+            <div
+              class="settings__content"
+              v-if="!isEdit"
+            >{{ data.city }}</div>
             <input
               v-if="isEdit"
               v-model="newData.city"
@@ -75,11 +87,9 @@
             </MainBtn>
           </div>
           <div class="settings__actions">
-            <MainBtn
-              class="settings__action settings__action--lock"
-            >
+            <MainBtn class="settings__action settings__action--lock">
               <i class="fas fa-lock"></i>
-              Ukryj
+              Zablokuj
             </MainBtn>
             <MainBtn class="settings__action settings__action--delete">
               <i class="far fa-trash-alt"></i>
@@ -88,7 +98,10 @@
           </div>
         </div>
       </Block>
-      <Block class="management__block" title="Statystyki">
+      <Block
+        class="management__block"
+        title="Statystyki"
+      >
         <div class="stats">
           <MainSelect class="stats__select">
             <option selected>Ten tydzień</option>
@@ -120,8 +133,16 @@
           Nowy
         </MainBtn>
         <MainSearch class="workers__search">
-          <input class="input" slot="input" type="text" placeholder="  Szukaj">
-          <div class="select" slot="select">
+          <input
+            class="input"
+            slot="input"
+            type="text"
+            placeholder="  Szukaj"
+          >
+          <div
+            class="select"
+            slot="select"
+          >
             <label>
               Sortuj:
               <select>
@@ -132,12 +153,12 @@
           </div>
         </MainSearch>
       </div>
-      <MainUser :userType="1"/>
-      <MainUser :userType="1"/>
-      <MainUser :userType="2"/>
-      <MainUser :userType="2"/>
-      <MainUser :userType="2"/>
-      <MainUser :userType="2"/>
+      <MainUser :userType="1" />
+      <MainUser :userType="1" />
+      <MainUser :userType="2" />
+      <MainUser :userType="2" />
+      <MainUser :userType="2" />
+      <MainUser :userType="2" />
     </div>
   </div>
 </template>
@@ -166,7 +187,7 @@ export default {
     };
   },
   mounted() {
-    this.data = Object.assign({}, this.$store.getters.selectedPlace);
+    this.data = Object.assign({}, this.$store.getters["userPlaces/selected"]);
   },
   watch: {
     isEdit: function(val) {
