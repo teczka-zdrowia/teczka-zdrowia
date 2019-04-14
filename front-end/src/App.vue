@@ -9,9 +9,10 @@
       <router-view
         class="app__router"
         v-bind:class="{ 'app--absolute' : isRouteMap }"
-      ></router-view>
+      />
     </div>
     <router-view v-else />
+    <Modal />
   </div>
 </template>
 
@@ -20,7 +21,9 @@ import AppHeader from "./components/layout/AppHeader";
 import AppSidebar from "./components/layout/AppSidebar";
 import AppHeaderMobile from "./components/layout/AppHeaderMobile";
 import AppSidebarMobile from "./components/layout/AppSidebarMobile";
-import Auth from "./components/modals/Auth";
+import Modal from "./components/modal";
+
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "App",
@@ -29,41 +32,41 @@ export default {
     AppHeaderMobile,
     AppSidebar,
     AppSidebarMobile,
-    Auth
+    Modal
+  },
+  methods: {
+    ...mapActions({
+      updateWindowWidthAndHeight: "window/updateWidthAndHeight"
+    }),
+    updateWindowDimensions: function() {
+      this.updateWindowWidthAndHeight({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    }
   },
   computed: {
-    isValid: function() {
-      return this.$store.getters["userInfo/isValid"];
-    },
+    ...mapGetters({
+      isValid: "userInfo/isValid",
+      isMobile: "window/isMobile"
+    }),
     isValidRoute: function() {
       const paths = ["/", "/Auth", "/Terms", "/dTm6Gz", "/404"];
       return paths.indexOf(this.$route.path) > -1 ? false : true;
     },
     isRouteMap: function() {
       return this.$route.path == "/Map";
-    },
-    isMobile: function() {
-      return this.$store.getters["window/isMobile"];
     }
   },
   created() {
-    console.log(this.$store);
-    this.$store.dispatch("window/updateWidthAndHeight", {
-      width: window.innerWidth,
-      height: window.innerHeight
-    });
+    this.updateWindowDimensions();
   },
   mounted() {
     if (!this.isValid) {
       this.$router.push("/Auth");
     }
 
-    window.onresize = () => {
-      this.$store.dispatch("window/updateWidthAndHeight", {
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-    };
+    window.onresize = () => this.updateWindowDimensions();
   }
 };
 </script>

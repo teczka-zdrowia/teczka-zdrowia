@@ -24,3 +24,5 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+window.Vue = Vue

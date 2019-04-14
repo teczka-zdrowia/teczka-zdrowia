@@ -2,7 +2,7 @@
   <div class="info--base">
     <div class="base__top">
       <div class="user__img">
-        <img :src="this.$store.getters.userInfo.img">
+        <img :src="data.img">
         <div
           class="img__edit"
           v-if="isEdit"
@@ -36,7 +36,7 @@
       <div
         class="user__specialization"
         v-if="!isEdit"
-      >{{ this.$store.getters.userInfo.spec }}</div>
+      >{{ data.spec }}</div>
       <input
         v-if="isEdit"
         class="user__specialization"
@@ -48,7 +48,7 @@
       >
       <div
         class="more__actions"
-        v-if="this.$store.getters.window.width > 960"
+        v-if="!isMobile"
       >
         <MainBtn
           class="more__action more__action--edit"
@@ -154,7 +154,7 @@
       </div>
       <div
         class="more__actions"
-        v-if="this.$store.getters.window.width < 960"
+        v-if="isMobile"
       >
         <MainBtn
           class="more__action more__action--edit"
@@ -205,7 +205,7 @@ export default {
     };
   },
   mounted() {
-    this.data = Object.assign({}, this.$store.getters.userInfo);
+    this.data = Object.assign({}, this.$store.getters["userInfo/fullInfo"]);
   },
   watch: {
     isEdit: function(val) {
@@ -235,6 +235,9 @@ export default {
       return moment(this.data.birthdate, "YYYY-MM-DD HH:MI:SS").format(
         "DD.MM.YYYY"
       );
+    },
+    isMobile: function() {
+      return this.$store.getters["window/isMobile"];
     }
   }
 };

@@ -9,7 +9,7 @@
           <MainPrescription
             v-for="prescription in userPrescriptions"
             :key="prescription.id"
-            :prescriptionId="prescription.id"
+            :prescriptionID="prescription.id"
             :title="prescription.title"
             :info="prescription.info"
             :days="prescription.days"

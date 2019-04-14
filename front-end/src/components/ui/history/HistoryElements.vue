@@ -5,22 +5,24 @@
       :key="index"
       :data="item"
     />
-    <div class="list__actions">
-      <div class="list__more">
-        Pokaż więcej
-        <i class="fas fa-arrow-down"></i>
-      </div>
-    </div>
+    <MainShowMore :isLoading="isLoading" />
   </div>
 </template>
 
 <script>
+import MainShowMore from "../basic/MainShowMore";
 import HistoryElement from "./HistoryElement";
 
 export default {
   name: "HistoryElements",
   components: {
-    HistoryElement
+    HistoryElement,
+    MainShowMore
+  },
+  data: function() {
+    return {
+      isLoading: false
+    };
   },
   computed: {
     userHistory: function() {

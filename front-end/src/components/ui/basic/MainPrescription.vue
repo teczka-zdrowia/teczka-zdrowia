@@ -9,7 +9,7 @@
       class="prescription__cancel"
       title="Zakończ zalecenie"
       v-if="showCancelBtn"
-      v-on:click="cancelPrescription(prescriptionId)"
+      @click="cancelPrescription(prescriptionID, title)"
     >
       <i class="fas fa-times"></i>
     </div>
@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "MainPrescription",
   props: {
@@ -50,13 +52,22 @@ export default {
       type: Boolean,
       default: false
     },
-    prescriptionId: {
+    prescriptionID: {
       type: Number
     }
   },
   methods: {
-    cancelPrescription: function(id) {
-      // TODO
+    ...mapActions({
+      showModal: "modal/show"
+    }),
+    cancelPrescription: function(id, name) {
+      this.showModal({
+        componentName: "CancelPrescription",
+        data: {
+          prescriptionID: id,
+          prescriptionName: name
+        }
+      });
     }
   }
 };
