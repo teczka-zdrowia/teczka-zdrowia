@@ -1,27 +1,38 @@
 <template>
-  <div class="actions__patient" v-bind:class="{ disabled: isDisabled }">
+  <div
+    class="actions__patient"
+    v-bind:class="{ disabled: isDisabled }"
+    v-on:click="moreInfo"
+  >
     <MainUserInfo
-      :name="'Jan Iksiński'"
-      :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
-      :phone="'111222333'"
+      :name="name"
+      :img="img"
+      :phone="phone"
       :isClickable="false"
       :userId="1"
     />
-    <i v-if="isDisabled" class="fas fa-lock"/>
-    <i v-if="userType == 1" class="fas fa-crown"/>
-    <i v-if="userType == 2" class="fas fa-user"/>
+    <i
+      v-if="isDisabled"
+      class="fas fa-lock"
+    />
+    <i
+      v-if="userType == 1"
+      class="fas fa-crown"
+    />
+    <i
+      v-if="userType == 2"
+      class="fas fa-user"
+    />
   </div>
 </template>
 
 <script>
 import MainUserInfo from "./MainUserInfo";
+import { mapActions } from "vuex";
 
 export default {
   name: "MainUser",
   props: {
-    data: {
-      type: Object
-    },
     name: {
       type: String
     },
@@ -47,8 +58,25 @@ export default {
     MainUserInfo
   },
   methods: {
-    moreInfo: function(id) {
-      // TODO
+    ...mapActions({
+      showModal: "modal/show"
+    }),
+    moreInfo: function() {
+      /* Backend communication TODO */
+      this.showModal({
+        componentName: "PatientInfo",
+        data: {
+          hideBorders: true,
+          id: 1,
+          img:
+            "https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/",
+          name: "Konto",
+          surname: "Testowe",
+          email: "adrian@orlow.me",
+          phone: "111 222 333",
+          birthdate: "2002-12-23 00:11:32.000000"
+        }
+      });
     }
   }
 };

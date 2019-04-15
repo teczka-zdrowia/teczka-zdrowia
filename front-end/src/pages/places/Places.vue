@@ -332,6 +332,7 @@ export default {
   border-radius: 0.5em;
   cursor: pointer;
   transition: 0.2s ease-in-out;
+  margin: auto;
   &--white {
     color: #6a6ee1;
     &:hover {

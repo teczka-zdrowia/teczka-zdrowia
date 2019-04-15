@@ -13,7 +13,20 @@
         <div class="list__info__el list__info__el--column">
           <div class="list__info__el list__info__el--date">25.10.2019</div>
           <div class="list__info__el--line"></div>
-          <div class="list__info__el list__info__el--place">MedMax Warszawa</div>
+          <div class="list__info__el list__info__el--place">
+            <MainPlaceInfo
+              v-if="isMobile"
+              :name="'MedMax Warszawa'"
+              :id="1"
+              :noPadding="true"
+              :violetIcon="true"
+            />
+            <MainPlaceInfo
+              v-if="!isMobile"
+              :name="'MedMax Warszawa'"
+              :id="1"
+            />
+          </div>
         </div>
       </div>
       <div
@@ -92,19 +105,24 @@
 import MainBtn from "../basic/MainBtn";
 import MainUserInfo from "../basic/MainUserInfo";
 import MainPrescription from "../basic/MainPrescription";
+import MainPlaceInfo from "../basic/MainPlaceInfo";
+
+import { mapGetters } from "vuex";
 
 export default {
   name: "HistoryElement",
   props: ["data"],
   components: {
     MainPrescription,
+    MainPlaceInfo,
     MainUserInfo,
     MainBtn
   },
   computed: {
-    userPrescriptions: function() {
-      return this.$store.getters["userPrescriptions/active"];
-    }
+    ...mapGetters({
+      isMobile: "window/isMobile",
+      userPrescriptions: "userPrescriptions/active"
+    })
   }
 };
 </script>
@@ -367,7 +385,7 @@ export default {
 
 @media only screen and (max-width: 650px) {
   .list__el {
-    height: 10rem;
+    height: 11rem;
   }
   .list__info {
     display: block;
@@ -384,7 +402,7 @@ export default {
     align-items: flex-start;
     justify-content: space-between;
     margin-top: 1rem;
-    height: 2.5rem;
+    height: 3rem;
     background: #f5f5f8;
     padding: 1rem;
     margin-left: -1rem;
@@ -399,8 +417,16 @@ export default {
       &:first-child::before {
         content: "\f783";
       }
-      &:last-child::before {
-        content: "\f3c5";
+      &:last-child {
+        &::before {
+          content: none;
+        }
+        & > div {
+          color: #67676e !important;
+          padding: 0.5rem;
+          margin: -0.5rem;
+          margin-top: 0.25rem;
+        }
       }
     }
   }

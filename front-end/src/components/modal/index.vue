@@ -4,24 +4,38 @@
     v-bind:class="{ visible: visible }"
     @keydown.esc="hideModal"
   >
-    <div
-      class="modal__overlay"
-      v-if="visible"
-      @click.self="hideModal"
-    ></div>
-    <div
-      class="modal__content"
-      v-if="visible"
+    <transition
+      enter-active-class="animated fadeIn"
+      leave-active-class="animated fadeOut"
     >
-      <div class="modal__innerContent">
-        <component :is="component"></component>
+      <div
+        class="modal__overlay"
+        v-if="visible"
+        @click.self="hideModal"
+      />
+    </transition>
+    <transition
+      enter-active-class="animated fadeInUp"
+      leave-active-class="animated fadeOutDown"
+    >
+      <div
+        class="modal__content"
+        v-if="visible"
+      >
+        <div
+          class="modal__innerContent"
+          v-bind:class="{noborders: hideBorders}"
+        >
+          <component :is="component"></component>
+        </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions, mapState } from "vuex";
+import MainLoading from "../ui/basic/MainLoading";
 import "./modal.scss";
 
 export default {
@@ -45,9 +59,17 @@ export default {
   },
   computed: {
     ...mapGetters({
+      data: "modal/data",
       visible: "modal/visible",
       modalComponent: "modal/component"
-    })
+    }),
+    hideBorders: function() {
+      return typeof this.data !== "undefined"
+        ? typeof this.data.hideBorders !== "undefined"
+          ? this.data.hideBorders
+          : false
+        : false;
+    }
   },
   methods: {
     ...mapActions({
@@ -58,7 +80,10 @@ export default {
     modalComponent(componentName) {
       if (!componentName) return;
 
-      Vue.component(componentName, () => import(`./${componentName}`));
+      Vue.component(componentName, () => ({
+        component: import(`./modals/${componentName}`),
+        loading: MainLoading
+      }));
 
       this.component = componentName;
     }

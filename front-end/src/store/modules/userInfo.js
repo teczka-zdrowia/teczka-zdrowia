@@ -7,7 +7,7 @@ const state = {
     'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
   name: 'Adrian',
   surname: 'Orłów',
-  pesel: '96011999231',
+  pesel: null,
   email: 'adrian@orlow.me',
   phone: '792138222',
   birthdate: '2002-12-23 00:11:32.000000',
@@ -19,28 +19,18 @@ const state = {
 }
 
 const mutations = {
-  SET_JWT (state, JWT) {
-    state.userInfo.jwt = JWT
-  },
-  SET_NAME (state, { name, surname }) {
-    state.name = name
-    state.surname = surname
-  },
   SET_ISPAID (state, status) {
     state.isPaid = status
   },
   SET_ISVALID (state, status) {
     state.isValid = status
+  },
+  UPDATE_PESEL (state, pesel) {
+    state.pesel = pesel
   }
 }
 
 const actions = {
-  updateName ({ commit }, params) {
-    commit('SET_NAME', params)
-  },
-  updateIsPaid ({ commit }, status) {
-    commit('SET_ISPAID', status)
-  },
   checkIsValid ({ commit, state }) {
     const status = api.isTokenValid(state.userInfo.jwt)
     status.then(response => {
@@ -61,11 +51,17 @@ const actions = {
   logout ({ commit }) {
     commit('SET_JWT', '')
     return true
+  },
+  updatePESEL ({ commit }, pesel) {
+    commit('UPDATE_PESEL', 96011999231)
+  },
+  hidePESEL ({ commit }) {
+    commit('UPDATE_PESEL', null)
   }
 }
 
 const getters = {
-  fullInfo (state) {
+  full (state) {
     return state
   },
   fullName (state) {
@@ -79,6 +75,9 @@ const getters = {
   },
   isValid (state) {
     return state.isValid
+  },
+  pesel (state) {
+    return state.pesel
   }
 }
 

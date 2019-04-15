@@ -6,8 +6,16 @@
         Nowy
       </MainBtn>
       <MainSearch class="patients__search">
-        <input class="input" slot="input" type="text" placeholder="  Szukaj">
-        <div class="select" slot="select">
+        <input
+          class="input"
+          slot="input"
+          type="text"
+          placeholder="  Szukaj"
+        >
+        <div
+          class="select"
+          slot="select"
+        >
           <label>
             Sortuj:
             <select>
@@ -19,14 +27,64 @@
       </MainSearch>
     </div>
     <div class="actions__patients">
-      <MainUser/>
-      <MainUser/>
-      <MainUser/>
-      <MainUser/>
-      <MainUser/>
-      <MainUser/>
-      <MainUser :isDisabled="true"/>
-      <MainUser :isDisabled="true"/>
+      <MainUser
+        :name="'Jan Iksiński'"
+        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
+        :phone="'111222333'"
+        :isClickable="false"
+        :userId="1"
+      />
+      <MainUser
+        :name="'Jan Iksiński'"
+        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
+        :phone="'111222333'"
+        :isClickable="false"
+        :userId="1"
+      />
+      <MainUser
+        :name="'Jan Iksiński'"
+        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
+        :phone="'111222333'"
+        :isClickable="false"
+        :userId="1"
+      />
+      <MainUser
+        :name="'Jan Iksiński'"
+        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
+        :phone="'111222333'"
+        :isClickable="false"
+        :userId="1"
+      />
+      <MainUser
+        :name="'Jan Iksiński'"
+        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
+        :phone="'111222333'"
+        :isClickable="false"
+        :userId="1"
+      />
+      <MainUser
+        :name="'Jan Iksiński'"
+        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
+        :phone="'111222333'"
+        :isClickable="false"
+        :userId="1"
+      />
+      <MainUser
+        :name="'Jan Iksiński'"
+        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
+        :phone="'111222333'"
+        :isClickable="false"
+        :userId="1"
+        :isDisabled="true"
+      />
+      <MainUser
+        :name="'Jan Iksiński'"
+        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
+        :phone="'111222333'"
+        :isClickable="false"
+        :userId="1"
+        :isDisabled="true"
+      />
     </div>
   </div>
 </template>

@@ -10,10 +10,11 @@
       :userId="1"
     />
     <div class="appointment__content">
-      <div class="content__el">
-        <i class="fas fa-map-marker-alt"></i>
-        {{ data.place }}
-      </div>
+      <MainPlaceInfo
+        class="content__el"
+        :name="data.place.name"
+        :id="data.place.id"
+      />
       <div class="content__few">
         <div class="content__el">
           <i class="fas fa-calendar-day"></i>
@@ -47,11 +48,13 @@
 <script>
 import MainBtn from "../basic/MainBtn";
 import MainUserInfo from "../basic/MainUserInfo";
+import MainPlaceInfo from "../basic/MainPlaceInfo";
 
 export default {
   props: ["data"],
   name: "AppointmentDekstop",
   components: {
+    MainPlaceInfo,
     MainUserInfo,
     MainBtn
   },
@@ -105,9 +108,9 @@ export default {
   width: auto;
   font-weight: 600;
   color: #3e3e45;
-  border-radius: 1em;
-  margin-bottom: 1em;
+  border-radius: 1rem;
   width: calc(100% - 2em);
+  margin-bottom: 1rem;
   i {
     color: $darkviolet;
     margin-right: 10px;
@@ -117,7 +120,6 @@ export default {
 .appointment__actions {
   width: 100%;
   display: flex;
-  flex-direction: column;
   overflow: hidden;
   border-radius: 0.5em;
 }
@@ -131,6 +133,7 @@ export default {
   color: #67676e;
   border-radius: 0;
   filter: none;
+  width: 100%;
   i {
     @extend %text--center;
     font-size: 1.5em;

@@ -1,15 +1,21 @@
 <template>
   <div class="about">
     <div class="about__top">
-      <BaseInfo class="about__base"/>
+      <BaseInfo class="about__base" />
       <Block class="about__actions">
         <i class="fas fa-cog actions__settings"></i>
         <div class="actions__buttons">
-          <div class="action">
+          <div
+            class="action"
+            v-on:click="changePassword"
+          >
             <i class="fas fa-unlock"></i>
             <div class="action__title">Zmień hasło</div>
           </div>
-          <div class="action action--red">USUŃ KONTO</div>
+          <div
+            class="action action--red"
+            v-on:click="deleteAccount"
+          >USUŃ KONTO</div>
         </div>
       </Block>
     </div>
@@ -22,6 +28,8 @@ import BaseInfo from "./BaseInfo";
 import VioletBlock from "../../components/ui/blocks/VioletBlock";
 import RedBlock from "../../components/ui/blocks/RedBlock";
 
+import { mapActions } from "vuex";
+
 export default {
   name: "About",
   components: {
@@ -29,6 +37,21 @@ export default {
     BaseInfo,
     VioletBlock,
     RedBlock
+  },
+  methods: {
+    ...mapActions({
+      showModal: "modal/show"
+    }),
+    deleteAccount: function() {
+      this.showModal({
+        componentName: "DeleteAccount"
+      });
+    },
+    changePassword: function() {
+      this.showModal({
+        componentName: "ChangePassword"
+      });
+    }
   }
 };
 </script>

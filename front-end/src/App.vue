@@ -25,6 +25,8 @@ import Modal from "./components/modal";
 
 import { mapActions, mapGetters } from "vuex";
 
+import "./main.scss";
+
 export default {
   name: "App",
   components: {
@@ -48,7 +50,8 @@ export default {
   computed: {
     ...mapGetters({
       isValid: "userInfo/isValid",
-      isMobile: "window/isMobile"
+      isMobile: "window/isMobile",
+      isModalVisible: "modal/visible"
     }),
     isValidRoute: function() {
       const paths = ["/", "/Auth", "/Terms", "/dTm6Gz", "/404"];
@@ -70,7 +73,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-@import "main";
-</style>

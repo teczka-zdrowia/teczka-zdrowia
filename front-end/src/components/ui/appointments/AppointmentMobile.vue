@@ -12,7 +12,12 @@
       class="appointment__place"
       v-if="showPlace"
     >
-      {{ data.place }}
+      <MainPlaceInfo
+        class="content__el"
+        :noPadding="true"
+        :name="data.place.name"
+        :id="data.place.id"
+      />
     </div>
     <div
       class="appointment__doctor"
@@ -41,6 +46,7 @@
 <script>
 import MainBtn from "../basic/MainBtn";
 import MainUserInfo from "../basic/MainUserInfo";
+import MainPlaceInfo from "../basic/MainPlaceInfo";
 
 export default {
   name: "AppointmentMobile",
@@ -59,7 +65,8 @@ export default {
   },
   components: {
     MainUserInfo,
-    MainBtn
+    MainBtn,
+    MainPlaceInfo
   }
 };
 </script>
@@ -144,6 +151,7 @@ export default {
   color: #67676e;
   padding: 1rem;
   font-weight: 600;
+  white-space: normal;
   & ~ .appointment__when {
     margin-left: unset;
   }
@@ -225,7 +233,7 @@ export default {
     }
   }
   .appointment__place {
-    padding: 1rem 0;
+    padding: 0;
   }
 }
 </style>

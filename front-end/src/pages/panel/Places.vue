@@ -19,25 +19,28 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   name: "Places",
   methods: {
+    ...mapActions({
+      setSelectedPlace: "userPlaces/setSelected"
+    }),
     selectPlace: function(ID) {
       const oldID = this.selectedPlace ? this.selectedPlace.id : null;
       if (ID === oldID) {
-        this.$store.dispatch("userPlaces/setSelected", null);
+        this.setSelectedPlace(null);
       } else {
-        this.$store.dispatch("userPlaces/setSelected", ID);
+        this.setSelectedPlace(ID);
       }
     }
   },
   computed: {
-    userPlaces: function() {
-      return this.$store.getters["userPlaces/list"];
-    },
-    selectedPlace: function() {
-      return this.$store.getters["userPlaces/selected"];
-    }
+    ...mapGetters({
+      userPlaces: "userPlaces/list",
+      selectedPlace: "userPlaces/selected"
+    })
   }
 };
 </script>

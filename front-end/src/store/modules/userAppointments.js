@@ -9,7 +9,10 @@ const state = [
     },
     date: '16.10.2018',
     time: '18:30',
-    place: 'Medmax Warszawa',
+    place: {
+      id: 1,
+      name: 'MedMax'
+    },
     desc: 'Ból klatki piersiowej',
     isAccepted: false
   },
@@ -23,7 +26,10 @@ const state = [
     },
     date: '16.10.2018',
     time: '18:30',
-    place: 'Medmax Warszawa',
+    place: {
+      id: 1,
+      name: 'MedMax'
+    },
     desc: 'Ból klatki piersiowej',
     isAccepted: true
   },
@@ -37,7 +43,10 @@ const state = [
     },
     date: '16.10.2018',
     time: '18:31',
-    place: 'Medmax Warszawa',
+    place: {
+      id: 1,
+      name: 'MedMax'
+    },
     desc: 'Ból klatki piersiowej',
     isAccepted: null
   },
@@ -51,7 +60,10 @@ const state = [
     },
     date: '16.10.2018',
     time: '18:32',
-    place: 'Medmax Warszawa',
+    place: {
+      id: 1,
+      name: 'MedMax'
+    },
     desc: 'Ból klatki piersiowej',
     isAccepted: false
   },
@@ -65,7 +77,10 @@ const state = [
     },
     date: '16.10.2018',
     time: '18:33',
-    place: 'Medmax Warszawa',
+    place: {
+      id: 1,
+      name: 'MedMax'
+    },
     desc: 'Ból klatki piersiowej',
     isAccepted: true
   }

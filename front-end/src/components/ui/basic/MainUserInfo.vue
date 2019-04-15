@@ -1,9 +1,23 @@
 <template>
-  <div class="user" v-bind:class="{ clickable: isClickable, big: isBig }" v-on:click="moreInfo(userId)">
-    <img class="user__img" v-bind:src="img"/>
-    <div class="user__name">{{ name }}</div>
-    <div class="user__phone" v-bind:class="{ bigphone: isBigPhone }">
-      <a :href="`tel:${phone}`">
+  <div
+    class="user"
+    v-bind:class="{ clickable: isClickable, big: isBig }"
+    v-on:click.self="moreInfo()"
+  >
+    <img
+      class="user__img"
+      v-bind:src="img"
+      v-on:click.self="moreInfo()"
+    />
+    <div
+      class="user__name"
+      v-on:click.self="moreInfo()"
+    >{{ name }}</div>
+    <div
+      class="user__phone"
+      v-bind:class="{ bigphone: isBigPhone }"
+    >
+      <a :href="`mailto:${phone}`">
         <i class="fas fa-phone"></i>
         Zadzwoń
       </a>
@@ -12,6 +26,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "MainUserInfo",
   props: {
@@ -41,8 +57,27 @@ export default {
     }
   },
   methods: {
-    moreInfo: function(id) {
-      // TODO
+    ...mapActions({
+      showModal: "modal/show"
+    }),
+    moreInfo: function() {
+      if (this.isClickable) {
+        /* Backend communication TODO */
+        this.showModal({
+          componentName: "DoctorInfo",
+          data: {
+            hideBorders: true,
+            id: 1,
+            img:
+              "https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/",
+            name: "Konto Testowe",
+            spec: "fizjoterapeuta",
+            email: "adrian@orlow.me",
+            phone: "111 222 333",
+            birthdate: "2002-12-23 00:11:32.000000"
+          }
+        });
+      }
     }
   }
 };
@@ -62,28 +97,28 @@ export default {
   cursor: pointer;
   transition: 0.2s ease-in-out;
   &.clickable {
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     &:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 60px 0 rgba(145, 145, 156, 0.3);
-        .user__img {
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
+      transform: scale(1.05);
+      box-shadow: 0 0 60px 0 rgba(145, 145, 156, 0.3);
+      .user__img {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
     }
     &:active {
-        transform: scale(1.025);
+      transform: scale(1.025);
     }
   }
   &.big {
     grid-template-columns: 4em auto;
     height: 4em;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     .user__img {
-        height: 4em;
+      height: 4em;
     }
     .user__name {
-        margin: 0;
+      margin: 0;
     }
   }
 }
@@ -124,7 +159,7 @@ export default {
   margin: auto;
   margin-left: 0;
   margin-top: 0;
-  transition: .2s ease-in-out;
+  transition: 0.2s ease-in-out;
   a {
     color: #fff;
     margin: auto;
@@ -145,5 +180,4 @@ export default {
     background: #229a55;
   }
 }
-
 </style>

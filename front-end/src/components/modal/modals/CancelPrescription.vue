@@ -24,7 +24,7 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 
-import "./modal.scss";
+import "../modal.scss";
 
 export default {
   name: "CancelPrescription",

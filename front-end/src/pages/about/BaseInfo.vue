@@ -135,15 +135,15 @@
         </div>
         <div
           class="more__content"
-          v-if="isPESEL && !isEdit"
+          v-if="PESEL && !isEdit"
         >{{ data.pesel }}</div>
         <div
           class="more__content more__pesel"
-          v-if="!isPESEL && !isEdit"
-          v-on:click="isPESEL = true"
+          v-if="!PESEL"
+          v-on:click="getPESEL"
         >Odkryj</div>
         <input
-          v-if="isEdit"
+          v-if="PESEL && isEdit"
           class="more__content"
           type="text"
           name="pesel"
@@ -151,6 +151,13 @@
           placeholder="12345678912"
           required
         >
+        <div
+          v-if="PESEL"
+          v-on:click="hidePESEL"
+          class="more__content more__content__btn more__content--fullcolor"
+        >
+          <i class="fas fa-eye-slash" />
+        </div>
       </div>
       <div
         class="more__actions"
@@ -188,6 +195,8 @@
 <script>
 import MainBtn from "../../components/ui/basic/MainBtn";
 
+import { mapGetters, mapActions } from "vuex";
+
 const moment = require("moment");
 moment.locale("pl");
 
@@ -199,13 +208,12 @@ export default {
   data: function() {
     return {
       isEdit: false,
-      isPESEL: false,
       data: {},
       newData: {}
     };
   },
   mounted() {
-    this.data = Object.assign({}, this.$store.getters["userInfo/fullInfo"]);
+    this.data = Object.assign({}, this.$store.getters["userInfo/full"]);
   },
   watch: {
     isEdit: function(val) {
@@ -216,9 +224,29 @@ export default {
           "YYYY-MM-DD HH:MI:SS"
         ).format("YYYY-MM-DD");
       }
+    },
+    PESEL: function(val) {
+      this.data.pesel = val;
+      this.newData.pesel = val;
+    }
+  },
+  methods: {
+    ...mapActions({
+      hidePESEL: "userInfo/hidePESEL",
+      showModal: "modal/show"
+    }),
+    getPESEL: function() {
+      this.showModal({
+        componentName: "ConfirmGetPESEL"
+      });
     }
   },
   computed: {
+    ...mapGetters({
+      userFullInfo: "userInfo/full",
+      isMobile: "window/isMobile",
+      PESEL: "userInfo/pesel"
+    }),
     userPhone: function() {
       if (this.data.phone)
         return this.data.phone.replace(
@@ -235,9 +263,6 @@ export default {
       return moment(this.data.birthdate, "YYYY-MM-DD HH:MI:SS").format(
         "DD.MM.YYYY"
       );
-    },
-    isMobile: function() {
-      return this.$store.getters["window/isMobile"];
     }
   }
 };
@@ -425,6 +450,19 @@ input.user__specialization {
     background: #9394eb;
     color: #fafafc;
   }
+  &__btn {
+    width: 1rem !important;
+    cursor: pointer;
+    background: #ececec;
+    color: #3e3e45;
+    transition: 0.2s ease-in-out;
+    &:hover {
+      filter: brightness(95%);
+    }
+  }
+  &:not(:last-child) {
+    width: calc(100% - 6rem);
+  }
 }
 
 .more__actions {
@@ -466,6 +504,9 @@ input.user__specialization {
   }
   .more__content {
     width: calc(100% - 11rem);
+    &:not(:last-child) {
+      width: calc(100% - 14rem);
+    }
   }
 }
 
@@ -482,6 +523,9 @@ input.user__specialization {
   }
   .more__content {
     width: calc(100% - 11rem);
+    &:not(:last-child) {
+      width: calc(100% - 14rem);
+    }
   }
 }
 
