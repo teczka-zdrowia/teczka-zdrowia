@@ -12,6 +12,7 @@ const mutations = {
   },
   HIDE_MODAL (state) {
     state.visible = false
+    state.data = null
   }
 }
 

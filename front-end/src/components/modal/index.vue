@@ -64,8 +64,8 @@ export default {
       modalComponent: "modal/component"
     }),
     hideBorders: function() {
-      return typeof this.data !== "undefined"
-        ? typeof this.data.hideBorders !== "undefined"
+      return this.data != null
+        ? this.data.hideBorders != null
           ? this.data.hideBorders
           : false
         : false;

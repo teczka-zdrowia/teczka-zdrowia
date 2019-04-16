@@ -2,9 +2,11 @@
   <div
     class="place-info"
     v-bind:class="{nopadding: noPadding}"
+    v-on:click="moreInfo"
   >
     <i
       class="fas fa-map-marker-alt"
+      v-if="!hideIcon"
       v-bind:class="{violet: violetIcon}"
     />
     {{ name }}
@@ -30,6 +32,10 @@ export default {
     violetIcon: {
       default: false,
       type: Boolean
+    },
+    hideIcon: {
+      default: false,
+      type: Boolean
     }
   },
   methods: {
@@ -39,17 +45,16 @@ export default {
     moreInfo: function() {
       /* Backend communication TODO */
       this.showModal({
-        componentName: "PatientInfo",
+        componentName: "PlaceInfo",
         data: {
           hideBorders: true,
           id: 1,
-          img:
-            "https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/",
-          name: "Konto",
-          surname: "Testowe",
-          email: "adrian@orlow.me",
-          phone: "111 222 333",
-          birthdate: "2002-12-23 00:11:32.000000"
+          name: "MedMax",
+          address: "Kwiatowa 45",
+          city: "Jaworzno",
+          isActive: true,
+          isDeleted: false,
+          isAdmin: false
         }
       });
     }

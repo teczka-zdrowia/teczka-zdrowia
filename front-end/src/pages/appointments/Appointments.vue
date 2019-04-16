@@ -1,12 +1,15 @@
 <template>
   <div class="appointments">
     <div class="row">
-      <Block class="appointments--block" title="Wizyty">
-        <AppointmentsBox :showActions="true"/>
+      <Block
+        class="appointments--block"
+        title="Wizyty"
+      >
+        <AppointmentsBox :showActions="true" />
       </Block>
     </div>
     <div class="row">
-      <HistoryBox/>
+      <HistoryBox />
     </div>
   </div>
 </template>
@@ -45,7 +48,8 @@ export default {
 }
 
 .appointments--block {
-  width: calc(100% - 4rem);
+  width: calc(100% - 2rem);
+  padding: 1rem;
 }
 
 @media only screen and (max-width: 1400px) {

@@ -52,6 +52,10 @@ export default {
     userType: {
       type: Number,
       default: 0
+    },
+    editAffiliation: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -67,6 +71,9 @@ export default {
         componentName: "PatientInfo",
         data: {
           hideBorders: true,
+          editAffiliation: this.editAffiliation,
+          isDisabled: this.isDisabled,
+          userType: this.userType,
           id: 1,
           img:
             "https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/",

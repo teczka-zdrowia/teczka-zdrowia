@@ -17,7 +17,7 @@
       class="user__phone"
       v-bind:class="{ bigphone: isBigPhone }"
     >
-      <a :href="`mailto:${phone}`">
+      <a :href="`tel:${phone}`">
         <i class="fas fa-phone"></i>
         Zadzwoń
       </a>

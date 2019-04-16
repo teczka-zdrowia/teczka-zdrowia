@@ -30,6 +30,36 @@
             Kartkoteka</a>
         </div>
       </div>
+      <div
+        class="modal__actions fullwidth"
+        v-if="data.userType > 0"
+      >
+        <MainSelect
+          class="modal--pi__select"
+          v-on:change="selectedPremission = $event.target.value"
+        >
+          <option
+            :selected="data.userType === 1"
+            value="1"
+          >&#xf521;&nbsp;&nbsp;&nbsp;Administrator</option>
+          <option
+            :selected="data.userType === 2"
+            value="2"
+          >&#xf007;&nbsp;&nbsp;&nbsp;Pracownik</option>
+        </MainSelect>
+        <button
+          v-if="data.userType !== selectedPermission"
+          class="modal__btn modal__btn--green modal__btn--icon"
+        ><i class="fas fa-check" /></button>
+      </div>
+      <button
+        v-if="data.editAffiliation && data.isDisabled"
+        class="modal__btn fullwidth modal__btn--red"
+      >Odkryj pacjenta</button>
+      <button
+        v-if="data.editAffiliation && !data.isDisabled"
+        class="modal__btn fullwidth modal__btn--violet"
+      >Ukryj pacjenta</button>
       <button
         class="modal__btn fullwidth modal__btn--grey"
         @click="hideModal"
@@ -39,11 +69,20 @@
 </template>
 
 <script>
+import MainSelect from "../../ui/basic/MainSelect";
 import { mapActions, mapGetters } from "vuex";
 import "../modal.scss";
 
 export default {
   name: "PatientInfo",
+  data: function() {
+    return {
+      selectedPremission: 0
+    };
+  },
+  components: {
+    MainSelect
+  },
   computed: {
     ...mapGetters({
       data: "modal/data"
@@ -127,6 +166,26 @@ export default {
           filter: brightness(95%);
         }
       }
+    }
+  }
+  &__select {
+    font-family: $font-awesome, Montserrat;
+    width: 100%;
+    border-radius: 0 !important;
+    &--gold {
+      color: #f1c40f !important;
+    }
+    &--violet {
+      color: #6a6ee1 !important;
+    }
+    option {
+      font-weight: 600;
+      &::first-letter {
+        margin-right: 1rem;
+      }
+    }
+    &::first-letter {
+      margin-right: 1rem;
     }
   }
 }

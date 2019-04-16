@@ -64,6 +64,17 @@
   &__actions {
     display: flex;
     justify-content: flex-end;
+    &.fullwidth {
+      justify-content: space-between;
+      & > .modal__btn {
+        width: 100%;
+        max-width: 50%;
+        border-radius: 0;
+        &:not(:last-child) {
+          margin-right: 0;
+        }
+      }
+    }
   }
 
   &__btn {
@@ -90,6 +101,16 @@
     &--red {
       background: #d91e18;
       color: #fafafc;
+    }
+    &--green {
+      background: #27ae60;
+      color: #fafafc;
+    }
+    &--icon {
+      max-width: 3rem !important;
+    }
+    i {
+      margin-right: 1rem;
     }
     &:hover {
       filter: brightness(92.5%);
