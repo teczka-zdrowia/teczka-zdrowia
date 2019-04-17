@@ -67,14 +67,16 @@ export default {
           componentName: "DoctorInfo",
           data: {
             hideBorders: true,
-            id: 1,
-            img:
-              "https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/",
-            name: "Konto Testowe",
-            spec: "fizjoterapeuta",
-            email: "adrian@orlow.me",
-            phone: "111 222 333",
-            birthdate: "2002-12-23 00:11:32.000000"
+            doctor: {
+              id: 1,
+              img:
+                "https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/",
+              name: "Konto Testowe",
+              spec: "fizjoterapeuta",
+              email: "adrian@orlow.me",
+              phone: "111 222 333",
+              birthdate: "2002-12-23 00:11:32.000000"
+            }
           }
         });
       }

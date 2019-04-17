@@ -1,50 +1,70 @@
 <template>
   <div>
-    <div class="list__el">
-      <div class="list__info">
-        <MainUserInfo
-          class="list__info__el"
-          :name="data.doctor.name"
-          :img="data.doctor.img"
-          :phone="data.doctor.phone"
-          :isBig="true"
-          :userId="1"
-        />
-        <div class="list__info__el list__info__el--column">
-          <div class="list__info__el list__info__el--date">25.10.2019</div>
-          <div class="list__info__el--line"></div>
-          <div class="list__info__el list__info__el--place">
-            <MainPlaceInfo
-              v-if="isMobile"
-              :name="'MedMax Warszawa'"
-              :id="1"
-              :noPadding="true"
-              :violetIcon="true"
+    <div
+      class="more__container"
+      v-if="more.isLoading"
+    >
+      <div class="more__content">
+        Ładowanie (w dev wersji symulowane)
+      </div>
+    </div>
+    <div
+      class="more__container"
+      v-if="!more.isLoading"
+    >
+      <div class="more__content">
+        <div class="more__column more__column--left">
+          <div class="more__row">
+            <div class="more__row__title">Notatka</div>
+            <div class="more__row__text">{{ more.note }}</div>
+          </div>
+          <div class="more__row">
+            <div class="more__row__title">Zabiegi</div>
+            <div class="more__row__text">{{ more.treatments }}</div>
+          </div>
+        </div>
+        <div class="more__column more__column--right">
+          <div class="more__row">
+            <div class="more__row__title">Zalecenia</div>
+            <MainPrescription
+              v-for="prescription in more.prescriptions"
+              :key="prescription.id"
+              :prescriptionId="prescription.id"
+              :title="prescription.title"
+              :info="prescription.info"
+              :days="prescription.days"
+              :showCancelBtn="false"
+              :isTimeleft="false"
             />
-            <MainPlaceInfo
-              v-if="!isMobile"
-              :name="'MedMax Warszawa'"
-              :id="1"
-            />
+          </div>
+          <div class="more__row">
+            <div class="more__row__title">Załączniki</div>
+            <div class="more__row__attachments">
+              <div
+                class="more__row__attachment"
+                v-for="attachment in more.attachments"
+                :key="attachment.id"
+              >
+                <i class="fas fa-paperclip"></i>
+                {{ attachment.name }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div
-        class="list__more"
-        v-on:click="isOpened = !isOpened"
-      >
-        <div class="list__btn">
-          <i
-            class="fas"
-            v-bind:class="[isOpened ? 'fa-angle-up' : 'fa-angle-down']"
-          ></i>
+      <div class="more__content more__content--actions">
+        <img
+          class="more__signature"
+          :src="more.signature"
+          title="Podpis pacjenta"
+          alt="Podpis pacjenta"
+        >
+        <div class="more__print">
+          <i class="fas fa-print"></i>
+          Drukuj
         </div>
       </div>
     </div>
-    <More
-      v-if="isOpened"
-      :more="more"
-    />
   </div>
 </template>
 
@@ -53,69 +73,26 @@ import MainBtn from "../basic/MainBtn";
 import MainUserInfo from "../basic/MainUserInfo";
 import MainPrescription from "../basic/MainPrescription";
 import MainPlaceInfo from "../basic/MainPlaceInfo";
-import HistoryMoreElement from "./HistoryMoreElement";
 
 import { mapGetters } from "vuex";
 
 export default {
   name: "HistoryElement",
-  data: function() {
-    return {
-      isOpened: false,
-      more: {
-        isLoading: true
-      }
-    };
-  },
   props: {
-    data: {
+    more: {
       type: Object
     }
   },
   components: {
-    More: HistoryMoreElement,
+    MainPrescription,
     MainPlaceInfo,
     MainUserInfo,
     MainBtn
   },
   computed: {
     ...mapGetters({
-      isMobile: "window/isMobile",
-      userPrescriptions: "userPrescriptions/active"
+      isMobile: "window/isMobile"
     })
-  },
-  watch: {
-    isOpened: function(val) {
-      if (val == true) {
-        /* BACKEND TODO */
-        setTimeout(() => {
-          this.more = {
-            isLoading: false,
-            note:
-              "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero.",
-            treatments:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
-            prescriptions: this.userPrescriptions,
-            attachments: [
-              {
-                id: 1,
-                name: "Załącznik 1"
-              },
-              {
-                id: 2,
-                name: "Załącznik 2"
-              }
-            ],
-            signature:
-              "https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/Signature_of_Vishwanathan_Anand.svg/1280px-Signature_of_Vishwanathan_Anand.svg.png"
-          };
-        }, 300);
-      } else {
-        this.more = {
-          isLoading: true
-        };
-      }
-    }
   }
 };
 </script>

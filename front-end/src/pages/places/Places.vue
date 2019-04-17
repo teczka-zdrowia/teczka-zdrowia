@@ -122,7 +122,7 @@
               ></i>
               <i
                 class="fas fa-unlock place__select place__select--white"
-                title="Odblokuj"
+                title="Aktywuj"
                 v-if="!place.isActive && place.isAdmin"
               ></i>
             </div>

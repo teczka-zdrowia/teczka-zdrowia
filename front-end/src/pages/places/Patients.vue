@@ -82,7 +82,7 @@
         :isClickable="false"
         :userId="1"
         :editAffiliation="true"
-        :isDisabled="true"
+        :isActive="false"
       />
       <MainUser
         :name="'Jan Iksiński'"
@@ -91,7 +91,7 @@
         :isClickable="false"
         :userId="1"
         :editAffiliation="true"
-        :isDisabled="true"
+        :isActive="false"
       />
     </div>
   </div>

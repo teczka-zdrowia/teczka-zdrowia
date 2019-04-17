@@ -53,7 +53,7 @@
         :phone="'111222333'"
         :isClickable="false"
         :userId="1"
-        :isDisabled="true"
+        :isActive="false"
       />
     </div>
   </div>

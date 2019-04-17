@@ -86,14 +86,13 @@
               Zapisz
             </MainBtn>
           </div>
-          <div class="settings__actions">
+          <div
+            class="settings__actions"
+            v-on:click="deactivatePlace"
+          >
             <MainBtn class="settings__action settings__action--lock">
               <i class="fas fa-lock"></i>
-              Zablokuj
-            </MainBtn>
-            <MainBtn class="settings__action settings__action--delete">
-              <i class="far fa-trash-alt"></i>
-              Usuń
+              Dezaktywuj gabinet
             </MainBtn>
           </div>
         </div>
@@ -204,6 +203,8 @@ import MainUser from "../../components/ui/basic/MainUser";
 import MainSelect from "../../components/ui/basic/MainSelect";
 import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
 
+import { mapActions } from "vuex";
+
 export default {
   name: "Management",
   components: {
@@ -228,6 +229,23 @@ export default {
       if (val === true) {
         this.newData = Object.assign({}, this.data);
       }
+    }
+  },
+  methods: {
+    ...mapActions({
+      showModal: "modal/show"
+    }),
+    deactivatePlace: function() {
+      /* Backend communication TODO */
+      this.showModal({
+        componentName: "DeactivatePlace",
+        data: {
+          place: {
+            id: this.data.id,
+            name: this.data.name
+          }
+        }
+      });
     }
   }
 };

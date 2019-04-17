@@ -2,26 +2,26 @@
   <div class="modal--di">
     <img
       class="modal--di__img"
-      :src="data.img"
+      :src="data.doctor.img"
     >
 
     <div class="modal--di__content">
       <div class="modal--di__title">
-        {{ data.name }}
+        {{ data.doctor.name }}
       </div>
       <div class="modal--di__spec">
-        {{ data.spec }}
+        {{ data.doctor.spec }}
       </div>
       <div class="modal--di__info">
         <div class="modal--di__info__el">
           <i class="fas fa-phone" />
-          <a :href="`tel:${ data.phone }`">
-            {{ data.phone }}</a>
+          <a :href="`tel:${ data.doctor.phone }`">
+            {{ data.doctor.phone }}</a>
         </div>
         <div class="modal--di__info__el">
           <i class="far fa-envelope" />
-          <a :href="`mailto:${ data.email }`">
-            {{ data.email }}</a>
+          <a :href="`mailto:${ data.doctor.email }`">
+            {{ data.doctor.email }}</a>
         </div>
       </div>
       <button

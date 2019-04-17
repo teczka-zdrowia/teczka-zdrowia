@@ -6,7 +6,7 @@
       :key="index"
       v-for="(place, index) in userPlaces"
       v-on:click="selectPlace(place.id)"
-      v-bind:class="{ 'disabled' : !place.isActive, 'selected' : place == selectedPlace }"
+      v-bind:class="{ 'inactive' : !place.isActive, 'selected' : place == selectedPlace }"
     >
       {{ place.name }}
       <i
@@ -71,7 +71,7 @@ export default {
   &.places__title {
     background: #fafafc;
   }
-  &.disabled {
+  &.inactive {
     display: none;
   }
 }

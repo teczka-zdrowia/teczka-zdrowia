@@ -1,7 +1,7 @@
 <template>
   <div
     class="actions__patient"
-    v-bind:class="{ disabled: isDisabled }"
+    v-bind:class="{ inactive: !isActive }"
     v-on:click="moreInfo"
   >
     <MainUserInfo
@@ -12,7 +12,7 @@
       :userId="1"
     />
     <i
-      v-if="isDisabled"
+      v-if="!isActive"
       class="fas fa-lock"
     />
     <i
@@ -45,9 +45,9 @@ export default {
     userId: {
       type: Number
     },
-    isDisabled: {
+    isActive: {
       type: Boolean,
-      default: false
+      default: true
     },
     userType: {
       type: Number,
@@ -68,20 +68,22 @@ export default {
     moreInfo: function() {
       /* Backend communication TODO */
       this.showModal({
-        componentName: "PatientInfo",
+        componentName: "UserInfo",
         data: {
           hideBorders: true,
           editAffiliation: this.editAffiliation,
-          isDisabled: this.isDisabled,
-          userType: this.userType,
-          id: 1,
-          img:
-            "https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/",
-          name: "Konto",
-          surname: "Testowe",
-          email: "adrian@orlow.me",
-          phone: "111 222 333",
-          birthdate: "2002-12-23 00:11:32.000000"
+          user: {
+            isActive: this.isActive,
+            userType: this.userType,
+            id: 1,
+            img:
+              "https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/",
+            name: "Konto",
+            surname: "Testowe",
+            email: "adrian@orlow.me",
+            phone: "111 222 333",
+            birthdate: "2002-12-23 00:11:32.000000"
+          }
         }
       });
     }
@@ -140,7 +142,7 @@ export default {
   &:active {
     transform: scale(1.0125);
   }
-  &.disabled {
+  &.inactive {
     background: #eeeef3;
     filter: grayscale(100%);
     i.fa-lock:hover {

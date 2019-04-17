@@ -5,23 +5,23 @@
       <div class="modal--pi__top">
         <img
           class="modal--pi__img"
-          :src="data.img"
+          :src="data.user.img"
         >
         <div class="modal--pi__name">
-          <span>{{ data.name }}</span>
-          <span>{{ data.surname }}</span>
+          <span>{{ data.user.name }}</span>
+          <span>{{ data.user.surname }}</span>
         </div>
       </div>
       <div class="modal--pi__info">
         <div class="modal--pi__info__el">
           <i class="fas fa-phone" />
-          <a :href="`tel:${ data.phone }`">
-            {{ data.phone }}</a>
+          <a :href="`tel:${ data.user.phone }`">
+            {{ data.user.phone }}</a>
         </div>
         <div class="modal--pi__info__el">
           <i class="far fa-envelope" />
-          <a :href="`mailto:${ data.email }`">
-            {{ data.email }}</a>
+          <a :href="`mailto:${ data.user.email }`">
+            {{ data.user.email }}</a>
         </div>
 
         <div class="modal--pi__info__el">
@@ -29,37 +29,35 @@
             <i class="fas fa-file-medical" />
             Kartkoteka</a>
         </div>
-      </div>
-      <div
-        class="modal__actions fullwidth"
-        v-if="data.userType > 0"
-      >
-        <MainSelect
-          class="modal--pi__select"
-          v-on:change="selectedPremission = $event.target.value"
+
+        <div
+          class="modal__actions fullwidth modal--pi__info__el"
+          v-if="data.user.userType > 0"
         >
-          <option
-            :selected="data.userType === 1"
-            value="1"
-          >&#xf521;&nbsp;&nbsp;&nbsp;Administrator</option>
-          <option
-            :selected="data.userType === 2"
-            value="2"
-          >&#xf007;&nbsp;&nbsp;&nbsp;Pracownik</option>
-        </MainSelect>
-        <button
-          v-if="data.userType !== selectedPermission"
-          class="modal__btn modal__btn--green modal__btn--icon"
-        ><i class="fas fa-check" /></button>
+          <MainSelect class="modal--pi__select">
+            <option
+              :selected="data.user.userType === 1"
+              value="1"
+            >&#xf521;&nbsp;&nbsp;&nbsp;Administrator</option>
+            <option
+              :selected="data.user.userType === 2"
+              value="2"
+            >&#xf007;&nbsp;&nbsp;&nbsp;Pracownik</option>
+          </MainSelect>
+        </div>
       </div>
       <button
-        v-if="data.editAffiliation && data.isDisabled"
-        class="modal__btn fullwidth modal__btn--red"
-      >Odkryj pacjenta</button>
-      <button
-        v-if="data.editAffiliation && !data.isDisabled"
+        v-if="data.user.userType > 0"
         class="modal__btn fullwidth modal__btn--violet"
-      >Ukryj pacjenta</button>
+      >Odłącz od gabinetu</button>
+      <button
+        v-if="data.editAffiliation && !data.user.isActive"
+        class="modal__btn fullwidth modal__btn--green"
+      >Aktywuj pacjenta</button>
+      <button
+        v-if="data.editAffiliation && data.user.isActive"
+        class="modal__btn fullwidth modal__btn--violet"
+      >Dezaktywuj pacjenta</button>
       <button
         class="modal__btn fullwidth modal__btn--grey"
         @click="hideModal"
@@ -75,11 +73,6 @@ import "../modal.scss";
 
 export default {
   name: "PatientInfo",
-  data: function() {
-    return {
-      selectedPremission: 0
-    };
-  },
   components: {
     MainSelect
   },
@@ -171,7 +164,6 @@ export default {
   &__select {
     font-family: $font-awesome, Montserrat;
     width: 100%;
-    border-radius: 0 !important;
     &--gold {
       color: #f1c40f !important;
     }
