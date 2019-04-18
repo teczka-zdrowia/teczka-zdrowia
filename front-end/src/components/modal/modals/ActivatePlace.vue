@@ -1,11 +1,11 @@
 <template>
   <div class="modal--da">
     <h1 class="modal__title">
-      Dezaktywacja gabinetu
+      Aktywacja gabinetu
     </h1>
 
     <div class="modal__info">
-      Czy na pewno chcesz dezaktywować gabinet <b>{{ data.place.name }}</b>?
+      Czy na pewno chcesz aktywować gabinet <b>{{ data.place.name }}</b>?
     </div>
 
     <div class="modal__actions">
@@ -14,9 +14,9 @@
         @click="hideModal"
       >Anuluj</button>
       <button
-        class="modal__btn modal__btn--red"
+        class="modal__btn modal__btn--violet"
         @click="deactPlace"
-      >Dezaktywuj</button>
+      >Aktywuj</button>
     </div>
   </div>
 </template>
@@ -27,7 +27,7 @@ import { mapActions, mapGetters } from "vuex";
 import "../modal.scss";
 
 export default {
-  name: "DeactivatePlace",
+  name: "ActivatePlace",
   computed: {
     ...mapGetters({
       data: "modal/data"

@@ -1,5 +1,8 @@
 <template>
-  <div class="appointment">
+  <div
+    class="appointment"
+    v-on:click="moreInfo(data.id)"
+  >
     <MainUserInfo
       class="appointment__user"
       :name="data.doctor.name"
@@ -48,6 +51,8 @@ import MainBtn from "../basic/MainBtn";
 import MainUserInfo from "../basic/MainUserInfo";
 import MainPlaceInfo from "../basic/MainPlaceInfo";
 
+import { mapActions } from "vuex";
+
 export default {
   name: "AppointmentMobile",
   props: {
@@ -61,12 +66,48 @@ export default {
     showPlace: {
       type: Boolean,
       default: false
+    },
+    canEdit: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
     MainUserInfo,
     MainBtn,
     MainPlaceInfo
+  },
+  methods: {
+    ...mapActions({
+      showModal: "modal/show"
+    }),
+    moreInfo: function(id) {
+      /* Backend communication TODO */
+      this.showModal({
+        componentName: "AppointmentInfo",
+        data: {
+          hideBorders: true,
+          canEdit: this.canEdit,
+          appointment: {
+            doctor: {
+              img:
+                "https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/",
+              name: "Jan Iksiński",
+              spec: "psycholog",
+              phone: "123 456 789"
+            },
+            date: "16.10.2018",
+            time: "18:30",
+            place: {
+              id: 1,
+              name: "MedMax"
+            },
+            desc: "Ból klatki piersiowej",
+            isAccepted: false
+          }
+        }
+      });
+    }
   }
 };
 </script>
@@ -220,20 +261,18 @@ export default {
   .appointment__place {
     display: flex;
     width: 100%;
+    padding: 1rem 0;
     max-width: unset;
     margin-left: 0;
     .doctor__title {
       width: auto;
       p {
-        margin: 0.75rem 0.75rem;
+        margin-left: 0.75rem;
       }
     }
     p {
-      margin: 0.75rem 0;
+      margin: 0;
     }
-  }
-  .appointment__place {
-    padding: 0;
   }
 }
 </style>

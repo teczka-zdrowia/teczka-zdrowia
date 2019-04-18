@@ -123,6 +123,7 @@
               <i
                 class="fas fa-unlock place__select place__select--white"
                 title="Aktywuj"
+                v-on:click="activatePlace(place.id, place.name)"
                 v-if="!place.isActive && place.isAdmin"
               ></i>
             </div>
@@ -179,6 +180,8 @@ import Patients from "./Patients";
 import Timetable from "./Timetable";
 import Management from "./Management";
 
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   name: "Places",
   data: function() {
@@ -201,27 +204,32 @@ export default {
     Management
   },
   methods: {
+    ...mapActions({
+      setSelectedPlace: "userPlaces/setSelected",
+      showModal: "modal/show"
+    }),
     selectPlace: function(id) {
-      this.$store.dispatch("userPlaces/setSelected", id);
-
+      this.setSelectedPlace(id);
       this.selectedCard = 1;
+    },
+    activatePlace: function(id, name) {
+      this.showModal({
+        componentName: "ActivatePlace",
+        data: {
+          place: {
+            id: id,
+            name: name
+          }
+        }
+      });
     }
   },
   computed: {
-    userPlaces: function() {
-      return this.$store.getters["userPlaces/list"];
-    },
-    selectedPlace: function() {
-      return this.$store.getters["userPlaces/selected"];
-    },
-    isMobile: function() {
-      return this.$store.getters["window/isMobile"];
-    }
-  },
-  watch: {
-    $route(to, from) {
-      this.$store.dispatch("userPlaces/setSelected", false);
-    }
+    ...mapGetters({
+      userPlaces: "userPlaces/list",
+      selectedPlace: "userPlaces/selected",
+      isMobile: "window/isMobile"
+    })
   }
 };
 </script>

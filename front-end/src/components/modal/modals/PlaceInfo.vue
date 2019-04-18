@@ -16,22 +16,15 @@
             :zoom.sync="zoom"
             :options="mapOptions"
           >
-            <l-tile-layer :url="url"></l-tile-layer>
+            <l-tile-layer :url="url" />
+            <l-marker
+              v-if="marker"
+              :lat-lng="marker"
+              :icon="icon"
+            />
           </l-map>
         </div>
       </div>
-      <!--<div class="modal--pi__info">
-        <div class="modal--pi__info__el">
-          <i class="fas fa-phone" />
-          <a :href="`tel:${ data.phone }`">
-            {{ data.phone }}</a>
-        </div>
-        <div class="modal--pi__info__el">
-          <i class="far fa-envelope" />
-          <a :href="`mailto:${ data.email }`">
-            {{ data.email }}</a>
-        </div>
-      </div>-->
       <button
         class="modal__btn fullwidth modal__btn--grey"
         @click="hideModal"
@@ -42,7 +35,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import { LMap, LTileLayer } from "vue2-leaflet";
+import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import { L } from "vue2-leaflet";
 import "leaflet/dist/leaflet.css";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
@@ -64,7 +57,13 @@ export default {
         zoomSnap: true
       },
       url:
-        "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
+        "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
+      icon: L.icon({
+        iconUrl: "static/leaflet/place-icon.png",
+        iconSize: [50, 50],
+        iconAnchor: [25, 25]
+      }),
+      marker: null
     };
   },
   mounted() {
@@ -77,12 +76,14 @@ export default {
             [result[0].y, result[0].x],
             16
           );
+          this.marker = L.latLng(result[0].y, result[0].x);
         });
     });
   },
   components: {
     LMap,
-    LTileLayer
+    LTileLayer,
+    LMarker
   },
   computed: {
     ...mapGetters({

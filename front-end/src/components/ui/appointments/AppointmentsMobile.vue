@@ -1,28 +1,42 @@
 <template>
   <div>
     <AppointmentMobile
-      v-for="(item, index) in userAppointments"
+      v-for="(appointment, index) in userAppointments"
       :key="index"
-      :data="item"
+      :data="appointment"
     />
     <router-link
       to="/Appointments"
       v-if="showMore"
     >
       <MainBtn class="appointments__more">
-        Pokaż więcej
-        <i class="fas fa-long-arrow-alt-right"></i>
+        <span v-if="!isLoading">
+          Pokaż więcej
+          <i class="fas fa-long-arrow-alt-right"></i>
+        </span>
+        <span v-if="isLoading">
+          Ładowanie
+          <MainLoading />
+        </span>
       </MainBtn>
     </router-link>
   </div>
 </template>
 
 <script>
+import MainLoading from "../basic/MainLoading";
 import AppointmentMobile from "./AppointmentMobile";
 import MainBtn from "../basic/MainBtn";
 
+import { mapGetters } from "vuex";
+
 export default {
   name: "AppointmentsMobile",
+  data: function() {
+    return {
+      isLoading: false
+    };
+  },
   props: {
     showMore: {
       type: Boolean,
@@ -31,12 +45,13 @@ export default {
   },
   components: {
     MainBtn,
-    AppointmentMobile
+    AppointmentMobile,
+    MainLoading
   },
   computed: {
-    userAppointments: function() {
-      return this.$store.getters["userAppointments/all"];
-    }
+    ...mapGetters({
+      userAppointments: "userAppointments/all"
+    })
   }
 };
 </script>
@@ -144,8 +159,16 @@ export default {
   color: #6a6ee1 !important;
   width: 100% !important;
   height: 3em !important;
-  i {
+  span {
+    @extend %text--center;
+  }
+  i,
+  svg {
     margin-left: 0.75rem;
+  }
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
   }
 }
 

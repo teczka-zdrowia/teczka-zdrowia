@@ -84,7 +84,6 @@ export default {
   background: #fdfdfd;
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
   border-radius: 0.5rem;
-  margin-top: 1rem;
 }
 
 .patients__title {

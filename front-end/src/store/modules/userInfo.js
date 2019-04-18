@@ -78,6 +78,12 @@ const getters = {
   },
   pesel (state) {
     return state.pesel
+  },
+  isPaid (state) {
+    return state.isPaid
+  },
+  paidUntil (state) {
+    return state.paidUntil
   }
 }
 

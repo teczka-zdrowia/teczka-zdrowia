@@ -6,11 +6,11 @@
           <div class="calendar__title">Kalendarz</div>
           <Calendar />
         </Block>
-        <Patients />
-      </div>
-      <div class="appointments">
-        <Places />
-        <Appointments />
+        <Patients class="patients" />
+        <div class="appointments">
+          <Places />
+          <Appointments />
+        </div>
       </div>
     </div>
   </div>
@@ -49,6 +49,7 @@ export default {
 }
 
 .calendar {
+  grid-area: calendar;
   padding: 0 !important;
   width: auto;
   max-width: 22rem;
@@ -63,7 +64,40 @@ export default {
   padding: 1.5rem;
 }
 
+.column {
+  display: grid;
+  grid-template-columns: 21rem auto;
+  grid-template-areas:
+    "calendar appointments"
+    "patients appointments";
+  grid-gap: 1rem;
+  width: 100%;
+  grid-auto-rows: 26rem auto;
+}
+
 .appointments {
-  width: calc(100% - 23rem);
+  grid-area: appointments;
+  width: 100%;
+}
+
+.patients {
+  grid-area: patients;
+}
+
+@media only screen and (max-width: 768px) {
+  .column {
+    grid-template-columns: auto;
+    grid-template-areas:
+      "calendar"
+      "appointments"
+      "patients";
+    grid-gap: 1rem;
+    width: 100%;
+    grid-auto-rows: 26rem auto;
+  }
+
+  .calendar {
+    max-width: 100%;
+  }
 }
 </style>

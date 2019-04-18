@@ -45,6 +45,8 @@ import AppointmentsBox from "../../components/ui/appointments/AppointmentsBox";
 import AirData from "./AirData";
 import Map from "../map/Map";
 
+import { mapGetters } from "vuex";
+
 export default {
   name: "Dashboard",
   components: {
@@ -63,12 +65,10 @@ export default {
     };
   },
   computed: {
-    isMobile: function() {
-      return this.$store.getters["window/isMobile"];
-    },
-    userPrescriptions: function() {
-      return this.$store.getters["userPrescriptions/active"];
-    }
+    ...mapGetters({
+      isMobile: "window/isMobile",
+      userPrescriptions: "userPrescriptions/active"
+    })
   }
 };
 </script>

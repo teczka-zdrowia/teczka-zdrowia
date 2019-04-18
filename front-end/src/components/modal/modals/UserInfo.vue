@@ -1,40 +1,40 @@
 <template>
-  <div class="modal--pi">
+  <div class="modal--ui">
 
-    <div class="modal--pi__content">
-      <div class="modal--pi__top">
+    <div class="modal--ui__content">
+      <div class="modal--ui__top">
         <img
-          class="modal--pi__img"
+          class="modal--ui__img"
           :src="data.user.img"
         >
-        <div class="modal--pi__name">
+        <div class="modal--ui__name">
           <span>{{ data.user.name }}</span>
           <span>{{ data.user.surname }}</span>
         </div>
       </div>
-      <div class="modal--pi__info">
-        <div class="modal--pi__info__el">
+      <div class="modal--ui__info">
+        <div class="modal--ui__info__el">
           <i class="fas fa-phone" />
           <a :href="`tel:${ data.user.phone }`">
             {{ data.user.phone }}</a>
         </div>
-        <div class="modal--pi__info__el">
+        <div class="modal--ui__info__el">
           <i class="far fa-envelope" />
           <a :href="`mailto:${ data.user.email }`">
             {{ data.user.email }}</a>
         </div>
 
-        <div class="modal--pi__info__el">
+        <div class="modal--ui__info__el">
           <a href="#">
             <i class="fas fa-file-medical" />
             Kartkoteka</a>
         </div>
 
         <div
-          class="modal__actions fullwidth modal--pi__info__el"
+          class="modal__actions fullwidth modal--ui__info__el"
           v-if="data.user.userType > 0"
         >
-          <MainSelect class="modal--pi__select">
+          <MainSelect class="modal--ui__select">
             <option
               :selected="data.user.userType === 1"
               value="1"
@@ -92,7 +92,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../../main";
 
-.modal--pi {
+.modal--ui {
   &__top {
     padding: 1rem;
     width: calc(100% - 2rem);
@@ -102,7 +102,7 @@ export default {
     background: #ececec;
     font-size: 1.5rem;
     display: flex;
-    height: 7rem;
+    height: 6rem;
   }
   &__img {
     display: block;

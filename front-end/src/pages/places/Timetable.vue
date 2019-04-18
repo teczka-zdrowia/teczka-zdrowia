@@ -55,6 +55,7 @@
       v-for="(item, index) in userAppointments"
       :data="item"
       :showAddedBy="true"
+      :canEdit="true"
     />
     <MainShowMore :isLoading="isLoading" />
   </div>

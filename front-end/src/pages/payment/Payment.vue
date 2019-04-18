@@ -1,12 +1,18 @@
 <template>
   <div>
     <div class="payment--info">
-      <VioletBlock class="info__content" v-if="isPaid">
+      <VioletBlock
+        class="info__content"
+        v-if="isPaid"
+      >
         Opłacono do
         <b>{{ paidUntil }}</b>
         ({{daysUntil}})
       </VioletBlock>
-      <RedBlock class="info__content" v-if="!isPaid">Nieopłacona</RedBlock>
+      <RedBlock
+        class="info__content"
+        v-if="!isPaid"
+      >Nieopłacona</RedBlock>
     </div>
     <div class="payment">
       <div class="payment__about">
@@ -18,7 +24,7 @@
             <div class="about__func">Kartoteki pacjentów</div>
           </div>
           <div class="about__cost">
-            <span>200 zł/msc</span>
+            <span>XXX zł/msc</span>
           </div>
         </div>
       </div>
@@ -26,7 +32,10 @@
         <div class="payment__choose">
           <div class="choose__title">Wybierz sposób płatności:</div>
           <div class="choose__options">
-            <div class="choose__option" style="color: #253b7f;">
+            <div
+              class="choose__option"
+              style="color: #253b7f;"
+            >
               <i class="fab fa-paypal"></i>
               PayPal
             </div>
@@ -50,31 +59,32 @@
 </template>
 
 <script>
-let moment = require("moment");
-moment.locale("pl");
-
 import VioletBlock from "../../components/ui/blocks/VioletBlock";
 import RedBlock from "../../components/ui/blocks/RedBlock";
+import { mapGetters } from "vuex";
+
+let moment = require("moment");
+moment.locale("pl");
 
 export default {
   name: "Payment",
   computed: {
+    ...mapGetters({
+      isPaid: "userInfo/isPaid"
+    }),
     paidUntil: function() {
       return moment(
-        this.$store.getters.userInfo.paidUntil,
+        this.$store.getters["userInfo/paidUntil"],
         "YYYY-MM-DD"
       ).format("DD.MM.YYYY");
     },
     daysUntil: function() {
       let days = moment(
-        this.$store.getters.userInfo.paidUntil,
+        this.$store.getters["userInfo/paidUntil"],
         "YYYY-MM-DD"
       ).diff(moment(), "days");
 
       return days > 1 ? `pozostało ${days} dni` : `pozostał ${days} dzień`;
-    },
-    isPaid: function() {
-      return this.$store.getters.userInfo.isPaid;
     }
   },
   components: {

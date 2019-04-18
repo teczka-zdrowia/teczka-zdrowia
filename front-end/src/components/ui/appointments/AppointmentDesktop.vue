@@ -1,5 +1,8 @@
 <template>
-  <div class="appointment">
+  <div
+    class="appointment"
+    v-bind:class="{ noborders: hideBorders }"
+  >
     <MainUserInfo
       class="list__info__el"
       :name="data.doctor.name"
@@ -51,7 +54,15 @@ import MainUserInfo from "../basic/MainUserInfo";
 import MainPlaceInfo from "../basic/MainPlaceInfo";
 
 export default {
-  props: ["data"],
+  props: {
+    data: {
+      type: Object
+    },
+    hideBorders: {
+      type: Boolean,
+      default: false
+    }
+  },
   name: "AppointmentDekstop",
   components: {
     MainPlaceInfo,
@@ -60,7 +71,7 @@ export default {
   },
   methods: {
     updateAcceptation: function(val) {
-      //TO DO
+      this.data.isAccepted = val;
     }
   }
 };
@@ -75,6 +86,13 @@ export default {
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
   background: #fff;
   width: calc(100% - 2rem);
+  &.noborders {
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    width: 100%;
+  }
 }
 
 .appointment__content {
@@ -91,11 +109,6 @@ export default {
   }
   div:first-child {
     margin-right: 1em;
-  }
-  @media only screen and (max-width: 480px) {
-    i {
-      display: none;
-    }
   }
 }
 .content__el {

@@ -80,6 +80,8 @@ import MainSearch from "../basic/MainSearch";
 import AppointmentsDesktop from "./AppointmentsDesktop";
 import AppointmentsMobile from "./AppointmentsMobile";
 
+import { mapGetters } from "vuex";
+
 export default {
   name: "AppointmentsBox",
   props: {
@@ -114,9 +116,9 @@ export default {
     });
   },
   computed: {
-    isMobile: function() {
-      return this.$store.getters["window/isMobile"];
-    }
+    ...mapGetters({
+      isMobile: "window/isMobile"
+    })
   }
 };
 </script>
