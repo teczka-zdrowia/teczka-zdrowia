@@ -7,6 +7,7 @@
           v-for="step in steps"
           :key="step.id"
           :class="{ selected: step.id === selectedStep }"
+          v-on:click="selectStep(step.id)"
         >
           {{ step.name }}
         </div>
@@ -19,36 +20,21 @@
 </template>
 
 <script>
-import Hello from "./Hello";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Initialize",
-  data: function() {
-    return {
-      selectedStep: 0,
-      steps: [
-        {
-          id: 0,
-          name: "Powitanie",
-          completed: false,
-          component: Hello
-        },
-        {
-          id: 1,
-          name: "Utwórz gabinet",
-          completed: false,
-          component: Hello
-        }
-      ]
-    };
-  },
   computed: {
-    selectedStepComponent: function() {
-      return this.steps[this.selectedStep].component;
-    }
+    ...mapGetters({
+      selectedStepComponent: "initializeSteps/selectedComponent",
+      selectedStep: "initializeSteps/selected",
+      steps: "initializeSteps/list"
+    })
   },
-  components: {
-    Hello
+  methods: {
+    ...mapActions({
+      selectStep: "initializeSteps/select"
+    })
   }
 };
 </script>

@@ -9,7 +9,8 @@
       v-bind:class="{ 'inactive' : !place.isActive, 'selected' : place == selectedPlace }"
     >
       {{ place.name }}
-      <i
+      <span
+        aria-hidden="true"
         class="fas fa-angle-right place__select"
         title="Wybierz gabinet"
         v-if="place.isActive"

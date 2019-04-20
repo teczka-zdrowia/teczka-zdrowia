@@ -16,7 +16,8 @@
           class="nav__title"
           v-else
         >{{ selectedPlace.name }}</div>
-        <i
+        <span
+          aria-hidden="true"
           class="fas"
           v-bind:class="[ placesShowed ? 'fa-angle-up' : 'fa-angle-down' ]"
         />
@@ -36,12 +37,14 @@
                 <div class="place__title">{{ place.name }}</div>
                 <div class="place__info">{{ place.address }}, {{ place.city }}</div>
               </div>
-              <i
+              <span
+                aria-hidden="true"
                 class="fas fa-angle-right place__select place__select--white"
                 title="Wybierz gabinet"
                 v-if="place.isActive"
               />
-              <i
+              <span
+                aria-hidden="true"
                 class="fas fa-unlock place__select place__select--white"
                 title="Odblokuj"
                 v-if="!place.isActive && place.isAdmin"
@@ -68,7 +71,8 @@
           class="nav__title"
           v-if="selectedPlace"
         >{{ cards[selectedCard] }}</div>
-        <i
+        <span
+          aria-hidden="true"
           class="fas"
           v-if="selectedCard"
           v-bind:class="[ cardsShowed ? 'fa-angle-up' : 'fa-angle-down' ]"
@@ -123,13 +127,15 @@
                 <div class="place__title">{{ place.name }}</div>
                 <div class="place__info">{{ place.address }}, {{ place.city }}</div>
               </div>
-              <i
+              <span
+                aria-hidden="true"
                 class="fas fa-angle-right place__select place__select--white"
                 title="Wybierz gabinet"
                 v-if="place.isActive"
                 v-on:click="selectPlace(place.id)"
               />
-              <i
+              <span
+                aria-hidden="true"
                 class="fas fa-unlock place__select place__select--white"
                 title="Aktywuj"
                 v-on:click="activatePlace(place.id, place.name)"

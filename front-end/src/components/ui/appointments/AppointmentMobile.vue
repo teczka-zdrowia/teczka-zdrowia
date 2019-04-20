@@ -198,7 +198,9 @@ export default {
   color: #67676e;
   padding: 1rem;
   font-weight: 600;
-  white-space: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   & ~ .appointment__when {
     margin-left: unset;
   }

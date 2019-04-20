@@ -7,6 +7,7 @@ import userPrescriptions from './modules/userPrescriptions'
 import userHistory from './modules/userHistory'
 import userPlaces from './modules/userPlaces'
 import userAppointments from './modules/userAppointments'
+import initializeSteps from './modules/initializeSteps'
 import localStoragePlugin from './plugins/localStorage'
 
 Vue.use(Vuex)
@@ -19,7 +20,8 @@ export const store = new Vuex.Store({
     userPrescriptions,
     userHistory,
     userPlaces,
-    userAppointments
+    userAppointments,
+    initializeSteps
   },
   plugins: [localStoragePlugin]
 })
