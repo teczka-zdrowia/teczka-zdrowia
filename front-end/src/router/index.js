@@ -6,6 +6,7 @@ import Auth from '@/pages/auth/Auth'
 import Main from '@/pages/main/Main'
 import Panel from '@/pages/panel/Panel'
 import Terms from '@/pages/terms/Terms'
+import Initialize from '@/pages/initialize/Initialize'
 import Map from '@/pages/map/Map'
 import Payment from '@/pages/payment/Payment'
 import Places from '@/pages/places/Places'
@@ -32,6 +33,11 @@ export default new Router({
       path: '/Terms',
       name: 'Terms',
       component: Terms
+    },
+    {
+      path: '/Initialize',
+      name: 'Initialize',
+      component: Initialize
     },
     {
       path: '/Dashboard',

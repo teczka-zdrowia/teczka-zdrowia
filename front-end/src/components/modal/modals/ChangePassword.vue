@@ -5,7 +5,7 @@
     </h1>
 
     <div class="modal__info">
-      <div class="modal__inputs--cpass">
+      <form class="modal__form">
         <MainInput class="many novalid">
           Obecne hasło
           <input
@@ -42,7 +42,7 @@
             required
           >
         </MainInput>
-      </div>
+      </form>
     </div>
 
     <div class="modal__actions">
@@ -94,7 +94,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal__inputs--cpass label {
+.modal__form label {
   background: #f5f5f5 !important;
   padding: 1.5rem !important;
   width: calc(100% - 3rem) !important;

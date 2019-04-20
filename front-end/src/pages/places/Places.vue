@@ -19,7 +19,7 @@
         <i
           class="fas"
           v-bind:class="[ placesShowed ? 'fa-angle-up' : 'fa-angle-down' ]"
-        ></i>
+        />
         <div
           class="nav__list nav__list--left"
           v-bind:class="{ showed : placesShowed }"
@@ -40,15 +40,21 @@
                 class="fas fa-angle-right place__select place__select--white"
                 title="Wybierz gabinet"
                 v-if="place.isActive"
-              ></i>
+              />
               <i
                 class="fas fa-unlock place__select place__select--white"
                 title="Odblokuj"
                 v-if="!place.isActive && place.isAdmin"
-              ></i>
+              />
             </div>
-            <MainBtn class="places__btn">
-              <i class="fas fa-plus"></i>Nowy gabinet
+            <MainBtn
+              class="places__btn"
+              v-on:click.native="createPlace"
+            >
+              <span
+                aria-hidden="true"
+                class="fas fa-plus"
+              />Nowy gabinet
             </MainBtn>
           </div>
         </div>
@@ -66,7 +72,7 @@
           class="fas"
           v-if="selectedCard"
           v-bind:class="[ cardsShowed ? 'fa-angle-up' : 'fa-angle-down' ]"
-        ></i>
+        />
         <div
           class="nav__list nav__list--right"
           v-bind:class="{ showed : cardsShowed }"
@@ -109,7 +115,10 @@
               v-for="(place, index) in userPlaces"
               v-bind:class="{ 'disabled' : !place.isActive, 'selected' : place == selectedPlace }"
             >
-              <i class="fas fa-briefcase place__icon"></i>
+              <span
+                aria-hidden="true"
+                class="fas fa-briefcase place__icon"
+              />
               <div class="place__content">
                 <div class="place__title">{{ place.name }}</div>
                 <div class="place__info">{{ place.address }}, {{ place.city }}</div>
@@ -119,17 +128,23 @@
                 title="Wybierz gabinet"
                 v-if="place.isActive"
                 v-on:click="selectPlace(place.id)"
-              ></i>
+              />
               <i
                 class="fas fa-unlock place__select place__select--white"
                 title="Aktywuj"
                 v-on:click="activatePlace(place.id, place.name)"
                 v-if="!place.isActive && place.isAdmin"
-              ></i>
+              />
             </div>
           </div>
-          <MainBtn class="places__btn">
-            <i class="fas fa-plus"></i>Nowy gabinet
+          <MainBtn
+            class="places__btn"
+            v-on:click.native="createPlace"
+          >
+            <span
+              aria-hidden="true"
+              class="fas fa-plus"
+            />Nowy gabinet
           </MainBtn>
         </div>
       </div>
@@ -222,6 +237,11 @@ export default {
           }
         }
       });
+    },
+    createPlace: function() {
+      this.showModal({
+        componentName: "CreatePlace"
+      });
     }
   },
   computed: {
@@ -274,7 +294,7 @@ export default {
   padding: 1rem 0 !important;
   vertical-align: middle;
   margin-top: 1.5rem;
-  i {
+  span {
     vertical-align: middle;
     margin-right: 0.75em;
   }
@@ -427,7 +447,7 @@ export default {
     height: 100%;
     position: relative;
     max-width: 50%;
-    i {
+    span {
       margin-left: 0.75em;
     }
   }
@@ -488,6 +508,8 @@ export default {
     position: relative;
     .place__select {
       padding: 0.5em 0;
+      margin-left: auto;
+      margin-right: 0;
     }
     &:not(:hover) {
       background: transparent;

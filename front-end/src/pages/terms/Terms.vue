@@ -1,7 +1,10 @@
 <template>
   <div class="terms">
     <div class="terms__logo">
-      <i class="fas fa-briefcase-medical"></i>Teczka
+      <span
+        aria-hidden="true"
+        class="fas fa-briefcase-medical"
+      />Teczka
       <span>Zdrowia</span>
     </div>
     <div class="terms__content">
@@ -46,7 +49,7 @@ export default {
     @media only screen and (max-width: 400px) {
       font-size: 1.5em;
     }
-    i {
+    span {
       margin-right: 0.5em;
     }
     span {

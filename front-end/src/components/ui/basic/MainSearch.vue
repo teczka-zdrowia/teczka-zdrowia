@@ -5,7 +5,10 @@
       name="input"
     ></slot>
     <div class="icon">
-      <i class="fas fa-filter"></i>
+      <span
+        aria-hidden="true"
+        class="fas fa-filter"
+      />
     </div>
     <slot
       class="select"

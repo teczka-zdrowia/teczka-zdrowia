@@ -12,7 +12,10 @@
       <MainBtn class="appointments__more">
         <span v-if="!isLoading">
           Pokaż więcej
-          <i class="fas fa-long-arrow-alt-right"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-long-arrow-alt-right"
+          />
         </span>
         <span v-if="isLoading">
           Ładowanie
@@ -136,7 +139,7 @@ export default {
   margin-left: auto;
   background: #f5f5f8;
   font-weight: 600;
-  i {
+  span {
     margin: 0 1em;
     color: #6a6ee1;
   }

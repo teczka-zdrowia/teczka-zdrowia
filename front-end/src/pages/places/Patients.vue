@@ -2,7 +2,10 @@
   <div>
     <div class="patients__actions">
       <MainBtn class="actions__btn">
-        <i class="fas fa-plus"></i>
+        <span
+          aria-hidden="true"
+          class="fas fa-plus"
+        />
         Nowy
       </MainBtn>
       <MainSearch class="patients__search">
@@ -130,7 +133,7 @@ export default {
   height: 100%;
   padding: 0.75rem;
   margin-right: 1rem;
-  i {
+  span {
     margin-right: 0.75rem;
   }
 }
@@ -161,7 +164,7 @@ export default {
   border-radius: 0.5em;
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
   background: #fafafc;
-  i {
+  span {
     margin-left: auto;
     padding: 0.5em;
     font-size: 1.5em;

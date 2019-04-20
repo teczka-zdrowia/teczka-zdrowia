@@ -1,11 +1,24 @@
 <template>
   <div class="block--functional--white">
-    <div class="block__top" v-if="title != undefined">
+    <div
+      class="block__top"
+      v-if="title != undefined"
+    >
       <div class="top__title">{{ title }}</div>
-      <div class="top__options" v-if="info != undefined">
-        <i class="fas fa-ellipsis-h"></i>
+      <div
+        class="top__options"
+        v-if="info != undefined"
+      >
+        <span
+          aria-hidden="true"
+          class="fas fa-ellipsis-h"
+        />
       </div>
-      <div class="options__content" v-if="info != undefined" v-html="info"></div>
+      <div
+        class="options__content"
+        v-if="info != undefined"
+        v-html="info"
+      ></div>
     </div>
     <div class="block__content">
       <slot></slot>

@@ -7,7 +7,10 @@
           class="img__edit"
           v-if="isEdit"
         >
-          <i class="fas fa-camera"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-camera"
+          />
         </div>
       </div>
       <div
@@ -55,28 +58,40 @@
           v-on:click.native="isEdit = true"
           v-if="!isEdit"
         >
-          <i class="fas fa-pen"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-pen"
+          />
         </MainBtn>
         <MainBtn
           class="more__action more__action--cancel"
           v-on:click.native="isEdit = false"
           v-if="isEdit"
         >
-          <i class="fas fa-times"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-times"
+          />
         </MainBtn>
         <MainBtn
           class="more__action more__action--save"
           v-on:click.native="isEdit = false"
           v-if="isEdit"
         >
-          <i class="fas fa-check"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-check"
+          />
         </MainBtn>
       </div>
     </div>
     <div class="base__more">
       <div class="more__el">
         <div class="more__title">
-          <i class="fas fa-birthday-cake"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-birthday-cake"
+          />
           <span>Urodziny</span>
         </div>
         <div
@@ -90,7 +105,10 @@
       </div>
       <div class="more__el">
         <div class="more__title">
-          <i class="fas fa-at"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-at"
+          />
           <span>Email</span>
         </div>
         <div
@@ -109,7 +127,10 @@
       </div>
       <div class="more__el">
         <div class="more__title">
-          <i class="fas fa-phone"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-phone"
+          />
           <span>Telefon</span>
         </div>
         <div
@@ -130,7 +151,10 @@
       </div>
       <div class="more__el">
         <div class="more__title">
-          <i class="fas fa-id-card-alt"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-id-card-alt"
+          />
           <span>PESEL</span>
         </div>
         <div
@@ -156,7 +180,10 @@
           v-on:click="hidePESEL"
           class="more__content more__content__btn more__content--fullcolor"
         >
-          <i class="fas fa-eye-slash" />
+          <span
+            aria-hidden="true"
+            class="fas fa-eye-slash"
+          />
         </div>
       </div>
       <div
@@ -168,7 +195,10 @@
           v-on:click.native="isEdit = true"
           v-if="!isEdit"
         >
-          <i class="fas fa-pen"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-pen"
+          />
           Edytuj
         </MainBtn>
         <MainBtn
@@ -176,7 +206,10 @@
           v-on:click.native="isEdit = false"
           v-if="isEdit"
         >
-          <i class="fas fa-times"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-times"
+          />
           Anuluj
         </MainBtn>
         <MainBtn
@@ -184,7 +217,10 @@
           v-on:click.native="isEdit = false"
           v-if="isEdit"
         >
-          <i class="fas fa-check"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-check"
+          />
           Zapisz
         </MainBtn>
       </div>
@@ -335,7 +371,7 @@ input::-webkit-inner-spin-button {
   &:hover {
     background: rgba(230, 230, 232, 0.7);
   }
-  i {
+  span {
     padding: 0.5em;
     right: 0;
     color: #9394eb;
@@ -486,7 +522,7 @@ input.user__specialization {
   &--save {
     color: #27ae60 !important;
   }
-  i {
+  span {
     margin-right: 1em;
   }
 }
@@ -495,7 +531,7 @@ input.user__specialization {
   .more__title {
     width: 7rem;
     justify-content: left;
-    i {
+    span {
       margin-right: 0.75em;
     }
     span {
@@ -514,7 +550,7 @@ input.user__specialization {
   .more__title {
     width: 7rem;
     justify-content: left;
-    i {
+    span {
       margin-right: 0.75em;
     }
     span {
@@ -550,7 +586,7 @@ input.user__specialization {
     grid-area: actions;
   }
   .more__action {
-    i {
+    span {
       margin-right: 0;
     }
   }

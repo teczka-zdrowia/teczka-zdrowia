@@ -66,7 +66,10 @@
               v-on:click.native="isEdit = true"
               v-if="!isEdit"
             >
-              <i class="fas fa-pen"></i>
+              <span
+                aria-hidden="true"
+                class="fas fa-pen"
+              />
               Edytuj
             </MainBtn>
             <MainBtn
@@ -74,7 +77,10 @@
               v-on:click.native="isEdit = false"
               v-if="isEdit"
             >
-              <i class="fas fa-times"></i>
+              <span
+                aria-hidden="true"
+                class="fas fa-times"
+              />
               Anuluj
             </MainBtn>
             <MainBtn
@@ -82,7 +88,10 @@
               v-on:click.native="isEdit = false"
               v-if="isEdit"
             >
-              <i class="fas fa-check"></i>
+              <span
+                aria-hidden="true"
+                class="fas fa-check"
+              />
               Zapisz
             </MainBtn>
           </div>
@@ -91,7 +100,10 @@
             v-on:click="deactivatePlace"
           >
             <MainBtn class="settings__action settings__action--lock">
-              <i class="fas fa-lock"></i>
+              <span
+                aria-hidden="true"
+                class="fas fa-lock"
+              />
               Dezaktywuj gabinet
             </MainBtn>
           </div>
@@ -128,7 +140,10 @@
       <div class="workers__block">Pracownicy</div>
       <div class="workers__actions">
         <MainBtn class="actions__btn">
-          <i class="fas fa-plus"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-plus"
+          />
           Nowy
         </MainBtn>
         <MainSearch class="workers__search">
@@ -304,7 +319,7 @@ export default {
   height: 100%;
   padding: 0.75rem;
   margin-right: 1rem;
-  i {
+  span {
     margin-right: 0.75rem;
   }
 }
@@ -387,7 +402,7 @@ export default {
     background: #e74c3c !important;
     color: #fafafa !important;
   }
-  i {
+  span {
     margin-right: 1em;
   }
 }

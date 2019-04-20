@@ -1,6 +1,9 @@
 <template>
   <div class="prescription">
-    <i class="fas fa-prescription"></i>
+    <span
+      aria-hidden="true"
+      class="fas fa-prescription"
+    />
     <div class="prescription__content">
       <div class="prescription__title">{{ title }}</div>
       <div class="prescription__info">{{ info }}</div>
@@ -11,7 +14,10 @@
       v-if="showCancelBtn"
       @click="cancelPrescription(prescriptionID, title)"
     >
-      <i class="fas fa-times"></i>
+      <span
+        aria-hidden="true"
+        class="fas fa-times"
+      />
     </div>
     <div
       class="prescription__timeleft"
@@ -86,7 +92,7 @@ export default {
     "timeleft timeleft timeleft";
   grid-column-gap: 1em;
   grid-row-gap: 0.5rem;
-  & > i {
+  & > span {
     grid-area: icon;
     margin-right: 1rem;
     padding: 0.5em;

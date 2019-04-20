@@ -14,12 +14,18 @@
       </div>
       <div class="modal--di__info">
         <div class="modal--di__info__el">
-          <i class="fas fa-phone" />
+          <span
+            aria-hidden="true"
+            class="fas fa-phone"
+          />
           <a :href="`tel:${ data.doctor.phone }`">
             {{ data.doctor.phone }}</a>
         </div>
         <div class="modal--di__info__el">
-          <i class="far fa-envelope" />
+          <span
+            aria-hidden="true"
+            class="far fa-envelope"
+          />
           <a :href="`mailto:${ data.doctor.email }`">
             {{ data.doctor.email }}</a>
         </div>
@@ -97,7 +103,7 @@ export default {
     &__el {
       padding: 0.5rem 0;
       display: flex;
-      i {
+      span {
         padding: 1rem;
         border-radius: 0.5rem;
         background: #ececec;

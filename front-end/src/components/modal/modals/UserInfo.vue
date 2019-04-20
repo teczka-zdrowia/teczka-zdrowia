@@ -14,19 +14,28 @@
       </div>
       <div class="modal--ui__info">
         <div class="modal--ui__info__el">
-          <i class="fas fa-phone" />
+          <span
+            aria-hidden="true"
+            class="fas fa-phone"
+          />
           <a :href="`tel:${ data.user.phone }`">
             {{ data.user.phone }}</a>
         </div>
         <div class="modal--ui__info__el">
-          <i class="far fa-envelope" />
+          <span
+            aria-hidden="true"
+            class="far fa-envelope"
+          />
           <a :href="`mailto:${ data.user.email }`">
             {{ data.user.email }}</a>
         </div>
 
         <div class="modal--ui__info__el">
           <a href="#">
-            <i class="fas fa-file-medical" />
+            <span
+              aria-hidden="true"
+              class="fas fa-file-medical"
+            />
             Kartkoteka</a>
         </div>
 
@@ -134,7 +143,7 @@ export default {
     &__el {
       padding: 0.5rem 0;
       display: flex;
-      & > i {
+      & > span {
         padding: 1rem;
         border-radius: 0.5rem;
         background: #ececec;
@@ -151,7 +160,7 @@ export default {
           margin-left: 0;
           background: #ececec;
           text-align: center;
-          i {
+          span {
             margin-right: 1rem;
           }
         }

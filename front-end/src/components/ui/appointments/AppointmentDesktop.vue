@@ -20,16 +20,25 @@
       />
       <div class="content__few">
         <div class="content__el">
-          <i class="fas fa-calendar-day"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-calendar-day"
+          />
           {{ data.date }}
         </div>
         <div class="content__el">
-          <i class="far fa-clock"></i>
+          <span
+            aria-hidden="true"
+            class="far fa-clock"
+          />
           {{ data.time }}
         </div>
       </div>
       <div class="content__el">
-        <i class="far fa-comment-alt"></i>
+        <span
+          aria-hidden="true"
+          class="far fa-comment-alt"
+        />
         {{ data.desc }}
       </div>
     </div>
@@ -124,7 +133,7 @@ export default {
   border-radius: 1rem;
   width: calc(100% - 2em);
   margin-bottom: 1rem;
-  i {
+  span {
     color: $darkviolet;
     margin-right: 10px;
   }
@@ -147,7 +156,7 @@ export default {
   border-radius: 0;
   filter: none;
   width: 100%;
-  i {
+  span {
     @extend %text--center;
     font-size: 1.5em;
     margin-right: 0.7rem;

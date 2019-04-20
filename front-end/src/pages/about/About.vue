@@ -3,13 +3,19 @@
     <div class="about__top">
       <BaseInfo class="about__base" />
       <Block class="about__actions">
-        <i class="fas fa-cog actions__settings"></i>
+        <span
+          aria-hidden="true"
+          class="fas fa-cog actions__settings"
+        />
         <div class="actions__buttons">
           <div
             class="action"
             v-on:click="changePassword"
           >
-            <i class="fas fa-unlock"></i>
+            <span
+              aria-hidden="true"
+              class="fas fa-unlock"
+            />
             <div class="action__title">Zmień hasło</div>
           </div>
           <div
@@ -72,7 +78,7 @@ export default {
     height: 100%;
     display: flex;
     flex-direction: column;
-    & > i {
+    & > span {
       height: calc(33% + 1rem);
       margin-bottom: 1rem;
       width: 100%;
@@ -123,7 +129,7 @@ export default {
   overflow: hidden;
   cursor: pointer;
   transition: 0.2s ease-in-out;
-  i {
+  span {
     @extend %text--center;
     background: #9394eb;
     color: #fafafc;

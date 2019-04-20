@@ -1,5 +1,8 @@
 <template>
-  <form class="signup" @submit.prevent="signup">
+  <form
+    class="signup"
+    @submit.prevent="signup"
+  >
     <div class="login__type">
       <div class="type__top">
         <div class="type__btn">
@@ -14,12 +17,21 @@
             v-bind:class="{'selected' : profileType == 1}"
           >
             <div class="el__icon">
-              <i class="fas fa-user"></i>
+              <span
+                aria-hidden="true"
+                class="fas fa-user"
+              />
             </div>
             <div class="el__title">Pacjent</div>
           </div>
-          <div class="el__info" v-on:click="showPatientInfo = !showPatientInfo">
-            <i class="fas fa-question"></i>
+          <div
+            class="el__info"
+            v-on:click="showPatientInfo = !showPatientInfo"
+          >
+            <span
+              aria-hidden="true"
+              class="fas fa-question"
+            />
           </div>
         </div>
         <div
@@ -37,12 +49,21 @@
             v-bind:class="{'selected' : profileType == 2}"
           >
             <div class="el__icon">
-              <i class="fas fa-user-md"></i>
+              <span
+                aria-hidden="true"
+                class="fas fa-user-md"
+              />
             </div>
             <div class="el__title">Specjalista</div>
           </div>
-          <div class="el__info" v-on:click="showSpecInfo = !showSpecInfo">
-            <i class="fas fa-question"></i>
+          <div
+            class="el__info"
+            v-on:click="showSpecInfo = !showSpecInfo"
+          >
+            <span
+              aria-hidden="true"
+              class="fas fa-question"
+            />
           </div>
         </div>
         <div
@@ -59,7 +80,13 @@
       <div class="input--double-container">
         <MainInput class="double many">
           Imię
-          <input type="text" name="name" v-model="data.name" placeholder="Jan" required>
+          <input
+            type="text"
+            name="name"
+            v-model="data.name"
+            placeholder="Jan"
+            required
+          >
         </MainInput>
         <MainInput class="double many">
           Nazwisko
@@ -94,7 +121,10 @@
           required
         >
       </MainInput>
-      <MainInput class="many" v-bind:class="{ novalid: !isPeselCorrect }">
+      <MainInput
+        class="many"
+        v-bind:class="{ novalid: !isPeselCorrect }"
+      >
         PESEL
         <input
           type="text"
@@ -126,7 +156,10 @@
           required
         >
       </MainInput>
-      <MainInput class="many" v-if="profileType == 2">
+      <MainInput
+        class="many"
+        v-if="profileType == 2"
+      >
         Specjalizacja
         <input
           type="text"
@@ -137,12 +170,26 @@
         >
       </MainInput>
     </div>
-    <div class="login__options" v-if="profileType != 0">
+    <div
+      class="login__options"
+      v-if="profileType != 0"
+    >
       <div class="login__remember">
-        <input v-model="isTermsAccepted" type="checkbox" id="termsAccepted" required>
-        <label for="termsAccepted" class="checkbox--login__remember"></label>
+        <input
+          v-model="isTermsAccepted"
+          type="checkbox"
+          id="termsAccepted"
+          required
+        >
+        <label
+          for="termsAccepted"
+          class="checkbox--login__remember"
+        ></label>
         <p>Akceptuję
-          <router-link to="/Terms" target="_blank">regulamin</router-link>
+          <router-link
+            to="/Terms"
+            target="_blank"
+          >regulamin</router-link>
         </p>
       </div>
     </div>
@@ -342,7 +389,7 @@ input::-webkit-inner-spin-button {
 
 .type__btn--action {
   background: transparent;
-  i {
+  span {
     transition: 0.2s ease-in-out;
     color: #3e3e45;
     font-size: 1.2em;

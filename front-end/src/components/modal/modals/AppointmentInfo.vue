@@ -6,11 +6,17 @@
       v-if="data.canEdit"
     >
       <button class="modal__btn fullwidth modal__btn--violet">
-        <i class="fas fa-pen" />
+        <span
+          aria-hidden="true"
+          class="fas fa-pen"
+        />
         Edytuj
       </button>
       <button class="modal__btn fullwidth modal__btn--grey">
-        <i class="fas fa-lock" />
+        <span
+          aria-hidden="true"
+          class="fas fa-lock"
+        />
         Dezaktywuj
       </button>
     </div>

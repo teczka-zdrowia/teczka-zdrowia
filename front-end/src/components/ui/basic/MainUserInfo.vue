@@ -18,7 +18,10 @@
       v-bind:class="{ bigphone: isBigPhone }"
     >
       <a :href="`tel:${phone}`">
-        <i class="fas fa-phone"></i>
+        <span
+          aria-hidden="true"
+          class="fas fa-phone"
+        />
         Zadzwoń
       </a>
     </div>
@@ -166,7 +169,7 @@ export default {
     color: #fff;
     margin: auto;
   }
-  i {
+  span {
     margin-right: 0.5rem;
   }
   &.bigphone {

@@ -36,19 +36,28 @@
               class="choose__option"
               style="color: #253b7f;"
             >
-              <i class="fab fa-paypal"></i>
+              <span
+                aria-hidden="true"
+                class="fab fa-paypal"
+              />
               PayPal
             </div>
           </div>
           <div class="choose__options">
             <div class="choose__option">
-              <i class="far fa-credit-card"></i>
+              <span
+                aria-hidden="true"
+                class="far fa-credit-card"
+              />
               Karta
             </div>
           </div>
           <div class="choose__options">
             <div class="choose__option">
-              <i class="fas fa-money-check"></i>
+              <span
+                aria-hidden="true"
+                class="fas fa-money-check"
+              />
               Przelew
             </div>
           </div>
@@ -175,7 +184,7 @@ export default {
       background: #eaeef7;
       font-weight: 700;
       cursor: pointer;
-      i {
+      span {
         vertical-align: middle;
         margin-right: 0.5em;
       }

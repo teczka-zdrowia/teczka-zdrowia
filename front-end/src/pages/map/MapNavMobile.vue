@@ -6,29 +6,48 @@
       v-bind:class="{ showed : showSearch}"
     >
       Czego szukasz?
-      <i class="fas" v-bind:class="[showSearch ? 'fa-angle-up' : 'fa-angle-down']"></i>
+      <span
+        aria-hidden="true"
+        class="fas"
+        v-bind:class="[showSearch ? 'fa-angle-up' : 'fa-angle-down']"
+      />
     </div>
-    <div class="actions__content" v-bind:class="{ showed : showSearch}">
+    <div
+      class="actions__content"
+      v-bind:class="{ showed : showSearch}"
+    >
       <div class="actions__selects">
         <MainSelect>
-          <option disabled selected>Typ</option>
+          <option
+            disabled
+            selected
+          >Typ</option>
           <option>Lekarz</option>
           <option>Gabinet</option>
         </MainSelect>
         <MainSelect>
-          <option disabled selected>Specjalizacja</option>
+          <option
+            disabled
+            selected
+          >Specjalizacja</option>
           <option>Fizoterapeuta</option>
           <option>Stomatolog</option>
           <option>Psycholog</option>
         </MainSelect>
         <MainSelect>
-          <option disabled selected>Miasto</option>
+          <option
+            disabled
+            selected
+          >Miasto</option>
           <option>Warszawa</option>
           <option>Gdańsk</option>
           <option>Katowice</option>
         </MainSelect>
       </div>
-      <MainBtn class="actions__btn" v-on:click.native="showSearch = false">Szukaj</MainBtn>
+      <MainBtn
+        class="actions__btn"
+        v-on:click.native="showSearch = false"
+      >Szukaj</MainBtn>
     </div>
   </div>
 </template>
@@ -85,7 +104,7 @@ export default {
   text-align: center;
   cursor: pointer;
   transition: 0.2s ease-in-out;
-  i {
+  span {
     color: #3e3e45;
     margin-left: 0.75em;
   }

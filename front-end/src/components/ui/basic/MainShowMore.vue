@@ -5,7 +5,10 @@
       v-if="!isLoading"
     >
       Pokaż więcej
-      <i class="fas fa-arrow-down" />
+      <span
+        aria-hidden="true"
+        class="fas fa-arrow-down"
+      />
     </div>
     <div
       class="more__content"
@@ -64,7 +67,7 @@ export default {
     height: 1.25rem;
     width: 1.25rem;
   }
-  i {
+  span {
     margin-left: 0.75em;
   }
 }

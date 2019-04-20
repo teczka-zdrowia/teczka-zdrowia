@@ -14,7 +14,7 @@
             <i
               class="fas"
               v-bind:class="[isShowed ? 'fa-angle-up' : 'fa-angle-down']"
-            ></i>
+            />
           </button>
         </div>
         <div class="info__specialization">{{ this.$store.getters['userInfo/specialization'] }}</div>
@@ -30,21 +30,30 @@
           class="menu__el"
           v-on:click.native="isShowed = !isShowed"
         >
-          <i class="fas fa-user"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-user"
+          />
           <div class="menu__title">Profil</div>
         </router-link>
         <div
           class="menu__el"
           v-on:click.native="isShowed = !isShowed"
         >
-          <i class="fas fa-cog"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-cog"
+          />
           <div class="menu__title">Ustawienia</div>
         </div>
         <div
           class="menu__el"
           v-on:click.native="logout; isShowed = !isShowed"
         >
-          <i class="fas fa-sign-out-alt"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-sign-out-alt"
+          />
           <div class="menu__title">Wyloguj</div>
         </div>
       </div>
@@ -198,7 +207,7 @@ export default {
     * {
       pointer-events: none;
     }
-    i {
+    span {
       transition: 0.2s ease-in-out;
       color: #3e3e45;
       font-size: 1.2em;
@@ -207,7 +216,7 @@ export default {
     &:hover {
       background: #f5f5f5;
       color: #5356ae;
-      i {
+      span {
         color: #5356ae;
       }
     }

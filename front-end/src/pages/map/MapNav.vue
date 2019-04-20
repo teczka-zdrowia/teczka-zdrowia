@@ -2,25 +2,34 @@
   <div class="map__actions">
     <div class="actions__content">
       <div class="actions__title">Czego szukasz?</div>
-      <div class="actions__selects">
+      <form class="actions__form">
         <MainSelect>
-          <option disabled selected>Typ</option>
+          <option
+            disabled
+            selected
+          >Typ</option>
           <option>Lekarz</option>
           <option>Gabinet</option>
         </MainSelect>
         <MainSelect>
-          <option disabled selected>Specjalizacja</option>
+          <option
+            disabled
+            selected
+          >Specjalizacja</option>
           <option>Fizoterapeuta</option>
           <option>Stomatolog</option>
           <option>Psycholog</option>
         </MainSelect>
         <MainSelect>
-          <option disabled selected>Miasto</option>
+          <option
+            disabled
+            selected
+          >Miasto</option>
           <option>Warszawa</option>
           <option>Gdańsk</option>
           <option>Katowice</option>
         </MainSelect>
-      </div>
+      </form>
 
       <MainBtn class="actions__btn">Szukaj</MainBtn>
     </div>
@@ -88,7 +97,7 @@ export default {
   margin-bottom: 1em;
 }
 
-.actions__selects {
+.actions__form {
   select {
     width: 100%;
     background-color: #e7ebf6;

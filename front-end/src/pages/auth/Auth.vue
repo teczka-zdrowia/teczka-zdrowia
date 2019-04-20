@@ -1,12 +1,15 @@
 <template>
   <div class="auth">
     <div class="auth__header">
-      <Logo/>
+      <Logo />
     </div>
     <div class="auth__image">
-      <img src="static/img/login_bg.jpg" class="center--absolute">
+      <img
+        src="static/img/login_bg.jpg"
+        class="center--absolute"
+      >
       <div class="auth__background"></div>
-      <Logo class="auth__logo"/>
+      <Logo class="auth__logo" />
     </div>
     <div class="auth__container">
       <div class="auth__content">
@@ -14,18 +17,30 @@
         <Login v-if="isLogin">
           <div class="login__actions">
             <MainBtn type="submit">Zaloguj się</MainBtn>
-            <button class="btn--signup" v-on:click="toggleLogin()">
+            <button
+              class="btn--signup"
+              v-on:click="toggleLogin()"
+            >
               Rejestracja
-              <i class="fas fa-long-arrow-alt-right"></i>
+              <span
+                aria-hidden="true"
+                class="fas fa-long-arrow-alt-right"
+              />
             </button>
           </div>
         </Login>
         <Signup v-else>
           <div class="login__actions">
             <MainBtn type="submit">Zarejestruj</MainBtn>
-            <button class="btn--signup" v-on:click="toggleLogin()">
+            <button
+              class="btn--signup"
+              v-on:click="toggleLogin()"
+            >
               Logowanie
-              <i class="fas fa-long-arrow-alt-right"></i>
+              <span
+                aria-hidden="true"
+                class="fas fa-long-arrow-alt-right"
+              />
             </button>
           </div>
         </Signup>
@@ -156,7 +171,7 @@ export default {
     &:hover {
       background: #e2e2ea;
     }
-    i {
+    span {
       margin-left: 0.75em;
     }
   }

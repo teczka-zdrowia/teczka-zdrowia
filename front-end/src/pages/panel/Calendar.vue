@@ -11,7 +11,10 @@
         class="calendar__btn"
         v-on:click="date = today"
       >
-        <i class="fas fa-calendar-day"></i>
+        <span
+          aria-hidden="true"
+          class="fas fa-calendar-day"
+        />
         Dzisiaj
       </div>
       <div
@@ -64,7 +67,7 @@ export default {
   background: #f5f5f5;
   transition: 0.5s ease-in-out;
   color: #3e3e45;
-  i {
+  span {
     margin-right: 0.75rem;
   }
   &:hover {

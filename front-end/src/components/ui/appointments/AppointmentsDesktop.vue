@@ -12,7 +12,10 @@
     >
       <MainBtn>
         Pokaż więcej
-        <i class="fas fa-long-arrow-alt-right"></i>
+        <span
+          aria-hidden="true"
+          class="fas fa-long-arrow-alt-right"
+        />
       </MainBtn>
     </router-link>
   </div>
@@ -64,7 +67,7 @@ export default {
     background: #eeeef3 !important;
     color: #6a6ee1 !important;
   }
-  i {
+  span {
     margin-left: 0.75rem;
   }
 }

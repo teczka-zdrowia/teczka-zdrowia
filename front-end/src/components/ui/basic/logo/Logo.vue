@@ -1,6 +1,9 @@
 <template>
   <div class="logo">
-    <i class="fas fa-briefcase-medical"></i>
+    <span
+      aria-hidden="true"
+      class="fas fa-briefcase-medical"
+    />
     Teczka
     <span>Zdrowia</span>
   </div>
@@ -20,7 +23,7 @@ export default {
   font-size: 2em;
   display: flex;
   vertical-align: middle;
-  i {
+  span {
     margin-right: 0.5em;
   }
   span {

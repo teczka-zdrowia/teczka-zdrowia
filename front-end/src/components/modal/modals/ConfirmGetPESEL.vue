@@ -4,7 +4,7 @@
       Potwierdź czynność hasłem
     </h1>
 
-    <div class="modal__info">
+    <form class="modal__info">
       <MainInput class="many novalid">
         Hasło
         <input
@@ -16,7 +16,7 @@
           required
         >
       </MainInput>
-    </div>
+    </form>
 
     <div class="modal__actions">
       <button

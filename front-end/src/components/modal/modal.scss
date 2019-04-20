@@ -46,11 +46,16 @@
       background: none;
       box-shadow: none;
     }
+    svg {
+      margin: auto;
+      display: flex;
+    }
   }
 
   &__title {
     margin: 0;
   }
+
   &__info {
     font-weight: 600;
     padding: 2rem 0;
@@ -113,7 +118,7 @@
     &--icon {
       max-width: 3rem !important;
     }
-    i {
+    span {
       margin-right: 0.75rem;
     }
     &:hover {

@@ -45,7 +45,10 @@
                 v-for="attachment in more.attachments"
                 :key="attachment.id"
               >
-                <i class="fas fa-paperclip"></i>
+                <span
+                  aria-hidden="true"
+                  class="fas fa-paperclip"
+                />
                 {{ attachment.name }}
               </div>
             </div>
@@ -60,7 +63,10 @@
           alt="Podpis pacjenta"
         >
         <div class="more__print">
-          <i class="fas fa-print"></i>
+          <span
+            aria-hidden="true"
+            class="fas fa-print"
+          />
           Drukuj
         </div>
       </div>
@@ -229,7 +235,7 @@ export default {
   border-radius: 0.5em;
   overflow: hidden;
   cursor: pointer;
-  i {
+  span {
     margin-left: 0;
     margin-right: 1rem;
     padding: 0.5em;
@@ -255,7 +261,7 @@ export default {
     "time time";
   grid-column-gap: 1em;
   grid-row-gap: 0.5rem;
-  & > i {
+  & > span {
     grid-area: icon;
     margin-right: 1rem;
     padding: 0.5em;
@@ -325,7 +331,7 @@ export default {
   padding: 0 1rem;
   border-radius: 0.5rem;
   cursor: pointer;
-  i {
+  span {
     margin-right: 0.5rem;
   }
 }

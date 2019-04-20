@@ -35,11 +35,17 @@
     </div>
     <div class="appointment__when">
       <div class="when__date">
-        <i class="fas fa-calendar-day"></i>
+        <span
+          aria-hidden="true"
+          class="fas fa-calendar-day"
+        />
         <p>25.10.2019</p>
       </div>
       <div class="when__time">
-        <i class="far fa-clock"></i>
+        <span
+          aria-hidden="true"
+          class="far fa-clock"
+        />
         <p>18:30</p>
       </div>
     </div>
@@ -148,7 +154,7 @@ export default {
   margin-left: auto;
   background: #f5f5f8;
   font-weight: 600;
-  i {
+  span {
     margin: 0 1em;
     color: #6a6ee1;
   }

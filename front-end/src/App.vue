@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div v-if="isValid && isValidRoute">
+    <div v-if="isValid && isAppRoute">
       <AppSidebar v-if="!isMobile" />
       <AppSidebarMobile v-if="isMobile" />
       <AppHeader v-if="!isMobile" />
@@ -53,8 +53,8 @@ export default {
       isMobile: "window/isMobile",
       isModalVisible: "modal/visible"
     }),
-    isValidRoute: function() {
-      const paths = ["/", "/Auth", "/Terms", "/dTm6Gz", "/404"];
+    isAppRoute: function() {
+      const paths = ["/", "/Auth", "/Terms", "/dTm6Gz", "/404", "/Initialize"];
       return paths.indexOf(this.$route.path) > -1 ? false : true;
     },
     isRouteMap: function() {

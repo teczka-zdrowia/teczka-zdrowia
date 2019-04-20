@@ -67,6 +67,8 @@ import MainSearch from "../../components/ui/basic/MainSearch";
 import MainShowMore from "../../components/ui/basic/MainShowMore";
 import AppointmentMobile from "../../components/ui/appointments/AppointmentMobile";
 
+import { mapGetters } from "vuex";
+
 export default {
   name: "AppointmentsMobile",
   data: function() {
@@ -82,12 +84,10 @@ export default {
     MainShowMore
   },
   computed: {
-    isMobile: function() {
-      return this.$store.getters["window/isMobile"];
-    },
-    userAppointments: function() {
-      return this.$store.getters["userAppointments/all"];
-    }
+    ...mapGetters({
+      isMobile: "window/isMobile",
+      userAppointments: "userAppointments/all"
+    })
   }
 };
 </script>

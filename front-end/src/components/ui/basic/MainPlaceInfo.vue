@@ -4,7 +4,8 @@
     v-bind:class="{nopadding: noPadding}"
     v-on:click="moreInfo"
   >
-    <i
+    <span
+      aria-hidden="true"
       class="fas fa-map-marker-alt"
       v-if="!hideIcon"
       v-bind:class="{violet: violetIcon}"
@@ -75,7 +76,7 @@ export default {
   &.nopadding {
     padding: 0;
   }
-  i {
+  span {
     margin-right: 0.75rem;
     &.violet {
       color: #6a6ee1;
