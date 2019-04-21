@@ -73,6 +73,9 @@ export default {
   cursor: pointer;
   transition: 0.2s ease-in-out;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   &.nopadding {
     padding: 0;
   }

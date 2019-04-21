@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="patients__actions">
-      <MainBtn class="actions__btn">
+      <MainBtn
+        class="actions__btn"
+        v-on:click.native="addNewPatient"
+      >
         <span
           aria-hidden="true"
           class="fas fa-plus"
@@ -105,8 +108,27 @@ import MainBtn from "../../components/ui/basic/MainBtn";
 import MainSearch from "../../components/ui/basic/MainSearch";
 import MainUser from "../../components/ui/basic/MainUser";
 
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   name: "Patients",
+  computed: {
+    ...mapGetters({
+      selectedPlace: "userPlaces/selected"
+    })
+  },
+  methods: {
+    ...mapActions({
+      showModal: "modal/show",
+      setAddPatientPlace: "addPatient/setPlace"
+    }),
+    addNewPatient: function() {
+      this.setAddPatientPlace(this.selectedPlace);
+      this.showModal({
+        componentName: "AddPatient"
+      });
+    }
+  },
   components: {
     MainUser,
     MainSearch,
