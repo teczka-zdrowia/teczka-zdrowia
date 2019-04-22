@@ -40,11 +40,9 @@ export default {
       addPatient: "addPatient/add"
     }),
     aPatient: function() {
-      const added = this.$refs.addPatientComponent.addPatient();
-      if (added) {
-        // TODO
-        this.hideModal();
-      }
+      // TODO
+      this.addPatient();
+      this.hideModal();
     }
   }
 };

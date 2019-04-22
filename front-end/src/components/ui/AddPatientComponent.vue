@@ -12,6 +12,7 @@
     </div>
     <form
       class="addpatient__form"
+      v-if="!createNew"
       v-on:submit.prevent="searchPatient"
     >
       <MainInput v-bind:class="{ novalid: !isPeselCorrect }">
@@ -20,7 +21,7 @@
           type="text"
           name="pesel"
           minlength="1"
-          v-model="pesel"
+          v-model="data.pesel"
           placeholder="12345678912"
           required
         >
@@ -30,8 +31,65 @@
         v-if="isPeselCorrect"
       >Wyszukaj pacjenta po PESEL</MainBtn>
     </form>
+    <MainBtn
+      class="addpatient__form__btn addpatient__form__btn--red"
+      v-if="isPeselCorrect && searchFailed && !createNew"
+      v-on:click.native="createNew = !createNew"
+    >Utwórz konto użytkownika</MainBtn>
+    <form
+      class="addpatient__form"
+      v-if="createNew"
+      v-on:submit.prevent="createPatient"
+    >
+      <div class="input--double-container">
+        <MainInput class="double many">
+          Imię
+          <input
+            type="text"
+            name="name"
+            v-model="data.name"
+            placeholder="Jan"
+            required
+          >
+        </MainInput>
+        <MainInput class="double many">
+          Nazwisko
+          <input
+            type="text"
+            name="surname"
+            v-model="data.surname"
+            placeholder="Kowalski"
+            required
+          >
+        </MainInput>
+      </div>
+      <MainInput class="many">
+        E-mail
+        <input
+          type="email"
+          name="email"
+          v-model="data.email"
+          placeholder="jan@kowalski.com"
+          required
+        >
+      </MainInput>
+      <MainInput class="many">
+        Telefon
+        <input
+          type="tel"
+          name="phone"
+          v-model="data.phone"
+          placeholder="123654789"
+          minlength="9"
+          maxlength="15"
+          required
+        >
+      </MainInput>
+      <MainBtn class="addpatient__form__btn">Utwórz konto</MainBtn>
+    </form>
     <Patient
       class="addpatient__patient"
+      v-if="patient"
       :patient="patient || undefined"
     />
   </div>
@@ -49,36 +107,54 @@ export default {
   name: "AddPatientComponent",
   data: function() {
     return {
-      pesel: ""
+      data: {
+        pesel: "",
+        name: "",
+        surname: "",
+        email: "",
+        phone: ""
+      },
+      createNew: false
     };
   },
   computed: {
     ...mapGetters({
       place: "addPatient/place",
-      patient: "addPatient/patient"
+      patient: "addPatient/patient",
+      searchFailed: "addPatient/searchFailed"
     }),
     isPeselCorrect: function() {
       let weights = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3];
       let sum = 0;
-      let controlNumber = parseInt(this.pesel.substring(10, 11));
+      let controlNumber = parseInt(this.data.pesel.substring(10, 11));
       for (let i = 0; i < weights.length; i++) {
-        sum += parseInt(this.pesel.substring(i, i + 1)) * weights[i];
+        sum += parseInt(this.data.pesel.substring(i, i + 1)) * weights[i];
       }
       sum = sum % 10;
-      return this.pesel == null ? false : 10 - sum === controlNumber;
+      return this.data.pesel == null ? false : 10 - sum === controlNumber;
     }
   },
   methods: {
     ...mapActions({
-      searchPatientByPESEL: "addPatient/searchByPESEL"
+      searchPatientByPESEL: "addPatient/searchByPESEL",
+      createNewPatient: "addPatient/createNew"
     }),
     searchPatient: function() {
-      this.$toasted.show("Ładowanie...");
-      try {
-        this.searchPatientByPESEL(this.pesel);
-      } catch (error) {
-        console.error(error);
-      }
+      this.$toasted.show("Szukanie...");
+      this.searchPatientByPESEL(this.data.pesel).then(
+        result => this.$toasted.success(result),
+        error => this.$toasted.error(error)
+      );
+    },
+    createPatient: function() {
+      this.$toasted.show("Dodawanie...");
+      this.createNewPatient(this.data).then(
+        result => {
+          this.$toasted.success(result);
+          this.createNew = false;
+        },
+        error => this.$toasted.error(error)
+      );
     }
   },
   components: {
@@ -116,8 +192,12 @@ export default {
       background: #f5f5f5 !important;
     }
     &__btn {
-      width: 100%;
       margin-top: 1rem;
+      width: 100%;
+      &--red {
+        background: #d91e18 !important;
+        color: #fafafc !important;
+      }
     }
   }
 

@@ -49,6 +49,9 @@ const getters = {
   },
   list (state) {
     return state.list.filter(place => !place.isDeleted)
+  },
+  active (state) {
+    return state.list.filter(place => place.isActive)
   }
 }
 

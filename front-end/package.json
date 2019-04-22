@@ -16,7 +16,6 @@
     "leaflet-geosearch": "^2.7.0",
     "moment": "^2.23.0",
     "vue": "^2.5.22",
-    "vue-date-pick": "^1.0.7",
     "vue-moment": "^4.0.0",
     "vue-router": "^3.0.1",
     "vue-toasted": "^1.1.26",

@@ -1,7 +1,8 @@
 const state = {
   patient: false,
   place: null,
-  isCompleted: false
+  searchFailed: false,
+  completed: false
 }
 
 const mutations = {
@@ -11,15 +12,17 @@ const mutations = {
   SET_PLACE (state, place) {
     state.place = place
   },
-  SET_COMPLETED (state, value) {
-    state.isCompleted = value
+  SET_SEARCH_FAILED_VALUE (state, value) {
+    state.searchFailed = value
+  },
+  SET_COMPLETED_VALUE (state, value) {
+    state.completed = value
   },
   CLEAR_ADDPATIENT (state, value) {
-    state = {
-      patient: false,
-      place: null,
-      isCompleted: false
-    }
+    state.patient = false
+    state.place = null
+    state.searchFailed = false
+    state.completed = false
   }
 }
 
@@ -38,15 +41,33 @@ const actions = {
       birthdate: '2002-12-23 00:11:32.000000'
     }
     // MOCKUP
-    setTimeout(() => {
-      if (pesel == 96011999231) {
-        commit('SET_PATIENT', patientData)
-        commit('SET_COMPLETED', true)
-        return true
-      } else {
-        return false
-      }
-    }, 400)
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (pesel == 96011999231) {
+          commit('SET_PATIENT', patientData)
+          commit('SET_COMPLETED_VALUE', true)
+          commit('SET_SEARCH_FAILED_VALUE', false)
+          resolve('Znaleziono użytkownika')
+        } else {
+          commit('SET_SEARCH_FAILED_VALUE', true)
+          reject(new Error('Brak użytkownika w bazie'))
+        }
+      }, 400)
+    })
+  },
+  createNew ({ commit }, patientData) {
+    // MOCKUP
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        commit('SET_PATIENT', {
+          img: '/static/img/icons/profile-icon-720x720.png',
+          ...patientData
+        })
+        commit('SET_COMPLETED_VALUE', true)
+        commit('SET_SEARCH_FAILED_VALUE', false)
+        resolve('Znaleziono użytkownika')
+      }, 400)
+    })
   },
   add () {
     // TODO
@@ -64,7 +85,10 @@ const getters = {
     return state.patient
   },
   isCompleted (state) {
-    return state.isCompleted
+    return state.completed
+  },
+  searchFailed (state) {
+    return state.searchFailed
   }
 }
 

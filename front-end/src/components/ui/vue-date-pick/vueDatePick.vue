@@ -6,6 +6,7 @@
     <input
       v-if="hasInputElement"
       type="text"
+      :required="required"
       v-bind="inputAttributes"
       v-bind:value="inputValue"
       v-on:input="processUserInput($event.target.value)"
@@ -182,6 +183,7 @@ const secondsRE = /s+/;
 export default {
   props: {
     value: { type: String, default: "" },
+    required: { type: Boolean, default: false },
     highlighted: { type: Array, deafult: [] },
     format: { type: String, default: "YYYY-MM-DD" },
     displayFormat: { type: String },
@@ -723,8 +725,18 @@ $vdpColor: #7485c2 !default;
   /*font-family: Helvetica, Arial, sans-serif;*/
 }
 
-.vdpComponent.vdpWithInput > input {
-  padding-right: 30px;
+.vdpComponent.vdpWithInput {
+  display: block;
+  width: 100%;
+  & > input {
+    box-sizing: border-box;
+    margin-top: 0.5em;
+    width: 80%;
+    font-size: 1rem;
+    background: transparent;
+    color: #3e3e45;
+    font-weight: 600;
+  }
 }
 
 .vdpClearInput {

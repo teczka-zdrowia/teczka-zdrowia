@@ -1,7 +1,7 @@
 <template>
   <div class="header">
-    <MainBtn>Dodaj wizytę</MainBtn>
-    <UserInfo/>
+    <MainBtn v-on:click.native="addAppointment">Dodaj wizytę</MainBtn>
+    <UserInfo />
   </div>
 </template>
 
@@ -9,11 +9,26 @@
 import MainBtn from "../ui/basic/MainBtn";
 import UserInfo from "../ui/UserInfo";
 
+import { mapActions } from "vuex";
+
 export default {
   name: "AppHeader",
   components: {
     MainBtn: MainBtn,
     UserInfo: UserInfo
+  },
+  methods: {
+    ...mapActions({
+      showModal: "modal/show"
+    }),
+    addAppointment: function() {
+      this.showModal({
+        componentName: "AddAppointment",
+        data: {
+          hideBorders: true
+        }
+      });
+    }
   }
 };
 </script>
