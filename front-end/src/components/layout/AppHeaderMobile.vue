@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <UserInfo/>
+    <UserInfo />
   </div>
 </template>
 
@@ -29,7 +29,7 @@ $primrary-light: #fafafa;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 999;
   display: flex;
   justify-content: flex-end;
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);

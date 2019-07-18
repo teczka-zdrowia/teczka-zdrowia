@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div v-if="isValid && isAppRoute">
+    <div v-if="isAppRoute">
       <AppSidebar v-if="!isMobile" />
       <AppSidebarMobile v-if="isMobile" />
       <AppHeader v-if="!isMobile" />
@@ -49,26 +49,23 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isValid: "userInfo/isValid",
       isMobile: "window/isMobile",
       isModalVisible: "modal/visible"
     }),
     isAppRoute: function() {
-      const paths = ["/", "/Auth", "/Terms", "/dTm6Gz", "/404", "/Initialize"];
-      return paths.indexOf(this.$route.path) > -1 ? false : true;
+      const paths = ["/", "/auth", "/terms", "/dtm6gz", "/404", "/initialize"];
+      const routePath = this.$route.path.toLowerCase();
+      return paths.indexOf(routePath) > -1 ? false : true;
     },
     isRouteMap: function() {
-      return this.$route.path == "/Map";
+      const routePath = this.$route.path.toLowerCase();
+      return routePath == "/map";
     }
   },
   created() {
     this.updateWindowDimensions();
   },
   mounted() {
-    if (!this.isValid) {
-      this.$router.push("/Auth");
-    }
-
     window.onresize = () => this.updateWindowDimensions();
   }
 };

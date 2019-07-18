@@ -77,36 +77,14 @@
       </div>
     </div>
     <div v-if="profileType != 0">
-      <div class="input--double-container">
-        <MainInput class="double many">
-          Imię
-          <input
-            type="text"
-            name="name"
-            v-model="data.name"
-            placeholder="Jan"
-            required
-          >
-        </MainInput>
-        <MainInput class="double many">
-          Nazwisko
-          <input
-            type="text"
-            name="surname"
-            v-model="data.surname"
-            placeholder="Kowalski"
-            required
-          >
-        </MainInput>
-      </div>
       <MainInput class="many">
-        Login
+        Imię i nazwisko
         <input
           type="text"
-          name="login"
-          minlength="3"
-          v-model="data.login"
-          placeholder="jankowalski"
+          name="name"
+          v-model="data.name"
+          placeholder="Jan Kowalski"
+          maxlength="100"
           required
         >
       </MainInput>
@@ -115,7 +93,7 @@
         <input
           name="password"
           type="password"
-          minlength="6"
+          minlength="8"
           v-model="data.password"
           placeholder="••••••••••••••••"
           required
@@ -141,6 +119,8 @@
           name="email"
           v-model="data.email"
           placeholder="jan@kowalski.com"
+          minlength="4"
+          maxlength="100"
           required
         >
       </MainInput>
@@ -164,8 +144,8 @@
         <input
           type="text"
           minlength="1"
-          name="spec"
-          v-model="data.spec"
+          name="specialization"
+          v-model="data.specialization"
           placeholder="Fizjoterapeuta"
         >
       </MainInput>
@@ -176,7 +156,7 @@
     >
       <div class="login__remember">
         <input
-          v-model="isTermsAccepted"
+          v-model="data.rules_accepted"
           type="checkbox"
           id="termsAccepted"
           required
@@ -205,52 +185,19 @@ export default {
   name: "Signup",
   data: function() {
     return {
-      isTermsAccepted: false,
       showPatientInfo: false,
       showSpecInfo: false,
       profileType: 0,
       data: {
-        login: "",
         password: "",
         name: "",
-        surname: "",
         pesel: "",
         email: "",
         phone: "",
-        birthdate: "",
-        spec: ""
+        specialization: "",
+        rules_accepted: false
       }
     };
-  },
-  watch: {
-    isPeselCorrect: function(val) {
-      if (val == true) {
-        let pesel = this.data.pesel;
-        let y = parseInt(pesel.substring(0, 2), 10);
-        let m = parseInt(pesel.substring(2, 4), 10) - 1;
-        let d = parseInt(pesel.substring(4, 6), 10);
-
-        if (m > 80) {
-          y += 1800;
-          m -= 80;
-        } else if (m > 60) {
-          y += 2200;
-          m -= 60;
-        } else if (m > 40) {
-          y += 2100;
-          m -= 40;
-        } else if (m > 20) {
-          y += 2000;
-          m -= 20;
-        } else {
-          y += 1900;
-        }
-
-        m = ("0" + m).slice(-2);
-
-        this.data.birthdate = `${y}-${m}-${d}`;
-      }
-    }
   },
   computed: {
     isPeselCorrect: function() {

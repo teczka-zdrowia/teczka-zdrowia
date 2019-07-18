@@ -1,14 +1,18 @@
 <template>
-  <form class="login" @submit.prevent="login">
+  <form
+    class="login"
+    @submit.prevent="login"
+  >
     <div>
       <MainInput class="many">
-        Login
+        E-mail
         <input
-          type="text"
-          name="login"
-          minlength="3"
-          v-model="data.login"
-          placeholder="jankowalski"
+          type="email"
+          name="username"
+          minlength="4"
+          maxlength="100"
+          v-model="data.username"
+          placeholder="jan@kowalski.com"
           required
         >
       </MainInput>
@@ -17,7 +21,7 @@
         <input
           type="password"
           name="password"
-          minlength="6"
+          minlength="8"
           v-model="data.password"
           placeholder="••••••••••••••••"
           required
@@ -26,11 +30,21 @@
     </div>
     <div class="login__options">
       <div class="login__remember">
-        <input v-model="isRememberMe" type="checkbox" id="rememberMe">
-        <label for="rememberMe" class="checkbox--login__remember"></label>
+        <input
+          v-model="isRememberMe"
+          type="checkbox"
+          id="rememberMe"
+        >
+        <label
+          for="rememberMe"
+          class="checkbox--login__remember"
+        ></label>
         <p>Zapamiętaj mnie</p>
       </div>
-      <a class="login__forgot" href="#">Przypomnij hasło</a>
+      <a
+        class="login__forgot"
+        href="#"
+      >Przypomnij hasło</a>
     </div>
     <slot></slot>
   </form>
@@ -39,14 +53,17 @@
 <script>
 import MainInput from "../../components/ui/basic/MainInput";
 import MainBtn from "../../components/ui/basic/MainBtn";
+import { mapActions } from "vuex";
+import gql from "graphql-tag";
 
 export default {
   name: "Login",
   data: function() {
     return {
       isRememberMe: false,
+      isLoading: false,
       data: {
-        login: "",
+        username: "",
         password: ""
       }
     };
@@ -56,42 +73,27 @@ export default {
     MainBtn: MainBtn
   },
   methods: {
+    ...mapActions({
+      userLogin: "userInfo/login",
+      getAutheticatedUserData: "userInfo/getData"
+    }),
     login: function() {
-      const credentials = {
-        login: this.data.login,
-        password: this.data.password
-      };
-      const status = this.$store.dispatch(
-        "loginWithUsernameAndPassword",
-        credentials
-      );
-      status.then(response => {
-        if (response !== false) {
-          this.$toasted.success("Pomyślnie zalogowano", {
-            icon: "check",
-            onComplete: () => {
-              this.$router.push("/Dashboard");
-            }
-          });
-        } else {
-          this.$toasted.error("Błędne dane logowania", {
-            icon: "times"
-          });
-        }
-      });
-    }
-  },
-  watch: {
-    formValid: function(val) {
-      this.$store.dispatch("updateLoginAuthData", {
-        type: "isAllFieldsFilled",
-        data: val
-      });
-    }
-  },
-  computed: {
-    formValid: function() {
-      return !Object.keys(this.data).some(key => this.data[key].length < 6);
+      this.isLoading = true;
+      this.userLogin(this.data)
+        .then(() => {
+          this.getAutheticatedUserData();
+        })
+        .then(() => {
+          this.$toasted.success("Poprawnie zalogowano");
+          this.$router.push("/Dashboard");
+        })
+        .catch(error => {
+          this.$toasted.error("Niepoprawne dane logowania");
+          console.error(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     }
   }
 };

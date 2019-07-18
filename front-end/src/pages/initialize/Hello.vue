@@ -13,20 +13,22 @@
         />
         Dodaj do ekranu głównego
       </button>
-      <button
-        class="hello__action"
-        v-on:click="addToHomeScreen"
-      >
-        Inna funkcja
-      </button>
+      <NextStep />
     </div>
   </div>
 </template>
 
 <script>
+import NextStep from "./NextStep";
+import { mapActions } from "vuex";
+
 export default {
   name: "Hello",
+  components: { NextStep },
   methods: {
+    ...mapActions({
+      nextStep: "initializeSteps/next"
+    }),
     addToHomeScreen: function(e) {
       // TODO
     }

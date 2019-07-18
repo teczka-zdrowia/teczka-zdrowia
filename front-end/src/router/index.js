@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { store } from '../store'
 import Dashboard from '@/pages/dashboard/Dashboard'
 import About from '@/pages/about/About'
 import Auth from '@/pages/auth/Auth'
@@ -16,7 +17,7 @@ import Error404 from '@/pages/404/Error404'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -37,12 +38,18 @@ export default new Router({
     {
       path: '/Initialize',
       name: 'Initialize',
-      component: Initialize
+      component: Initialize,
+      meta: {
+        requiresLogin: true
+      }
     },
     {
       path: '/Dashboard',
       name: 'Dashboard',
-      component: Dashboard
+      component: Dashboard,
+      meta: {
+        requiresLogin: true
+      }
     },
     {
       path: '/Map',
@@ -52,27 +59,44 @@ export default new Router({
     {
       path: '/Panel',
       name: 'Panel',
-      component: Panel
+      component: Panel,
+      meta: {
+        requiresLogin: true,
+        requiresValidPayment: true
+      }
     },
     {
       path: '/Places',
       name: 'Places',
-      component: Places
+      component: Places,
+      meta: {
+        requiresLogin: true,
+        requiresValidPayment: true
+      }
     },
     {
       path: '/About',
       name: 'About',
-      component: About
+      component: About,
+      meta: {
+        requiresLogin: true
+      }
     },
     {
       path: '/Appointments',
       name: 'Appointments',
-      component: Appointments
+      component: Appointments,
+      meta: {
+        requiresLogin: true
+      }
     },
     {
       path: '/Payment',
       name: 'Payment',
-      component: Payment
+      component: Payment,
+      meta: {
+        requiresLogin: true
+      }
     },
     {
       path: '/404',
@@ -86,3 +110,22 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const userLoggedIn = store.getters['userInfo/isLoggedIn']
+  const userPaymentValid = store.getters['userInfo/isPaymentValid']
+  const pathRequiresLogin = to.matched.some(record => record.meta.requiresLogin)
+  const pathRequiresValidPayment = to.matched.some(
+    record => record.meta.requiresValidPayment
+  )
+
+  if (pathRequiresLogin && !userLoggedIn) {
+    next({ name: 'Auth' })
+  } else if (pathRequiresValidPayment && !userPaymentValid) {
+    next({ name: 'Payment' })
+  } else {
+    next()
+  }
+})
+
+export default router

@@ -4,34 +4,40 @@
     <div class="cplace__actions">
       <button
         class="cplace__action cplace__action--violet"
-        v-on:click="cPlace"
+        v-on:click="createPlace"
       >
         Utwórz gabinet
       </button>
+      <NextStep />
     </div>
   </div>
 </template>
 
 <script>
 import CreatePlaceComponent from "../../components/ui/CreatePlaceComponent";
-import { mapActions } from "vuex";
+import NextStep from "./NextStep";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "CreatePlace",
   components: {
-    CreatePlaceComponent
+    CreatePlaceComponent,
+    NextStep
   },
   methods: {
     ...mapActions({
-      completeStep: "initializeSteps/complete"
+      completeStep: "initializeSteps/complete",
+      nextStep: "initializeSteps/next"
     }),
-    cPlace: function() {
-      const created = this.$refs.createPlaceComponent.createPlace();
-      if (created) {
-        // TODO
-        this.completeStep(1);
-      }
+    createPlace: function() {
+      this.completeStep();
+      //TODO
     }
+  },
+  computed: {
+    ...mapGetters({
+      isCompleted: "initializeSteps/isSelectedCompleted"
+    })
   }
 };
 </script>

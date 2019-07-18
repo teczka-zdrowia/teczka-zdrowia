@@ -4,11 +4,14 @@
       class="info"
       v-on:click="isShowed = !isShowed"
     >
-      <img :src="this.$store.getters['userInfo/image']">
+      <img
+        :src="userData.avatar"
+        :alt="userData.name"
+      >
       <div class="info__content">
         <div class="info__name">
           <p>
-            {{ this.$store.getters['userInfo/fullName'] }}
+            {{ userData.name }}
           </p>
           <button class="info__btn">
             <i
@@ -17,7 +20,7 @@
             />
           </button>
         </div>
-        <div class="info__specialization">{{ this.$store.getters['userInfo/specialization'] }}</div>
+        <div class="info__specialization">{{ userData.specialization }}</div>
       </div>
     </div>
     <div class="wrapper">
@@ -48,7 +51,7 @@
         </div>
         <div
           class="menu__el"
-          v-on:click.native="logout; isShowed = !isShowed"
+          v-on:click="logout"
         >
           <span
             aria-hidden="true"
@@ -62,6 +65,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "UserInfo",
   data: function() {
@@ -70,23 +75,32 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      userLogout: "userInfo/logout",
+      getAutheticatedUserData: "userInfo/getData"
+    }),
     logout: function() {
-      const status = this.$store.dispatch("logout");
-      if (status) {
-        this.$toasted.success("Pomyślnie wylogowano", {
-          icon: "check",
-          onComplete: () => {
-            this.$router.push("/");
-          }
+      this.$toasted.show("Wylogowywanie...");
+      this.userLogout()
+        .then(() => {
+          this.$toasted.success("Poprawnie wylogowano");
+          this.$router.push({ name: "Auth" });
+        })
+        .catch(error => {
+          this.$toasted.error("Wystąpił błąd");
+          console.error(error);
         });
-      } else {
-        this.$toasted.success("Wystąpił błąd", {
-          icon: "check",
-          onComplete: () => {
-            this.$router.push("/");
-          }
-        });
-      }
+    }
+  },
+  computed: {
+    ...mapGetters({
+      userData: "userInfo/full",
+      isUserLoggedIn: "userInfo/isLoggedIn"
+    })
+  },
+  mounted() {
+    if (this.isUserLoggedIn) {
+      this.getAutheticatedUserData();
     }
   }
 };

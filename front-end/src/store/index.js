@@ -9,7 +9,7 @@ import userPlaces from './modules/userPlaces'
 import userAppointments from './modules/userAppointments'
 import addPatient from './modules/addPatient'
 import initializeSteps from './modules/initializeSteps'
-import localStoragePlugin from './plugins/localStorage'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
@@ -25,5 +25,9 @@ export const store = new Vuex.Store({
     addPatient,
     initializeSteps
   },
-  plugins: [localStoragePlugin]
+  plugins: [
+    createPersistedState({
+      paths: ['userInfo']
+    })
+  ]
 })

@@ -14,8 +14,8 @@ import { mapActions } from "vuex";
 export default {
   name: "AppHeader",
   components: {
-    MainBtn: MainBtn,
-    UserInfo: UserInfo
+    MainBtn,
+    UserInfo
   },
   methods: {
     ...mapActions({

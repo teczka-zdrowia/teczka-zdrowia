@@ -1,0 +1,12 @@
+{
+  me {
+    id
+    avatar
+    name
+    email
+    phone
+    birthdate
+    paid_until
+    is_payment_valid
+  }
+}

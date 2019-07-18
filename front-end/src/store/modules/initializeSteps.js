@@ -15,14 +15,6 @@ const state = {
       name: 'Gabinet',
       completed: false,
       component: CreatePlace
-    },
-    {
-      id: 2,
-      name: 'Pacjenci',
-      completed: false,
-      component: {
-        template: '<div></div>'
-      }
     }
   ]
 }
@@ -45,20 +37,29 @@ const actions = {
       commit('UPDATE_SELECTED_STEP', id)
     }
   },
-  complete ({ commit }, id) {
-    commit('SET_COMPLETED_STEP', id)
+  complete ({ commit }) {
+    commit('SET_COMPLETED_STEP', state.selectedStep)
+  },
+  next ({ commit }) {
+    commit('UPDATE_SELECTED_STEP', state.selectedStep + 1)
   }
 }
 
 const getters = {
-  selectedComponent (state) {
+  getSelectedComponent (state) {
     return state.steps[state.selectedStep].component
   },
-  selected (state) {
+  getSelected (state) {
     return state.selectedStep
   },
-  list (state) {
+  getList (state) {
     return state.steps
+  },
+  isSelectedCompleted (state) {
+    return state.steps[state.selectedStep].completed
+  },
+  isLastStep (state) {
+    return state.selectedStep + 1 === state.steps.length
   }
 }
 

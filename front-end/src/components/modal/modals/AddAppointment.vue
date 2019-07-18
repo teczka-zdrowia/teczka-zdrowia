@@ -42,10 +42,20 @@ export default {
 
 <style lang="scss" scoped>
 .modal--aa {
+  display: flex;
+  flex-direction: column;
   background: #f5f5f5;
   border-radius: 0.5rem;
   .modal__actions {
     padding: 1rem;
+  }
+}
+
+@media only screen and (max-width: 720px) {
+  .modal--aa {
+    width: 100vw;
+    border-radius: 0;
+    height: calc(100vh - 56px);
   }
 }
 </style>

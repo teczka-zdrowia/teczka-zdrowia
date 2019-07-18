@@ -104,7 +104,8 @@ export default {
   overflow: hidden;
   img {
     position: absolute;
-    width: auto;
+    object-fit: cover;
+    width: 100%;
     height: 100%;
     z-index: 3;
   }
@@ -219,7 +220,8 @@ export default {
     font-weight: 550;
     color: #91919c;
     a {
-      color: #1a1b37;
+      color: #91919c;
+      text-decoration: underline;
       font-weight: 600;
       transition: 0.2s ease-in-out;
     }

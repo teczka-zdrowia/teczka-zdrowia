@@ -1,57 +1,125 @@
 <template>
   <div class="sidebar">
-    <i
+    <span
       v-on:click="isShowed = !isShowed"
       class="sidebar__btn fas"
       v-bind:class="[isShowed ? 'fa-angle-left' : 'fa-angle-right']"
-    ></i>
-    <div class="nav" v-bind:class="[isShowed ? 'showed' : '']" v-on:click="isShowed = !isShowed">
-      <router-link to="/Dashboard" class="nav__el">
-        <i class="fas fa-home">
+    />
+    <div
+      class="nav"
+      v-bind:class="[isShowed ? 'showed' : '']"
+      v-on:click="isShowed = !isShowed"
+    >
+      <router-link
+        to="/Dashboard"
+        class="nav__el"
+      >
+        <span
+          aria-hidden="true"
+          class="fas fa-home"
+        >
           <div class="nav__tooltip">Strona domowa</div>
-        </i>
+        </span>
       </router-link>
-      <router-link to="/Map" class="nav__el">
-        <i class="fas fa-map-marked">
+      <router-link
+        to="/Map"
+        class="nav__el"
+      >
+        <span
+          aria-hidden="true"
+          class="fas fa-map-marked"
+        >
           <div class="nav__tooltip">Mapa gabinetów</div>
-        </i>
+        </span>
       </router-link>
-      <router-link to="/Places" class="nav__el">
-        <i class="fas fa-hospital">
+      <router-link
+        to="/Places"
+        class="nav__el"
+      >
+        <span
+          aria-hidden="true"
+          class="fas fa-hospital"
+        >
           <div class="nav__tooltip">Moje gabinety</div>
-        </i>
+        </span>
       </router-link>
-      <router-link to="/Panel" class="nav__el">
-        <i class="fas fa-user-md">
+      <router-link
+        to="/Panel"
+        class="nav__el"
+      >
+        <span
+          aria-hidden="true"
+          class="fas fa-user-md"
+        >
           <div class="nav__tooltip">Panel specjalisty</div>
-        </i>
+        </span>
       </router-link>
-      <router-link to="/Appointments" class="nav__el">
-        <i class="fas fa-calendar-check">
+      <router-link
+        to="/Appointments"
+        class="nav__el"
+      >
+        <span
+          aria-hidden="true"
+          class="fas fa-calendar-check"
+        >
           <div class="nav__tooltip">Wizyty</div>
-        </i>
+        </span>
       </router-link>
-      <router-link to="/Payment" class="nav__el">
-        <i class="fas fa-money-check-alt">
+      <router-link
+        to="/Payment"
+        class="nav__el"
+      >
+        <span
+          aria-hidden="true"
+          class="fas fa-money-check-alt"
+        >
           <div class="nav__tooltip">Płatności</div>
-        </i>
+        </span>
       </router-link>
+      <MainBtn
+        class="nav__el nav__el--btn"
+        v-on:click.native="addAppointment"
+      >
+        <span
+          aria-hidden="true"
+          class="fas fa-plus"
+        />
+      </MainBtn>
       <!--<router-link to="/Messages" class="nav__el">
-        <i class="fas fa-envelope">
+        <span aria-hidden="true" class="fas fa-envelope">
           <div class="nav__tooltip">Wiadomości</div>
-        </i>
+        </span>
       </router-link>-->
     </div>
   </div>
 </template>
 
 <script>
+import MainBtn from "../ui/basic/MainBtn";
+import { mapActions } from "vuex";
+
 export default {
   name: "AppSidebar",
   data: function() {
     return {
       isShowed: false
     };
+  },
+  methods: {
+    ...mapActions({
+      showModal: "modal/show"
+    }),
+    addAppointment: function() {
+      this.showModal({
+        componentName: "AddAppointment",
+        data: {
+          hideBorders: true
+        }
+      });
+    }
+  },
+  components: {
+    MainBtn
   }
 };
 </script>
@@ -95,7 +163,7 @@ $darkviolet: #6a6ee1;
   font-size: 3rem;
   color: #91919c;
   cursor: pointer;
-  z-index: 1000000;
+  z-index: 1000;
 }
 
 .sidebar {
@@ -111,7 +179,7 @@ $darkviolet: #6a6ee1;
     margin-left: -5em;
     position: fixed;
     transition: all 0.2s ease-in-out;
-    z-index: 100000;
+    z-index: 999;
     .nav__el {
       margin-bottom: 1.5em;
       @media only screen and (max-height: 767px) {
@@ -119,7 +187,7 @@ $darkviolet: #6a6ee1;
       }
       @extend %text--center;
       font-size: 1.5em;
-      i {
+      span {
         @extend %text--center;
         padding: 0.5em;
         transition: 0.2s ease-in-out;
@@ -157,10 +225,19 @@ $darkviolet: #6a6ee1;
         }
       }
       &.router-link-exact-active {
-        i {
+        span {
           @extend %shadow--grey;
           color: $darkviolet;
           background: #fafafa;
+        }
+      }
+      &--btn {
+        padding: 0 !important;
+        height: auto !important;
+        margin: auto !important;
+        span {
+          padding: 0.5rem;
+          color: #fafafa;
         }
       }
     }

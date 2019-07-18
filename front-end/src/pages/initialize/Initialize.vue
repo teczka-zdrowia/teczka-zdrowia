@@ -26,9 +26,9 @@ export default {
   name: "Initialize",
   computed: {
     ...mapGetters({
-      selectedStepComponent: "initializeSteps/selectedComponent",
-      selectedStep: "initializeSteps/selected",
-      steps: "initializeSteps/list"
+      selectedStepComponent: "initializeSteps/getSelectedComponent",
+      selectedStep: "initializeSteps/getSelected",
+      steps: "initializeSteps/getList"
     })
   },
   methods: {

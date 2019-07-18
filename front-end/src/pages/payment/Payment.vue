@@ -3,7 +3,7 @@
     <div class="payment--info">
       <VioletBlock
         class="info__content"
-        v-if="isPaid"
+        v-if="isPaymentValid"
       >
         Opłacono do
         <b>{{ paidUntil }}</b>
@@ -11,7 +11,7 @@
       </VioletBlock>
       <RedBlock
         class="info__content"
-        v-if="!isPaid"
+        v-if="!isPaymentValid"
       >Nieopłacona</RedBlock>
     </div>
     <div class="payment">
@@ -79,7 +79,7 @@ export default {
   name: "Payment",
   computed: {
     ...mapGetters({
-      isPaid: "userInfo/isPaid"
+      isPaymentValid: "userInfo/isPaymentValid"
     }),
     paidUntil: function() {
       return moment(

@@ -1,46 +1,88 @@
 <template>
   <div class="sidebar">
     <div class="logo">
-      <i class="fas fa-briefcase-medical"></i>
+      <span
+        aria-hidden="true"
+        class="fas fa-briefcase-medical"
+      ></span>
     </div>
     <div class="nav">
-      <router-link to="/Dashboard" class="nav__el">
-        <i class="fas fa-home">
+      <router-link
+        to="/Dashboard"
+        class="nav__el"
+      >
+        <span
+          aria-hidden="true"
+          class="fas fa-home"
+        >
           <div class="nav__tooltip">Strona domowa</div>
-        </i>
+        </span>
       </router-link>
-      <router-link to="/Places" class="nav__el">
-        <i class="fas fa-hospital">
+      <router-link
+        to="/Places"
+        class="nav__el"
+        v-if="isPaymentValid"
+      >
+        <span
+          aria-hidden="true"
+          class="fas fa-hospital"
+        >
           <div class="nav__tooltip">Moje gabinety</div>
-        </i>
+        </span>
       </router-link>
-      <router-link to="/Panel" class="nav__el">
-        <i class="fas fa-user-md">
+      <router-link
+        to="/Panel"
+        class="nav__el"
+        v-if="isPaymentValid"
+      >
+        <span
+          aria-hidden="true"
+          class="fas fa-user-md"
+        >
           <div class="nav__tooltip">Panel specjalisty</div>
-        </i>
+        </span>
       </router-link>
-      <router-link to="/Appointments" class="nav__el active">
-        <i class="fas fa-calendar-check">
+      <router-link
+        to="/Appointments"
+        class="nav__el active"
+      >
+        <span
+          aria-hidden="true"
+          class="fas fa-calendar-check"
+        >
           <div class="nav__tooltip">Wizyty</div>
-        </i>
+        </span>
       </router-link>
-      <router-link to="/Payment" class="nav__el">
-        <i class="fas fa-money-check-alt">
+      <router-link
+        to="/Payment"
+        class="nav__el"
+      >
+        <span
+          aria-hidden="true"
+          class="fas fa-money-check-alt"
+        >
           <div class="nav__tooltip">Płatności</div>
-        </i>
+        </span>
       </router-link>
       <!--<router-link to="/Messages" class="nav__el">
-        <i class="fas fa-envelope">
+        <span aria-hidden="true" class="fas fa-envelope">
           <div class="nav__tooltip">Wiadomości</div>
-        </i>
+        </span>
       </router-link>-->
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
-  name: "AppSidebar"
+  name: "AppSidebar",
+  computed: {
+    ...mapGetters({
+      isPaymentValid: "userInfo/isPaymentValid"
+    })
+  }
 };
 </script>
 
@@ -90,7 +132,7 @@ $darkviolet: #6a6ee1;
     @extend %text--center;
     height: 3em;
     font-size: 2em;
-    i {
+    span {
       color: $darkviolet;
     }
   }
@@ -106,7 +148,7 @@ $darkviolet: #6a6ee1;
       }
       @extend %text--center;
       font-size: 1.5em;
-      i {
+      span {
         @extend %text--center;
         padding: 0.5em;
         transition: 0.2s ease-in-out;
@@ -144,7 +186,7 @@ $darkviolet: #6a6ee1;
         }
       }
       &.router-link-exact-active {
-        i {
+        span {
           @extend %shadow--grey;
           color: $darkviolet;
           background: #fafafa;

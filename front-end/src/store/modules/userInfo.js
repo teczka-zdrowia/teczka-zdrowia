@@ -1,56 +1,66 @@
-import { api } from '../../api'
+import { apolloClient } from '@/apollo'
+import { AUTH_TOKEN, API_URL } from '@/apollo/constants'
+import LOGIN_MUTATION from './mutations/login.gql'
+import LOGOUT_MUTATION from './mutations/logout.gql'
+import ME_QUERY from './queries/me.gql'
 
 const state = {
-  jwt:
-    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3RcLyIsImF1ZCI6Imh0dHA6XC9cL2xvY2FsaG9zdFwvIiwiaWF0IjoxNTQ3NDkxMTA2LCJuYmYiOjE1NDc0OTExMDYsImV4cCI6MTU0NzU3NzUwNiwiZGF0YSI6eyJpZCI6IjgiLCJuYW1lIjoiQWRyaWFuIiwic3VybmFtZSI6Ik9yXHUwMTQyXHUwMGYzdyIsImlzUGFpZCI6IjEifX0.kxo8DvoDa3WdQNzXDr02TUnc7d3onsoYJNhavnCHSs4',
-  img:
-    'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
-  name: 'Adrian',
-  surname: 'Orłów',
+  id: null,
+  avatar: null,
+  name: null,
   pesel: null,
-  email: 'adrian@orlow.me',
-  phone: '792138222',
-  birthdate: '2002-12-23 00:11:32.000000',
-  paidUntil: '2019-12-26 16:48:40.000000',
-  spec: 'doktor',
-  isPaid: true,
-  isDeleted: false,
-  isValid: true
+  email: null,
+  phone: null,
+  birthdate: null,
+  paid_until: null,
+  is_payment_valid: null
 }
 
 const mutations = {
-  SET_ISPAID (state, status) {
-    state.isPaid = status
+  SET_DATA (state, data) {
+    data.avatar = `${API_URL}/storage/avatars/` + data.avatar
+    state = Object.assign(state, data)
   },
-  SET_ISVALID (state, status) {
-    state.isValid = status
-  },
-  UPDATE_PESEL (state, pesel) {
+  SET_PESEL (state, pesel) {
     state.pesel = pesel
   }
 }
 
 const actions = {
-  checkIsValid ({ commit, state }) {
-    const status = api.isTokenValid(state.userInfo.jwt)
-    status.then(response => {
-      commit('SET_ISVALID', response)
-    })
+  login ({ commit }, credentials) {
+    return apolloClient
+      .mutate({
+        mutation: LOGIN_MUTATION,
+        variables: {
+          data: credentials
+        }
+      })
+      .then(data => data.data.login)
+      .then(login => {
+        window.localStorage.setItem(AUTH_TOKEN, login.access_token)
+      })
   },
-  loginWithUsernameAndPassword ({ commit }, credentials) {
-    const status = api.loginWithUsernameAndPassword(credentials)
-    return status.then(response => {
-      if (response !== false) {
-        commit('SET_JWT', response.data.jwt)
-        commit('SET_ISVALID', true)
-      } else {
-        return false
-      }
-    })
+  getData ({ commit }) {
+    return apolloClient
+      .query({ query: ME_QUERY })
+      .then(data => data.data.me)
+      .then(me => {
+        commit('SET_DATA', me)
+      })
   },
   logout ({ commit }) {
-    commit('SET_JWT', '')
-    return true
+    return apolloClient
+      .mutate({
+        mutation: LOGOUT_MUTATION
+      })
+      .then(data => data.data.logout)
+      .then(logout => {
+        if (logout.status === 'TOKEN_REVOKED') {
+          window.localStorage.removeItem(AUTH_TOKEN)
+        } else {
+          throw new Error('Token is not valid')
+        }
+      })
   },
   updatePESEL ({ commit }, pesel) {
     commit('UPDATE_PESEL', 96011999231)
@@ -64,26 +74,26 @@ const getters = {
   full (state) {
     return state
   },
-  fullName (state) {
-    return `${state.name} ${state.surname}`
+  name (state) {
+    return state.name
   },
-  image (state) {
-    return state.img
+  avatar (state) {
+    return state.avatar
   },
   specialization (state) {
-    return state.spec
-  },
-  isValid (state) {
-    return state.isValid
+    return state.specialization
   },
   pesel (state) {
     return state.pesel
   },
-  isPaid (state) {
-    return state.isPaid
-  },
   paidUntil (state) {
-    return state.paidUntil
+    return state.paid_until
+  },
+  isPaymentValid (state) {
+    return state.is_payment_valid
+  },
+  isLoggedIn (state) {
+    return window.localStorage.getItem(AUTH_TOKEN) !== null
   }
 }
 
