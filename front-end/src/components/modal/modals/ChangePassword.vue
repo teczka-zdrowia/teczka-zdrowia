@@ -1,18 +1,21 @@
 <template>
-  <div class="modal--cpass">
+  <form
+    class="modal--cpass"
+    @submit.prevent="changePassword"
+  >
     <h1 class="modal__title">
       Zmiana hasła
     </h1>
 
     <div class="modal__info">
-      <form class="modal__form">
+      <div class="modal__form">
         <MainInput class="many novalid">
           Obecne hasło
           <input
             type="password"
-            name="current-password"
-            minlength="6"
-            v-model="currentPass"
+            name="password"
+            minlength="8"
+            v-model="data.password"
             placeholder="••••••••••••••••"
             required
           >
@@ -21,9 +24,9 @@
           Nowe hasło
           <input
             type="password"
-            name="new-password"
-            minlength="6"
-            v-model="newPass"
+            name="new_password"
+            minlength="8"
+            v-model="data.new_password"
             placeholder="••••••••••••••••"
             required
           >
@@ -35,14 +38,14 @@
           Powtórz nowe hasło
           <input
             type="password"
-            name="repeat-password"
-            minlength="6"
-            v-model="repeatPass"
+            name="new_password_confirmation"
+            minlength="8"
+            v-model="data.new_password_confirmation"
             placeholder="••••••••••••••••"
             required
           >
         </MainInput>
-      </form>
+      </div>
     </div>
 
     <div class="modal__actions">
@@ -50,44 +53,59 @@
         class="modal__btn modal__btn--grey"
         @click="hideModal"
       >Anuluj</button>
-      <button
+      <MainBtn
         class="modal__btn modal__btn--violet"
-        @click="changePass"
-      >Zmień hasło</button>
+        :loading="isLoading"
+        :disabled="isLoading"
+        @click="changePassword"
+      >Zmień hasło</MainBtn>
     </div>
-  </div>
+  </form>
 </template>
 
 <script>
 import { mapActions } from "vuex";
 import MainInput from "../../ui/basic/MainInput";
+import MainBtn from "../../ui/basic/MainBtn";
 import "../modal.scss";
 
 export default {
   name: "ChangePassword",
   data: function() {
     return {
-      currentPass: "",
-      newPass: "",
-      repeatPass: ""
+      isLoading: false,
+      data: {
+        password: "",
+        new_password: "",
+        new_password_confirmation: ""
+      }
     };
   },
   components: {
-    MainInput
+    MainInput,
+    MainBtn
   },
   methods: {
     ...mapActions({
-      hideModal: "modal/hide"
+      hideModal: "modal/hide",
+      updateUserPassword: "userInfo/updatePassword"
     }),
-    changePass() {
-      //TODO
-
-      this.hideModal();
+    changePassword() {
+      this.isLoading = true;
+      this.updateUserPassword(this.data)
+        .then(() => this.hideModal())
+        .catch(error => {
+          this.$toasted.error("Niepoprawne dane");
+          console.error(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     }
   },
   computed: {
     isPasswordsSame: function() {
-      return this.newPass === this.repeatPass;
+      return this.data.new_password === this.data.new_password_confirmation;
     }
   }
 };

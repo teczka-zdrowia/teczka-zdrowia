@@ -1,16 +1,36 @@
 <template>
   <button class="button">
-    <slot></slot>
+    <span
+      class="button__loading"
+      v-if="loading"
+    >
+      Ładowanie
+      <MainLoading color="#fafafa" />
+    </span>
+    <span v-if="!loading">
+      <slot></slot>
+    </span>
   </button>
 </template>
 
 <script>
+import MainLoading from "./MainLoading";
+
 export default {
-  name: "MainBtn"
+  name: "MainBtn",
+  components: {
+    MainLoading
+  },
+  props: {
+    loading: {
+      type: Boolean,
+      default: false
+    }
+  }
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../../../main.scss";
 
 .button {
@@ -33,6 +53,14 @@ export default {
   &:disabled {
     background: #afb0c7;
     transition: 0.2s ease-in-out;
+  }
+  &__loading {
+    @extend %text--center;
+    svg {
+      margin-left: 0.75em;
+      height: 1.25rem;
+      width: 1.25rem;
+    }
   }
 }
 </style>

@@ -14,9 +14,16 @@
     <div class="auth__container">
       <div class="auth__content">
         <p class="auth__title">{{ title }}</p>
-        <Login v-if="isLogin">
+        <Login
+          v-if="isLogin"
+          v-on:loading="isLoading.login = $event"
+        >
           <div class="login__actions">
-            <MainBtn type="submit">Zaloguj się</MainBtn>
+            <MainBtn
+              type="submit"
+              :loading="isLoading.login"
+              :disabled="isLoading.login"
+            >Zaloguj się</MainBtn>
             <button
               class="btn--signup"
               v-on:click="toggleLogin()"
@@ -29,9 +36,16 @@
             </button>
           </div>
         </Login>
-        <Signup v-else>
+        <Signup
+          v-else
+          v-on:loading="isLoading.signup = $event"
+        >
           <div class="login__actions">
-            <MainBtn type="submit">Zarejestruj</MainBtn>
+            <MainBtn
+              type="submit"
+              :loading="isLoading.signup"
+              :disabled="isLoading.signup"
+            >Zarejestruj</MainBtn>
             <button
               class="btn--signup"
               v-on:click="toggleLogin()"
@@ -60,7 +74,11 @@ export default {
   data: function() {
     return {
       title: "Logowanie",
-      isLogin: true
+      isLogin: true,
+      isLoading: {
+        login: false,
+        signup: false
+      }
     };
   },
   components: {

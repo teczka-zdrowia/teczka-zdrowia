@@ -12,7 +12,7 @@
       <RedBlock
         class="info__content"
         v-if="!isPaymentValid"
-      >Nieopłacona</RedBlock>
+      >Nieopłacony</RedBlock>
     </div>
     <div class="payment">
       <div class="payment__about">
@@ -130,7 +130,8 @@ export default {
   display: flex;
   & > div {
     width: 50%;
-    padding: 5%;
+    padding: 2rem 0;
+    overflow: hidden;
   }
 }
 
@@ -138,29 +139,34 @@ export default {
   text-align: center;
   font-size: 1.25em;
   color: #fafafc;
-  background: $darkviolet;
-  background: linear-gradient(to right, $lightviolet, $darkviolet);
+  background: #7f83e8;
   .about__title {
     font-weight: 600;
-    margin-bottom: 1em;
+    margin-bottom: 2rem;
     width: 100%;
   }
   .about__func {
     width: 100%;
     @extend %text--center;
     height: 2.5em;
-    &:not(:last-child) {
-      border-bottom: 3px solid #fafafc;
+    padding: 0.5rem;
+    font-weight: 600;
+    background: #6e72e2;
+    transform: rotate(-3deg);
+    margin-left: -0.5rem;
+    &:nth-child(even) {
+      background: #7f83e8;
     }
   }
   .about__cost {
-    margin-top: 1em;
+    margin-top: 2rem;
     width: 100%;
     font-weight: 600;
     @extend %text--center;
     span {
-      margin-left: 1em;
-      border-radius: 0.5em;
+      margin-left: auto;
+      border-top-left-radius: 0.5em;
+      border-bottom-left-radius: 0.5em;
       background: $darkviolet;
       padding: 0.5em;
     }

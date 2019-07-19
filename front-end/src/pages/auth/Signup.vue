@@ -1,6 +1,7 @@
 <template>
   <form
     class="signup"
+    name="signup"
     @submit.prevent="signup"
   >
     <div class="login__type">
@@ -80,8 +81,8 @@
       <MainInput class="many">
         Imię i nazwisko
         <input
-          type="text"
           name="name"
+          type="text"
           v-model="data.name"
           placeholder="Jan Kowalski"
           maxlength="100"
@@ -145,8 +146,9 @@
           type="text"
           minlength="1"
           name="specialization"
-          v-model="data.specialization"
+          v-model="doctorData.specialization"
           placeholder="Fizjoterapeuta"
+          required
         >
       </MainInput>
     </div>
@@ -158,11 +160,10 @@
         <input
           v-model="data.rules_accepted"
           type="checkbox"
-          id="termsAccepted"
-          required
+          id="rulesAccepted"
         >
         <label
-          for="termsAccepted"
+          for="rulesAccepted"
           class="checkbox--login__remember"
         ></label>
         <p>Akceptuję
@@ -181,6 +182,8 @@
 import MainInput from "../../components/ui/basic/MainInput";
 import MainBtn from "../../components/ui/basic/MainBtn";
 
+import { mapActions } from "vuex";
+
 export default {
   name: "Signup",
   data: function() {
@@ -194,10 +197,31 @@ export default {
         pesel: "",
         email: "",
         phone: "",
-        specialization: "",
         rules_accepted: false
+      },
+      doctorData: {
+        specialization: ""
       }
     };
+  },
+  methods: {
+    ...mapActions({
+      userSignup: "userInfo/signup"
+    }),
+    signup: function() {
+      this.$emit("loading", true);
+      this.userSignup(this.userData)
+        .then(() => {
+          this.$toasted.success("Pomyślnie zarejestrowano. Teraz się zaloguj");
+        })
+        .catch(error => {
+          this.$toasted.error("Niepoprawne dane");
+          console.error(error);
+        })
+        .finally(() => {
+          this.$emit("loading", false);
+        });
+    }
   },
   computed: {
     isPeselCorrect: function() {
@@ -209,6 +233,13 @@ export default {
       }
       sum = sum % 10;
       return this.data.pesel == null ? false : 10 - sum === controlNumber;
+    },
+    userData: function() {
+      if (this.profileType === 2) {
+        return Object.assign(this.data, this.doctorData);
+      } else {
+        return this.data;
+      }
     }
   },
   components: {

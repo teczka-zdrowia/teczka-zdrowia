@@ -1,20 +1,29 @@
 import { apolloClient } from '@/apollo'
 import { AUTH_TOKEN, API_URL } from '@/apollo/constants'
 import LOGIN_MUTATION from './mutations/login.gql'
+import CREATE_USER_MUTATION from './mutations/createUser.gql'
+import UPDATE_ME_MUTATION from './mutations/updateMe.gql'
+import UPDATE_PASSWORD_MUTATION from './mutations/updatePassword.gql'
 import LOGOUT_MUTATION from './mutations/logout.gql'
+import DELETE_ME_MUTATION from './mutations/deleteMe.gql'
 import ME_QUERY from './queries/me.gql'
+import ME_PESEL_QUERY from './queries/mePesel.gql'
 
-const state = {
-  id: null,
-  avatar: null,
-  name: null,
-  pesel: null,
-  email: null,
-  phone: null,
-  birthdate: null,
-  paid_until: null,
-  is_payment_valid: null
+const getDefaultState = () => {
+  return {
+    id: null,
+    avatar: null,
+    name: null,
+    pesel: null,
+    email: null,
+    phone: null,
+    birthdate: null,
+    paid_until: null,
+    is_payment_valid: null
+  }
 }
+
+const state = getDefaultState()
 
 const mutations = {
   SET_DATA (state, data) {
@@ -23,6 +32,9 @@ const mutations = {
   },
   SET_PESEL (state, pesel) {
     state.pesel = pesel
+  },
+  RESET_DATA (state) {
+    Object.assign(state, getDefaultState())
   }
 }
 
@@ -40,12 +52,51 @@ const actions = {
         window.localStorage.setItem(AUTH_TOKEN, login.access_token)
       })
   },
+  signup ({ commit }, data) {
+    return apolloClient
+      .mutate({
+        mutation: CREATE_USER_MUTATION,
+        variables: {
+          data: data
+        }
+      })
+      .then(data => data.data.createUser)
+  },
   getData ({ commit }) {
     return apolloClient
       .query({ query: ME_QUERY })
       .then(data => data.data.me)
       .then(me => {
         commit('SET_DATA', me)
+      })
+  },
+  updateData ({ commit }, data) {
+    return apolloClient
+      .mutate({
+        mutation: UPDATE_ME_MUTATION,
+        variables: {
+          data: data
+        },
+        context: {
+          hasUpload: true
+        }
+      })
+      .then(data => data.data.updateMe)
+      .then(me => commit('SET_DATA', me))
+  },
+  updatePassword ({ commit }, data) {
+    return apolloClient
+      .mutate({
+        mutation: UPDATE_PASSWORD_MUTATION,
+        variables: {
+          data: data
+        }
+      })
+      .then(data => data.data.updatePassword)
+      .then(data => {
+        if (data.status === 'PASSWORD_NOT_UPDATED') {
+          throw new Error(data.message)
+        }
       })
   },
   logout ({ commit }) {
@@ -56,17 +107,42 @@ const actions = {
       .then(data => data.data.logout)
       .then(logout => {
         if (logout.status === 'TOKEN_REVOKED') {
+          commit('RESET_DATA')
           window.localStorage.removeItem(AUTH_TOKEN)
         } else {
           throw new Error('Token is not valid')
         }
       })
   },
-  updatePESEL ({ commit }, pesel) {
-    commit('UPDATE_PESEL', 96011999231)
+  delete ({ commit }, data) {
+    return apolloClient
+      .mutate({
+        mutation: DELETE_ME_MUTATION,
+        variables: {
+          data: data
+        }
+      })
+      .then(data => data.data.deleteMe)
+      .then(deleteMe => {
+        commit('RESET_DATA')
+        window.localStorage.removeItem(AUTH_TOKEN)
+      })
+  },
+  getPESEL ({ commit }, password) {
+    return apolloClient
+      .query({
+        query: ME_PESEL_QUERY,
+        variables: {
+          password
+        }
+      })
+      .then(data => data.data.pesel)
+      .then(pesel => {
+        commit('SET_PESEL', pesel)
+      })
   },
   hidePESEL ({ commit }) {
-    commit('UPDATE_PESEL', null)
+    commit('SET_PESEL', null)
   }
 }
 

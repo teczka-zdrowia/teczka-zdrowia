@@ -71,6 +71,7 @@ export default {
   name: "UserInfo",
   data: function() {
     return {
+      isLoading: false,
       isShowed: false
     };
   },
@@ -80,16 +81,20 @@ export default {
       getAutheticatedUserData: "userInfo/getData"
     }),
     logout: function() {
-      this.$toasted.show("Wylogowywanie...");
-      this.userLogout()
-        .then(() => {
-          this.$toasted.success("Poprawnie wylogowano");
-          this.$router.push({ name: "Auth" });
-        })
-        .catch(error => {
-          this.$toasted.error("Wystąpił błąd");
-          console.error(error);
-        });
+      if (!this.isLoading) {
+        this.isLoading = true;
+        this.$toasted.show("Wylogowywanie...");
+        this.userLogout()
+          .then(() => {
+            this.$toasted.success("Poprawnie wylogowano");
+            this.$router.push({ name: "Auth" });
+          })
+          .catch(error => {
+            this.$toasted.error("Wystąpił błąd");
+            console.error(error);
+          })
+          .finally(() => (this.isLoading = false));
+      }
     }
   },
   computed: {
@@ -117,7 +122,7 @@ export default {
   border-radius: 0.5em;
   margin: -10px;
   transition: 0.2s ease-in-out;
-  height: auto;
+  height: 100%;
   margin-bottom: -30%;
   @media only screen and (max-width: 960px) {
     height: 3em;
@@ -135,7 +140,8 @@ export default {
   }
   img {
     height: 3em;
-    width: auto;
+    width: 3rem;
+    object-fit: cover;
     border-radius: 1em;
     margin-right: 1em;
     float: left;

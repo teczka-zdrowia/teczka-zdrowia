@@ -1,22 +1,37 @@
 <template>
   <div class="info--base">
-    <div class="base__top">
+    <div
+      class="base__top"
+      v-bind:class="{ 'base__top--no-specialization': !userData.is_payment_valid }"
+    >
       <div class="user__img">
-        <img :src="data.img">
-        <div
+        <img :src="userData.avatar">
+        <label
           class="img__edit"
+          v-bind:style="[
+          newAvatarBase64 ?
+          { 'background-image' : `url(${newAvatarBase64})`, 'background-size' : 'cover' } :
+          null
+          ]"
           v-if="isEdit"
         >
+          <input
+            id="avatarInput"
+            type="file"
+            accept="image/*"
+            :disabled="isLoading"
+            v-on:change="processFile($event)"
+          />
           <span
             aria-hidden="true"
             class="fas fa-camera"
           />
-        </div>
+        </label>
       </div>
       <div
         class="user__name"
         v-if="!isEdit"
-      >{{data.name}} {{data.surname}}</div>
+      >{{userData.name}}</div>
       <div
         class="user__name"
         v-if="isEdit"
@@ -24,29 +39,24 @@
         <input
           type="text"
           name="name"
-          v-model="newData.name"
-          placeholder="Jan"
-          required
-        >
-        <input
-          type="text"
-          name="surname"
-          v-model="newData.surname"
-          placeholder="Kowalski"
+          v-model="newUserData.name"
+          placeholder="Jan Kowalski"
+          :disabled="isLoading"
           required
         >
       </div>
       <div
         class="user__specialization"
-        v-if="!isEdit"
-      >{{ data.spec }}</div>
+        v-if="!isEdit && userData.is_payment_valid"
+      >{{ userData.specialization }}</div>
       <input
-        v-if="isEdit"
+        v-if="isEdit && userData.is_payment_valid"
         class="user__specialization"
         type="text"
         minlength="1"
-        name="spec"
-        v-model="newData.spec"
+        name="specialization"
+        v-model="newUserData.specialization"
+        :disabled="isLoading"
         placeholder="Fizjoterapeuta"
       >
       <div
@@ -66,6 +76,7 @@
         <MainBtn
           class="more__action more__action--cancel"
           v-on:click.native="isEdit = false"
+          :disabled="isLoading"
           v-if="isEdit"
         >
           <span
@@ -75,13 +86,16 @@
         </MainBtn>
         <MainBtn
           class="more__action more__action--save"
-          v-on:click.native="isEdit = false"
+          v-on:click.native="updateData"
+          :disabled="isLoading"
           v-if="isEdit"
         >
           <span
+            v-if="!isLoading"
             aria-hidden="true"
             class="fas fa-check"
           />
+          <MainLoading v-if="isLoading" />
         </MainBtn>
       </div>
     </div>
@@ -114,14 +128,15 @@
         <div
           class="more__content"
           v-if="!isEdit"
-        >{{ data.email }}</div>
+        >{{ userData.email }}</div>
         <input
           v-if="isEdit"
           class="more__content"
           type="email"
           name="email"
-          v-model="newData.email"
+          v-model="newUserData.email"
           placeholder="jan@kowalski.com"
+          :disabled="isLoading"
           required
         >
       </div>
@@ -142,10 +157,11 @@
           class="more__content"
           type="tel"
           name="phone"
-          v-model="newData.phone"
+          v-model="newUserData.phone"
           placeholder="123654789"
           minlength="9"
           maxlength="15"
+          :disabled="isLoading"
           required
         >
       </div>
@@ -159,22 +175,13 @@
         </div>
         <div
           class="more__content"
-          v-if="PESEL && !isEdit"
-        >{{ data.pesel }}</div>
+          v-if="PESEL"
+        >{{ userData.pesel }}</div>
         <div
           class="more__content more__pesel"
           v-if="!PESEL"
           v-on:click="getPESEL"
         >Odkryj</div>
-        <input
-          v-if="PESEL && isEdit"
-          class="more__content"
-          type="text"
-          name="pesel"
-          v-model="newData.pesel"
-          placeholder="12345678912"
-          required
-        >
         <div
           v-if="PESEL"
           v-on:click="hidePESEL"
@@ -204,6 +211,7 @@
         <MainBtn
           class="more__action more__action--cancel"
           v-on:click.native="isEdit = false"
+          :disabled="isLoading"
           v-if="isEdit"
         >
           <span
@@ -214,14 +222,21 @@
         </MainBtn>
         <MainBtn
           class="more__action more__action--save"
-          v-on:click.native="isEdit = false"
+          v-on:click.native="updateData"
+          :disabled="isLoading"
           v-if="isEdit"
         >
-          <span
-            aria-hidden="true"
-            class="fas fa-check"
-          />
-          Zapisz
+          <div v-if="!isLoading">
+            <span
+              aria-hidden="true"
+              class="fas fa-check"
+            />
+            Zapisz
+          </div>
+          <div v-if="isLoading">
+            <MainLoading />
+            Ładowanie
+          </div>
         </MainBtn>
       </div>
     </div>
@@ -230,6 +245,7 @@
 
 <script>
 import MainBtn from "../../components/ui/basic/MainBtn";
+import MainLoading from "../../components/ui/basic/MainLoading";
 
 import { mapGetters, mapActions } from "vuex";
 
@@ -239,53 +255,97 @@ moment.locale("pl");
 export default {
   name: "BaseInfo",
   components: {
-    MainBtn
+    MainBtn,
+    MainLoading
   },
   data: function() {
     return {
       isEdit: false,
-      data: {},
-      newData: {}
+      isLoading: false,
+      newAvatarBase64: null,
+      newUserData: {}
     };
-  },
-  mounted() {
-    this.data = Object.assign({}, this.$store.getters["userInfo/full"]);
   },
   watch: {
     isEdit: function(val) {
       if (val == true) {
-        this.newData = Object.assign({}, this.data);
-        this.newData.birthdate = moment(
-          this.newData.birthdate,
+        this.newUserData = Object.assign({}, this.userData);
+        this.newUserData.birthdate = moment(
+          this.newUserData.birthdate,
           "YYYY-MM-DD HH:MI:SS"
         ).format("YYYY-MM-DD");
       }
-    },
-    PESEL: function(val) {
-      this.data.pesel = val;
-      this.newData.pesel = val;
     }
   },
   methods: {
     ...mapActions({
       hidePESEL: "userInfo/hidePESEL",
-      showModal: "modal/show"
+      showModal: "modal/show",
+      updateUserData: "userInfo/updateData",
+      getUserData: "userInfo/updateData"
     }),
     getPESEL: function() {
       this.showModal({
         componentName: "ConfirmGetPESEL"
       });
+    },
+    updateData: function() {
+      const userData = this.userData;
+      const newUserData = this.newUserData;
+
+      this.isLoading = true;
+
+      let dataThatChanged = {};
+      for (let property in newUserData) {
+        const newDataAppearsInProperty =
+          newUserData[property] !== userData[property];
+        if (newDataAppearsInProperty) {
+          dataThatChanged[property] = newUserData[property];
+        }
+      }
+
+      const dataThatChangedHasUpload =
+        typeof dataThatChanged.avatar !== undefined;
+
+      this.updateUserData(dataThatChanged)
+        .then(() => (this.isEdit = false))
+        .catch(error => {
+          this.$toasted.error("Wystąpił błąd");
+          console.error(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    processFile(event) {
+      this.newUserData.avatar = event.target.files[0];
+      this.getBase64OfImage(event.target.files[0])
+        .then(data => {
+          this.newAvatarBase64 = data;
+        })
+        .catch(error => {
+          this.$toasted.error("Wystąpił błąd przy ładowaniu pliku");
+          console.error(error);
+        });
+    },
+    getBase64OfImage: function(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
     }
   },
   computed: {
     ...mapGetters({
-      userFullInfo: "userInfo/full",
       isMobile: "window/isMobile",
-      PESEL: "userInfo/pesel"
+      PESEL: "userInfo/pesel",
+      userData: "userInfo/full"
     }),
     userPhone: function() {
-      if (this.data.phone)
-        return this.data.phone.replace(
+      if (this.userData.phone)
+        return this.userData.phone.replace(
           /(\d{1,3})(\d{1,3})(\d{1,4})/g,
           "$1 $2 $3"
         );
@@ -296,7 +356,7 @@ export default {
       );
     },
     userBirthdate: function() {
-      return moment(this.data.birthdate, "YYYY-MM-DD HH:MI:SS").format(
+      return moment(this.userData.birthdate, "YYYY-MM-DD HH:MI:SS").format(
         "DD.MM.YYYY"
       );
     }
@@ -343,6 +403,17 @@ input::-webkit-inner-spin-button {
   width: 100%;
   font-size: 1.25em;
   margin-bottom: 1em;
+  &--no-specialization {
+    grid-template-areas:
+      "img name"
+      "img name";
+    .user__name {
+      input {
+        border-bottom-left-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+      }
+    }
+  }
 }
 
 .user__img {
@@ -355,16 +426,22 @@ input::-webkit-inner-spin-button {
   filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
   position: relative;
   img {
-    height: 100%;
-    width: 100%;
+    height: 4rem;
+    width: 4rem;
+    object-fit: cover;
     position: absolute;
+  }
+  input {
+    display: none;
   }
 }
 
 .img__edit {
   position: absolute;
-  height: 100%;
-  width: 100%;
+  height: 4rem;
+  width: 4rem;
+  object-fit: cover;
+  background-size: cover;
   background: rgba(238, 238, 243, 0.5);
   transition: 0.2s ease-in-out;
   cursor: pointer;
@@ -389,7 +466,7 @@ input::-webkit-inner-spin-button {
   justify-content: left;
   input {
     height: 100%;
-    width: 50%;
+    width: 100%;
     text-align: center;
     background: #e6e6e8;
     color: #3e3e45;
@@ -525,6 +602,12 @@ input.user__specialization {
   span {
     margin-right: 1em;
   }
+  svg {
+    height: 1.5rem;
+    width: 1.5rem;
+    display: flex;
+    margin: auto;
+  }
 }
 
 @media only screen and (min-width: 425px) and (max-width: 960px) {
@@ -595,6 +678,11 @@ input.user__specialization {
     grid-template-areas:
       "img name actions"
       "img spec actions";
+    &--no-specialization {
+      grid-template-areas:
+        "img name actions"
+        "img name actions";
+    }
   }
 }
 </style>

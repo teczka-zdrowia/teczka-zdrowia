@@ -1,5 +1,5 @@
-{
-  me {
+mutation($data: UpdateUserInput!) {
+  updateMe(data: $data) {
     id
     avatar
     name

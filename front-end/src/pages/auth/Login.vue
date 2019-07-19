@@ -1,6 +1,7 @@
 <template>
   <form
     class="login"
+    name="login"
     @submit.prevent="login"
   >
     <div>
@@ -61,7 +62,6 @@ export default {
   data: function() {
     return {
       isRememberMe: false,
-      isLoading: false,
       data: {
         username: "",
         password: ""
@@ -78,21 +78,21 @@ export default {
       getAutheticatedUserData: "userInfo/getData"
     }),
     login: function() {
-      this.isLoading = true;
+      this.$emit("loading", true);
       this.userLogin(this.data)
         .then(() => {
           this.getAutheticatedUserData();
         })
         .then(() => {
-          this.$toasted.success("Poprawnie zalogowano");
-          this.$router.push("/Dashboard");
+          this.$toasted.success("Pomyślnie zalogowano");
+          this.$router.push({ name: "Dashboard" });
         })
         .catch(error => {
           this.$toasted.error("Niepoprawne dane logowania");
           console.error(error);
         })
         .finally(() => {
-          this.isLoading = false;
+          this.$emit("loading", false);
         });
     }
   }

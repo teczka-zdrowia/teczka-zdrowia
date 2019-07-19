@@ -12,7 +12,7 @@
       cx="50"
       cy="50"
       fill="none"
-      stroke="#6a6ee1"
+      :stroke="color"
       stroke-width="10"
       r="35"
       stroke-dasharray="164.93361431346415 56.97787143782138"
@@ -34,6 +34,12 @@
 
 <script>
 export default {
-  name: "MainLoading"
+  name: "MainLoading",
+  props: {
+    color: {
+      type: String,
+      default: "#6a6ee1"
+    }
+  }
 };
 </script>
