@@ -1,18 +1,18 @@
 <template>
-  <div class="prescription">
+  <div class="recommendation">
     <span
       aria-hidden="true"
       class="fas fa-prescription"
     />
-    <div class="prescription__content">
-      <div class="prescription__title">{{ title }}</div>
-      <div class="prescription__info">{{ info }}</div>
+    <div class="recommendation__content">
+      <div class="recommendation__title">{{ data.title }}</div>
+      <div class="recommendation__info">{{ data.description }}</div>
     </div>
     <div
-      class="prescription__cancel"
+      class="recommendation__cancel"
       title="Zakończ zalecenie"
       v-if="showCancelBtn"
-      @click="cancelPrescription(prescriptionID, title)"
+      @click="cancelRecommendation(data.id, title)"
     >
       <span
         aria-hidden="true"
@@ -20,17 +20,17 @@
       />
     </div>
     <div
-      class="prescription__timeleft"
-      v-if="days > 0"
+      class="recommendation__timeleft"
+      v-if="data.days > 0"
     >
       <div v-if="isTimeleft">
         Pozostało
       </div>
-      <span>{{ days }}</span> dni
+      <span>{{ daysLeft }}</span> dni
     </div>
     <div
-      class="prescription__timeleft"
-      v-if="days == 0"
+      class="recommendation__timeleft"
+      v-if="data.days == 0"
     >Czas nieokreślony</div>
   </div>
 </template>
@@ -39,41 +39,55 @@
 import { mapActions } from "vuex";
 
 export default {
-  name: "MainPrescription",
+  name: "MainRecommendation",
   props: {
-    title: {
-      type: String
-    },
-    info: {
-      type: String
-    },
     showCancelBtn: {
       type: Boolean,
       default: false
-    },
-    days: {
-      default: 0
     },
     isTimeleft: {
       type: Boolean,
       default: false
     },
-    prescriptionID: {
-      type: Number
+    data: {
+      id: {
+        type: Number
+      },
+      title: {
+        type: String
+      },
+      description: {
+        type: String
+      },
+      days: {
+        default: 0
+      },
+      start_date: {
+        type: String
+      }
     }
   },
   methods: {
     ...mapActions({
       showModal: "modal/show"
     }),
-    cancelPrescription: function(id, name) {
+    cancelRecommendation: function(id, title) {
       this.showModal({
-        componentName: "CancelPrescription",
+        componentName: "CancelRecommendation",
         data: {
-          prescriptionID: id,
-          prescriptionName: name
+          recommendationID: id,
+          recommendationTitle: title
         }
       });
+    }
+  },
+  computed: {
+    daysLeft: function() {
+      let today = new Date();
+      let startDate = new Date(this.data.start_date);
+      let finalDate = new Date();
+      finalDate.setDate(startDate.getDate() + this.data.days);
+      return Math.round((finalDate - startDate) / (1000 * 60 * 60 * 24));
     }
   }
 };
@@ -82,7 +96,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../../main.scss";
 
-.prescription {
+.recommendation {
   width: 100%;
   font-weight: 600;
   display: grid;
@@ -109,7 +123,7 @@ export default {
   }
 }
 
-.prescription__content {
+.recommendation__content {
   grid-area: info;
   height: calc(100% - 0.5rem);
   white-space: normal;
@@ -118,17 +132,17 @@ export default {
   margin: 0.25rem 0;
 }
 
-.prescription__title {
+.recommendation__title {
   font-weight: 700;
   color: #3e3e45;
   margin-bottom: 0.25em;
 }
 
-.prescription__info {
+.recommendation__info {
   color: #67676e;
 }
 
-.prescription__timeleft {
+.recommendation__timeleft {
   @extend %text--center;
   grid-area: timeleft;
   border-radius: 0.5rem;
@@ -145,7 +159,7 @@ export default {
   }
 }
 
-.prescription__cancel {
+.recommendation__cancel {
   @extend %text--center;
   grid-area: cancel;
   border-radius: 0.5rem;

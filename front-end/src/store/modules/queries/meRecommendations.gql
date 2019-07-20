@@ -1,0 +1,26 @@
+query($first: Int!, $after: String) {
+  me {
+    id
+    recommendations(
+      first: $first
+      after: $after
+      orderBy: [{ field: "start_date", order: ASC }]
+    ) {
+      pageInfo {
+        hasPreviousPage
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      edges {
+        node {
+          id
+          title
+          description
+          days
+          start_date
+        }
+      }
+    }
+  }
+}

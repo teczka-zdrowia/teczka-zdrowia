@@ -155,10 +155,10 @@
         </div>
       </div>
       <div class="places__actions">
-        <div
+        <GreyBlock
           v-if="!selectedCard"
           class="places__info"
-        >Wybierz gabinet</div>
+        >Wybierz gabinet</GreyBlock>
         <div
           v-if="selectedCard"
           class="actions__content"
@@ -196,6 +196,7 @@
 <script>
 import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
 import MainBtn from "../../components/ui/basic/MainBtn";
+import GreyBlock from "../../components/ui/blocks/GreyBlock";
 import MainSelect from "../../components/ui/basic/MainSelect";
 import Patients from "./Patients";
 import Timetable from "./Timetable";
@@ -219,6 +220,7 @@ export default {
   },
   components: {
     Block: WhiteFunctionalBlock,
+    GreyBlock,
     MainBtn,
     Patients,
     Timetable,
@@ -390,15 +392,9 @@ export default {
 }
 
 .places__info {
-  @extend %text--center;
-  font-weight: 700;
-  font-size: 1.5em;
-  color: #67676e;
+  background: #fdfdfd !important;
   height: 100%;
   padding: 4em 0;
-  border-radius: 0.5em;
-  box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
-  background: #fdfdfd;
 }
 
 .actions__content {

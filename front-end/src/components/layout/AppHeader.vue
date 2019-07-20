@@ -1,6 +1,12 @@
 <template>
-  <div class="header">
-    <MainBtn v-on:click.native="addAppointment">Dodaj wizytę</MainBtn>
+  <div
+    class="header"
+    v-bind:class="{ 'header--justify-end' : !isPaymentValid }"
+  >
+    <MainBtn
+      v-if="isPaymentValid"
+      v-on:click.native="addAppointment"
+    >Dodaj wizytę</MainBtn>
     <UserInfo />
   </div>
 </template>
@@ -9,7 +15,7 @@
 import MainBtn from "../ui/basic/MainBtn";
 import UserInfo from "../ui/UserInfo";
 
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "AppHeader",
@@ -29,6 +35,11 @@ export default {
         }
       });
     }
+  },
+  computed: {
+    ...mapGetters({
+      isPaymentValid: "userInfo/isPaymentValid"
+    })
   }
 };
 </script>
@@ -45,5 +56,8 @@ $primrary-light: #fafafa;
   position: relative;
   display: flex;
   justify-content: space-between;
+  &--justify-end {
+    justify-content: flex-end;
+  }
 }
 </style>

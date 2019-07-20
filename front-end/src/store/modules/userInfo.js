@@ -1,13 +1,17 @@
 import { apolloClient } from '@/apollo'
 import { AUTH_TOKEN, API_URL } from '@/apollo/constants'
-import LOGIN_MUTATION from './mutations/login.gql'
-import CREATE_USER_MUTATION from './mutations/createUser.gql'
-import UPDATE_ME_MUTATION from './mutations/updateMe.gql'
-import UPDATE_PASSWORD_MUTATION from './mutations/updatePassword.gql'
-import LOGOUT_MUTATION from './mutations/logout.gql'
-import DELETE_ME_MUTATION from './mutations/deleteMe.gql'
-import ME_QUERY from './queries/me.gql'
-import ME_PESEL_QUERY from './queries/mePesel.gql'
+import {
+  LOGIN_MUTATION,
+  CREATE_USER_MUTATION,
+  UPDATE_ME_MUTATION,
+  UPDATE_PASSWORD_MUTATION,
+  LOGOUT_MUTATION,
+  DELETE_ME_MUTATION
+} from './mutations/_index'
+import {
+  ME_QUERY,
+  ME_PESEL_QUERY
+} from './queries/_index'
 
 const getDefaultState = () => {
   return {

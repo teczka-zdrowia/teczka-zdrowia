@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import window from './modules/window'
 import modal from './modules/modal'
 import userInfo from './modules/userInfo'
-import userPrescriptions from './modules/userPrescriptions'
+import userRecommendations from './modules/userRecommendations'
 import userHistory from './modules/userHistory'
 import userPlaces from './modules/userPlaces'
 import userAppointments from './modules/userAppointments'
@@ -18,7 +18,7 @@ export const store = new Vuex.Store({
     window,
     modal,
     userInfo,
-    userPrescriptions,
+    userRecommendations,
     userHistory,
     userPlaces,
     userAppointments,

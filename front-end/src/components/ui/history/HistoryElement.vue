@@ -51,7 +51,7 @@
 <script>
 import MainBtn from "../basic/MainBtn";
 import MainUserInfo from "../basic/MainUserInfo";
-import MainPrescription from "../basic/MainPrescription";
+import MainRecommendation from "../basic/MainRecommendation";
 import MainPlaceInfo from "../basic/MainPlaceInfo";
 import HistoryMoreElement from "./HistoryMoreElement";
 
@@ -81,7 +81,7 @@ export default {
   computed: {
     ...mapGetters({
       isMobile: "window/isMobile",
-      userPrescriptions: "userPrescriptions/active"
+      userRecommendations: "userRecommendations/active"
     })
   },
   watch: {
@@ -95,7 +95,7 @@ export default {
               "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero.",
             treatments:
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
-            prescriptions: this.userPrescriptions,
+            recommendations: this.userRecommendations,
             attachments: [
               {
                 id: 1,
@@ -268,7 +268,7 @@ export default {
     background: #eeeef3;
   }
 }
-.more__row__prescription {
+.more__row__recommendation {
   width: 100%;
   font-weight: 600;
   display: grid;
@@ -295,7 +295,7 @@ export default {
   }
 }
 
-.prescription__content {
+.recommendation__content {
   grid-area: info;
   height: calc(100% - 0.5rem);
   white-space: normal;
@@ -304,17 +304,17 @@ export default {
   margin: 0.25rem 0;
 }
 
-.prescription__title {
+.recommendation__title {
   font-weight: 700;
   color: #3e3e45;
   margin-bottom: 0.25em;
 }
 
-.prescription__info {
+.recommendation__info {
   color: #67676e;
 }
 
-.prescription__time {
+.recommendation__time {
   @extend %text--center;
   grid-area: time;
   border-radius: 0.5rem;

@@ -5,7 +5,7 @@
       v-on:click="isShowed = !isShowed"
     >
       <img
-        :src="userData.avatar"
+        :src="userData.avatar | `${API_URL}/storage/avatars/avatar.png`"
         :alt="userData.name"
       >
       <div class="info__content">
@@ -66,6 +66,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { API_URL } from "@/apollo/constants";
 
 export default {
   name: "UserInfo",

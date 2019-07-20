@@ -2,47 +2,20 @@
   <div class="dashboard">
     <div class="row">
       <div class="column">
-        <Block
-          class="prescriptions"
-          title="Obecne zalecenia"
-        >
-          <MainPrescription
-            v-for="prescription in userPrescriptions"
-            :key="prescription.id"
-            :prescriptionID="prescription.id"
-            :title="prescription.title"
-            :info="prescription.info"
-            :days="prescription.days"
-            :showCancelBtn="true"
-            :isTimeleft="true"
-          />
-        </Block>
+        <RecommendationsBlock />
       </div>
       <Map v-if="!isMobile" />
     </div>
     <div class="row">
       <!--<Block class="messages" title="Ostatnie wiadomości"> <a class="message" href="#"> <img class="message__img" src="https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/" > <div class="message__name">Jan Iksiński</div> <div class="message__last">Dzień dobry</div> <div class="message__hour">18:00</div> </a> <a class="message" href="#"> <img class="message__img" src="https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/" > <div class="message__name">Jan Iksiński</div> <div class="message__last">Dzień dobry</div> <div class="message__hour">18:00</div> </a> <a class="message" href="#"> <img class="message__img" src="https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/" > <div class="message__name">Jan Iksiński</div> <div class="message__last">Dzień dobry</div> <div class="message__hour">18:00</div> </a> <div class="message--last">Więcej</div> </Block>-->
-      <Block
-        class="appointments"
-        title="Najbliższe wizyty"
-      >
-        <AppointmentsBox
-          :showActions="false"
-          :showMore="true"
-        />
-      </Block>
+      <LastAppointmentsBlock />
     </div>
   </div>
 </template>
 
 <script>
-import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
-import VioletBlock from "../../components/ui/blocks/VioletBlock";
-import MainSelect from "../../components/ui/basic/MainSelect";
-import MainBtn from "../../components/ui/basic/MainBtn";
-import MainPrescription from "../../components/ui/basic/MainPrescription";
-import AppointmentsBox from "../../components/ui/appointments/AppointmentsBox";
-import AirData from "./AirData";
+import RecommendationsBlock from "./RecommendationsBlock";
+import LastAppointmentsBlock from "./LastAppointmentsBlock";
 import Map from "../map/Map";
 
 import { mapGetters } from "vuex";
@@ -50,24 +23,13 @@ import { mapGetters } from "vuex";
 export default {
   name: "Dashboard",
   components: {
-    Block: WhiteFunctionalBlock,
-    VioletBlock,
-    MainSelect,
-    MainBtn,
-    AppointmentsBox,
-    AirData,
-    MainPrescription,
+    RecommendationsBlock,
+    LastAppointmentsBlock,
     Map
-  },
-  data: function() {
-    return {
-      showUpcoming: true
-    };
   },
   computed: {
     ...mapGetters({
-      isMobile: "window/isMobile",
-      userPrescriptions: "userPrescriptions/active"
+      isMobile: "window/isMobile"
     })
   }
 };
@@ -97,11 +59,6 @@ export default {
   display: block;
   position: relative;
   width: 33%;
-}
-
-.prescriptions {
-  min-height: 24rem;
-  //margin-bottom: 1em;
 }
 
 .air {
@@ -226,9 +183,6 @@ export default {
     .column {
       width: 100%;
     }
-  }
-  .prescriptions {
-    min-height: unset;
   }
 }
 </style>

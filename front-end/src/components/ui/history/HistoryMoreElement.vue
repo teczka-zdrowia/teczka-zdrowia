@@ -26,13 +26,13 @@
         <div class="more__column more__column--right">
           <div class="more__row">
             <div class="more__row__title">Zalecenia</div>
-            <MainPrescription
-              v-for="prescription in more.prescriptions"
-              :key="prescription.id"
-              :prescriptionId="prescription.id"
-              :title="prescription.title"
-              :info="prescription.info"
-              :days="prescription.days"
+            <MainRecommendation
+              v-for="recommendation in more.recommendations"
+              :key="recommendation.id"
+              :recommendationId="recommendation.id"
+              :title="recommendation.title"
+              :info="recommendation.info"
+              :days="recommendation.days"
               :showCancelBtn="false"
               :isTimeleft="false"
             />
@@ -77,7 +77,7 @@
 <script>
 import MainBtn from "../basic/MainBtn";
 import MainUserInfo from "../basic/MainUserInfo";
-import MainPrescription from "../basic/MainPrescription";
+import MainRecommendation from "../basic/MainRecommendation";
 import MainPlaceInfo from "../basic/MainPlaceInfo";
 
 import { mapGetters } from "vuex";
@@ -90,7 +90,7 @@ export default {
     }
   },
   components: {
-    MainPrescription,
+    MainRecommendation,
     MainPlaceInfo,
     MainUserInfo,
     MainBtn
@@ -251,7 +251,7 @@ export default {
     background: #eeeef3;
   }
 }
-.more__row__prescription {
+.more__row__recommendation {
   width: 100%;
   font-weight: 600;
   display: grid;
@@ -278,7 +278,7 @@ export default {
   }
 }
 
-.prescription__content {
+.recommendation__content {
   grid-area: info;
   height: calc(100% - 0.5rem);
   white-space: normal;
@@ -287,17 +287,17 @@ export default {
   margin: 0.25rem 0;
 }
 
-.prescription__title {
+.recommendation__title {
   font-weight: 700;
   color: #3e3e45;
   margin-bottom: 0.25em;
 }
 
-.prescription__info {
+.recommendation__info {
   color: #67676e;
 }
 
-.prescription__time {
+.recommendation__time {
   @extend %text--center;
   grid-area: time;
   border-radius: 0.5rem;
