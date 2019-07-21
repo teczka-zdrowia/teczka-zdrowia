@@ -1,13 +1,13 @@
 <template>
   <div>
     <AppointmentMobile
-      v-for="(appointment, index) in userAppointments"
+      v-for="(appointment, index) in appointments"
       :key="index"
-      :data="appointment"
+      :data="appointment.node"
     />
     <router-link
       to="/Appointments"
-      v-if="showMore"
+      v-if="showAppointmentsLink"
     >
       <MainBtn class="appointments__more">
         <span v-if="!isLoading">
@@ -17,17 +17,25 @@
             class="fas fa-long-arrow-alt-right"
           />
         </span>
-        <span v-if="isLoading">
-          Ładowanie
-          <MainLoading />
-        </span>
       </MainBtn>
     </router-link>
+    <MainBtn
+      class="appointments__more"
+      v-if="showMoreBtn"
+      :disabled="loading"
+      :loading="loading"
+      v-on:click.native="$emit('loadNext')"
+    >
+      Załaduj następne
+      <span
+        aria-hidden="true"
+        class="fas fa-long-arrow-alt-right"
+      />
+    </MainBtn>
   </div>
 </template>
 
 <script>
-import MainLoading from "../basic/MainLoading";
 import AppointmentMobile from "./AppointmentMobile";
 import MainBtn from "../basic/MainBtn";
 
@@ -41,19 +49,26 @@ export default {
     };
   },
   props: {
-    showMore: {
+    showAppointmentsLink: {
       type: Boolean,
-      default: true
+      default: false
+    },
+    showMoreBtn: {
+      type: Boolean,
+      default: false
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
     MainBtn,
-    AppointmentMobile,
-    MainLoading
+    AppointmentMobile
   },
   computed: {
     ...mapGetters({
-      userAppointments: "userAppointments/all"
+      appointments: "userAppointments/list"
     })
   }
 };
@@ -158,20 +173,18 @@ export default {
 }
 
 .appointments__more {
-  background: #eeeef3 !important;
-  color: #6a6ee1 !important;
-  width: 100% !important;
-  height: 3em !important;
+  width: 100%;
+  & > button,
+  &.button {
+    width: 100%;
+    padding: 1em;
+    border-radius: 0.5em;
+    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+    background: #eeeef3 !important;
+    color: #6a6ee1 !important;
+  }
   span {
-    @extend %text--center;
-  }
-  i,
-  svg {
     margin-left: 0.75rem;
-  }
-  svg {
-    width: 1.25rem;
-    height: 1.25rem;
   }
 }
 

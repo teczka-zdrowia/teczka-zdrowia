@@ -1,25 +1,22 @@
-query($first: Int!, $after: String) {
+query($page: Int!, $count: Int!) {
   me {
     id
     recommendations(
-      first: $first
-      after: $after
+      page: $page
+      count: $count
+      is_active: true
       orderBy: [{ field: "start_date", order: ASC }]
     ) {
-      pageInfo {
-        hasPreviousPage
-        hasNextPage
-        startCursor
-        endCursor
+      paginatorInfo {
+        hasMorePages
+        currentPage
       }
-      edges {
-        node {
-          id
-          title
-          description
-          days
-          start_date
-        }
+      data {
+        id
+        title
+        description
+        days
+        start_date
       }
     }
   }

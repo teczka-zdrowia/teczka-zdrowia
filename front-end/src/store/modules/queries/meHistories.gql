@@ -1,0 +1,27 @@
+query($first: Int!, $after: String, $note: String, $orderBy: [OrderByClause!]) {
+  me {
+    id
+    histories(first: $first, after: $after, note: $note, orderBy: $orderBy) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          date
+          author {
+            id
+            avatar
+            name
+            phone
+          }
+          place {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}

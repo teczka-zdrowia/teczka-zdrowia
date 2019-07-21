@@ -12,7 +12,7 @@
       class="recommendation__cancel"
       title="Zakończ zalecenie"
       v-if="showCancelBtn"
-      @click="cancelRecommendation(data.id, title)"
+      @click="cancelRecommendation(data.id, data.title)"
     >
       <span
         aria-hidden="true"
@@ -75,8 +75,8 @@ export default {
       this.showModal({
         componentName: "CancelRecommendation",
         data: {
-          recommendationID: id,
-          recommendationTitle: title
+          id: this.data.id,
+          title: this.data.title
         }
       });
     }

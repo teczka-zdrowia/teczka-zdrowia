@@ -1,0 +1,18 @@
+mutation($id: ID!, $data: UpdateAppointmentInput!) {
+  updateAppointment(id: $id, data: $data) {
+    id
+    date
+    note
+    confirmed
+    author {
+      id
+      avatar
+      name
+      phone
+    }
+    place {
+      id
+      name
+    }
+  }
+}

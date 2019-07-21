@@ -1,0 +1,6 @@
+mutation($id: ID!, $confirmed: Boolean!) {
+  updateAppointmentConfirmation(id: $id, confirmed: $confirmed) {
+    id
+    confirmed
+  }
+}

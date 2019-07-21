@@ -5,9 +5,10 @@
   >
     <MainUserInfo
       class="list__info__el"
-      :name="data.doctor.name"
-      :img="data.doctor.img"
-      :phone="data.doctor.phone"
+      :id="data.author.id"
+      :name="data.author.name"
+      :avatar="data.author.avatar"
+      :phone="data.author.phone"
       :isBig="true"
       :isBigPhone="true"
       :userId="1"
@@ -24,14 +25,14 @@
             aria-hidden="true"
             class="fas fa-calendar-day"
           />
-          {{ data.date }}
+          {{ date }}
         </div>
         <div class="content__el">
           <span
             aria-hidden="true"
             class="far fa-clock"
           />
-          {{ data.time }}
+          {{ time }}
         </div>
       </div>
       <div class="content__el">
@@ -39,20 +40,32 @@
           aria-hidden="true"
           class="far fa-comment-alt"
         />
-        {{ data.desc }}
+        {{ data.note }}
       </div>
     </div>
     <div class="appointment__actions">
       <MainBtn
-        class="appointment__btn"
-        v-bind:class="[data.isAccepted == true ? 'appointment__btn--accepted' : '']"
-        v-on:click="updateAcceptation(true)"
-      >Będę</MainBtn>
+        class="appointment__btn appointment__btn--confirmed"
+        v-if="data.confirmed"
+        :loading="isConfirmationLoading"
+        :disabled="isConfirmationLoading"
+        color="#fafafa"
+        v-on:click.native="updateConfirmation(false)"
+      ><span
+          aria-hidden="true"
+          class="fas fa-check-circle"
+        ></span>Potwierdzono</MainBtn>
       <MainBtn
-        class="appointment__btn"
-        v-bind:class="[data.isAccepted == false ? 'appointment__btn--cancelled' : '']"
-        v-on:click="updateAcceptation(false)"
-      >Nie będę</MainBtn>
+        class="appointment__btn appointment__btn--not-confirmed"
+        v-if="!data.confirmed"
+        :loading="isConfirmationLoading"
+        :disabled="isConfirmationLoading"
+        color="#67676e"
+        v-on:click.native="updateConfirmation(true)"
+      ><span
+          aria-hidden="true"
+          class="far fa-check-circle"
+        ></span>Potwierdź</MainBtn>
     </div>
   </div>
 </template>
@@ -62,7 +75,15 @@ import MainBtn from "../basic/MainBtn";
 import MainUserInfo from "../basic/MainUserInfo";
 import MainPlaceInfo from "../basic/MainPlaceInfo";
 
+import { mapActions } from "vuex";
+
 export default {
+  name: "AppointmentDekstop",
+  data: function() {
+    return {
+      isConfirmationLoading: false
+    };
+  },
   props: {
     data: {
       type: Object
@@ -72,15 +93,37 @@ export default {
       default: false
     }
   },
-  name: "AppointmentDekstop",
   components: {
     MainPlaceInfo,
     MainUserInfo,
     MainBtn
   },
   methods: {
-    updateAcceptation: function(val) {
-      this.data.isAccepted = val;
+    ...mapActions({
+      updateUserAppointmentConfirmation: "userAppointments/updateConfirmation"
+    }),
+    updateConfirmation: async function(val) {
+      this.isConfirmationLoading = true;
+      const payload = {
+        id: this.data.id,
+        confirmed: val
+      };
+
+      await this.updateUserAppointmentConfirmation(payload).catch(error => {
+        this.$toasted.error("Wystąpił błąd");
+        console.error(error);
+      });
+
+      this.isConfirmationLoading = false;
+    }
+  },
+  computed: {
+    date: function() {
+      const dateSlice = this.data.date.slice(0, 10);
+      return new Date(dateSlice).toLocaleDateString();
+    },
+    time: function() {
+      return this.data.date.slice(11, 16);
     }
   }
 };
@@ -156,18 +199,21 @@ export default {
   border-radius: 0;
   filter: none;
   width: 100%;
-  span {
+  & > span {
     @extend %text--center;
     font-size: 1.5em;
     margin-right: 0.7rem;
+    span {
+      margin-right: 1rem;
+    }
   }
-  &--accepted {
+  &--confirmed {
     background: $darkviolet;
     color: #fafafa;
   }
-  &--cancelled {
-    background: #e74c3c;
-    color: #fafafa;
+  &--not-confirmed {
+    background: #eeeef3;
+    color: #67676e;
   }
 }
 

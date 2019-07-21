@@ -5,9 +5,10 @@
   >
     <MainUserInfo
       class="appointment__user"
-      :name="data.doctor.name"
-      :img="data.doctor.img"
-      :phone="data.doctor.phone"
+      :id="data.author.id"
+      :name="data.author.name"
+      :avatar="data.author.avatar"
+      :phone="data.author.phone"
       :isClickable="false"
       :userId="1"
     />
@@ -39,14 +40,14 @@
           aria-hidden="true"
           class="fas fa-calendar-day"
         />
-        <p>25.10.2019</p>
+        <p>{{ date }}</p>
       </div>
       <div class="when__time">
         <span
           aria-hidden="true"
           class="far fa-clock"
         />
-        <p>18:30</p>
+        <p>{{ time }}</p>
       </div>
     </div>
   </div>
@@ -113,6 +114,15 @@ export default {
           }
         }
       });
+    }
+  },
+  computed: {
+    date: function() {
+      const dateSlice = this.data.date.slice(0, 10);
+      return new Date(dateSlice).toLocaleDateString();
+    },
+    time: function() {
+      return this.data.date.slice(11, 16);
     }
   }
 };

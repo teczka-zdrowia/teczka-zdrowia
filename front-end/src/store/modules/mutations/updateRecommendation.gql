@@ -1,0 +1,5 @@
+mutation($id: ID!, $data: UpdateRecommendationInput!) {
+  updateRecommendation(id: $id, data: $data) {
+    id
+  }
+}

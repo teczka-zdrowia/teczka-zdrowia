@@ -31,7 +31,6 @@ const state = getDefaultState()
 
 const mutations = {
   SET_DATA (state, data) {
-    data.avatar = `${API_URL}/storage/avatars/` + data.avatar
     state = Object.assign(state, data)
   },
   SET_PESEL (state, pesel) {

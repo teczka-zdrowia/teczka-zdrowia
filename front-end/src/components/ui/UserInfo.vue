@@ -5,7 +5,7 @@
       v-on:click="isShowed = !isShowed"
     >
       <img
-        :src="userData.avatar | `${API_URL}/storage/avatars/avatar.png`"
+        :src="`${apiUrl}/storage/avatars/${userData.avatar}`"
         :alt="userData.name"
       >
       <div class="info__content">
@@ -72,6 +72,7 @@ export default {
   name: "UserInfo",
   data: function() {
     return {
+      apiUrl: API_URL,
       isLoading: false,
       isShowed: false
     };

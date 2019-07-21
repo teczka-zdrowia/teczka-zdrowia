@@ -5,7 +5,7 @@
       v-if="loading"
     >
       Ładowanie
-      <MainLoading color="#fafafa" />
+      <MainLoading :color="color" />
     </span>
     <span v-if="!loading">
       <slot></slot>
@@ -25,6 +25,10 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    color: {
+      type: String,
+      defualt: "#fafafa"
     }
   }
 };

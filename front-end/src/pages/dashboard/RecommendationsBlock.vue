@@ -30,18 +30,21 @@
       v-if="!loading.init && recommendations.length !== 0"
     >
       <MainBtn
-        v-if="pageInfo.hasPreviousPage"
+        v-if="paginatorInfo.currentPage > 1"
         :disabled="loading.previousPage || loading.nextPage"
         :loading="loading.previousPage"
+        color="#6a6ee1"
+        v-on:click.native="getPreviousRecommendations"
       ><span
           aria-hidden="true"
           class="fas fa-arrow-left"
         />
         Poprzednia</MainBtn>
       <MainBtn
-        v-if="pageInfo.hasNextPage"
+        v-if="paginatorInfo.hasMorePages"
         :disabled="loading.previousPage || loading.nextPage"
         :loading="loading.nextPage"
+        color="#6a6ee1"
         v-on:click.native="getNextRecommendations"
       >Następna
         <span
@@ -81,7 +84,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      pageInfo: "userRecommendations/pageInfo",
+      paginatorInfo: "userRecommendations/paginatorInfo",
       recommendations: "userRecommendations/list"
     })
   },
@@ -89,49 +92,44 @@ export default {
     ...mapActions({
       getUserRecommendations: "userRecommendations/get"
     }),
+    getRecommendations: async function(payload, type) {
+      this.loading[type] = true;
+
+      await this.getUserRecommendations(payload).catch(error => {
+        this.$toasted.error("Wystąpił błąd");
+        console.error(error);
+      });
+
+      this.loading[type] = false;
+    },
     getFirstRecommendations: function() {
       const payload = {
-        first: 3,
-        after: ""
+        page: 1,
+        count: 3
       };
 
-      this.getUserRecommendations(payload)
-        .then(() => (this.loading.init = false))
-        .catch(error => {
-          this.$toasted.error("Wystąpił błąd");
-          console.error(error);
-        });
+      this.getRecommendations(payload, "init");
     },
     getNextRecommendations: function() {
-      this.loading.nextPage = true;
-      console.log(this.loading.nextPage);
-      const endCursor = this.pageInfo.endCursor;
+      const currentPage = this.paginatorInfo.currentPage;
       const payload = {
-        first: 3,
-        after: endCursor
+        page: currentPage + 1,
+        count: 3
       };
 
-      this.getUserRecommendations(payload)
-        .catch(error => {
-          this.$toasted.error("Wystąpił błąd");
-          console.error(error);
-        })
-        .finally(() => {
-          this.loading.nextPage = false;
-        });
+      this.getRecommendations(payload, "nextPage");
     },
     getPreviousRecommendations: function() {
-      this.loading.previousPage = true;
-      const endCursor = this.pageInfo.endCursor;
-      this.getUserRecommendations(3, endCursor)
-        .then(() => (this.loading.previousPage = false))
-        .catch(error => {
-          this.$toasted.error("Wystąpił błąd");
-          console.error(error);
-        });
+      const currentPage = this.paginatorInfo.currentPage;
+      const payload = {
+        page: currentPage - 1,
+        count: 3
+      };
+
+      this.getRecommendations(payload, "previousPage");
     }
   },
-  mounted() {
+  mounted: function() {
     this.getFirstRecommendations();
   }
 };
@@ -174,10 +172,6 @@ export default {
         span {
           margin-left: 0.5rem;
         }
-      }
-
-      span.button__loading > svg > circle {
-        stroke: #6a6ee1;
       }
     }
   }

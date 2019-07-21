@@ -2,13 +2,13 @@
   <div>
     <AppointmentDesktop
       :key="index"
-      :data="item"
-      v-for="(item, index) in userAppointments"
+      :data="appointment.node"
+      v-for="(appointment, index) in appointments"
     />
     <router-link
       to="/Appointments"
       class="appointments__more"
-      v-if="showMore"
+      v-if="showAppointmentsLink"
     >
       <MainBtn>
         Pokaż więcej
@@ -18,6 +18,19 @@
         />
       </MainBtn>
     </router-link>
+    <MainBtn
+      class="appointments__more"
+      v-if="showMoreBtn"
+      :disabled="loading"
+      :loading="loading"
+      v-on:click.native="$emit('loadNext')"
+    >
+      Załaduj następne
+      <span
+        aria-hidden="true"
+        class="fas fa-long-arrow-alt-right"
+      />
+    </MainBtn>
   </div>
 </template>
 
@@ -25,31 +38,32 @@
 import MainBtn from "../basic/MainBtn";
 import AppointmentDesktop from "./AppointmentDesktop";
 
+import { mapGetters } from "vuex";
+
 export default {
   name: "AppointmentsDesktop",
   props: {
-    maxAppointments: {
-      type: Number,
-      default: 0
-    },
-    showMore: {
+    showAppointmentsLink: {
       type: Boolean,
-      default: true
+      default: false
+    },
+    showMoreBtn: {
+      type: Boolean,
+      default: false
+    },
+    loading: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
     MainBtn,
     AppointmentDesktop
   },
-  methods: {
-    updateAcceptation: function(val) {
-      //TO DO
-    }
-  },
   computed: {
-    userAppointments: function() {
-      return this.$store.getters["userAppointments/all"];
-    }
+    ...mapGetters({
+      appointments: "userAppointments/list"
+    })
   }
 };
 </script>
@@ -59,7 +73,8 @@ export default {
 
 .appointments__more {
   width: 100%;
-  button {
+  & > button,
+  &.button {
     width: 100%;
     padding: 1em;
     border-radius: 0.5em;

@@ -1,15 +1,16 @@
 <template>
-  <div
-    class="history"
-    v-if="this.$store.getters['userHistory/count'] > 0"
-  >
-    <div class="history__top">
-      <div class="history__title">Historia</div>
-      <MainSearch class="history__right">
+  <div class="histories">
+    <div class="histories__top">
+      <div class="histories__title">Historia</div>
+      <MainSearch
+        class="histories__right"
+        v-show="!loading.init"
+      >
         <input
           class="input"
           slot="input"
           type="text"
+          v-model.lazy="query.search"
           placeholder="  Szukaj"
         >
         <div
@@ -18,54 +19,170 @@
         >
           <label>
             Sortuj przez:
-            <select>
-              <option selected>Data</option>
+            <select v-on:change="query.sortData.field">
+              <option
+                value="date"
+                selected
+              >Data</option>
               <option>Specjalista</option>
               <option>Gabinet</option>
-              <option>Opis</option>
+              <option value="note">Opis</option>
             </select>
           </label>
           <label>
             Porządkuj:
-            <select>
-              <option selected>Rosnąco</option>
-              <option>Malejąco</option>
+            <select v-model="query.sortData.order">
+              <option
+                value="DESC"
+                selected
+              >Malejąco</option>
+              <option value="ASC">Rosnąco</option>
             </select>
           </label>
           <label>
             Ładuj po:
-            <select>
-              <option selected>5</option>
-              <option>10</option>
-              <option>20</option>
+            <select v-model="query.first">
+              <option
+                value="5"
+                selected
+              >5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
             </select>
           </label>
-          <label class="label--highlight">
+          <!-- <label class="label--highlight">
             Gabinet:
             <select>
               <option selected>Wszystkie</option>
               <option>Gabinet długonazwowy</option>
               <option>Lorem ipsum</option>
             </select>
-          </label>
+          </label> -->
         </div>
       </MainSearch>
     </div>
-    <HistoryElements></HistoryElements>
+    <div class="histories__list">
+      <HistoryElement
+        v-for="(history, index) in histories"
+        :key="index"
+        :data="history.node"
+      />
+      <MainShowMore :isLoading="loading.next" />
+    </div>
+    <GreyBlock
+      class="histories__info"
+      v-if="!loading.init && histories.length === 0"
+    >Brak wizyt</GreyBlock>
+    <GreyBlock
+      class="histories__info histories__info--loading"
+      v-if="loading.init || loading.newQuery"
+    >Ładowanie
+      <MainLoading color="#67676e" />
+    </GreyBlock>
   </div>
 </template>
 
 <script>
 import MainBtn from "../basic/MainBtn";
 import MainSearch from "../basic/MainSearch";
-import HistoryElements from "./HistoryElements";
+import HistoryElement from "./HistoryElement";
+import MainLoading from "../basic/MainLoading";
+import GreyBlock from "../blocks/GreyBlock";
+
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "History",
+  data: function() {
+    return {
+      loading: {
+        init: true,
+        next: false,
+        newQuery: false
+      },
+      query: {
+        search: "",
+        first: 5,
+        sortData: {
+          order: "ASC",
+          field: "date"
+        }
+      }
+    };
+  },
   components: {
     MainBtn,
     MainSearch,
-    HistoryElements
+    HistoryElement,
+    GreyBlock,
+    MainLoading
+  },
+  computed: {
+    ...mapGetters({
+      histories: "userHistories/list"
+    }),
+    orderBy: function() {
+      return [
+        {
+          field: this.query.sortData.field,
+          order: this.query.sortData.order
+        }
+      ];
+    }
+  },
+  methods: {
+    ...mapActions({
+      getUserHistories: "userHistories/get"
+    }),
+    getHistories: async function(payload, type) {
+      this.loading[type] = true;
+
+      await this.getUserHistories(payload).catch(error => {
+        this.$toasted.error("Wystąpił błąd");
+        console.error(error);
+      });
+
+      this.loading[type] = false;
+    },
+    getFirstHistories: function() {
+      const payload = {
+        first: this.query.first,
+        after: "",
+        note: "",
+        orderBy: this.orderBy
+      };
+
+      this.getHistories(payload, "init");
+    },
+    getNextHistories: function() {
+      const payload = {
+        first: this.query.first,
+        after: this.pageInfo.endCursor,
+        note: `%${this.query.search}%`,
+        orderBy: this.orderBy
+      };
+
+      this.getHistories(payload, "next");
+    }
+  },
+  watch: {
+    query: {
+      handler() {
+        const payload = {
+          first: this.query.first,
+          after: "",
+          note: `%${this.query.search}%`,
+          date: this.date,
+          orderBy: this.orderBy
+        };
+
+        this.getHistories(payload, "newQuery");
+      },
+      deep: true
+    }
+  },
+  mounted() {
+    this.getFirstHistories();
   }
 };
 </script>
@@ -73,11 +190,24 @@ export default {
 <style lang="scss" scoped>
 @import "../../../main";
 
-.history {
+.histories {
   width: 100%;
 }
 
-.history__top {
+.histories__info {
+  height: unset;
+  padding: 1rem;
+  margin-top: 1rem;
+  &--loading {
+    svg {
+      height: 2rem;
+      width: 2rem;
+      margin-left: 1rem;
+    }
+  }
+}
+
+.histories__top {
   @extend %text--center;
   font-weight: 700;
   justify-content: space-between;
@@ -90,19 +220,19 @@ export default {
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
   background: #fafafc;
 }
-.history__title {
+.histories__title {
   color: #3e3e45;
   font-size: 1.5em;
   margin-right: 1.5em;
   font-weight: 700;
 }
 
-.history__right {
+.histories__right {
   display: flex;
   position: relative;
 }
 
-.history__search {
+.histories__search {
   border-top-left-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
   background: #eeeef3;
@@ -122,7 +252,7 @@ export default {
   }
 }
 
-.history__sort {
+.histories__sort {
   @extend %text--center;
   border-top-right-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
@@ -132,14 +262,14 @@ export default {
   padding: 0 1rem;
   cursor: pointer;
   &:hover {
-    & ~ .history__sort__content {
+    & ~ .histories__sort__content {
       visibility: visible;
       opacity: 1;
     }
   }
 }
 
-.history__sort__content {
+.histories__sort__content {
   z-index: 100;
   visibility: hidden;
   opacity: 0;
@@ -170,9 +300,47 @@ export default {
   &:hover {
     visibility: visible;
     opacity: 1;
-    & ~ .history__sort {
+    & ~ .histories__sort {
       border-radius: 0;
     }
+  }
+}
+
+.histories__list > div:last-child {
+  margin-bottom: 2em;
+}
+
+.list__actions {
+  margin-top: 0.5em;
+  height: 3em;
+  display: flex;
+  justify-content: center;
+}
+
+.list__more {
+  @extend %text--center;
+  border: 0;
+  transition: 0.2s ease-in-out;
+  border-radius: 0.5em;
+  border-radius: 0.25em;
+  padding: 0.5em 1.5em;
+  background: none;
+  color: #1a1b37;
+  font-weight: 600;
+  background: #fafafc;
+  cursor: pointer;
+  &:hover {
+    background: #ffffff;
+  }
+  i {
+    margin-left: 0.75em;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .histories__info {
+    height: 24rem;
+    padding: 0 1rem;
   }
 }
 </style>

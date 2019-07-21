@@ -3,28 +3,28 @@
     <div class="list__el">
       <div class="list__info">
         <MainUserInfo
-          class="list__info__el"
-          :name="data.doctor.name"
-          :img="data.doctor.img"
-          :phone="data.doctor.phone"
+          class="list__info__el list__info__el--user"
+          :name="data.author.name"
+          :avatar="data.author.avatar"
+          :phone="data.author.phone"
           :isBig="true"
           :userId="1"
         />
         <div class="list__info__el list__info__el--column">
-          <div class="list__info__el list__info__el--date">25.10.2019</div>
+          <div class="list__info__el list__info__el--date">{{ data.date.slice(0, 10) }}</div>
           <div class="list__info__el--line"></div>
           <div class="list__info__el list__info__el--place">
             <MainPlaceInfo
               v-if="isMobile"
-              :name="'MedMax Warszawa'"
-              :id="1"
+              :name="data.place.name"
+              :id="data.place.id"
               :noPadding="true"
               :violetIcon="true"
             />
             <MainPlaceInfo
               v-if="!isMobile"
-              :name="'MedMax Warszawa'"
-              :id="1"
+              :name="data.place.name"
+              :id="data.place.id"
             />
           </div>
         </div>
@@ -37,7 +37,7 @@
           <i
             class="fas"
             v-bind:class="[isOpened ? 'fa-angle-up' : 'fa-angle-down']"
-          ></i>
+          />
         </div>
       </div>
     </div>
@@ -155,6 +155,13 @@ export default {
   &:not(:last-child) {
     padding-right: 1rem;
     border-right: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  &--user {
+    width: 15rem;
+  }
+  &--date {
+    width: 6rem;
+    text-align: center;
   }
   &--column {
     display: flex;
@@ -373,6 +380,10 @@ export default {
       padding-left: 0;
       padding-top: 1rem;
     }
+  }
+  .list__info__el--user,
+  .list__info__el--date {
+    width: unset;
   }
 }
 

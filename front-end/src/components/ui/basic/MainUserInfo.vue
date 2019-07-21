@@ -6,7 +6,7 @@
   >
     <img
       class="user__img"
-      v-bind:src="img"
+      v-bind:src="`${apiUrl}/storage/avatars/${avatar}`"
       v-on:click.self="moreInfo()"
     />
     <div
@@ -29,22 +29,28 @@
 </template>
 
 <script>
+import { API_URL } from "@/apollo/constants";
 import { mapActions } from "vuex";
 
 export default {
   name: "MainUserInfo",
+  data: function() {
+    return {
+      apiUrl: API_URL
+    };
+  },
   props: {
     name: {
       type: String
     },
-    img: {
+    avatar: {
       type: String
     },
     phone: {
       type: String
     },
-    userId: {
-      type: Number
+    id: {
+      type: Number | String
     },
     isClickable: {
       type: Boolean,
@@ -138,14 +144,17 @@ export default {
 }
 
 .user__name {
-  @extend %text--center;
   grid-area: name;
   font-weight: 700;
   color: #3e3e45;
   justify-content: left;
-  max-width: 10em;
-  margin-top: auto;
-  margin-bottom: 0.33em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: inline;
+  margin: auto;
+  margin-left: 0;
 }
 
 .user__phone {

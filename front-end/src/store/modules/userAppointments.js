@@ -1,98 +1,96 @@
-const state = [
-  {
-    doctor: {
-      img:
-        'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
-      name: 'Jan Iksiński',
-      spec: 'psycholog',
-      phone: '123 456 789'
-    },
-    date: '16.10.2018',
-    time: '18:30',
-    place: {
-      id: 1,
-      name: 'MedMax'
-    },
-    desc: 'Ból klatki piersiowej',
-    isAccepted: false
+import { apolloClient } from '@/apollo'
+import { ME_APPOINTMENTS_QUERY } from './queries/_index'
+import {
+  UPDATE_APPOINTMENT_MUTATION,
+  UPDATE_APPOINTMENT_CONFIRMATION_MUTATION
+} from './mutations/_index'
+
+const state = {
+  pageInfo: {
+    endCursor: '',
+    hasNextPage: false
   },
-  {
-    doctor: {
-      img:
-        'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
-      name: 'Jan Iksiński',
-      spec: 'psycholog',
-      phone: '123 456 789'
-    },
-    date: '16.10.2018',
-    time: '18:30',
-    place: {
-      id: 1,
-      name: 'MedMax'
-    },
-    desc: 'Ból klatki piersiowej',
-    isAccepted: true
+  edges: []
+}
+
+const mutations = {
+  SET_DATA (state, data) {
+    state = Object.assign(state, data)
   },
-  {
-    doctor: {
-      img:
-        'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
-      name: 'Jan Iksiński',
-      spec: 'psycholog',
-      phone: '123 456 789'
-    },
-    date: '16.10.2018',
-    time: '18:31',
-    place: {
-      id: 1,
-      name: 'MedMax'
-    },
-    desc: 'Ból klatki piersiowej',
-    isAccepted: null
+  ADD_DATA (state, data) {
+    state.pageInfo = Object.assign(state.pageInfo, data.pageInfo)
+    state.edges = state.edges.concat(data.edges)
   },
-  {
-    doctor: {
-      img:
-        'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
-      name: 'Jan Iksiński',
-      spec: 'psycholog',
-      phone: '123 456 789'
-    },
-    date: '16.10.2018',
-    time: '18:32',
-    place: {
-      id: 1,
-      name: 'MedMax'
-    },
-    desc: 'Ból klatki piersiowej',
-    isAccepted: false
+  UPDATE_LOCAL (state, data) {
+    const foundIndex = state.edges.findIndex(edge => edge.node.id === data.id)
+    state.edges[foundIndex].node = data
   },
-  {
-    doctor: {
-      img:
-        'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
-      name: 'Jan Iksiński',
-      spec: 'psycholog',
-      phone: '123 456 789'
-    },
-    date: '16.10.2018',
-    time: '18:33',
-    place: {
-      id: 1,
-      name: 'MedMax'
-    },
-    desc: 'Ból klatki piersiowej',
-    isAccepted: true
+  UPDATE_CONFIRMATION_LOCAL (state, data) {
+    const foundIndex = state.edges.findIndex(edge => edge.node.id === data.id)
+    state.edges[foundIndex].node.confirmed = data.confirmed
   }
-]
+}
 
-const mutations = {}
+const actions = {
+  get ({ commit }, { first, after, note, date, orderBy, type }) {
+    return apolloClient
+      .query({
+        query: ME_APPOINTMENTS_QUERY,
+        variables: {
+          first: first,
+          after: after,
+          note: note,
+          date: date,
+          orderBy: orderBy
+        }
+      })
+      .then(data => data.data.me.appointments)
+      .then(appointments => {
+        if (type === 'SET') {
+          commit('SET_DATA', appointments)
+        }
 
-const actions = {}
+        if (type === 'ADD') {
+          commit('ADD_DATA', appointments)
+        }
+      })
+  },
+  updateConfirmation ({ commit }, { id, confirmed }) {
+    return apolloClient
+      .mutate({
+        mutation: UPDATE_APPOINTMENT_CONFIRMATION_MUTATION,
+        variables: {
+          id: id,
+          confirmed: confirmed
+        }
+      })
+      .then(data => data.data.updateAppointmentConfirmation)
+      .then(appointment => {
+        commit('UPDATE_CONFIRMATION_LOCAL', appointment)
+      })
+  },
+  update ({ commit }, { data, id }) {
+    return apolloClient
+      .mutate({
+        mutation: UPDATE_APPOINTMENT_MUTATION,
+        variables: {
+          id: id,
+          data: data
+        }
+      })
+      .then(data => data.data.updateAppointment)
+      .then(appointment => {
+        commit('UPDATE_LOCAL', appointment)
+      })
+  }
+}
 
 const getters = {
-  all (state) {
-    return state
+  pageInfo (state) {
+    return state.pageInfo
+  },
+  list (state) {
+    return state.edges
   }
 }
 

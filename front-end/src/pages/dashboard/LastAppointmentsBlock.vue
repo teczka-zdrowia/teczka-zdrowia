@@ -5,7 +5,7 @@
   >
     <AppointmentsBox
       :showActions="false"
-      :showMore="true"
+      :showAppointmentsLink="true"
     />
   </Block>
 </template>
