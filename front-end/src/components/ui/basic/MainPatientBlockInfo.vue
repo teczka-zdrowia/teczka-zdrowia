@@ -2,7 +2,7 @@
   <div class="patient">
     <div class="patient__img">
       <img
-        :src="patient.img"
+        :src="`${apiUrl}/storage/avatars/${patient.avatar}`"
         :alt="patient.name"
       >
     </div>
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { API_URL } from "@/apollo/constants";
 const moment = require("moment");
 moment.locale("pl");
 
@@ -45,7 +46,7 @@ export default {
       type: Object,
       default: function() {
         return {
-          img: "/static/img/icons/profile-icon-720x720.png",
+          avatar: "avatar.png",
           name: "Brak danych",
           email: "Brak danych",
           phone: "Brak danych",
@@ -53,6 +54,11 @@ export default {
         };
       }
     }
+  },
+  data: function() {
+    return {
+      apiUrl: API_URL
+    };
   },
   computed: {
     patientAge: function() {

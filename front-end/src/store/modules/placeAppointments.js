@@ -1,5 +1,5 @@
 import { apolloClient } from '@/apollo'
-import { ME_HISTORIES_QUERY, HISTORY_MORE_QUERY } from './queries/_index'
+import { PLACE_APPOINTMENTS_QUERY } from './queries/_index'
 
 const state = {
   pageInfo: {
@@ -17,47 +17,35 @@ const mutations = {
     state.pageInfo = Object.assign(state.pageInfo, data.pageInfo)
     state.edges = state.edges.concat(data.edges)
   },
-  UPDATE_ONE (state, data) {
+  UPDATE_LOCAL (state, data) {
     const foundIndex = state.edges.findIndex(edge => edge.node.id === data.id)
-    let foundHistory = state.edges[foundIndex].node
-    foundHistory = Object.assign(foundHistory, data)
+    state.edges[foundIndex].node = data
   }
 }
 
 const actions = {
-  get ({ commit }, { first, after, note, orderBy, type }) {
+  get ({ commit }, { id, first, after, note, date, orderBy, type }) {
     return apolloClient
       .query({
-        query: ME_HISTORIES_QUERY,
+        query: PLACE_APPOINTMENTS_QUERY,
         variables: {
+          id: id,
           first: first,
           after: after,
           note: note,
+          date: date,
           orderBy: orderBy
         }
       })
-      .then(data => data.data.me.histories)
-      .then(histories => {
+      .then(data => data.data.place.appointments)
+      .then(appointments => {
         if (type === 'SET') {
-          commit('SET_DATA', histories)
+          commit('SET_DATA', appointments)
         }
 
         if (type === 'ADD') {
-          commit('ADD_DATA', histories)
+          commit('ADD_DATA', appointments)
         }
-      })
-  },
-  getMore ({ commit }, id) {
-    return apolloClient
-      .query({
-        query: HISTORY_MORE_QUERY,
-        variables: {
-          id: id
-        }
-      })
-      .then(data => data.data.history)
-      .then(history => {
-        commit('UPDATE_ONE', history)
       })
   }
 }

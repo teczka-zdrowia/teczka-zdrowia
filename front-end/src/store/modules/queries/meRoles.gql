@@ -1,0 +1,16 @@
+{
+  me {
+    id
+    roles {
+      id
+      permission_type
+      place {
+        id
+        name
+        address
+        city
+        is_active
+      }
+    }
+  }
+}

@@ -4,6 +4,9 @@
       v-for="(appointment, index) in appointments"
       :key="index"
       :data="appointment.node"
+      :showAddedBy="showAddedBy"
+      :showPlace="showPlace"
+      :canEdit="canEdit"
     />
     <router-link
       to="/Appointments"
@@ -39,8 +42,6 @@
 import AppointmentMobile from "./AppointmentMobile";
 import MainBtn from "../basic/MainBtn";
 
-import { mapGetters } from "vuex";
-
 export default {
   name: "AppointmentsMobile",
   data: function() {
@@ -60,16 +61,26 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    appointments: {
+      type: Array
+    },
+    showAddedBy: {
+      type: Boolean,
+      default: false
+    },
+    showPlace: {
+      type: Boolean,
+      default: false
+    },
+    canEdit: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
     MainBtn,
     AppointmentMobile
-  },
-  computed: {
-    ...mapGetters({
-      appointments: "userAppointments/list"
-    })
   }
 };
 </script>

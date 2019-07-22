@@ -6,52 +6,53 @@
     >
       <div
         class="nav__el"
-        v-on:click="placesShowed = !placesShowed; cardsShowed = false"
+        v-on:click="showPlaces = !showPlaces; showCards = false"
       >
         <div
           class="nav__title"
-          v-if="!selectedPlace"
+          v-if="!selectedRole"
         >Gabinet</div>
         <div
           class="nav__title"
           v-else
-        >{{ selectedPlace.name }}</div>
+        >{{ selectedRole.place.name }}</div>
         <span
           aria-hidden="true"
           class="fas"
-          v-bind:class="[ placesShowed ? 'fa-angle-up' : 'fa-angle-down' ]"
+          v-bind:class="[ showPlaces ? 'fa-angle-up' : 'fa-angle-down' ]"
         />
         <div
           class="nav__list nav__list--left"
-          v-bind:class="{ showed : placesShowed }"
+          v-bind:class="{ showed : showPlaces }"
         >
           <div class="places">
             <div
               class="place"
+              v-for="(role, index) in roles"
               :key="index"
-              v-for="(place, index) in userPlaces"
-              v-bind:class="{ 'disabled' : !place.isActive }"
-              v-on:click="selectPlace(place.id)"
+              v-bind:class="{ 'disabled' : !role.place.is_active }"
+              v-on:click="selectRole(role.id)"
             >
               <div class="place__content">
-                <div class="place__title">{{ place.name }}</div>
-                <div class="place__info">{{ place.address }}, {{ place.city }}</div>
+                <div class="place__title">{{ role.place.name }}</div>
+                <div class="place__info">{{ role.place.address }}, {{ role.place.city }}</div>
               </div>
               <span
                 aria-hidden="true"
                 class="fas fa-angle-right place__select place__select--white"
                 title="Wybierz gabinet"
-                v-if="place.isActive"
+                v-if="role.place.is_active"
               />
               <span
                 aria-hidden="true"
                 class="fas fa-unlock place__select place__select--white"
                 title="Odblokuj"
-                v-if="!place.isActive && place.isAdmin"
+                v-if="!role.place.is_active && role.permissionType === 'ADMIN'"
               />
             </div>
             <MainBtn
               class="places__btn"
+              v-if="!loading.init"
               v-on:click.native="createPlace"
             >
               <span
@@ -64,22 +65,22 @@
       </div>
       <div
         class="nav__el"
-        v-if="selectedPlace"
-        v-on:click="cardsShowed = !cardsShowed; placesShowed = false"
+        v-if="selectedRole"
+        v-on:click="showCards = !showCards; showPlaces = false"
       >
         <div
           class="nav__title"
-          v-if="selectedPlace"
+          v-if="selectedRole"
         >{{ cards[selectedCard] }}</div>
         <span
           aria-hidden="true"
           class="fas"
           v-if="selectedCard"
-          v-bind:class="[ cardsShowed ? 'fa-angle-up' : 'fa-angle-down' ]"
+          v-bind:class="[ showCards ? 'fa-angle-up' : 'fa-angle-down' ]"
         />
         <div
           class="nav__list nav__list--right"
-          v-bind:class="{ showed : cardsShowed }"
+          v-bind:class="{ showed : showCards }"
         >
           <div class="cards">
             <div
@@ -96,7 +97,7 @@
               class="card"
               v-on:click="selectedCard = 3"
               v-bind:class="{'selected': selectedCard == 3}"
-              v-if="selectedPlace && selectedPlace.isAdmin"
+              v-if="selectedRole && selectedRole.permissionType === 'ADMIN'"
             >Administracja</div>
           </div>
         </div>
@@ -104,7 +105,7 @@
     </div>
     <div
       class="row"
-      v-bind:class="{ 'block--blur' : placesShowed || cardsShowed }"
+      v-bind:class="{ 'block--blur' : showPlaces || showCards }"
     >
       <div
         class="places__list"
@@ -116,33 +117,43 @@
             <div
               class="place"
               :key="index"
-              v-for="(place, index) in userPlaces"
-              v-bind:class="{ 'disabled' : !place.isActive, 'selected' : place == selectedPlace }"
+              v-for="(role, index) in roles"
+              v-bind:class="{ 'disabled' : !role.place.is_active, 'selected' : role == selectedRole }"
             >
               <span
                 aria-hidden="true"
                 class="fas fa-briefcase place__icon"
               />
               <div class="place__content">
-                <div class="place__title">{{ place.name }}</div>
-                <div class="place__info">{{ place.address }}, {{ place.city }}</div>
+                <div class="place__title">{{ role.place.name }}</div>
+                <div class="place__info">{{ role.place.address }}, {{ role.place.city }}</div>
               </div>
               <span
                 aria-hidden="true"
                 class="fas fa-angle-right place__select place__select--white"
                 title="Wybierz gabinet"
-                v-if="place.isActive"
-                v-on:click="selectPlace(place.id)"
+                v-if="role.place.is_active"
+                v-on:click="selectRole(role.id)"
               />
               <span
                 aria-hidden="true"
                 class="fas fa-unlock place__select place__select--white"
                 title="Aktywuj"
-                v-on:click="activatePlace(place.id, place.name)"
-                v-if="!place.isActive && place.isAdmin"
+                v-on:click="activatePlace(role.place.id, role.place.name)"
+                v-if="!role.place.is_active && role.permissionType === 'ADMIN'"
               />
             </div>
           </div>
+          <GreyBlock
+            class="places__info"
+            v-if="!loading.init && roles.length === 0"
+          >Brak gabinetów</GreyBlock>
+          <GreyBlock
+            class="places__info places__info--loading"
+            v-if="loading.init"
+          >Ładowanie
+            <MainLoading color="#67676e" />
+          </GreyBlock>
           <MainBtn
             class="places__btn"
             v-on:click.native="createPlace"
@@ -181,7 +192,7 @@
               class="actions__top__el"
               v-on:click="selectedCard = 3"
               v-bind:class="{'selected': selectedCard == 3}"
-              v-if="selectedPlace.isAdmin"
+              v-if="selectedRole.permissionType === 'ADMIN'"
             >Administracja</div>
           </div>
           <Timetable v-if="selectedCard == 1" />
@@ -198,6 +209,7 @@ import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBloc
 import MainBtn from "../../components/ui/basic/MainBtn";
 import GreyBlock from "../../components/ui/blocks/GreyBlock";
 import MainSelect from "../../components/ui/basic/MainSelect";
+import MainLoading from "../../components/ui/basic/MainLoading";
 import Patients from "./Patients";
 import Timetable from "./Timetable";
 import Management from "./Management";
@@ -209,12 +221,15 @@ export default {
   data: function() {
     return {
       selectedCard: false,
-      placesShowed: false,
-      cardsShowed: false,
+      showPlaces: false,
+      showCards: false,
       cards: {
         1: "Terminarz",
         2: "Pacjenci",
         3: "Administracja"
+      },
+      loading: {
+        init: true
       }
     };
   },
@@ -224,15 +239,17 @@ export default {
     MainBtn,
     Patients,
     Timetable,
-    Management
+    Management,
+    MainLoading
   },
   methods: {
     ...mapActions({
-      setSelectedPlace: "userPlaces/setSelected",
+      setSelectedRole: "userRoles/setSelected",
+      getUserRoles: "userRoles/get",
       showModal: "modal/show"
     }),
-    selectPlace: function(id) {
-      this.setSelectedPlace(id);
+    selectRole: function(id) {
+      this.setSelectedRole(id);
       this.selectedCard = 1;
     },
     activatePlace: function(id, name) {
@@ -250,14 +267,24 @@ export default {
       this.showModal({
         componentName: "CreatePlace"
       });
+    },
+    getRoles: async function() {
+      this.loading.init = true;
+
+      await this.getUserRoles();
+
+      this.loading.init = false;
     }
   },
   computed: {
     ...mapGetters({
-      userPlaces: "userPlaces/list",
-      selectedPlace: "userPlaces/selected",
+      roles: "userRoles/list",
+      selectedRole: "userRoles/selected",
       isMobile: "window/isMobile"
     })
+  },
+  mounted() {
+    this.getRoles();
   }
 };
 </script>
@@ -273,6 +300,18 @@ export default {
   transition: all 0.2s ease-in-out;
   &:last-child {
     margin-bottom: 3em;
+  }
+}
+
+.places__info {
+  height: 24rem;
+  padding: 0 1rem;
+  &--loading {
+    svg {
+      height: 2rem;
+      width: 2rem;
+      margin-left: 1rem;
+    }
   }
 }
 
@@ -544,6 +583,10 @@ export default {
   .places__actions {
     width: calc(67% - 1em);
     margin-top: 0;
+  }
+  .places__info {
+    height: calc(100% - 2rem);
+    padding: 1rem;
   }
 }
 </style>

@@ -20,7 +20,8 @@
         <input
           type="text"
           name="pesel"
-          minlength="1"
+          minlength="11"
+          maxlength="11"
           v-model="data.pesel"
           placeholder="12345678912"
           required
@@ -29,6 +30,9 @@
       <MainBtn
         class="addpatient__form__btn"
         v-if="isPeselCorrect"
+        color="#fafafa"
+        :loading="loading.search"
+        :disabled="loading.search"
       >Wyszukaj pacjenta po PESEL</MainBtn>
     </form>
     <MainBtn
@@ -41,50 +45,43 @@
       v-if="createNew"
       v-on:submit.prevent="createPatient"
     >
-      <div class="input--double-container">
-        <MainInput class="double many">
-          Imię
+      <div>
+        <MainInput class="many">
+          Imię i nazwisko
           <input
-            type="text"
             name="name"
+            type="text"
             v-model="data.name"
-            placeholder="Jan"
+            placeholder="Jan Kowalski"
+            maxlength="100"
             required
           >
         </MainInput>
-        <MainInput class="double many">
-          Nazwisko
+        <MainInput class="many">
+          E-mail
           <input
-            type="text"
-            name="surname"
-            v-model="data.surname"
-            placeholder="Kowalski"
+            type="email"
+            name="email"
+            v-model="data.email"
+            placeholder="jan@kowalski.com"
+            minlength="4"
+            maxlength="100"
+            required
+          >
+        </MainInput>
+        <MainInput class="many">
+          Telefon
+          <input
+            type="tel"
+            name="phone"
+            v-model="data.phone"
+            placeholder="123654789"
+            minlength="9"
+            maxlength="15"
             required
           >
         </MainInput>
       </div>
-      <MainInput class="many">
-        E-mail
-        <input
-          type="email"
-          name="email"
-          v-model="data.email"
-          placeholder="jan@kowalski.com"
-          required
-        >
-      </MainInput>
-      <MainInput class="many">
-        Telefon
-        <input
-          type="tel"
-          name="phone"
-          v-model="data.phone"
-          placeholder="123654789"
-          minlength="9"
-          maxlength="15"
-          required
-        >
-      </MainInput>
       <MainBtn class="addpatient__form__btn">Utwórz konto</MainBtn>
     </form>
     <Patient
@@ -114,6 +111,9 @@ export default {
         email: "",
         phone: ""
       },
+      loading: {
+        search: false
+      },
       createNew: false
     };
   },
@@ -136,15 +136,23 @@ export default {
   },
   methods: {
     ...mapActions({
-      searchPatientByPESEL: "addPatient/searchByPESEL",
-      createNewPatient: "addPatient/createNew"
+      searchPatientByPesel: "addPatient/searchByPesel",
+      createNewPatient: "addPatient/createNew",
+      clearData: "addPatient/clear"
     }),
-    searchPatient: function() {
-      this.$toasted.show("Szukanie...");
-      this.searchPatientByPESEL(this.data.pesel).then(
-        result => this.$toasted.success(result),
-        error => this.$toasted.error(error)
-      );
+    searchPatient: async function() {
+      this.loading.search = true;
+
+      await this.searchPatientByPesel(this.data.pesel)
+        .then(() => {
+          this.$toasted.success("Znaleziono użytkownika");
+        })
+        .catch(error => {
+          console.error(error);
+          this.$toasted.error("Brak użytkownika w bazie");
+        });
+
+      this.loading.search = false;
     },
     createPatient: function() {
       this.$toasted.show("Dodawanie...");
@@ -156,6 +164,9 @@ export default {
         error => this.$toasted.error(error)
       );
     }
+  },
+  mounted() {
+    this.clearData();
   },
   components: {
     MainBtn,
@@ -187,9 +198,11 @@ export default {
   }
 
   &__form {
-    width: calc(100% - 2px);
+    width: 30rem;
     label {
-      background: #f5f5f5 !important;
+      padding: 1.5rem !important;
+      width: calc(100% - 3rem) !important;
+      background: #eeeef3 !important;
     }
     &__btn {
       margin-top: 1rem;

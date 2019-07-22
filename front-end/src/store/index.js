@@ -5,8 +5,10 @@ import modal from './modules/modal'
 import userInfo from './modules/userInfo'
 import userRecommendations from './modules/userRecommendations'
 import userHistories from './modules/userHistories'
-import userPlaces from './modules/userPlaces'
+import userRoles from './modules/userRoles'
 import userAppointments from './modules/userAppointments'
+import placeAppointments from './modules/placeAppointments'
+import placePatients from './modules/placePatients'
 import addPatient from './modules/addPatient'
 import initializeSteps from './modules/initializeSteps'
 import createPersistedState from 'vuex-persistedstate'
@@ -20,8 +22,10 @@ export const store = new Vuex.Store({
     userInfo,
     userRecommendations,
     userHistories,
-    userPlaces,
+    userRoles,
     userAppointments,
+    placeAppointments,
+    placePatients,
     addPatient,
     initializeSteps
   },

@@ -65,6 +65,7 @@ import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import { L } from "vue2-leaflet";
 import "leaflet/dist/leaflet.css";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
+import { mapActions } from "vuex";
 delete L.Icon.Default.prototype._getIconUrl;
 
 const provider = new OpenStreetMapProvider();
@@ -99,6 +100,9 @@ export default {
     this.$nextTick(this.initMap());
   },
   methods: {
+    ...mapActions({
+      createUserPlace: "userRoles/createPlace"
+    }),
     initMap: function() {
       this.map = this.$refs.map.mapObject;
     },
@@ -114,8 +118,19 @@ export default {
         });
     },
     createPlace: function() {
-      // TODO
-      return true;
+      this.$emit("loading", true);
+      this.createUserPlace(this.data)
+        .then(() => {
+          this.$emit("finished");
+          this.$toasted.success("Pomyślnie dodano gabinet");
+        })
+        .catch(error => {
+          this.$toasted.error("Wystąpił błąd");
+          console.error(error);
+        })
+        .finally(() => {
+          this.$emit("loading", false);
+        });
     }
   },
   watch: {

@@ -5,7 +5,7 @@
       v-bind:class="{ 'base__top--no-specialization': !userData.is_payment_valid }"
     >
       <div class="user__img">
-        <img :src="userData.avatar">
+        <img :src="`${apiUrl}/storage/avatars/${userData.avatar}`">
         <label
           class="img__edit"
           v-bind:style="[
@@ -246,6 +246,7 @@
 <script>
 import MainBtn from "../../components/ui/basic/MainBtn";
 import MainLoading from "../../components/ui/basic/MainLoading";
+import { API_URL } from "@/apollo/constants";
 
 import { mapGetters, mapActions } from "vuex";
 
@@ -260,6 +261,7 @@ export default {
   },
   data: function() {
     return {
+      apiUrl: API_URL,
       isEdit: false,
       isLoading: false,
       newAvatarBase64: null,

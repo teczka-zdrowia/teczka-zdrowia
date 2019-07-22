@@ -1,0 +1,9 @@
+mutation($data: CreatePlaceInput!) {
+  createPlace(data: $data) {
+    id
+    name
+    address
+    city
+    is_active
+  }
+}

@@ -4,20 +4,22 @@
     <div class="modal__actions">
       <button
         class="modal__btn modal__btn--grey"
-        v-on:click="hideModal(); clearData()"
+        v-on:click="hideModal"
       >Anuluj</button>
-      <button
+      <MainBtn
         class="modal__btn modal__btn--violet"
+        :loading="isLoading"
+        :disabled="isLoading"
         v-if="processCompleted"
         v-on:click="addPatient"
-      >Dodaj pacjenta</button>
+      >Dodaj pacjenta</MainBtn>
     </div>
   </div>
 </template>
 
 <script>
 import AddPatientComponent from "../../ui/AddPatientComponent";
-
+import MainBtn from "../../ui/basic/MainBtn";
 import { mapActions, mapGetters } from "vuex";
 
 import "../modal.scss";
@@ -25,7 +27,13 @@ import "../modal.scss";
 export default {
   name: "AddPatient",
   components: {
-    AddPatientComponent
+    AddPatientComponent,
+    MainBtn
+  },
+  data: function() {
+    return {
+      isLoading: false
+    };
   },
   computed: {
     ...mapGetters({
@@ -36,12 +44,10 @@ export default {
   methods: {
     ...mapActions({
       hideModal: "modal/hide",
-      clearData: "addPatient/clear",
-      addPatient: "addPatient/add"
+      addPlacePatient: "addPatient/add"
     }),
-    aPatient: function() {
-      // TODO
-      this.addPatient();
+    addPatient: function() {
+      this.addPlacePatient();
       this.hideModal();
     }
   }

@@ -1,5 +1,6 @@
 export { default as LOGIN_MUTATION } from './login.gql'
 export { default as CREATE_USER_MUTATION } from './createUser.gql'
+export { default as CREATE_PLACE_MUTATION } from './createPlace.gql'
 export { default as UPDATE_ME_MUTATION } from './updateMe.gql'
 export { default as UPDATE_PASSWORD_MUTATION } from './updatePassword.gql'
 export {

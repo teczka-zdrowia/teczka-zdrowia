@@ -1,0 +1,10 @@
+query($pesel: String!) {
+  user(pesel: $pesel) {
+    id
+    avatar
+    name
+    email
+    phone
+    birthdate
+  }
+}

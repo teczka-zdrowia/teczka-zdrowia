@@ -1,26 +1,26 @@
 <template>
   <div
     class="actions__patient"
-    v-bind:class="{ inactive: !isActive }"
+    v-bind:class="{ inactive: !data.is_active }"
     v-on:click="moreInfo"
   >
     <MainUserInfo
-      :name="name"
-      :img="img"
-      :phone="phone"
+      :id="data.user.id"
+      :name="data.user.name"
+      :avatar="data.user.avatar"
+      :phone="data.user.phone"
       :isClickable="false"
-      :userId="1"
     />
     <i
-      v-if="!isActive"
+      v-if="!data.is_active"
       class="fas fa-lock"
     />
     <i
-      v-if="userType == 1"
+      v-if="data.permission_type === 'ADMIN'"
       class="fas fa-crown"
     />
     <i
-      v-if="userType == 2"
+      v-if="data.permission_type === 'EMPLOYEE'"
       class="fas fa-user"
     />
   </div>
@@ -33,21 +33,28 @@ import { mapActions } from "vuex";
 export default {
   name: "MainUser",
   props: {
-    name: {
-      type: String
-    },
-    img: {
-      type: String
-    },
-    phone: {
-      type: String
-    },
-    userId: {
-      type: Number
-    },
-    isActive: {
-      type: Boolean,
-      default: true
+    data: {
+      permission_type: {
+        type: String,
+        default: ""
+      },
+      is_active: {
+        type: Boolean
+      },
+      user: {
+        id: {
+          type: Number
+        },
+        name: {
+          type: String
+        },
+        img: {
+          type: String
+        },
+        phone: {
+          type: String
+        }
+      }
     },
     userType: {
       type: Number,

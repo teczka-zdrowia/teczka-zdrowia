@@ -1,21 +1,32 @@
 <template>
-  <div class="modal--cp">
-    <CreatePlaceComponent ref="createPlaceComponent" />
+  <form
+    class="modal--cp"
+    @submit.prevent="createPlace"
+  >
+    <CreatePlaceComponent
+      v-on:loading="isLoading = $event"
+      v-on:finished="hideModal"
+      ref="createPlaceComponent"
+    />
     <div class="modal__actions">
       <button
         class="modal__btn modal__btn--grey"
         @click="hideModal"
       >Anuluj</button>
-      <button
+      <MainBtn
         class="modal__btn modal__btn--violet"
-        @click="cPlace"
-      >Utwórz gabinet</button>
+        :loading="isLoading"
+        :disabled="isLoading"
+        color="#fafafa"
+        @click="createPlace"
+      >Utwórz gabinet</MainBtn>
     </div>
-  </div>
+  </form>
 </template>
 
 <script>
 import CreatePlaceComponent from "../../ui/CreatePlaceComponent";
+import MainBtn from "../../ui/basic/MainBtn";
 
 import { mapActions, mapGetters } from "vuex";
 
@@ -23,8 +34,14 @@ import "../modal.scss";
 
 export default {
   name: "CreatePlace",
+  data: function() {
+    return {
+      isLoading: false
+    };
+  },
   components: {
-    CreatePlaceComponent
+    CreatePlaceComponent,
+    MainBtn
   },
   computed: {
     ...mapGetters({
@@ -35,12 +52,8 @@ export default {
     ...mapActions({
       hideModal: "modal/hide"
     }),
-    cPlace: function() {
-      const create = this.$refs.createPlaceComponent.createPlace();
-      if (create) {
-        // TODO
-        this.hideModal();
-      }
+    createPlace: function() {
+      this.$refs.createPlaceComponent.createPlace();
     }
   }
 };

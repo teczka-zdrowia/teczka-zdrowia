@@ -1,46 +1,36 @@
 <template>
   <div>
-    <div
-      class="more__container"
-      v-if="more.isLoading"
-    >
-      <div class="more__content">
-        Ładowanie (w dev wersji symulowane)
-      </div>
-    </div>
-    <div
-      class="more__container"
-      v-if="!more.isLoading"
-    >
+    <div class="more__container">
       <div class="more__content">
         <div class="more__column more__column--left">
           <div class="more__row">
             <div class="more__row__title">Notatka</div>
-            <div class="more__row__text">{{ more.note }}</div>
+            <div class="more__row__text">{{ data.note }}</div>
           </div>
           <div class="more__row">
             <div class="more__row__title">Zabiegi</div>
-            <div class="more__row__text">{{ more.treatments }}</div>
+            <div class="more__row__text">{{ data.treatments }}</div>
           </div>
         </div>
         <div class="more__column more__column--right">
           <div class="more__row">
             <div class="more__row__title">Zalecenia</div>
             <MainRecommendation
-              v-for="recommendation in more.recommendations"
-              :key="recommendation.id"
-              :recommendationId="recommendation.id"
-              :title="recommendation.title"
-              :info="recommendation.info"
-              :days="recommendation.days"
+              v-for="(recommendation, index) in data.recommendations"
+              :key="index"
+              :data="recommendation"
               :showCancelBtn="false"
               :isTimeleft="false"
             />
+            <GreyBlock
+              class="more__row__text--empty"
+              v-if="data.recommendations.length === 0"
+            >Brak zaleceń</GreyBlock>
           </div>
           <div class="more__row">
             <div class="more__row__title">Załączniki</div>
             <div class="more__row__attachments">
-              <div
+              <!--<div
                 class="more__row__attachment"
                 v-for="attachment in more.attachments"
                 :key="attachment.id"
@@ -50,18 +40,22 @@
                   class="fas fa-paperclip"
                 />
                 {{ attachment.name }}
-              </div>
+              </div>-->
+              <GreyBlock
+                class="more__row__text--empty"
+                v-if="data.attachments.length === 0"
+              >Brak załączników</GreyBlock>
             </div>
           </div>
         </div>
       </div>
       <div class="more__content more__content--actions">
-        <img
+        <!--<img
           class="more__signature"
           :src="more.signature"
           title="Podpis pacjenta"
           alt="Podpis pacjenta"
-        >
+        >-->
         <div class="more__print">
           <span
             aria-hidden="true"
@@ -79,13 +73,14 @@ import MainBtn from "../basic/MainBtn";
 import MainUserInfo from "../basic/MainUserInfo";
 import MainRecommendation from "../basic/MainRecommendation";
 import MainPlaceInfo from "../basic/MainPlaceInfo";
+import GreyBlock from "../blocks/GreyBlock";
 
 import { mapGetters } from "vuex";
 
 export default {
   name: "HistoryElement",
   props: {
-    more: {
+    data: {
       type: Object
     }
   },
@@ -93,7 +88,8 @@ export default {
     MainRecommendation,
     MainPlaceInfo,
     MainUserInfo,
-    MainBtn
+    MainBtn,
+    GreyBlock
   },
   computed: {
     ...mapGetters({
@@ -224,6 +220,12 @@ export default {
 .more__row__text {
   white-space: pre-wrap;
   line-height: 1.2;
+}
+.more__row__text--empty {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  padding: 1rem;
+  width: auto;
 }
 .more__row__attachments {
   display: block;

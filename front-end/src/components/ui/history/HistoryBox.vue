@@ -19,14 +19,15 @@
         >
           <label>
             Sortuj przez:
-            <select v-on:change="query.sortData.field">
+            <select v-model="query.sortData.field">
               <option
                 value="date"
                 selected
               >Data</option>
-              <option>Specjalista</option>
-              <option>Gabinet</option>
-              <option value="note">Opis</option>
+              <!--<option>Specjalista</option>
+              <option>Gabinet</option>-->
+              <option value="note">Notatka</option>
+              <option value="treatments">Zabiegi</option>
             </select>
           </label>
           <label>
@@ -61,13 +62,20 @@
         </div>
       </MainSearch>
     </div>
-    <div class="histories__list">
+    <div
+      class="histories__list"
+      v-if="!loading.init && !loading.newQuery"
+    >
       <HistoryElement
         v-for="(history, index) in histories"
         :key="index"
         :data="history.node"
       />
-      <MainShowMore :isLoading="loading.next" />
+      <MainShowMore
+        v-on:click.native="getNextHistories"
+        v-if="pageInfo.hasNextPage"
+        :loading="loading.next"
+      />
     </div>
     <GreyBlock
       class="histories__info"
@@ -88,6 +96,7 @@ import MainSearch from "../basic/MainSearch";
 import HistoryElement from "./HistoryElement";
 import MainLoading from "../basic/MainLoading";
 import GreyBlock from "../blocks/GreyBlock";
+import MainShowMore from "../basic/MainShowMore";
 
 import { mapGetters, mapActions } from "vuex";
 
@@ -115,11 +124,13 @@ export default {
     MainSearch,
     HistoryElement,
     GreyBlock,
-    MainLoading
+    MainLoading,
+    MainShowMore
   },
   computed: {
     ...mapGetters({
-      histories: "userHistories/list"
+      histories: "userHistories/list",
+      pageInfo: "userHistories/pageInfo"
     }),
     orderBy: function() {
       return [
@@ -149,7 +160,8 @@ export default {
         first: this.query.first,
         after: "",
         note: "",
-        orderBy: this.orderBy
+        orderBy: this.orderBy,
+        type: "SET"
       };
 
       this.getHistories(payload, "init");
@@ -159,7 +171,8 @@ export default {
         first: this.query.first,
         after: this.pageInfo.endCursor,
         note: `%${this.query.search}%`,
-        orderBy: this.orderBy
+        orderBy: this.orderBy,
+        type: "ADD"
       };
 
       this.getHistories(payload, "next");
@@ -173,7 +186,8 @@ export default {
           after: "",
           note: `%${this.query.search}%`,
           date: this.date,
-          orderBy: this.orderBy
+          orderBy: this.orderBy,
+          type: "SET"
         };
 
         this.getHistories(payload, "newQuery");

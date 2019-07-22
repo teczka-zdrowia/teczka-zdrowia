@@ -61,6 +61,7 @@ export default {
   &__loading {
     @extend %text--center;
     svg {
+      margin-right: unset;
       margin-left: 0.75em;
       height: 1.25rem;
       width: 1.25rem;

@@ -1,0 +1,15 @@
+query($id: ID!) {
+  place(id: $id) {
+    id
+    patients {
+      id
+      is_active
+      user {
+        id
+        avatar
+        name
+        phone
+      }
+    }
+  }
+}

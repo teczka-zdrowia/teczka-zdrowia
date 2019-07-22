@@ -1,0 +1,23 @@
+query($id: ID!) {
+  history(id: $id) {
+    id
+    note
+    treatments
+    recommendations {
+      id
+      title
+      description
+      days
+      start_date
+    }
+    attachments {
+      id
+      title
+      file_type
+      file_name
+      author {
+        id
+      }
+    }
+  }
+}

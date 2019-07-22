@@ -33,8 +33,8 @@
                 value="date"
                 selected
               >Data</option>
-              <option>Specjalista</option>
-              <option>Gabinet</option>
+              <!--<option>Specjalista</option>
+              <option>Gabinet</option>-->
               <option value="note">Opis</option>
             </select>
           </label>
@@ -67,6 +67,7 @@
       :showAppointmentsLink="showAppointmentsLink"
       :showMoreBtn="pageInfo.hasNextPage && !showAppointmentsLink"
       :loading="loading.next"
+      :appointments="appointments"
       v-on:loadNext="getNextAppointments"
       v-if="!isMobile && canShowAppointments"
     />
@@ -74,6 +75,7 @@
       :showAppointmentsLink="showAppointmentsLink"
       :showMoreBtn="pageInfo.hasNextPage && !showAppointmentsLink"
       :loading="loading.next"
+      :appointments="appointments"
       v-on:loadNext="getNextAppointments"
       v-if="isMobile && canShowAppointments"
     />
@@ -135,7 +137,8 @@ export default {
     ...mapGetters({
       isMobile: "window/isMobile",
       appointments: "userAppointments/list",
-      pageInfo: "userAppointments/pageInfo"
+      pageInfo: "userAppointments/pageInfo",
+      appointments: "userAppointments/list"
     }),
     canShowAppointments: function() {
       return (

@@ -38,8 +38,6 @@
 import MainBtn from "../basic/MainBtn";
 import AppointmentDesktop from "./AppointmentDesktop";
 
-import { mapGetters } from "vuex";
-
 export default {
   name: "AppointmentsDesktop",
   props: {
@@ -54,16 +52,14 @@ export default {
     loading: {
       type: Boolean,
       default: false
+    },
+    appointments: {
+      type: Array
     }
   },
   components: {
     MainBtn,
     AppointmentDesktop
-  },
-  computed: {
-    ...mapGetters({
-      appointments: "userAppointments/list"
-    })
   }
 };
 </script>

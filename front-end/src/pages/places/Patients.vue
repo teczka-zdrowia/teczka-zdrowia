@@ -14,6 +14,7 @@
       <MainSearch class="patients__search">
         <input
           class="input"
+          v-model="search"
           slot="input"
           type="text"
           placeholder="  Szukaj"
@@ -24,82 +25,39 @@
         >
           <label>
             Sortuj:
-            <select>
-              <option selected>A - Z</option>
-              <option>Z - A</option>
+            <select v-model="sortBy">
+              <option
+                value="ASC"
+                selected
+              >A - Z</option>
+              <option value="DESC">Z - A</option>
             </select>
           </label>
         </div>
       </MainSearch>
     </div>
-    <div class="actions__patients">
+    <div
+      class="actions__patients"
+      v-if="!loading.init"
+    >
       <MainUser
-        :name="'Jan Iksiński'"
-        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
-        :phone="'111222333'"
+        v-for="(patient, index) in patients"
+        :key="index"
+        :data="patient"
         :isClickable="false"
-        :userId="1"
         :editAffiliation="true"
-      />
-      <MainUser
-        :name="'Jan Iksiński'"
-        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
-        :phone="'111222333'"
-        :isClickable="false"
-        :userId="1"
-        :editAffiliation="true"
-      />
-      <MainUser
-        :name="'Jan Iksiński'"
-        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
-        :phone="'111222333'"
-        :isClickable="false"
-        :userId="1"
-        :editAffiliation="true"
-      />
-      <MainUser
-        :name="'Jan Iksiński'"
-        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
-        :phone="'111222333'"
-        :isClickable="false"
-        :userId="1"
-        :editAffiliation="true"
-      />
-      <MainUser
-        :name="'Jan Iksiński'"
-        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
-        :phone="'111222333'"
-        :isClickable="false"
-        :userId="1"
-        :editAffiliation="true"
-      />
-      <MainUser
-        :name="'Jan Iksiński'"
-        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
-        :phone="'111222333'"
-        :isClickable="false"
-        :userId="1"
-        :editAffiliation="true"
-      />
-      <MainUser
-        :name="'Jan Iksiński'"
-        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
-        :phone="'111222333'"
-        :isClickable="false"
-        :userId="1"
-        :editAffiliation="true"
-        :isActive="false"
-      />
-      <MainUser
-        :name="'Jan Iksiński'"
-        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
-        :phone="'111222333'"
-        :isClickable="false"
-        :userId="1"
-        :editAffiliation="true"
-        :isActive="false"
       />
     </div>
+    <GreyBlock
+      class="patients__info"
+      v-if="!loading.init && patients.length === 0"
+    >Brak pacjentów</GreyBlock>
+    <GreyBlock
+      class="patients__info patients__info--loading"
+      v-if="loading.init"
+    >Ładowanie
+      <MainLoading color="#67676e" />
+    </GreyBlock>
   </div>
 </template>
 
@@ -107,38 +65,78 @@
 import MainBtn from "../../components/ui/basic/MainBtn";
 import MainSearch from "../../components/ui/basic/MainSearch";
 import MainUser from "../../components/ui/basic/MainUser";
+import MainLoading from "../../components/ui/basic/MainLoading";
+import GreyBlock from "../../components/ui/blocks/GreyBlock";
 
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Patients",
+  data: function() {
+    return {
+      search: "",
+      sortBy: "ASC",
+      loading: {
+        init: true
+      }
+    };
+  },
   computed: {
     ...mapGetters({
-      selectedPlace: "userPlaces/selected"
+      selectedRole: "userRoles/selected",
+      patients: "placePatients/list"
     })
   },
   methods: {
     ...mapActions({
       showModal: "modal/show",
-      setAddPatientPlace: "addPatient/setPlace"
+      initAddPatientPlace: "addPatient/initPlace",
+      getPlacePatients: "placePatients/get"
     }),
     addNewPatient: function() {
-      this.setAddPatientPlace(this.selectedPlace);
+      this.initAddPatientPlace(this.selectedRole.place);
       this.showModal({
         componentName: "AddPatient"
       });
+    },
+    getPatients: async function() {
+      this.loading.init = true;
+
+      await this.getPlacePatients(this.selectedRole.place.id).catch(error => {
+        this.$toasted.error("Wystąpił błąd");
+        console.error(error);
+      });
+
+      this.loading.init = false;
     }
   },
   components: {
     MainUser,
     MainSearch,
-    MainBtn
+    MainBtn,
+    MainLoading,
+    GreyBlock
+  },
+  mounted() {
+    this.getPatients();
   }
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../../main";
+
+.patients__info {
+  height: unset;
+  padding: 1rem;
+  &--loading {
+    svg {
+      height: 2rem;
+      width: 2rem;
+      margin-left: 1rem;
+    }
+  }
+}
 
 .patients__actions {
   display: flex;
@@ -277,6 +275,10 @@ export default {
   .select__title,
   .select__content {
     width: unset;
+  }
+  .patients__info {
+    height: 24rem;
+    padding: 0 1rem;
   }
 }
 </style>

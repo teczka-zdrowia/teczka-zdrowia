@@ -2,7 +2,7 @@
   <div class="more">
     <div
       class="more__content"
-      v-if="!isLoading"
+      v-if="!loading"
     >
       Pokaż więcej
       <span
@@ -12,10 +12,10 @@
     </div>
     <div
       class="more__content"
-      v-if="isLoading"
+      v-if="loading"
     >
       Ładowanie
-      <MainLoading />
+      <MainLoading color="#1a1b37" />
     </div>
   </div>
 </template>
@@ -29,7 +29,7 @@ export default {
     MainLoading
   },
   props: {
-    isLoading: {
+    loading: {
       type: Boolean,
       default: false
     }

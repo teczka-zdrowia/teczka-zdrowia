@@ -1,9 +1,16 @@
-const state = {
-  patient: false,
-  place: null,
-  searchFailed: false,
-  completed: false
+import { apolloClient } from '@/apollo'
+import { USER_BY_PESEL } from './queries/_index'
+
+const getDefaultState = () => {
+  return {
+    patient: false,
+    place: null,
+    searchFailed: false,
+    completed: false
+  }
 }
+
+const state = getDefaultState()
 
 const mutations = {
   SET_PATIENT (state, patient) {
@@ -19,41 +26,35 @@ const mutations = {
     state.completed = value
   },
   CLEAR_ADDPATIENT (state, value) {
-    state.patient = false
-    state.place = null
-    state.searchFailed = false
-    state.completed = false
+    getDefaultState()
   }
 }
 
 const actions = {
-  setPlace ({ commit }, place) {
+  initPlace ({ commit }, place) {
     commit('SET_PLACE', place)
   },
-  searchByPESEL ({ commit }, pesel) {
-    // TODO API : SEARCH FOR PATIENT AND GET THE DATA
-    const patientData = {
-      img:
-        'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/',
-      name: 'Adrian Orłów',
-      email: 'adrian@orlow.me',
-      phone: '792138222',
-      birthdate: '2002-12-23 00:11:32.000000'
-    }
-    // MOCKUP
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (pesel == 96011999231) {
-          commit('SET_PATIENT', patientData)
+  searchByPesel ({ commit }, pesel) {
+    console.log(pesel)
+    return apolloClient
+      .query({
+        query: USER_BY_PESEL,
+        variables: {
+          pesel: pesel
+        }
+      })
+      .then(data => data.data.user)
+      .then(user => {
+        if (user) {
+          commit('SET_PATIENT', user)
           commit('SET_COMPLETED_VALUE', true)
           commit('SET_SEARCH_FAILED_VALUE', false)
-          resolve('Znaleziono użytkownika')
+          return 'Znaleziono użytkownika'
         } else {
           commit('SET_SEARCH_FAILED_VALUE', true)
-          reject(new Error('Brak użytkownika w bazie'))
+          throw new Error('Brak użytkownika w bazie')
         }
-      }, 400)
-    })
+      })
   },
   createNew ({ commit }, patientData) {
     // MOCKUP

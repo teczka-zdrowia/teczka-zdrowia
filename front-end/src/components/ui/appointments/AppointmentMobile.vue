@@ -31,7 +31,7 @@
         <p>Dodano przez:</p>
       </div>
       <div class="doctor__name">
-        <p>Ola Długonazwiskowa</p>
+        <p>{{ data.author.name }}</p>
       </div>
     </div>
     <div class="appointment__when">

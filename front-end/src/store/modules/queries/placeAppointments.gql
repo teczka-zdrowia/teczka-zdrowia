@@ -1,0 +1,40 @@
+query(
+  $id: ID!
+  $first: Int!
+  $after: String
+  $note: String
+  $date: DateRange!
+  $orderBy: [OrderByClause!]
+) {
+  place(id: $id) {
+    id
+    appointments(
+      first: $first
+      after: $after
+      note: $note
+      date: $date
+      orderBy: $orderBy
+    ) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          id
+          date
+          author {
+            id
+            avatar
+            name
+            phone
+          }
+          place {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+}

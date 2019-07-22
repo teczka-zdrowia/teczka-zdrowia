@@ -31,20 +31,26 @@
       </div>
       <div
         class="list__more"
-        v-on:click="isOpened = !isOpened"
+        v-on:click="toggleShowMore"
       >
         <div class="list__btn">
           <i
             class="fas"
-            v-bind:class="[isOpened ? 'fa-angle-up' : 'fa-angle-down']"
+            v-bind:class="[showMore ? 'fa-angle-up' : 'fa-angle-down']"
           />
         </div>
       </div>
     </div>
     <More
-      v-if="isOpened"
-      :more="more"
+      v-if="showMore && !loading.more"
+      :data="data"
     />
+    <GreyBlock
+      class="history__info history__info--loading"
+      v-if="loading.more"
+    >Ładowanie
+      <MainLoading color="#67676e" />
+    </GreyBlock>
   </div>
 </template>
 
@@ -54,16 +60,18 @@ import MainUserInfo from "../basic/MainUserInfo";
 import MainRecommendation from "../basic/MainRecommendation";
 import MainPlaceInfo from "../basic/MainPlaceInfo";
 import HistoryMoreElement from "./HistoryMoreElement";
+import MainLoading from "../basic/MainLoading";
+import GreyBlock from "../blocks/GreyBlock";
 
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "HistoryElement",
   data: function() {
     return {
-      isOpened: false,
-      more: {
-        isLoading: true
+      showMore: false,
+      loading: {
+        more: false
       }
     };
   },
@@ -76,7 +84,9 @@ export default {
     More: HistoryMoreElement,
     MainPlaceInfo,
     MainUserInfo,
-    MainBtn
+    MainBtn,
+    MainLoading,
+    GreyBlock
   },
   computed: {
     ...mapGetters({
@@ -84,37 +94,27 @@ export default {
       userRecommendations: "userRecommendations/active"
     })
   },
-  watch: {
-    isOpened: function(val) {
-      if (val == true) {
-        /* BACKEND TODO */
-        setTimeout(() => {
-          this.more = {
-            isLoading: false,
-            note:
-              "Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero.",
-            treatments:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.",
-            recommendations: this.userRecommendations,
-            attachments: [
-              {
-                id: 1,
-                name: "Załącznik 1"
-              },
-              {
-                id: 2,
-                name: "Załącznik 2"
-              }
-            ],
-            signature:
-              "https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/Signature_of_Vishwanathan_Anand.svg/1280px-Signature_of_Vishwanathan_Anand.svg.png"
-          };
-        }, 300);
-      } else {
-        this.more = {
-          isLoading: true
-        };
+  methods: {
+    ...mapActions({
+      getMoreUserHistory: "userHistories/getMore"
+    }),
+    getMore: async function() {
+      this.loading.more = true;
+      const historyId = this.data.id;
+
+      await this.getMoreUserHistory(historyId).catch(error => {
+        this.$toasted.error("Wystąpił błąd");
+        console.error(error);
+      });
+
+      this.loading.more = false;
+    },
+    toggleShowMore: async function() {
+      if (!this.showMore) {
+        await this.getMore();
       }
+
+      this.showMore = !this.showMore;
     }
   }
 };
@@ -122,6 +122,19 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../../main";
+
+.history__info {
+  height: unset;
+  padding: 1rem;
+  margin: 1rem 0;
+  &--loading {
+    svg {
+      height: 2rem;
+      width: 2rem;
+      margin-left: 1rem;
+    }
+  }
+}
 
 .history__list > div:last-child {
   margin-bottom: 2em;
