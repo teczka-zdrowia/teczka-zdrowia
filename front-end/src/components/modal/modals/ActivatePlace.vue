@@ -5,43 +5,73 @@
     </h1>
 
     <div class="modal__info">
-      Czy na pewno chcesz aktywować gabinet <b>{{ data.place.name }}</b>?
+      Czy na pewno chcesz aktywować gabinet <b>{{ place.name }}</b>?
     </div>
 
     <div class="modal__actions">
       <button
         class="modal__btn modal__btn--grey"
+        type="button"
         @click="hideModal"
       >Anuluj</button>
-      <button
+      <MainBtn
         class="modal__btn modal__btn--violet"
-        @click="deactPlace"
-      >Aktywuj</button>
+        :loading="isLoading"
+        :disabled="isLoading"
+        color="#fafafa"
+        @click.native="activatePlace"
+      >Aktywuj</MainBtn>
     </div>
   </div>
 </template>
 
 <script>
+import MainBtn from "../../ui/basic/MainBtn";
+
 import { mapActions, mapGetters } from "vuex";
 
 import "../modal.scss";
 
 export default {
   name: "ActivatePlace",
+  data: function() {
+    return {
+      isLoading: false
+    };
+  },
   computed: {
     ...mapGetters({
-      data: "modal/data"
+      place: "modal/data"
     })
   },
   methods: {
     ...mapActions({
-      hideModal: "modal/hide"
+      hideModal: "modal/hide",
+      updatePlace: "userRoles/updatePlace"
     }),
-    deactPlace() {
-      //TODO
+    activatePlace: function() {
+      this.isLoading = true;
 
-      this.hideModal();
+      const payload = {
+        id: this.place.id,
+        data: {
+          is_active: true
+        }
+      };
+
+      this.updatePlace(payload)
+        .then(() => this.hideModal())
+        .catch(error => {
+          this.$toasted.error("Wystąpił błąd");
+          console.error(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     }
+  },
+  components: {
+    MainBtn
   }
 };
 </script>

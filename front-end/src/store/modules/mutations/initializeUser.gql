@@ -1,0 +1,9 @@
+mutation($data: InitializeUserInput!) {
+  initializeUser(data: $data) {
+    id
+    name
+    email
+    phone
+    birthdate
+  }
+}

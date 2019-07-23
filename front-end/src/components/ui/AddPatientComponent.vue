@@ -12,7 +12,7 @@
     </div>
     <form
       class="addpatient__form"
-      v-if="!createNew"
+      v-if="!initalizeNew"
       v-on:submit.prevent="searchPatient"
     >
       <MainInput v-bind:class="{ novalid: !isPeselCorrect }">
@@ -37,13 +37,13 @@
     </form>
     <MainBtn
       class="addpatient__form__btn addpatient__form__btn--red"
-      v-if="isPeselCorrect && searchFailed && !createNew"
-      v-on:click.native="createNew = !createNew"
+      v-if="isPeselCorrect && searchFailed && !initalizeNew"
+      v-on:click.native="initalizeNew = !initalizeNew"
     >Utwórz konto użytkownika</MainBtn>
     <form
       class="addpatient__form"
-      v-if="createNew"
-      v-on:submit.prevent="createPatient"
+      v-if="initalizeNew"
+      v-on:submit.prevent="initalizePatient"
     >
       <div>
         <MainInput class="many">
@@ -82,7 +82,12 @@
           >
         </MainInput>
       </div>
-      <MainBtn class="addpatient__form__btn">Utwórz konto</MainBtn>
+      <MainBtn
+        class="addpatient__form__btn"
+        color="#fafafa"
+        :loading="loading.initalize"
+        :disabled="loading.initalize"
+      >Utwórz konto</MainBtn>
     </form>
     <Patient
       class="addpatient__patient"
@@ -107,14 +112,14 @@ export default {
       data: {
         pesel: "",
         name: "",
-        surname: "",
         email: "",
         phone: ""
       },
       loading: {
-        search: false
+        search: false,
+        initalize: false
       },
-      createNew: false
+      initalizeNew: false
     };
   },
   computed: {
@@ -137,7 +142,7 @@ export default {
   methods: {
     ...mapActions({
       searchPatientByPesel: "addPatient/searchByPesel",
-      createNewPatient: "addPatient/createNew",
+      initalizePatientAccount: "addPatient/initalizePatient",
       clearData: "addPatient/clear"
     }),
     searchPatient: async function() {
@@ -154,15 +159,25 @@ export default {
 
       this.loading.search = false;
     },
-    createPatient: function() {
-      this.$toasted.show("Dodawanie...");
-      this.createNewPatient(this.data).then(
-        result => {
-          this.$toasted.success(result);
-          this.createNew = false;
-        },
-        error => this.$toasted.error(error)
-      );
+    initalizePatient: async function() {
+      this.loading.initalize = true;
+
+      await this.initalizePatientAccount(this.data)
+        .then(() => {
+          this.$toasted.success("Użytkownik utworzony pomyślnie");
+          this.$toasted.success(
+            "Dane logowania zostały wysłane na podany email",
+            {
+              duration: 1000
+            }
+          );
+        })
+        .catch(error => {
+          this.$toasted.error("Wystąpił błąd");
+          console.error(error);
+        });
+
+      this.loading.initalize = false;
     }
   },
   mounted() {

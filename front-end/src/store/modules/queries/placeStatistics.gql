@@ -1,0 +1,9 @@
+query($id: ID!, $date: DateRange!) {
+  placeStatistics(id: $id, date: $date) {
+    patients_count
+    appointments_count
+    most_active_worker {
+      name
+    }
+  }
+}

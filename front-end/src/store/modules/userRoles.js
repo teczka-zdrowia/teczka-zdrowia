@@ -1,6 +1,9 @@
 import { apolloClient } from '@/apollo'
 import { ME_ROLES_QUERY } from './queries/_index'
-import { CREATE_PLACE_MUTATION } from './mutations/_index'
+import {
+  CREATE_PLACE_MUTATION,
+  UPDATE_PLACE_MUTATION
+} from './mutations/_index'
 
 const state = {
   selected: null,
@@ -16,6 +19,10 @@ const mutations = {
   },
   ADD_TO_ROLES (state, data) {
     state.roles.push(data)
+  },
+  SET_PLACE_DATA (state, data) {
+    const foundIndex = state.roles.findIndex(role => role.place.id === data.id)
+    state.roles[foundIndex].place = data
   }
 }
 
@@ -30,7 +37,10 @@ const actions = {
       })
       .then(data => data.data.me.roles)
       .then(roles => {
-        commit('SET_DATA', roles)
+        const filteredRoles = roles.filter(
+          role => role.permission_type !== 'PATIENT'
+        )
+        commit('SET_DATA', filteredRoles)
       })
   },
   createPlace ({ commit }, data) {
@@ -48,6 +58,24 @@ const actions = {
           place: place
         }
         commit('ADD_TO_ROLES', payload)
+      })
+  },
+  updatePlace ({ commit }, { id, data }) {
+    return apolloClient
+      .mutate({
+        mutation: UPDATE_PLACE_MUTATION,
+        variables: {
+          id: id,
+          data: data
+        }
+      })
+      .then(data => data.data.updatePlace)
+      .then(place => {
+        commit('SET_PLACE_DATA', place)
+
+        if (!place.is_active) {
+          commit('SET_SELECTED', null)
+        }
       })
   }
 }

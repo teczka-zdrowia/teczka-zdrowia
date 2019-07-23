@@ -12,6 +12,7 @@
       <button
         class="modal__btn modal__btn--grey"
         @click="hideModal"
+        type="button"
       >Anuluj</button>
       <MainBtn
         class="modal__btn modal__btn--violet"

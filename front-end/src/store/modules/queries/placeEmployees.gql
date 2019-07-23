@@ -1,0 +1,16 @@
+query($id: ID!) {
+  place(id: $id) {
+    id
+    employees {
+      id
+      permission_type
+      is_active
+      user {
+        id
+        avatar
+        name
+        phone
+      }
+    }
+  }
+}

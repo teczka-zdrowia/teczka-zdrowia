@@ -4,6 +4,7 @@
     <div class="modal__actions">
       <button
         class="modal__btn modal__btn--grey"
+        type="button"
         v-on:click="hideModal"
       >Anuluj</button>
       <MainBtn
@@ -11,7 +12,7 @@
         :loading="isLoading"
         :disabled="isLoading"
         v-if="processCompleted"
-        v-on:click="addPatient"
+        v-on:click.native="createPatient"
       >Dodaj pacjenta</MainBtn>
     </div>
   </div>
@@ -38,18 +39,41 @@ export default {
   computed: {
     ...mapGetters({
       data: "modal/data",
-      processCompleted: "addPatient/isCompleted"
+      processCompleted: "addPatient/isCompleted",
+      patient: "addPatient/patient",
+      place: "addPatient/place"
     })
   },
   methods: {
     ...mapActions({
+      modalVisible: "modal/visible",
       hideModal: "modal/hide",
-      addPlacePatient: "addPatient/add"
+      createPlacePatientRole: "placePatients/createRole",
+      clearData: "addPatient/clear"
     }),
-    addPatient: function() {
-      this.addPlacePatient();
-      this.hideModal();
+    createPatient: async function() {
+      this.isLoading = true;
+      const payload = {
+        userId: this.patient.id,
+        placeId: this.place.id
+      };
+
+      this.createPlacePatientRole(payload)
+        .then(() => {
+          this.$toasted.success("Poprawnie dodano pacjenta");
+          this.hideModal();
+        })
+        .catch(error => {
+          console.error(error);
+          this.$toasted.error("Wystąpił błąd");
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     }
+  },
+  mounted() {
+    this.clearData();
   }
 };
 </script>

@@ -1,17 +1,18 @@
 <template>
-  <div>
-    <div class="patients__actions">
-      <MainBtn
-        class="actions__btn"
-        v-on:click.native="addNewPatient"
-      >
+  <div class="management__employees">
+    <div class="employees__block">Pracownicy</div>
+    <div
+      class="employees__actions"
+      v-if="!loading.init"
+    >
+      <MainBtn class="actions__btn">
         <span
           aria-hidden="true"
           class="fas fa-plus"
         />
         Nowy
       </MainBtn>
-      <MainSearch class="patients__search">
+      <MainSearch class="employees__search">
         <input
           class="input"
           v-model="search"
@@ -37,23 +38,23 @@
       </MainSearch>
     </div>
     <div
-      class="actions__patients"
+      class="employees__list"
       v-if="!loading.init"
     >
       <MainUser
-        v-for="(patient, index) in sortedSearchResults"
+        v-for="(employee, index) in sortedSearchResults"
         :key="index"
-        :data="patient"
+        :data="employee"
         :isClickable="false"
         :editAffiliation="true"
       />
     </div>
     <GreyBlock
-      class="patients__info"
-      v-if="!loading.init && patients.length === 0"
-    >Brak pacjentów</GreyBlock>
+      class="employees__info"
+      v-if="!loading.init && employees.length === 0"
+    >Brak pracowników</GreyBlock>
     <GreyBlock
-      class="patients__info patients__info--loading"
+      class="employees__info employees__info--loading"
       v-if="loading.init"
     >Ładowanie
       <MainLoading color="#67676e" />
@@ -71,7 +72,11 @@ import GreyBlock from "../../components/ui/blocks/GreyBlock";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
-  name: "Patients",
+  name: "Employees",
+  components: {
+    MainSearch,
+    MainBtn
+  },
   data: function() {
     return {
       search: "",
@@ -84,10 +89,10 @@ export default {
   computed: {
     ...mapGetters({
       selectedRole: "userRoles/selected",
-      patients: "placePatients/list"
+      employees: "placeEmployees/list"
     }),
     searchResults: function() {
-      return this.patients.filter(role => {
+      return this.employees.filter(role => {
         const userName = role.user.name.toLowerCase();
         const search = this.search.toLowerCase();
         return ~userName.search(search);
@@ -110,7 +115,7 @@ export default {
     ...mapActions({
       showModal: "modal/show",
       initAddPatientPlace: "addPatient/initPlace",
-      getPlacePatients: "placePatients/get"
+      getPlaceEmployees: "placeEmployees/get"
     }),
     addNewPatient: function() {
       this.initAddPatientPlace(this.selectedRole.place);
@@ -118,10 +123,10 @@ export default {
         componentName: "AddPatient"
       });
     },
-    getPatients: async function() {
+    getEmployees: async function() {
       this.loading.init = true;
 
-      await this.getPlacePatients(this.placeId).catch(error => {
+      await this.getPlaceEmployees(this.placeId).catch(error => {
         this.$toasted.error("Wystąpił błąd");
         console.error(error);
       });
@@ -138,11 +143,11 @@ export default {
   },
   watch: {
     placeId: function() {
-      this.getPatients();
+      this.getEmployees();
     }
   },
   mounted() {
-    this.getPatients();
+    this.getEmployees();
   }
 };
 </script>
@@ -150,7 +155,13 @@ export default {
 <style lang="scss" scoped>
 @import "../../main";
 
-.patients__info {
+.management__employees {
+  & > div:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}
+
+.employees__info {
   height: unset;
   padding: 1rem;
   &--loading {
@@ -162,7 +173,20 @@ export default {
   }
 }
 
-.patients__actions {
+.employees__block {
+  padding: 1rem;
+  width: calc(100% - 2rem);
+  margin-bottom: 1rem;
+  background: #fdfdfd;
+  box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+  border-radius: 0.5rem;
+  color: #3e3e45;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.5em;
+}
+
+.employees__actions {
   display: flex;
   justify-content: space-between;
   padding: 1rem;
@@ -171,6 +195,13 @@ export default {
   background: #fdfdfd;
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
   border-radius: 0.5rem;
+}
+
+.employees__list {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-column-gap: 1em;
+  row-gap: 1em;
 }
 
 .actions__btn {
@@ -182,125 +213,8 @@ export default {
   }
 }
 
-.actions__patients {
-  display: grid;
-  grid-template-columns: 100%;
-  grid-column-gap: 1em;
-  row-gap: 1em;
-}
-
-.actions__patient {
-  @extend %text--center;
-  position: relative;
-  font-weight: 700;
-  color: #3e3e45;
-  width: auto;
-  overflow: unset;
-  text-overflow: unset;
-  transition: all 0.2s ease-in-out;
-  justify-content: left;
-  white-space: nowrap;
-  color: #67676e;
-  cursor: pointer;
-  height: 3.5rem;
-  width: calc(100% - 2em);
-  padding: 1em;
-  border-radius: 0.5em;
-  box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
-  background: #fafafc;
-  span {
-    margin-left: auto;
-    padding: 0.5em;
-    font-size: 1.5em;
-    width: 1em;
-    height: 1em;
-    text-align: center;
-    color: #6a6ee1;
-    background: #e6e6e8;
-    border-radius: 0.5em;
-  }
-  &:hover {
-    transform: scale(1.025);
-    box-shadow: 0 0 60px 0 rgba(145, 145, 156, 0.3);
-  }
-  &:active {
-    transform: scale(1.0125);
-  }
-  &.disabled {
-    background: #eeeef3;
-    filter: grayscale(100%);
-    i:hover {
-      &::before {
-        content: "";
-      }
-    }
-  }
-}
-
-.options__select {
-  display: flex;
-  border-radius: 0.5em;
-  overflow: hidden;
-  width: 50%;
-  &:not(:last-child) {
-    margin-right: 2em;
-  }
-}
-
-.select__title,
-.select__content {
-  width: 50%;
-}
-
-.select__title {
-  @extend %text--center;
-  padding: 0.75rem 1.5rem;
-  background: #fafafc;
-  color: #6a6ee1;
-  font-weight: 600;
-}
-.select__content {
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  color: #fafafc;
-  background: #6a6ee1;
-  background: -webkit-gradient(
-    linear,
-    left top,
-    right top,
-    from(#9394eb),
-    to(#6a6ee1)
-  );
-  background: linear-gradient(to right, #9394eb, #6a6ee1);
-  -webkit-filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
-  filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
-  border: 0;
-  option {
-    font-weight: 600;
-    background: #6a6ee1;
-  }
-}
-
 @media only screen and (min-width: 960px) {
-  .actions__patients {
-    grid-template-columns: 1fr 1fr;
-  }
-  .options__btn {
-    &::after {
-      content: "Nowy pacjent";
-    }
-    width: auto;
-    padding: 0 1.5rem;
-    height: auto;
-  }
-  .options__select {
-    width: unset;
-  }
-  .select__title,
-  .select__content {
-    width: unset;
-  }
-  .patients__info {
+  .employees__info {
     height: 24rem;
     padding: 0 1rem;
   }

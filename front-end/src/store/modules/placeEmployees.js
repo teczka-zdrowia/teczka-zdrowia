@@ -1,5 +1,5 @@
 import { apolloClient } from '@/apollo'
-import { PLACE_PATIENTS_QUERY } from './queries/_index'
+import { PLACE_EMPLOYEES_QUERY } from './queries/_index'
 import { CREATE_ROLE_MUTATION } from './mutations/_index'
 
 const state = {
@@ -19,17 +19,17 @@ const actions = {
   get ({ commit }, id) {
     return apolloClient
       .query({
-        query: PLACE_PATIENTS_QUERY,
+        query: PLACE_EMPLOYEES_QUERY,
         variables: {
           id: id
         }
       })
-      .then(data => data.data.place.patients)
-      .then(patients => {
-        commit('SET_DATA', patients)
+      .then(data => data.data.place.employees)
+      .then(employees => {
+        commit('SET_DATA', employees)
       })
   },
-  createRole ({ commit }, { userId, placeId }) {
+  createRole ({ commit }, { userId, placeId, permissionType }) {
     return apolloClient
       .mutate({
         mutation: CREATE_ROLE_MUTATION,
@@ -37,7 +37,7 @@ const actions = {
           data: {
             user_id: userId,
             place_id: placeId,
-            permission_type: 'PATIENT'
+            permission_type: permissionType
           }
         }
       })
@@ -46,7 +46,7 @@ const actions = {
         if (createRole) {
           commit('ADD_DATA', createRole)
         } else {
-          throw new Error('Patient-Place role exists')
+          throw new Error('Employee-Place role exists')
         }
       })
   }

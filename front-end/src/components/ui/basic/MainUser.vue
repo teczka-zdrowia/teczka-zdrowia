@@ -39,7 +39,8 @@ export default {
         default: ""
       },
       is_active: {
-        type: Boolean
+        type: Boolean,
+        default: true
       },
       user: {
         id: {

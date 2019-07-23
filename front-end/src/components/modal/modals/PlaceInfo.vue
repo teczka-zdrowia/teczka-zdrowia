@@ -27,6 +27,7 @@
       </div>
       <button
         class="modal__btn fullwidth modal__btn--grey"
+        type="button"
         @click="hideModal"
       >Zamknij</button>
     </div>

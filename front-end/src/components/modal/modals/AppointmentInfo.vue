@@ -23,6 +23,7 @@
 
     <button
       class="modal__btn fullwidth modal__btn--grey modal--ai__action"
+      type="button"
       @click="hideModal"
     >Zamknij</button>
   </div>

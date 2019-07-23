@@ -4,6 +4,7 @@
     <div class="modal__actions">
       <button
         class="modal__btn modal__btn--grey"
+        type="button"
         v-on:click="hideModal"
       >Anuluj</button>
       <button

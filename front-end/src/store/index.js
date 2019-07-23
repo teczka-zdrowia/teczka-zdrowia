@@ -9,6 +9,8 @@ import userRoles from './modules/userRoles'
 import userAppointments from './modules/userAppointments'
 import placeAppointments from './modules/placeAppointments'
 import placePatients from './modules/placePatients'
+import placeEmployees from './modules/placeEmployees'
+import placeStatistics from './modules/placeStatistics'
 import addPatient from './modules/addPatient'
 import initializeSteps from './modules/initializeSteps'
 import createPersistedState from 'vuex-persistedstate'
@@ -26,6 +28,8 @@ export const store = new Vuex.Store({
     userAppointments,
     placeAppointments,
     placePatients,
+    placeEmployees,
+    placeStatistics,
     addPatient,
     initializeSteps
   },

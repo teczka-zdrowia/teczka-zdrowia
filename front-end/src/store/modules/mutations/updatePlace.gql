@@ -1,0 +1,9 @@
+mutation($id: ID!, $data: UpdatePlaceInput!) {
+  updatePlace(id: $id, data: $data) {
+    id
+    name
+    address
+    city
+    is_active
+  }
+}

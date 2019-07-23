@@ -47,7 +47,7 @@
                 aria-hidden="true"
                 class="fas fa-unlock place__select place__select--white"
                 title="Odblokuj"
-                v-if="!role.place.is_active && role.permissionType === 'ADMIN'"
+                v-if="!role.place.is_active && role.permission_type === 'ADMIN'"
               />
             </div>
             <MainBtn
@@ -97,7 +97,7 @@
               class="card"
               v-on:click="selectedCard = 3"
               v-bind:class="{'selected': selectedCard == 3}"
-              v-if="selectedRole && selectedRole.permissionType === 'ADMIN'"
+              v-if="selectedRole && selectedRole.permission_type === 'ADMIN'"
             >Administracja</div>
           </div>
         </div>
@@ -140,7 +140,7 @@
                 class="fas fa-unlock place__select place__select--white"
                 title="Aktywuj"
                 v-on:click="activatePlace(role.place.id, role.place.name)"
-                v-if="!role.place.is_active && role.permissionType === 'ADMIN'"
+                v-if="!role.place.is_active && role.permission_type === 'ADMIN'"
               />
             </div>
           </div>
@@ -192,7 +192,7 @@
               class="actions__top__el"
               v-on:click="selectedCard = 3"
               v-bind:class="{'selected': selectedCard == 3}"
-              v-if="selectedRole.permissionType === 'ADMIN'"
+              v-if="selectedRole.permission_type === 'ADMIN'"
             >Administracja</div>
           </div>
           <Timetable v-if="selectedCard == 1" />
@@ -220,7 +220,7 @@ export default {
   name: "Places",
   data: function() {
     return {
-      selectedCard: false,
+      selectedCard: 0,
       showPlaces: false,
       showCards: false,
       cards: {
@@ -256,10 +256,8 @@ export default {
       this.showModal({
         componentName: "ActivatePlace",
         data: {
-          place: {
-            id: id,
-            name: name
-          }
+          id: id,
+          name: name
         }
       });
     },
@@ -282,6 +280,13 @@ export default {
       selectedRole: "userRoles/selected",
       isMobile: "window/isMobile"
     })
+  },
+  watch: {
+    selectedRole: function(val) {
+      if (val === undefined) {
+        this.selectedCard = 0;
+      }
+    }
   },
   mounted() {
     this.getRoles();
