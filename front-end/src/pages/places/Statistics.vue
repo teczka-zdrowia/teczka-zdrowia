@@ -89,7 +89,7 @@ export default {
       };
 
       await this.getPlaceStatistics(payload).catch(error => {
-        this.$toasted.error("Wystąpił błąd");
+        this.$toasted.error("Brak danych");
         console.error(error);
       });
 

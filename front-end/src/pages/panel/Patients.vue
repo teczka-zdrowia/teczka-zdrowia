@@ -2,11 +2,12 @@
   <div>
     <div class="patients__actions">
       <div class="patients__title">
-        Moi pacjenci
+        Pacjenci
       </div>
       <MainSearch class="patients__search">
         <input
           class="input"
+          v-model="search"
           slot="input"
           type="text"
           placeholder="  Szukaj"
@@ -17,63 +18,154 @@
         >
           <label>
             Sortuj:
-            <select>
-              <option selected>A - Z</option>
-              <option>Z - A</option>
+            <select v-model="sortBy">
+              <option
+                value="ASC"
+                selected
+              >A - Z</option>
+              <option value="DESC">Z - A</option>
             </select>
           </label>
         </div>
       </MainSearch>
     </div>
-    <div class="actions__patients">
+    <div
+      class="actions__patients"
+      v-if="!loading"
+    >
       <MainUser
-        :name="'Jan Iksiński'"
-        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
-        :phone="'111222333'"
+        v-for="(patient, index) in sortedSearchResults"
+        :key="index"
+        :data="patient"
         :isClickable="false"
-        :userId="1"
-      />
-      <MainUser
-        :name="'Jan Iksiński'"
-        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
-        :phone="'111222333'"
-        :isClickable="false"
-        :userId="1"
-      />
-      <MainUser
-        :name="'Jan Iksiński'"
-        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
-        :phone="'111222333'"
-        :isClickable="false"
-        :userId="1"
-      />
-      <MainUser
-        :name="'Jan Iksiński'"
-        :img="'https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/'"
-        :phone="'111222333'"
-        :isClickable="false"
-        :userId="1"
-        :isActive="false"
+        :editAffiliation="true"
       />
     </div>
+    <GreyBlock
+      class="patients__info"
+      v-if="!loading && patients.length === 0"
+    >Brak pacjentów</GreyBlock>
+    <GreyBlock
+      class="patients__info patients__info--loading"
+      v-if="loading"
+    >Ładowanie
+      <MainLoading color="#67676e" />
+    </GreyBlock>
   </div>
 </template>
 
 <script>
 import MainSearch from "../../components/ui/basic/MainSearch";
 import MainUser from "../../components/ui/basic/MainUser";
+import MainBtn from "../../components/ui/basic/MainBtn";
+import MainLoading from "../../components/ui/basic/MainLoading";
+import GreyBlock from "../../components/ui/blocks/GreyBlock";
+
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Patients",
+  data: function() {
+    return {
+      firstTime: true,
+      search: "",
+      sortBy: "ASC",
+      loading: false
+    };
+  },
+  computed: {
+    ...mapGetters({
+      roles: "userRoles/list",
+      selectedRole: "userRoles/selected",
+      placePatients: "placePatients/list",
+      myPatients: "myPatients/list"
+    }),
+    type: function() {
+      return this.selectedRole ? "PLACE" : "ALL";
+    },
+    patients: function() {
+      return this.type === "ALL" ? this.myPatients : this.placePatients;
+    },
+    placeId: function() {
+      return this.selectedRole ? this.selectedRole.place.id : null;
+    },
+    searchResults: function() {
+      return this.patients.filter(role => {
+        const userName = role.user.name.toLowerCase();
+        const search = this.search.toLowerCase();
+        return ~userName.search(search);
+      });
+    },
+    sortedSearchResults: function() {
+      return this.sortBy === "ASC"
+        ? this.searchResults.sort(
+            (a, b) => (a.user.name > b.user.name) - (a.user.name < b.user.name)
+          )
+        : this.searchResults.sort(
+            (a, b) => (a.user.name < b.user.name) - (a.user.name > b.user.name)
+          );
+    },
+    title: function() {
+      return this.type === "ALL"
+        ? "Wszyscy pacjenci"
+        : `Pacjenci w ${this.selectedRole.place.name}`;
+    }
+  },
+  methods: {
+    ...mapActions({
+      showModal: "modal/show",
+      getPlacePatients: "placePatients/get",
+      getAllPatients: "myPatients/get"
+    }),
+    getPatients: async function() {
+      this.loading = true;
+
+      if (this.type === "ALL") {
+        await this.getAllPatients().catch(error => {
+          this.$toasted.error("Wystąpił błąd");
+          console.error(error);
+        });
+      } else {
+        await this.getPlacePatients(this.placeId).catch(error => {
+          this.$toasted.error("Wystąpił błąd");
+          console.error(error);
+        });
+      }
+
+      this.loading = false;
+    }
+  },
   components: {
+    MainUser,
     MainSearch,
-    MainUser
+    MainLoading,
+    GreyBlock,
+    MainBtn
+  },
+  watch: {
+    placeId: function(val) {
+      if (val !== undefined) {
+        this.getPatients();
+      }
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
 @import "../../main";
+
+.patients__info {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  &--loading {
+    svg {
+      height: 2rem;
+      width: 2rem;
+      margin-left: 1rem;
+    }
+  }
+}
 
 .patients__actions {
   display: flex;
@@ -84,6 +176,9 @@ export default {
   background: #fdfdfd;
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
   border-radius: 0.5rem;
+  & > button {
+    height: 3rem !important;
+  }
 }
 
 .patients__title {

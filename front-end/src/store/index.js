@@ -12,7 +12,10 @@ import placePatients from './modules/placePatients'
 import placeEmployees from './modules/placeEmployees'
 import placeStatistics from './modules/placeStatistics'
 import addPatient from './modules/addPatient'
+import addEmployee from './modules/addEmployee'
 import initializeSteps from './modules/initializeSteps'
+import appointmentsByMe from './modules/appointmentsByMe'
+import myPatients from './modules/myPatients'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
@@ -31,7 +34,10 @@ export const store = new Vuex.Store({
     placeEmployees,
     placeStatistics,
     addPatient,
-    initializeSteps
+    addEmployee,
+    initializeSteps,
+    appointmentsByMe,
+    myPatients
   },
   plugins: [
     createPersistedState({

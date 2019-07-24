@@ -44,9 +44,13 @@ const actions = {
       .then(data => data.data.createRole)
       .then(createRole => {
         if (createRole) {
+          createRole = Object.assign(createRole, {
+            permission_type: permissionType,
+            is_active: true
+          })
           commit('ADD_DATA', createRole)
         } else {
-          throw new Error('Employee-Place role exists')
+          throw new Error('Role exists')
         }
       })
   }

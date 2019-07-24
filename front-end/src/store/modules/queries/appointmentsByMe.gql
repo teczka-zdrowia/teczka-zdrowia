@@ -1,0 +1,38 @@
+query(
+  $first: Int!
+  $after: String
+  $note: String
+  $date: DateRange!
+  $orderBy: [OrderByClause!]
+) {
+  appointmentsByMe(
+    first: $first
+    after: $after
+    note: $note
+    date: $date
+    orderBy: $orderBy
+  ) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        id
+        date
+        note
+        confirmed
+        patient {
+          id
+          avatar
+          name
+          phone
+        }
+        place {
+          id
+          name
+        }
+      }
+    }
+  }
+}

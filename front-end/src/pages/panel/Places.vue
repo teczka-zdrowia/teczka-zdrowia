@@ -1,47 +1,110 @@
 <template>
   <div class="places">
-    <div class="place places__title">Gabinet:</div>
     <div
-      class="place"
-      :key="index"
-      v-for="(place, index) in userPlaces"
-      v-on:click="selectPlace(place.id)"
-      v-bind:class="{ 'inactive' : !place.isActive, 'selected' : place == selectedPlace }"
+      class="places__list"
+      v-if="!loading.init && select && roles.length > 0"
     >
-      {{ place.name }}
-      <span
-        aria-hidden="true"
-        class="fas fa-angle-right place__select"
-        title="Wybierz gabinet"
-        v-if="place.isActive"
-      />
+      <div class="place places__title">Gabinet</div>
+      <div
+        class="place"
+        v-for="(role, index) in roles"
+        :key="index"
+        v-show="role.permission_type !== 'PATIENT' && role.is_active && role.place.is_active"
+        v-on:click="selectRole(role.id)"
+        v-bind:class="{ 'selected' : role.place === selectedPlace }"
+      >
+        {{ role.place.name }}
+        <span
+          aria-hidden="true"
+          class="fas fa-angle-right place__select"
+          title="Wybierz gabinet"
+        />
+      </div>
     </div>
+    <div
+      class="place--selected"
+      v-if="!select && selectedPlace"
+    >
+      <div class="place places__title">Gabinet</div>
+      <div class="place selected">
+        {{ selectedPlace.name }}
+      </div>
+      <button
+        class="place__back"
+        v-on:click="select = true"
+      >
+        Wróć
+      </button>
+    </div>
+    <GreyBlock
+      class="places__info"
+      v-if="!loading.init && roles.length === 0"
+    >Brak gabinetów</GreyBlock>
+    <GreyBlock
+      class="places__info places__info--loading"
+      v-if="loading.init"
+    >Ładowanie
+      <MainLoading color="#67676e" />
+    </GreyBlock>
   </div>
 </template>
 
 <script>
+import GreyBlock from "../../components/ui/blocks/GreyBlock";
+import MainLoading from "../../components/ui/basic/MainLoading";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Places",
+  data: function() {
+    return {
+      loading: {
+        init: false
+      },
+      select: true
+    };
+  },
   methods: {
     ...mapActions({
-      setSelectedPlace: "userPlaces/setSelected"
+      setSelectedRole: "userRoles/setSelected",
+      getUserRoles: "userRoles/get"
     }),
-    selectPlace: function(ID) {
-      const oldID = this.selectedPlace ? this.selectedPlace.id : null;
-      if (ID === oldID) {
-        this.setSelectedPlace(null);
+    selectRole: function(Id) {
+      if (this.selectedRole && Id === this.selectedRole.id) {
+        this.setSelectedRole(null);
       } else {
-        this.setSelectedPlace(ID);
+        this.setSelectedRole(Id);
+        this.select = false;
       }
+    },
+    getRoles: async function() {
+      this.loading.init = true;
+
+      await this.getUserRoles().catch(error => {
+        this.$toasted.error("Wystąpił błąd");
+        console.error(error);
+      });
+
+      this.loading.init = false;
     }
   },
   computed: {
     ...mapGetters({
-      userPlaces: "userPlaces/list",
-      selectedPlace: "userPlaces/selected"
-    })
+      roles: "userRoles/list",
+      selectedRole: "userRoles/selected"
+    }),
+    selectedPlace: function() {
+      return this.selectedRole ? this.selectedRole.place : null;
+    }
+  },
+  components: {
+    GreyBlock,
+    MainLoading
+  },
+  mounted() {
+    if (this.roles.length === 0) {
+      this.getRoles();
+    }
   }
 };
 </script>
@@ -49,7 +112,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../main";
 
-.places {
+.places__list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   grid-gap: 1rem;
@@ -75,6 +138,29 @@ export default {
   &.inactive {
     display: none;
   }
+  &--selected {
+    display: grid;
+    grid-template-columns: 10rem auto 5rem;
+    margin-bottom: 1rem;
+    & > .places__title {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    & > .place.selected {
+      border-radius: 0;
+      background: #efefef;
+      cursor: unset;
+    }
+    & > .place__back {
+      padding: 1rem;
+      background: #8789e8;
+      color: #fafafa;
+      border-top-right-radius: 0.5rem;
+      border-bottom-right-radius: 0.5rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  }
 }
 
 .places__title {
@@ -92,5 +178,17 @@ export default {
   border-radius: 0.5em;
   transition: 0.2s ease-in-out;
   color: #6a6ee1;
+}
+
+.places__info {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  &--loading {
+    svg {
+      height: 2rem;
+      width: 2rem;
+      margin-left: 1rem;
+    }
+  }
 }
 </style>

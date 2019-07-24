@@ -1,34 +1,34 @@
 <template>
-  <div class="patient">
-    <div class="patient__img">
+  <div class="user">
+    <div class="user__img">
       <img
-        :src="`${apiUrl}/storage/avatars/${patient.avatar}`"
-        :alt="patient.name"
+        :src="`${apiUrl}/storage/avatars/${user.avatar}`"
+        :alt="user.name"
       >
     </div>
-    <div class="patient__info">
-      <div class="patient__info__name">
-        {{ patient.name }} ({{ patientAge }} lat)
+    <div class="user__info">
+      <div class="user__info__name">
+        {{ user.name }} ({{ userAge }} lat)
       </div>
       <a
-        class="patient__info__phone"
-        :href="`tel:${patient.phone}`"
+        class="user__info__phone"
+        :href="`tel:${user.phone}`"
       >
         <span
           aria-hidden="true"
           class="fas fa-phone"
         />
-        {{ patient.phone}}
+        {{ user.phone}}
       </a>
       <a
-        class="patient__info__email"
-        :href="`mailto:${patient.email}`"
+        class="user__info__email"
+        :href="`mailto:${user.email}`"
       >
         <span
           aria-hidden="true"
           class="fas fa-envelope"
         />
-        {{ patient.email}}
+        {{ user.email}}
       </a>
     </div>
   </div>
@@ -40,9 +40,9 @@ const moment = require("moment");
 moment.locale("pl");
 
 export default {
-  name: "MainPatientBlockInfo",
+  name: "MainUserBlockInfo",
   props: {
-    patient: {
+    user: {
       type: Object,
       default: function() {
         return {
@@ -61,16 +61,16 @@ export default {
     };
   },
   computed: {
-    patientAge: function() {
-      return this.patientBirthdate
+    userAge: function() {
+      return this.userBirthdate
         ? Math.abs(
-            moment(this.patientBirthdate, "DD.MM.YYYY").diff(moment(), "years")
+            moment(this.userBirthdate, "DD.MM.YYYY").diff(moment(), "years")
           )
         : "brak";
     },
-    patientBirthdate: function() {
-      return this.patient.birthdate
-        ? moment(this.patient.birthdate, "YYYY-MM-DD HH:MI:SS").format(
+    userBirthdate: function() {
+      return this.user.birthdate
+        ? moment(this.user.birthdate, "YYYY-MM-DD HH:MI:SS").format(
             "DD.MM.YYYY"
           )
         : null;
@@ -82,7 +82,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../../main";
 
-.patient {
+.user {
   width: 100%;
   display: flex;
   background: #f5f5f5;

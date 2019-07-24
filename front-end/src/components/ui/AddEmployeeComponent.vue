@@ -1,19 +1,19 @@
 <template>
-  <div class="addpatient">
-    <div class="addpatient__place">
-      <span class="addpatient__place__title">
+  <div class="addemployee">
+    <div class="addemployee__place">
+      <span class="addemployee__place__title">
         Gabinet:
       </span>
       <MainPlaceInfo
-        class="addpatient__place__info"
+        class="addemployee__place__info"
         :name="place.name"
         :id="place.id"
       />
     </div>
     <form
-      class="addpatient__form"
+      class="addemployee__form"
       v-if="!initalizeNew"
-      v-on:submit.prevent="searchPatient"
+      v-on:submit.prevent="searchEmployee"
     >
       <MainInput v-bind:class="{ novalid: !isPeselCorrect }">
         PESEL
@@ -28,22 +28,22 @@
         >
       </MainInput>
       <MainBtn
-        class="addpatient__form__btn"
+        class="addemployee__form__btn"
         v-if="isPeselCorrect"
         color="#fafafa"
         :loading="loading.search"
         :disabled="loading.search"
-      >Wyszukaj pacjenta po PESEL</MainBtn>
+      >Wyszukaj pracownika po PESEL</MainBtn>
     </form>
     <MainBtn
-      class="addpatient__form__btn addpatient__form__btn--red"
+      class="addemployee__form__btn addemployee__form__btn--red"
       v-if="isPeselCorrect && searchFailed && !initalizeNew"
       v-on:click.native="initalizeNew = !initalizeNew"
     >Utwórz konto użytkownika</MainBtn>
     <form
-      class="addpatient__form"
+      class="addemployee__form"
       v-if="initalizeNew"
-      v-on:submit.prevent="initalizePatient"
+      v-on:submit.prevent="initalizeEmployee"
     >
       <div>
         <MainInput class="many">
@@ -83,16 +83,16 @@
         </MainInput>
       </div>
       <MainBtn
-        class="addpatient__form__btn"
+        class="addemployee__form__btn"
         color="#fafafa"
         :loading="loading.initalize"
         :disabled="loading.initalize"
       >Utwórz konto</MainBtn>
     </form>
     <MainUserBlockInfo
-      class="addpatient__patient"
-      v-if="patient"
-      :user="patient || undefined"
+      class="addemployee__employee"
+      v-if="employee"
+      :user="employee || undefined"
     />
   </div>
 </template>
@@ -124,9 +124,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      place: "addPatient/place",
-      patient: "addPatient/patient",
-      searchFailed: "addPatient/searchFailed"
+      place: "addEmployee/place",
+      employee: "addEmployee/employee",
+      searchFailed: "addEmployee/searchFailed"
     }),
     isPeselCorrect: function() {
       let weights = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3];
@@ -141,14 +141,14 @@ export default {
   },
   methods: {
     ...mapActions({
-      searchPatientByPesel: "addPatient/searchByPesel",
-      initalizePatientAccount: "addPatient/initalizePatient",
-      clearData: "addPatient/clear"
+      searchEmployeeByPesel: "addEmployee/searchByPesel",
+      initalizeEmployeeAccount: "addEmployee/initalizeEmployee",
+      clearData: "addEmployee/clear"
     }),
-    searchPatient: async function() {
+    searchEmployee: async function() {
       this.loading.search = true;
 
-      await this.searchPatientByPesel(this.data.pesel)
+      await this.searchEmployeeByPesel(this.data.pesel)
         .then(() => {
           this.$toasted.success("Znaleziono użytkownika");
         })
@@ -159,10 +159,10 @@ export default {
 
       this.loading.search = false;
     },
-    initalizePatient: async function() {
+    initalizeEmployee: async function() {
       this.loading.initalize = true;
 
-      await this.initalizePatientAccount(this.data)
+      await this.initalizeEmployeeAccount(this.data)
         .then(() => {
           this.$toasted.success("Użytkownik utworzony pomyślnie");
           this.$toasted.success(
@@ -195,7 +195,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../main";
 
-.addpatient {
+.addemployee {
   &__place {
     display: flex;
     width: 100%;
@@ -229,7 +229,7 @@ export default {
     }
   }
 
-  &__patient {
+  &__employee {
     width: 100% !important;
     margin-top: 1rem;
   }

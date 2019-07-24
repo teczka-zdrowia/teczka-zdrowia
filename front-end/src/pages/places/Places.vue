@@ -269,7 +269,10 @@ export default {
     getRoles: async function() {
       this.loading.init = true;
 
-      await this.getUserRoles();
+      await this.getUserRoles().catch(error => {
+        this.$toasted.error("Wystąpił błąd");
+        console.error(error);
+      });
 
       this.loading.init = false;
     }

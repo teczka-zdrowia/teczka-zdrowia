@@ -5,7 +5,10 @@
       class="employees__actions"
       v-if="!loading.init"
     >
-      <MainBtn class="actions__btn">
+      <MainBtn
+        class="actions__btn"
+        v-on:click.native="addNewEmployee"
+      >
         <span
           aria-hidden="true"
           class="fas fa-plus"
@@ -114,13 +117,13 @@ export default {
   methods: {
     ...mapActions({
       showModal: "modal/show",
-      initAddPatientPlace: "addPatient/initPlace",
+      initAddEmployeePlace: "addEmployee/initPlace",
       getPlaceEmployees: "placeEmployees/get"
     }),
-    addNewPatient: function() {
-      this.initAddPatientPlace(this.selectedRole.place);
+    addNewEmployee: function() {
+      this.initAddEmployeePlace(this.selectedRole.place);
       this.showModal({
-        componentName: "AddPatient"
+        componentName: "AddEmployee"
       });
     },
     getEmployees: async function() {

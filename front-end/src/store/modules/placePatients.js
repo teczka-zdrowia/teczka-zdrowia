@@ -46,7 +46,7 @@ const actions = {
         if (createRole) {
           commit('ADD_DATA', createRole)
         } else {
-          throw new Error('Patient-Place role exists')
+          throw new Error('Role exists')
         }
       })
   }

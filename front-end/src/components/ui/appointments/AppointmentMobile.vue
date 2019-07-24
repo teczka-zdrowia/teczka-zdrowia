@@ -5,12 +5,11 @@
   >
     <MainUserInfo
       class="appointment__user"
-      :id="data.author.id"
-      :name="data.author.name"
-      :avatar="data.author.avatar"
-      :phone="data.author.phone"
+      :id="data.patient.id"
+      :name="data.patient.name"
+      :avatar="data.patient.avatar"
+      :phone="data.patient.phone"
       :isClickable="false"
-      :userId="1"
     />
     <div
       class="appointment__place"

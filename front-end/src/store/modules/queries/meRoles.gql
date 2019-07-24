@@ -3,6 +3,7 @@
     id
     roles {
       id
+      is_active
       permission_type
       place {
         id

@@ -34,32 +34,27 @@ export default {
   name: "MainUser",
   props: {
     data: {
-      permission_type: {
-        type: String,
-        default: ""
-      },
-      is_active: {
-        type: Boolean,
-        default: true
-      },
-      user: {
-        id: {
-          type: Number
-        },
-        name: {
-          type: String
-        },
-        img: {
-          type: String
-        },
-        phone: {
-          type: String
-        }
+      type: Object,
+      default: function() {
+        return {
+          permission_type: "",
+          is_active: false,
+          user: {
+            id: {
+              type: Number
+            },
+            name: {
+              type: String
+            },
+            img: {
+              type: String
+            },
+            phone: {
+              type: String
+            }
+          }
+        };
       }
-    },
-    userType: {
-      type: Number,
-      default: 0
     },
     editAffiliation: {
       type: Boolean,

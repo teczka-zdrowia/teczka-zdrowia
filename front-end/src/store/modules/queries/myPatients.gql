@@ -1,0 +1,12 @@
+query {
+  myPatients {
+    id
+    is_active
+    user {
+      id
+      avatar
+      name
+      phone
+    }
+  }
+}

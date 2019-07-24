@@ -120,7 +120,7 @@ export default {
       isMobile: "window/isMobile",
       selectedRole: "userRoles/selected",
       appointments: "placeAppointments/list",
-      pageInfo: "userAppointments/pageInfo"
+      pageInfo: "placeAppointments/pageInfo"
     }),
     canShowAppointments: function() {
       return (
@@ -272,6 +272,7 @@ export default {
   display: flex;
   padding-bottom: 1rem;
   button {
+    min-width: 10rem;
     width: 50%;
     background: #eeeef3;
     color: #6a6ee1;

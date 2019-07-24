@@ -1,15 +1,16 @@
 <template>
   <div>
     <date-pick
-      v-model="date"
+      :value="date"
+      v-on:input="e => setDate(e)"
       :hasInputElement="false"
-      :highlighted="['2019-4-24','2019-4-8','2019-4-9']"
+      :highlighted="[]"
       :selectableYearRange="20"
     />
     <div class="calendar__bottom">
       <div
         class="calendar__btn"
-        v-on:click="date = today"
+        v-on:click="setDate(today)"
       >
         <span
           aria-hidden="true"
@@ -19,7 +20,7 @@
       </div>
       <div
         class="calendar__btn"
-        v-on:click="date = ''"
+        v-on:click="setDate('')"
       >
         Wyczyść
       </div>
@@ -30,21 +31,27 @@
 <script>
 import DatePick from "../../components/ui/vue-date-pick/vueDatePick";
 
+import { mapActions, mapGetters } from "vuex";
+
 const moment = require("moment");
 moment.locale("pl");
 
 export default {
   name: "Calendar",
   components: { DatePick },
-  data: function() {
-    return {
-      date: "Wybierz datę"
-    };
-  },
   computed: {
+    ...mapGetters({
+      date: "appointmentsByMe/date",
+      dates: "appointmentsByMe/dates"
+    }),
     today: function() {
-      return moment().format("YYYY-MM-DD");
+      return new Date().toISOString().slice(0, 10);
     }
+  },
+  methods: {
+    ...mapActions({
+      setDate: "appointmentsByMe/setDate"
+    })
   }
 };
 </script>

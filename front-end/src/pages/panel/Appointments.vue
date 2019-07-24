@@ -1,12 +1,13 @@
 <template>
   <div class="appointments">
     <div class="appointments__top">
-      <div class="appointments__title">Nadchodzące wizyty</div>
+      <div class="appointments__title">{{ title }}</div>
       <MainSearch class="appointments__right">
         <input
           class="input"
           slot="input"
           type="text"
+          v-model.lazy="query.search"
           placeholder="  Szukaj"
         >
         <div
@@ -15,65 +16,245 @@
         >
           <label>
             Sortuj przez:
-            <select>
-              <option selected>Data</option>
-              <option>Specjalista</option>
-              <option>Gabinet</option>
-              <option>Opis</option>
+            <select v-on:change="query.sortData.field">
+              <option
+                value="date"
+                selected
+              >Data</option>
+              <!--<option>Specjalista</option>
+              <option>Gabinet</option>-->
+              <option value="note">Opis</option>
             </select>
           </label>
           <label>
             Porządkuj:
-            <select>
-              <option selected>Rosnąco</option>
-              <option>Malejąco</option>
+            <select v-model="query.sortData.order">
+              <option
+                value="DESC"
+                selected
+              >Malejąco</option>
+              <option value="ASC">Rosnąco</option>
             </select>
           </label>
           <label>
             Ładuj po:
-            <select>
-              <option selected>5</option>
-              <option>10</option>
-              <option>20</option>
+            <select v-model="query.first">
+              <option
+                value="5"
+                selected
+              >5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
             </select>
           </label>
         </div>
       </MainSearch>
     </div>
-    <Appointment
-      class="appointment--panel"
-      :key="index"
-      v-for="(item, index) in userAppointments"
-      :data="item"
+    <AppointmentsMobile
+      :showAppointmentsLink="false"
       :showPlace="true"
       :canEdit="true"
+      :showMoreBtn="pageInfo.hasNextPage"
+      :loading="loading.next"
+      :appointments="appointments"
+      v-on:loadNext="getNextAppointments"
+      v-if="canShowAppointments"
     />
-    <MainShowMore :isLoading="isLoading" />
+    <GreyBlock
+      class="appointments__info"
+      v-if="!loading.init && !loading.newQuery && appointments.length === 0"
+    >Brak wizyt</GreyBlock>
+    <GreyBlock
+      class="appointments__info appointments__info--loading"
+      v-if="loading.init || loading.newQuery"
+    >Ładowanie
+      <MainLoading color="#67676e" />
+    </GreyBlock>
   </div>
 </template>
 
 <script>
+import MainBtn from "../../components/ui/basic/MainBtn";
 import MainSearch from "../../components/ui/basic/MainSearch";
-import MainShowMore from "../../components/ui/basic/MainShowMore";
-import AppointmentMobile from "../../components/ui/appointments/AppointmentMobile";
+import MainLoading from "../../components/ui/basic/MainLoading";
+import GreyBlock from "../../components/ui/blocks/GreyBlock";
+import AppointmentsMobile from "../../components/ui/appointments/AppointmentsMobile";
+
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Appointments",
-  components: {
-    MainSearch,
-    MainShowMore,
-    Appointment: AppointmentMobile
-  },
   data: function() {
     return {
-      date: "",
-      isLoading: false
+      loading: {
+        init: true,
+        newQuery: false,
+        next: false
+      },
+      query: {
+        search: "",
+        first: 5,
+        sortData: {
+          order: "ASC",
+          field: "date"
+        }
+      }
     };
   },
   computed: {
-    userAppointments: function() {
-      return this.$store.getters["userAppointments/all"];
+    ...mapGetters({
+      isMobile: "window/isMobile",
+      selectedRole: "userRoles/selected",
+      appointmentsByMe: "appointmentsByMe/list",
+      placeAppointments: "placeAppointments/list",
+      appointmentsByMePageInfo: "appointmentsByMe/pageInfo",
+      placeAppointmentsPageInfo: "placeAppointments/pageInfo",
+      selectedDate: "appointmentsByMe/date"
+    }),
+    type: function() {
+      return this.selectedRole ? "PLACE" : "ALL";
+    },
+    appointments: function() {
+      return this.type === "ALL"
+        ? this.appointmentsByMe
+        : this.placeAppointments;
+    },
+    pageInfo: function() {
+      return this.type === "ALL"
+        ? this.appointmentsByMePageInfo
+        : this.placeAppointmentsPageInfo;
+    },
+    canShowAppointments: function() {
+      return (
+        !this.loading.init &&
+        !this.loading.newQuery &&
+        this.appointments.length > 0
+      );
+    },
+    orderBy: function() {
+      return [
+        {
+          field: this.query.sortData.field,
+          order: this.query.sortData.order
+        }
+      ];
+    },
+    date: function() {
+      const today = new Date().toISOString().slice(0, 10);
+      const futureSafeDate = "2100-01-01";
+
+      if (this.selectedDate) {
+        const selected = new Date(this.selectedDate);
+        const nextAfterSelected = new Date(
+          selected.setDate(selected.getDate() + 1)
+        )
+          .toISOString()
+          .slice(0, 10);
+
+        return {
+          from: this.selectedDate,
+          to: nextAfterSelected
+        };
+      }
+
+      return {
+        from: today,
+        to: futureSafeDate
+      };
+    },
+    title: function() {
+      const enter = this.type === "ALL" ? "Wszystkie wizyty" : "Wizyty";
+      const when = this.selectedDate
+        ? ` ${new Date(this.selectedDate).toLocaleDateString()}`
+        : "";
+      const where =
+        this.type === "PLACE" ? ` w ${this.selectedRole.place.name}` : "";
+      return `${enter}${when}${where}`;
     }
+  },
+  methods: {
+    ...mapActions({
+      getAppointmentsByMe: "appointmentsByMe/get",
+      getPlaceAppointments: "placeAppointments/get"
+    }),
+    getAppointments: async function(payload, type) {
+      this.loading[type] = true;
+
+      if (this.type === "ALL") {
+        await this.getAppointmentsByMe(payload).catch(error => {
+          this.$toasted.error("Wystąpił błąd");
+          console.error(error);
+        });
+      } else {
+        payload = Object.assign(payload, {
+          id: this.selectedRole.place.id
+        });
+
+        await this.getPlaceAppointments(payload).catch(error => {
+          this.$toasted.error("Wystąpił błąd");
+          console.error(error);
+        });
+      }
+
+      this.loading[type] = false;
+    },
+    getFirstAppointments: function() {
+      const payload = {
+        first: this.query.first,
+        after: "",
+        note: "",
+        date: this.date,
+        orderBy: this.orderBy,
+        type: "SET"
+      };
+
+      this.getAppointments(payload, "init");
+    },
+    getNextAppointments: function() {
+      const payload = {
+        first: this.query.first,
+        after: this.pageInfo.endCursor,
+        note: `%${this.query.search}%`,
+        date: this.date,
+        orderBy: this.orderBy,
+        type: "ADD"
+      };
+
+      this.getAppointments(payload, "next");
+    }
+  },
+  watch: {
+    query: {
+      handler() {
+        const payload = {
+          first: this.query.first,
+          after: "",
+          note: `%${this.query.search}%`,
+          date: this.date,
+          orderBy: this.orderBy,
+          type: "SET"
+        };
+
+        this.getAppointments(payload, "newQuery");
+      },
+      deep: true
+    },
+    selectedDate: function(val) {
+      this.getFirstAppointments();
+    },
+    selectedRole: function(val) {
+      this.getFirstAppointments();
+    }
+  },
+  components: {
+    MainBtn,
+    MainSearch,
+    AppointmentsMobile,
+    GreyBlock,
+    MainLoading
+  },
+  mounted() {
+    this.getFirstAppointments();
   }
 };
 </script>
@@ -83,6 +264,19 @@ export default {
 
 .appointments {
   width: 100%;
+}
+
+.appointments__info {
+  height: unset;
+  padding: 1rem;
+  margin-top: 1rem;
+  &--loading {
+    svg {
+      height: 2rem;
+      width: 2rem;
+      margin-left: 1rem;
+    }
+  }
 }
 
 .appointments__top {
@@ -181,6 +375,13 @@ export default {
     & ~ .appointments__sort {
       border-radius: 0;
     }
+  }
+}
+
+@media only screen and (min-width: 1150px) {
+  .appointments__info {
+    height: 24rem;
+    padding: 0 1rem;
   }
 }
 

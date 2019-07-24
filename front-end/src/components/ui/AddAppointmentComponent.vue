@@ -4,7 +4,7 @@
       <MainInput>
         Kiedy?
         <DatePick
-          v-model="data.dateAndTime"
+          v-model="data.date"
           :pickTime="true"
           :format="'YYYY-MM-DD HH:mm'"
           :highlighted="[]"
@@ -78,10 +78,10 @@ export default {
   data: function() {
     return {
       data: {
-        place: null,
-        dateAndTime: "",
-        note: "",
-        patient: null
+        place_id: null,
+        patient_id: null,
+        date: "",
+        note: ""
       },
       patients: [
         {
