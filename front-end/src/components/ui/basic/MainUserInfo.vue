@@ -6,18 +6,18 @@
   >
     <img
       class="user__img"
-      v-bind:src="`${apiUrl}/storage/avatars/${avatar}`"
+      v-bind:src="`${apiUrl}/storage/avatars/${data.avatar}`"
       v-on:click.self="moreInfo()"
     />
     <div
       class="user__name"
       v-on:click.self="moreInfo()"
-    >{{ name }}</div>
+    >{{ data.name }}</div>
     <div
       class="user__phone"
       v-bind:class="{ bigphone: isBigPhone }"
     >
-      <a :href="`tel:${phone}`">
+      <a :href="`tel:${data.phone}`">
         <span
           aria-hidden="true"
           class="fas fa-phone"
@@ -40,17 +40,19 @@ export default {
     };
   },
   props: {
-    name: {
-      type: String
-    },
-    avatar: {
-      type: String
-    },
-    phone: {
-      type: String
-    },
-    id: {
-      type: Number | String
+    data: {
+      name: {
+        type: String
+      },
+      avatar: {
+        type: String
+      },
+      phone: {
+        type: String
+      },
+      id: {
+        type: Number | String
+      }
     },
     isClickable: {
       type: Boolean,

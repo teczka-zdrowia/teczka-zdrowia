@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="selectedRole">
     <div class="patients__actions">
       <div class="patients__title">
         Pacjenci

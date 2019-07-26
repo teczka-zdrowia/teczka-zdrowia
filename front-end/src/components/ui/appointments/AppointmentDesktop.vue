@@ -5,10 +5,7 @@
   >
     <MainUserInfo
       class="list__info__el"
-      :id="data.author.id"
-      :name="data.author.name"
-      :avatar="data.author.avatar"
-      :phone="data.author.phone"
+      :data="data.author"
       :isBig="true"
       :isBigPhone="true"
       :userId="1"

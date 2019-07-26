@@ -4,9 +4,7 @@
       <div class="list__info">
         <MainUserInfo
           class="list__info__el list__info__el--user"
-          :name="data.author.name"
-          :avatar="data.author.avatar"
-          :phone="data.author.phone"
+          :data="data.author"
           :isBig="true"
           :userId="1"
         />
