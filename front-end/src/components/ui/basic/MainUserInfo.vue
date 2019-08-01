@@ -6,7 +6,7 @@
   >
     <img
       class="user__img"
-      v-bind:src="`${apiUrl}/storage/avatars/${data.avatar}`"
+      :src="data.avatar ? `${apiUrl}/storage/avatars/${data.avatar}` : '/static/img/icons/profile-icon-720x720.png'"
       v-on:click.self="moreInfo()"
     />
     <div

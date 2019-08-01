@@ -5,7 +5,7 @@
       v-on:click="isShowed = !isShowed"
     >
       <img
-        :src="`${apiUrl}/storage/avatars/${userData.avatar}`"
+        :src="userData.avatar ? `${apiUrl}/storage/avatars/${userData.avatar}` : '/static/img/icons/profile-icon-720x720.png'"
         :alt="userData.name"
       >
       <div class="info__content">

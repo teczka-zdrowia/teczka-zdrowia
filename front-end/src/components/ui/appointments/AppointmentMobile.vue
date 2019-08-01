@@ -5,7 +5,7 @@
   >
     <MainUserInfo
       class="appointment__user"
-      :data="data.patient"
+      :data="data.patient || data.author"
       :isClickable="false"
     />
     <div
