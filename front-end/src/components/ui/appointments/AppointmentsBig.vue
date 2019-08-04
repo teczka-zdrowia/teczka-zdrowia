@@ -1,8 +1,9 @@
 <template>
   <div>
-    <AppointmentDesktop
+    <AppointmentBig
       :key="index"
       :data="appointment.node"
+      :viewerType="viewerType"
       v-for="(appointment, index) in appointments"
     />
     <router-link
@@ -36,10 +37,10 @@
 
 <script>
 import MainBtn from "../basic/MainBtn";
-import AppointmentDesktop from "./AppointmentDesktop";
+import AppointmentBig from "./AppointmentBig";
 
 export default {
-  name: "AppointmentsDesktop",
+  name: "AppointmentsBig",
   props: {
     showAppointmentsLink: {
       type: Boolean,
@@ -53,13 +54,17 @@ export default {
       type: Boolean,
       default: false
     },
+    viewerType: {
+      type: "patient" | "author",
+      default: "patient"
+    },
     appointments: {
       type: Array
     }
   },
   components: {
     MainBtn,
-    AppointmentDesktop
+    AppointmentBig
   }
 };
 </script>

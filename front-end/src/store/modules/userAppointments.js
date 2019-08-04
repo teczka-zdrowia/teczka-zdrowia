@@ -1,9 +1,9 @@
 import { apolloClient } from '@/apollo'
-import { ME_APPOINTMENTS_QUERY } from './queries/_index'
+import { ME_APPOINTMENTS_QUERY } from '@/graphql/queries/_index'
 import {
   UPDATE_APPOINTMENT_MUTATION,
   UPDATE_APPOINTMENT_CONFIRMATION_MUTATION
-} from './mutations/_index'
+} from '@/graphql/mutations/_index'
 
 const state = {
   pageInfo: {

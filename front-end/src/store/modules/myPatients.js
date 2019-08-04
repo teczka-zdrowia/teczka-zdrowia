@@ -1,5 +1,5 @@
 import { apolloClient } from '@/apollo'
-import { MY_PATIENTS_QUERY } from './queries/_index'
+import { MY_PATIENTS_QUERY } from '@/graphql/queries/_index'
 
 const state = {
   list: []

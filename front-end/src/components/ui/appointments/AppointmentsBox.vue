@@ -62,7 +62,7 @@
         </div>
       </MainSearch>
     </div>
-    <AppointmentsDesktop
+    <AppointmentsBig
       class="appointments__content"
       :showAppointmentsLink="showAppointmentsLink"
       :showMoreBtn="pageInfo.hasNextPage && !showAppointmentsLink"
@@ -71,7 +71,7 @@
       v-on:loadNext="getNextAppointments"
       v-if="!isMobile && canShowAppointments"
     />
-    <AppointmentsMobile
+    <AppointmentsSmall
       :showAppointmentsLink="showAppointmentsLink"
       :showMoreBtn="pageInfo.hasNextPage && !showAppointmentsLink"
       :loading="loading.next"
@@ -97,8 +97,8 @@ import MainBtn from "../basic/MainBtn";
 import MainSearch from "../basic/MainSearch";
 import MainLoading from "../basic/MainLoading";
 import GreyBlock from "../blocks/GreyBlock";
-import AppointmentsDesktop from "./AppointmentsDesktop";
-import AppointmentsMobile from "./AppointmentsMobile";
+import AppointmentsBig from "./AppointmentsBig";
+import AppointmentsSmall from "./AppointmentsSmall";
 
 import { mapGetters, mapActions } from "vuex";
 
@@ -238,8 +238,8 @@ export default {
   components: {
     MainBtn,
     MainSearch,
-    AppointmentsDesktop,
-    AppointmentsMobile,
+    AppointmentsBig,
+    AppointmentsSmall,
     GreyBlock,
     MainLoading
   },

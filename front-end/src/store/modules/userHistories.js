@@ -1,5 +1,8 @@
 import { apolloClient } from '@/apollo'
-import { ME_HISTORIES_QUERY, HISTORY_MORE_QUERY } from './queries/_index'
+import {
+  ME_HISTORIES_QUERY,
+  HISTORY_MORE_QUERY
+} from '@/graphql/queries/_index'
 
 const state = {
   pageInfo: {

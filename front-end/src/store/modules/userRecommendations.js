@@ -1,6 +1,6 @@
 import { apolloClient } from '@/apollo'
-import { ME_RECOMMENDATIONS_QUERY } from './queries/_index'
-import { UPDATE_RECOMMENDATION_MUTATION } from './mutations/_index'
+import { ME_RECOMMENDATIONS_QUERY } from '@/graphql/queries/_index'
+import { UPDATE_RECOMMENDATION_MUTATION } from '@/graphql/mutations/_index'
 
 const state = {
   paginatorInfo: {

@@ -14,15 +14,13 @@
           <div class="list__info__el list__info__el--place">
             <MainPlaceInfo
               v-if="isMobile"
-              :name="data.place.name"
-              :id="data.place.id"
+              :data="data.place"
               :noPadding="true"
               :violetIcon="true"
             />
             <MainPlaceInfo
               v-if="!isMobile"
-              :name="data.place.name"
-              :id="data.place.id"
+              :data="data.place"
             />
           </div>
         </div>

@@ -174,7 +174,7 @@ export default {
   }
   .about__actions {
     margin-left: 0;
-    width: calc(100% - 3em);
+    width: calc(100% - 4rem);
     .block__content {
       height: 12em;
     }

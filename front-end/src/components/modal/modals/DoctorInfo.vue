@@ -2,15 +2,16 @@
   <div class="modal--di">
     <img
       class="modal--di__img"
-      :src="data.doctor.img"
+      :alt="user.name"
+      :src="user.avatar ? `${apiUrl}/storage/avatars/${user.avatar}` : '/static/img/icons/avatar.png'"
     >
 
     <div class="modal--di__content">
       <div class="modal--di__title">
-        {{ data.doctor.name }}
+        {{ user.name }}
       </div>
       <div class="modal--di__spec">
-        {{ data.doctor.spec }}
+        {{ user.specialization || 'Ładowanie...' }}
       </div>
       <div class="modal--di__info">
         <div class="modal--di__info__el">
@@ -18,16 +19,16 @@
             aria-hidden="true"
             class="fas fa-phone"
           />
-          <a :href="`tel:${ data.doctor.phone }`">
-            {{ data.doctor.phone }}</a>
+          <a :href="`tel:${ user.phone }`">
+            {{ user.phone }}</a>
         </div>
         <div class="modal--di__info__el">
           <span
             aria-hidden="true"
             class="far fa-envelope"
           />
-          <a :href="`mailto:${ data.doctor.email }`">
-            {{ data.doctor.email }}</a>
+          <a :href="`mailto:${ user.email }`">
+            {{ user.email || 'Ładowanie...' }}</a>
         </div>
       </div>
       <button
@@ -40,15 +41,24 @@
 </template>
 
 <script>
+import { API_URL } from "@/apollo/constants";
 import { mapActions, mapGetters } from "vuex";
 import "../modal.scss";
 
 export default {
   name: "DoctorInfo",
+  data: function() {
+    return {
+      apiUrl: API_URL
+    };
+  },
   computed: {
     ...mapGetters({
       data: "modal/data"
-    })
+    }),
+    user: function() {
+      return this.data.role.user;
+    }
   },
   methods: {
     ...mapActions({
@@ -62,9 +72,12 @@ export default {
 @import "../../../main";
 
 .modal--di {
+  max-width: 90vw;
   &__img {
     display: block;
-    width: 33%;
+    width: 8rem;
+    height: 8rem;
+    object-fit: cover;
     margin: auto;
     margin-bottom: -1.5rem;
     border-radius: 2rem;
@@ -116,6 +129,10 @@ export default {
         border-radius: 0.5rem;
         background: #f5f5f5;
         width: 100%;
+        max-width: 15rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }

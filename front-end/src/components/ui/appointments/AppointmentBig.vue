@@ -5,16 +5,15 @@
   >
     <MainUserInfo
       class="list__info__el"
-      :data="data.author"
+      :data="viewerType === 'patient' ? data.author : data.patient"
+      :type="viewerType === 'patient' ? 'doctor' : 'patient'"
       :isBig="true"
       :isBigPhone="true"
-      :userId="1"
     />
     <div class="appointment__content">
       <MainPlaceInfo
         class="content__el"
-        :name="data.place.name"
-        :id="data.place.id"
+        :data="data.place"
       />
       <div class="content__few">
         <div class="content__el">
@@ -40,7 +39,10 @@
         {{ data.note }}
       </div>
     </div>
-    <div class="appointment__actions">
+    <div
+      class="appointment__actions"
+      v-if="viewerType === 'patient'"
+    >
       <MainBtn
         class="appointment__btn appointment__btn--confirmed"
         v-if="data.confirmed"
@@ -64,6 +66,25 @@
           class="far fa-check-circle"
         ></span>Potwierdź</MainBtn>
     </div>
+    <div
+      class="appointment__actions"
+      v-if="viewerType === 'author'"
+    >
+      <div
+        class="appointment__btn appointment__btn--confirmed"
+        v-if="data.confirmed"
+      ><span
+          aria-hidden="true"
+          class="fas fa-check-circle"
+        ></span>Potwierdzona</div>
+      <div
+        class="appointment__btn appointment__btn--not-confirmed"
+        v-if="!data.confirmed"
+      ><span
+          aria-hidden="true"
+          class="far fa-times-circle"
+        ></span>Niepotwierdzona</div>
+    </div>
   </div>
 </template>
 
@@ -75,7 +96,7 @@ import MainPlaceInfo from "../basic/MainPlaceInfo";
 import { mapActions } from "vuex";
 
 export default {
-  name: "AppointmentDekstop",
+  name: "AppointmentBig",
   data: function() {
     return {
       isConfirmationLoading: false
@@ -88,6 +109,10 @@ export default {
     hideBorders: {
       type: Boolean,
       default: false
+    },
+    viewerType: {
+      type: "patient" | "author",
+      default: "patient"
     }
   },
   components: {
@@ -150,16 +175,6 @@ export default {
   text-align: center;
 }
 
-.content__few {
-  width: 100%;
-  display: flex;
-  div {
-    justify-content: center;
-  }
-  div:first-child {
-    margin-right: 1em;
-  }
-}
 .content__el {
   @extend %text--center;
   text-align: left;
@@ -172,10 +187,26 @@ export default {
   color: #3e3e45;
   border-radius: 1rem;
   width: calc(100% - 2em);
-  margin-bottom: 1rem;
   span {
     color: $darkviolet;
     margin-right: 10px;
+  }
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}
+
+.content__few {
+  width: 100%;
+  display: flex;
+  div {
+    justify-content: center;
+  }
+  div:first-child {
+    margin-right: 1em;
+  }
+  div:last-child {
+    margin-bottom: 1rem;
   }
 }
 

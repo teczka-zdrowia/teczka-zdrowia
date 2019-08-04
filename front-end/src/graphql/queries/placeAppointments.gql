@@ -23,11 +23,13 @@ query(
         node {
           id
           date
+          note
           patient {
             id
             avatar
             name
             phone
+            email
           }
           author {
             id

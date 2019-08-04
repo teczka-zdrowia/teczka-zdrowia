@@ -50,10 +50,11 @@
         </div>
       </MainSearch>
     </div>
-    <AppointmentsMobile
+    <AppointmentsSmall
       :showAppointmentsLink="false"
       :showPlace="true"
       :canEdit="true"
+      :viewerType="'author'"
       :showMoreBtn="pageInfo.hasNextPage"
       :loading="loading.next"
       :appointments="appointments"
@@ -78,7 +79,7 @@ import MainBtn from "../../components/ui/basic/MainBtn";
 import MainSearch from "../../components/ui/basic/MainSearch";
 import MainLoading from "../../components/ui/basic/MainLoading";
 import GreyBlock from "../../components/ui/blocks/GreyBlock";
-import AppointmentsMobile from "../../components/ui/appointments/AppointmentsMobile";
+import AppointmentsSmall from "../../components/ui/appointments/AppointmentsSmall";
 
 import { mapGetters, mapActions } from "vuex";
 
@@ -249,7 +250,7 @@ export default {
   components: {
     MainBtn,
     MainSearch,
-    AppointmentsMobile,
+    AppointmentsSmall,
     GreyBlock,
     MainLoading
   },

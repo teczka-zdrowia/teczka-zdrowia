@@ -13,6 +13,9 @@ const mutations = {
   HIDE_MODAL (state) {
     state.visible = false
     state.data = null
+  },
+  UPDATE_MODAL_DATA (state, data) {
+    state.data = Object.assign(state.data, data)
   }
 }
 
@@ -22,6 +25,9 @@ const actions = {
   },
   hide ({ commit }) {
     commit('HIDE_MODAL')
+  },
+  updateData ({ commit }, data) {
+    commit('UPDATE_MODAL_DATA', data)
   }
 }
 

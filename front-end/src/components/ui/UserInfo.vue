@@ -5,7 +5,7 @@
       v-on:click="isShowed = !isShowed"
     >
       <img
-        :src="userData.avatar ? `${apiUrl}/storage/avatars/${userData.avatar}` : '/static/img/icons/profile-icon-720x720.png'"
+        :src="userData.avatar ? `${apiUrl}/storage/avatars/${userData.avatar}` : '/static/img/icons/avatar.png'"
         :alt="userData.name"
       >
       <div class="info__content">
@@ -101,14 +101,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      userData: "userInfo/full",
-      isUserLoggedIn: "userInfo/isLoggedIn"
+      userData: "userInfo/full"
     })
-  },
-  mounted() {
-    if (this.isUserLoggedIn) {
-      this.getAutheticatedUserData();
-    }
   }
 };
 </script>

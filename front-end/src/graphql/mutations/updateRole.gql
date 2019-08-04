@@ -1,0 +1,7 @@
+mutation($id: ID!, $data: UpdateRoleInput!) {
+  updateRole(id: $id, data: $data) {
+    id
+    is_active
+    permission_type
+  }
+}

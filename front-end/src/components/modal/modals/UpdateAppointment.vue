@@ -1,9 +1,9 @@
 <template>
   <form
-    class="modal--aa"
-    @submit.prevent="addAppointment"
+    class="modal--ua"
+    @submit.prevent="updateAppointment"
   >
-    <AddAppointmentComponent />
+    <UpdateAppointmentComponent />
     <div class="modal__actions">
       <button
         class="modal__btn modal__btn--grey"
@@ -15,21 +15,21 @@
         :loading="isLoading"
         :disabled="isLoading"
         color="#fafafa"
-        v-on:click="addAppointment"
-      >Dodaj wizytę</MainBtn>
+        v-on:click="updateAppointment"
+      >Zaktualizuj wizytę</MainBtn>
     </div>
   </form>
 </template>
 
 <script>
-import AddAppointmentComponent from "../../ui/AddAppointmentComponent";
+import UpdateAppointmentComponent from "../../ui/UpdateAppointmentComponent";
 import MainBtn from "../../ui/basic/MainBtn";
 import { mapActions, mapGetters } from "vuex";
 
 import "../modal.scss";
 
 export default {
-  name: "AddAppointment",
+  name: "UpdateAppointment",
   data: function() {
     return {
       isLoading: false
@@ -38,21 +38,35 @@ export default {
   computed: {
     ...mapGetters({
       data: "modal/data",
-      appointmentData: "addAppointment/data"
+      appointmentData: "updateAppointment/data",
+      appointmentOldData: "updateAppointment/oldData"
     })
   },
   methods: {
     ...mapActions({
       hideModal: "modal/hide",
-      addUserAppointment: "addAppointment/add"
+      showModal: "modal/show",
+      updateUserAppointment: "updateAppointment/update"
     }),
-    addAppointment: async function() {
+    updateAppointment: async function() {
       this.isLoading = true;
 
-      await this.addUserAppointment(this.appointmentData)
-        .then(() => {
-          this.$toasted.success("Poprawnie dodano wizytę");
-          this.hideModal();
+      const payload = {
+        id: this.appointmentOldData.id,
+        data: this.appointmentData
+      };
+
+      await this.updateUserAppointment(payload)
+        .then(appointment => {
+          this.$toasted.success("Poprawnie zaktualizowano wizytę");
+          this.showModal({
+            componentName: "AppointmentInfo",
+            data: {
+              hideBorders: true,
+              viewerType: "author",
+              appointment: appointment
+            }
+          });
         })
         .catch(error => {
           console.error(error);
@@ -63,14 +77,14 @@ export default {
     }
   },
   components: {
-    AddAppointmentComponent,
+    UpdateAppointmentComponent,
     MainBtn
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.modal--aa {
+.modal--ua {
   display: flex;
   flex-direction: column;
   background: #f5f5f5;
@@ -81,7 +95,7 @@ export default {
 }
 
 @media only screen and (max-width: 720px) {
-  .modal--aa {
+  .modal--ua {
     width: 100vw;
     border-radius: 0;
     height: calc(100vh - 56px);

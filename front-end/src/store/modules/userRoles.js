@@ -1,9 +1,9 @@
 import { apolloClient } from '@/apollo'
-import { ME_ROLES_QUERY } from './queries/_index'
+import { ME_ROLES_QUERY } from '@/graphql/queries/_index'
 import {
   CREATE_PLACE_MUTATION,
   UPDATE_PLACE_MUTATION
-} from './mutations/_index'
+} from '@/graphql/mutations/_index'
 
 const state = {
   selected: null,
@@ -55,7 +55,10 @@ const actions = {
       .then(place => {
         const payload = {
           permissionType: 'ADMIN',
-          place: place
+          place: {
+            ...place,
+            is_active: true
+          }
         }
         commit('ADD_TO_ROLES', payload)
       })

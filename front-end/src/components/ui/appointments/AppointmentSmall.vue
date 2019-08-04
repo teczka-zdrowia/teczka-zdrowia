@@ -5,7 +5,8 @@
   >
     <MainUserInfo
       class="appointment__user"
-      :data="data.patient || data.author"
+      :data="viewerType === 'patient' ? data.author : data.patient"
+      :type="viewerType === 'patient' ? 'doctor' : 'patient'"
       :isClickable="false"
     />
     <div
@@ -15,8 +16,7 @@
       <MainPlaceInfo
         class="content__el"
         :noPadding="true"
-        :name="data.place.name"
-        :id="data.place.id"
+        :data="data.place"
       />
     </div>
     <div
@@ -57,7 +57,7 @@ import MainPlaceInfo from "../basic/MainPlaceInfo";
 import { mapActions } from "vuex";
 
 export default {
-  name: "AppointmentMobile",
+  name: "AppointmentSmall",
   props: {
     data: {
       type: Object
@@ -70,9 +70,9 @@ export default {
       type: Boolean,
       default: false
     },
-    canEdit: {
-      type: Boolean,
-      default: false
+    viewerType: {
+      type: "patient" | "author",
+      default: "patient"
     }
   },
   components: {
@@ -85,29 +85,12 @@ export default {
       showModal: "modal/show"
     }),
     moreInfo: function(id) {
-      /* Backend communication TODO */
       this.showModal({
         componentName: "AppointmentInfo",
         data: {
           hideBorders: true,
-          canEdit: this.canEdit,
-          appointment: {
-            doctor: {
-              img:
-                "https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/",
-              name: "Jan Iksiński",
-              spec: "psycholog",
-              phone: "123 456 789"
-            },
-            date: "16.10.2018",
-            time: "18:30",
-            place: {
-              id: 1,
-              name: "MedMax"
-            },
-            desc: "Ból klatki piersiowej",
-            isAccepted: false
-          }
+          viewerType: this.viewerType,
+          appointment: this.data
         }
       });
     }

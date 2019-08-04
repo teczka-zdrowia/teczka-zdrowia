@@ -5,7 +5,10 @@
       v-bind:class="{ 'base__top--no-specialization': !userData.is_payment_valid }"
     >
       <div class="user__img">
-        <img :src="`${apiUrl}/storage/avatars/${userData.avatar}`">
+        <img
+          :alt="userData.name"
+          :src="userData.avatar ? `${apiUrl}/storage/avatars/${userData.avatar}` : '/static/img/icons/avatar.png'"
+        >
         <label
           class="img__edit"
           v-bind:style="[

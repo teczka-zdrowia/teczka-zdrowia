@@ -2,16 +2,17 @@
   <div
     class="user"
     v-bind:class="{ clickable: isClickable, big: isBig }"
-    v-on:click.self="moreInfo()"
+    v-on:click="moreInfo"
   >
     <img
       class="user__img"
-      :src="data.avatar ? `${apiUrl}/storage/avatars/${data.avatar}` : '/static/img/icons/profile-icon-720x720.png'"
-      v-on:click.self="moreInfo()"
+      :alt="data.name"
+      :src="data.avatar ? `${apiUrl}/storage/avatars/${data.avatar}` : '/static/img/icons/avatar.png'"
+      v-on:click="moreInfo"
     />
     <div
       class="user__name"
-      v-on:click.self="moreInfo()"
+      v-on:click="moreInfo"
     >{{ data.name }}</div>
     <div
       class="user__phone"
@@ -54,6 +55,9 @@ export default {
         type: Number | String
       }
     },
+    type: {
+      type: String
+    },
     isClickable: {
       type: Boolean,
       default: true
@@ -73,22 +77,18 @@ export default {
     }),
     moreInfo: function() {
       if (this.isClickable) {
-        /* Backend communication TODO */
-        this.showModal({
-          componentName: "DoctorInfo",
-          data: {
-            hideBorders: true,
-            doctor: {
-              id: 1,
-              img:
-                "https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/",
-              name: "Konto Testowe",
-              spec: "fizjoterapeuta",
-              email: "adrian@orlow.me",
-              phone: "111 222 333",
-              birthdate: "2002-12-23 00:11:32.000000"
-            }
+        const isDoctor = this.type === "doctor";
+        const componentName = isDoctor ? "DoctorInfo" : "UserInfo";
+        const data = {
+          hideBorders: true,
+          role: {
+            user: this.data
           }
+        };
+
+        this.showModal({
+          componentName: componentName,
+          data: data
         });
       }
     }

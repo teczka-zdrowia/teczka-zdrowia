@@ -1,12 +1,13 @@
 <template>
   <div>
-    <AppointmentMobile
+    <AppointmentSmall
       v-for="(appointment, index) in appointments"
       :key="index"
       :data="appointment.node"
       :showAddedBy="showAddedBy"
       :showPlace="showPlace"
       :canEdit="canEdit"
+      :viewerType="viewerType"
     />
     <router-link
       to="/Appointments"
@@ -39,11 +40,11 @@
 </template>
 
 <script>
-import AppointmentMobile from "./AppointmentMobile";
+import AppointmentSmall from "./AppointmentSmall";
 import MainBtn from "../basic/MainBtn";
 
 export default {
-  name: "AppointmentsMobile",
+  name: "AppointmentsSmall",
   data: function() {
     return {
       isLoading: false
@@ -76,11 +77,15 @@ export default {
     canEdit: {
       type: Boolean,
       default: false
+    },
+    viewerType: {
+      type: "patient" | "author",
+      default: "patient"
     }
   },
   components: {
     MainBtn,
-    AppointmentMobile
+    AppointmentSmall
   }
 };
 </script>

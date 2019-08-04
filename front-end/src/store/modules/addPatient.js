@@ -1,6 +1,6 @@
 import { apolloClient } from '@/apollo'
-import { USER_BY_PESEL_QUERY } from './queries/_index'
-import { INITIALIZE_USER_MUTATION } from './mutations/_index'
+import { USER_BY_PESEL_QUERY } from '@/graphql/queries/_index'
+import { INITIALIZE_USER_MUTATION } from '@/graphql/mutations/_index'
 
 const getDefaultState = () => {
   return {

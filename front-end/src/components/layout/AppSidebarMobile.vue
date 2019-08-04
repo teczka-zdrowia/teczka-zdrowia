@@ -76,15 +76,15 @@
           <div class="nav__tooltip">Płatności</div>
         </span>
       </router-link>
-      <MainBtn
-        class="nav__el nav__el--btn"
-        v-on:click.native="addAppointment"
-      >
-        <span
-          aria-hidden="true"
-          class="fas fa-plus"
-        />
-      </MainBtn>
+      <router-link to="/AddAppointment">
+        <MainBtn class="nav__el nav__el--btn">
+          <span
+            aria-hidden="true"
+            class="fas fa-plus"
+          />
+        </MainBtn>
+      </router-link>
+
       <!--<router-link to="/Messages" class="nav__el">
         <span aria-hidden="true" class="fas fa-envelope">
           <div class="nav__tooltip">Wiadomości</div>

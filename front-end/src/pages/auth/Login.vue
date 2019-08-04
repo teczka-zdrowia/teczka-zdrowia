@@ -85,7 +85,7 @@ export default {
         })
         .then(() => {
           this.$toasted.success("Pomyślnie zalogowano");
-          this.$router.push({ name: "Dashboard" });
+          window.location.href = "/Dashboard";
         })
         .catch(error => {
           this.$toasted.error("Niepoprawne dane logowania");

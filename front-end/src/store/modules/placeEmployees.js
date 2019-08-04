@@ -1,6 +1,6 @@
 import { apolloClient } from '@/apollo'
-import { PLACE_EMPLOYEES_QUERY } from './queries/_index'
-import { CREATE_ROLE_MUTATION } from './mutations/_index'
+import { PLACE_EMPLOYEES_QUERY } from '@/graphql/queries/_index'
+import { CREATE_ROLE_MUTATION } from '@/graphql/mutations/_index'
 
 const state = {
   list: []

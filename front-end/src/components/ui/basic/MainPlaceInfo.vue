@@ -10,7 +10,7 @@
       v-if="!hideIcon"
       v-bind:class="{violet: violetIcon}"
     />
-    {{ name }}
+    {{ data.name }}
   </div>
 </template>
 
@@ -20,11 +20,8 @@ import { mapActions } from "vuex";
 export default {
   name: "MainPlaceInfo",
   props: {
-    name: {
-      type: String
-    },
-    placeID: {
-      type: Number
+    data: {
+      type: Object
     },
     noPadding: {
       default: false,
@@ -44,18 +41,11 @@ export default {
       showModal: "modal/show"
     }),
     moreInfo: function() {
-      /* Backend communication TODO */
       this.showModal({
         componentName: "PlaceInfo",
         data: {
           hideBorders: true,
-          id: 1,
-          name: "MedMax",
-          address: "Kwiatowa 45",
-          city: "Jaworzno",
-          isActive: true,
-          isDeleted: false,
-          isAdmin: false
+          place: this.data
         }
       });
     }

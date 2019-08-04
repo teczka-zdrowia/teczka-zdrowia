@@ -1,14 +1,16 @@
 query($id: ID!) {
   place(id: $id) {
     id
-    patients {
+    employees {
       id
+      permission_type
       is_active
       user {
         id
         avatar
         name
         phone
+        email
       }
     }
   }

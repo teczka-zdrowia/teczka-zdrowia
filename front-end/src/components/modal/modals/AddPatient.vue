@@ -1,5 +1,5 @@
 <template>
-  <div class="modal--cp">
+  <form class="modal--cp" @submit.prevent="createPatient">
     <AddPatientComponent />
     <div class="modal__actions">
       <button
@@ -16,7 +16,7 @@
         v-on:click.native="createPatient"
       >Dodaj pacjenta</MainBtn>
     </div>
-  </div>
+  </form>
 </template>
 
 <script>

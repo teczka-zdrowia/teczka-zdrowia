@@ -27,6 +27,7 @@ query(
           avatar
           name
           phone
+          email
         }
         place {
           id

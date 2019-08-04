@@ -1,5 +1,5 @@
 import { apolloClient } from '@/apollo'
-import { APPOINTMENTS_BY_ME_QUERY } from './queries/_index'
+import { APPOINTMENTS_BY_ME_QUERY } from '@/graphql/queries/_index'
 
 const state = {
   pageInfo: {

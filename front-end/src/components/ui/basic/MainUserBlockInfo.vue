@@ -2,7 +2,7 @@
   <div class="user">
     <div class="user__img">
       <img
-        :src="`${apiUrl}/storage/avatars/${user.avatar}`"
+        :src="user.avatar ? `${apiUrl}/storage/avatars/${user.avatar}` : '/static/img/icons/avatar.png'"
         :alt="user.name"
       >
     </div>

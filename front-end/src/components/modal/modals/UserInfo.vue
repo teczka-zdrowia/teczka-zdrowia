@@ -5,11 +5,11 @@
       <div class="modal--ui__top">
         <img
           class="modal--ui__img"
-          :src="data.user.img"
+          :alt="user.name"
+          :src="user.avatar ? `${apiUrl}/storage/avatars/${user.avatar}` : '/static/img/icons/avatar.png'"
         >
         <div class="modal--ui__name">
-          <span>{{ data.user.name }}</span>
-          <span>{{ data.user.surname }}</span>
+          <span>{{ user.name }}</span>
         </div>
       </div>
       <div class="modal--ui__info">
@@ -18,16 +18,16 @@
             aria-hidden="true"
             class="fas fa-phone"
           />
-          <a :href="`tel:${ data.user.phone }`">
-            {{ data.user.phone }}</a>
+          <a :href="`tel:${ user.phone }`">
+            {{ user.phone }}</a>
         </div>
         <div class="modal--ui__info__el">
           <span
             aria-hidden="true"
             class="far fa-envelope"
           />
-          <a :href="`mailto:${ data.user.email }`">
-            {{ data.user.email }}</a>
+          <a :href="`mailto:${ user.email }`">
+            {{ user.email }}</a>
         </div>
 
         <div class="modal--ui__info__el">
@@ -41,60 +41,136 @@
 
         <div
           class="modal__actions fullwidth modal--ui__info__el"
-          v-if="data.user.userType > 0"
+          v-if="data.role.permission_type && !viewerIsUser"
         >
           <MainSelect class="modal--ui__select">
             <option
-              :selected="data.user.userType === 1"
-              value="1"
+              :selected="data.role.permission_type === 'ADMIN'"
+              value="ADMIN"
             >&#xf521;&nbsp;&nbsp;&nbsp;Administrator</option>
             <option
-              :selected="data.user.userType === 2"
-              value="2"
+              :selected="data.role.permission_type === 'EMPLOYEE'"
+              value="EMPLOYEE"
             >&#xf007;&nbsp;&nbsp;&nbsp;Pracownik</option>
           </MainSelect>
         </div>
       </div>
-      <button
-        v-if="data.user.userType > 0"
-        class="modal__btn fullwidth modal__btn--violet"
-      >Odłącz od gabinetu</button>
-      <button
-        v-if="data.editAffiliation && !data.user.isActive"
+      <MainBtn
+        v-if="data.role.permission_type && !viewerIsUser"
+        :loading="loading.delete"
+        :disable="loading.delete"
+        class="modal__btn fullwidth modal__btn--red"
+      >Usuń</MainBtn>
+      <MainBtn
+        v-if="data.editAffiliation && !data.role.is_active && !viewerIsUser"
+        :loading="loading.activate"
+        :disable="loading.activate"
+        color="#fafafa"
+        v-on:click.native="activateRole"
         class="modal__btn fullwidth modal__btn--green"
-      >Aktywuj pacjenta</button>
-      <button
-        v-if="data.editAffiliation && data.user.isActive"
+      >Aktywuj</MainBtn>
+      <MainBtn
+        v-if="data.editAffiliation && data.role.is_active && !viewerIsUser"
+        :loading="loading.activate"
+        :disable="loading.activate"
+        color="#fafafa"
+        v-on:click.native="deactivateRole"
         class="modal__btn fullwidth modal__btn--violet"
-      >Dezaktywuj pacjenta</button>
-      <button
+      >Dezaktywuj</MainBtn>
+      <MainBtn
         class="modal__btn fullwidth modal__btn--grey"
         type="button"
-        @click="hideModal"
-      >Zamknij</button>
+        v-on:click.native="hideModal"
+      >Zamknij</MainBtn>
     </div>
   </div>
 </template>
 
 <script>
 import MainSelect from "../../ui/basic/MainSelect";
+import MainBtn from "../../ui/basic/MainBtn";
+import { API_URL } from "@/apollo/constants";
 import { mapActions, mapGetters } from "vuex";
 import "../modal.scss";
 
 export default {
   name: "PatientInfo",
+  data: function() {
+    return {
+      apiUrl: API_URL,
+      loading: {
+        delete: false,
+        activate: false
+      }
+    };
+  },
   components: {
-    MainSelect
+    MainSelect,
+    MainBtn
   },
   computed: {
     ...mapGetters({
-      data: "modal/data"
-    })
+      data: "modal/data",
+      loggedInUser: "userInfo/full"
+    }),
+    user: function() {
+      return this.data.role.user;
+    },
+    viewerIsUser: function() {
+      return this.loggedInUser.id === this.user.id;
+    }
   },
   methods: {
     ...mapActions({
-      hideModal: "modal/hide"
-    })
+      hideModal: "modal/hide",
+      updatePatientRole: "placePatients/updateRole",
+      deletePatientRole: "placePatients/deleteRole"
+    }),
+    updateRole: async function(payload) {
+      const updateEmployee = this.data.role.permission_type !== undefined;
+
+      if (updateEmployee) {
+        //
+      } else {
+        await this.updatePatientRole(payload).then(() => {
+          this.$toasted.success("Poprawnie zaktualizowano pacjenta");
+        }).catch(error => {
+          console.error(error);
+          this.$toasted.error("Wystąpił błąd");
+        });
+      }
+    },
+    activateRole: async function() {
+      const payload = {
+        id: this.data.role.id,
+        data: {
+          is_active: true
+        }
+      }
+
+      this.loading.activate = true;
+
+      await this.updateRole(payload)
+      
+      this.loading.activate = false;
+    },
+    deactivateRole: async function() {
+      const payload = {
+        id: this.data.role.id,
+        data: {
+          is_active: false
+        }
+      }
+
+      this.loading.activate = true;
+
+      await this.updateRole(payload)
+      
+      this.loading.activate = false;
+    },
+    deleteRole: function() {
+      //
+    }
   }
 };
 </script>

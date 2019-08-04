@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <div v-if="isAppRoute">
-      <AppSidebar v-if="!isMobile" />
-      <AppSidebarMobile v-if="isMobile" />
-      <AppHeader v-if="!isMobile" />
-      <AppHeaderMobile v-if="isMobile" />
+      <AppSidebar v-if="!isMobile && isUserLoggedIn" />
+      <AppSidebarMobile v-if="isMobile && isUserLoggedIn" />
+      <AppHeader v-if="!isMobile && isUserLoggedIn" />
+      <AppHeaderMobile v-if="isMobile && isUserLoggedIn" />
 
       <router-view
         class="app__router"
@@ -38,7 +38,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      updateWindowWidthAndHeight: "window/updateWidthAndHeight"
+      updateWindowWidthAndHeight: "window/updateWidthAndHeight",
+      getAutheticatedUserData: "userInfo/getData"
     }),
     updateWindowDimensions: function() {
       this.updateWindowWidthAndHeight({
@@ -50,7 +51,8 @@ export default {
   computed: {
     ...mapGetters({
       isMobile: "window/isMobile",
-      isModalVisible: "modal/visible"
+      isModalVisible: "modal/visible",
+      isUserLoggedIn: "userInfo/isLoggedIn"
     }),
     isAppRoute: function() {
       const paths = ["/", "/auth", "/terms", "/dtm6gz", "/404", "/initialize"];
@@ -67,6 +69,14 @@ export default {
   },
   mounted() {
     window.onresize = () => this.updateWindowDimensions();
+
+    if (this.isUserLoggedIn) {
+      this.getAutheticatedUserData().catch(error => {
+        console.error(error);
+        this.$toasted.error("Wystąpił błąd");
+        this.$router.push({ name: "Auth" });
+      });
+    }
   }
 };
 </script>

@@ -8,7 +8,7 @@
         ref="map"
         :zoom.sync="zoom"
         :options="mapOptions"
-        :center="[52.0715018,19.5211664]"
+        :center="center"
       >
         <l-tile-layer :url="url"></l-tile-layer>
         <l-control-zoom :position="'bottomleft'" />
@@ -63,6 +63,7 @@ export default {
       zoom: 6,
       map: null,
       showSearch: false,
+      center: [52.0715018, 19.5211664],
       mapOptions: {
         zoomControl: false,
         attributionControl: false,
@@ -183,5 +184,9 @@ export default {
 .map__content {
   height: 100%;
   width: 100%;
+}
+
+/deep/ .leaflet-tile-pane {
+  filter: saturate(0);
 }
 </style>

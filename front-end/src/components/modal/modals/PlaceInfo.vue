@@ -4,10 +4,13 @@
       <div class="modal--pi__top">
         <div class="modal--pi__top__info">
           <div class="modal--pi__title">
-            {{ data.name }}
+            {{ data.place.name }}
           </div>
-          <div class="modal--pi__address">
-            {{ data.address }}, {{ data.city }}
+          <div
+            class="modal--pi__address"
+            v-if="data.place.address"
+          >
+            {{ data.place.address }}, {{ data.place.city }}
           </div>
         </div>
         <div class="modal--pi__map">
@@ -36,6 +39,8 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { apolloClient } from "@/apollo";
+import { PLACE_MORE_QUERY } from "@/graphql/queries/_index";
 import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import { L } from "vue2-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -67,25 +72,6 @@ export default {
       marker: null
     };
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.initMap();
-      provider
-        .search({ query: `${this.data.address}, ${this.data.city}` })
-        .then(result => {
-          this.map = this.$refs.map.mapObject.setView(
-            [result[0].y, result[0].x],
-            16
-          );
-          this.marker = L.latLng(result[0].y, result[0].x);
-        });
-    });
-  },
-  components: {
-    LMap,
-    LTileLayer,
-    LMarker
-  },
   computed: {
     ...mapGetters({
       data: "modal/data"
@@ -93,11 +79,48 @@ export default {
   },
   methods: {
     ...mapActions({
-      hideModal: "modal/hide"
+      hideModal: "modal/hide",
+      updateModalData: "modal/updateData"
     }),
     initMap: function() {
       this.map = this.$refs.map.mapObject;
     }
+  },
+  mounted: async function() {
+    await apolloClient
+      .query({
+        query: PLACE_MORE_QUERY,
+        variables: {
+          id: this.data.place.id
+        }
+      })
+      .then(data => data.data.place)
+      .then(place => {
+        const payload = {
+          place: {
+            ...this.data.place,
+            ...place
+          }
+        };
+        this.updateModalData(payload);
+      });
+
+    this.initMap();
+
+    provider
+      .search({ query: `${this.data.place.address}, ${this.data.place.city}` })
+      .then(result => {
+        this.map = this.$refs.map.mapObject.setView(
+          [result[0].y, result[0].x],
+          16
+        );
+        this.marker = L.latLng(result[0].y, result[0].x);
+      });
+  },
+  components: {
+    LMap,
+    LTileLayer,
+    LMarker
   }
 };
 </script>

@@ -1,5 +1,8 @@
 <template>
-  <div class="modal--cp">
+  <form
+    class="modal--cp"
+    @submit.prevent="createEmployee"
+  >
     <AddEmployeeComponent />
     <div class="modal__actions">
       <button
@@ -16,7 +19,7 @@
         v-on:click.native="createEmployee"
       >Dodaj pracownika</MainBtn>
     </div>
-  </div>
+  </form>
 </template>
 
 <script>

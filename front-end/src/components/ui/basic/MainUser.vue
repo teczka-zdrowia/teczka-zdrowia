@@ -5,10 +5,7 @@
     v-on:click="moreInfo"
   >
     <MainUserInfo
-      :id="data.user.id"
-      :name="data.user.name"
-      :avatar="data.user.avatar"
-      :phone="data.user.phone"
+      :data="data.user"
       :isClickable="false"
     />
     <i
@@ -69,24 +66,12 @@ export default {
       showModal: "modal/show"
     }),
     moreInfo: function() {
-      /* Backend communication TODO */
       this.showModal({
         componentName: "UserInfo",
         data: {
           hideBorders: true,
           editAffiliation: this.editAffiliation,
-          user: {
-            isActive: this.isActive,
-            userType: this.userType,
-            id: 1,
-            img:
-              "https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/",
-            name: "Konto",
-            surname: "Testowe",
-            email: "adrian@orlow.me",
-            phone: "111 222 333",
-            birthdate: "2002-12-23 00:11:32.000000"
-          }
+          role: this.data
         }
       });
     }

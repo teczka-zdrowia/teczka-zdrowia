@@ -6,8 +6,7 @@
       </span>
       <MainPlaceInfo
         class="addpatient__place__info"
-        :name="place.name"
-        :id="place.id"
+        :data="place"
       />
     </div>
     <form
@@ -213,7 +212,10 @@ export default {
   }
 
   &__form {
-    width: 30rem;
+    @media only screen and (min-width: 35rem) {
+      width: 30rem;
+    }
+
     label {
       padding: 1.5rem !important;
       width: calc(100% - 3rem) !important;

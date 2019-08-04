@@ -30,17 +30,11 @@
           <div class="more__row">
             <div class="more__row__title">Załączniki</div>
             <div class="more__row__attachments">
-              <!--<div
-                class="more__row__attachment"
-                v-for="attachment in more.attachments"
-                :key="attachment.id"
-              >
-                <span
-                  aria-hidden="true"
-                  class="fas fa-paperclip"
-                />
-                {{ attachment.name }}
-              </div>-->
+              <MainAttachment
+                v-for="(attachment, index) in data.attachments"
+                :key="index"
+                :data="attachment"
+              />
               <GreyBlock
                 class="more__row__text--empty"
                 v-if="data.attachments.length === 0"
@@ -72,6 +66,7 @@
 import MainBtn from "../basic/MainBtn";
 import MainUserInfo from "../basic/MainUserInfo";
 import MainRecommendation from "../basic/MainRecommendation";
+import MainAttachment from "../basic/MainAttachment";
 import MainPlaceInfo from "../basic/MainPlaceInfo";
 import GreyBlock from "../blocks/GreyBlock";
 
@@ -86,6 +81,7 @@ export default {
   },
   components: {
     MainRecommendation,
+    MainAttachment,
     MainPlaceInfo,
     MainUserInfo,
     MainBtn,
@@ -229,29 +225,6 @@ export default {
 }
 .more__row__attachments {
   display: block;
-}
-.more__row__attachment {
-  @extend %text--center;
-  justify-content: left;
-  transition: ease-in-out 0.2s;
-  border-radius: 0.5em;
-  overflow: hidden;
-  cursor: pointer;
-  span {
-    margin-left: 0;
-    margin-right: 1rem;
-    padding: 0.5em;
-    font-size: 1.5em;
-    color: #6a6ee1;
-    background: #eeeef3;
-    border-radius: 0.5em;
-  }
-  &:not(:last-child) {
-    margin-bottom: 1em;
-  }
-  &:hover {
-    background: #eeeef3;
-  }
 }
 .more__row__recommendation {
   width: 100%;

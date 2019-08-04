@@ -21,6 +21,7 @@
           <div class="login__actions">
             <MainBtn
               type="submit"
+              color="#fafafa"
               :loading="isLoading.login"
               :disabled="isLoading.login"
             >Zaloguj się</MainBtn>
@@ -43,6 +44,7 @@
           <div class="login__actions">
             <MainBtn
               type="submit"
+              color="#fafafa"
               :loading="isLoading.signup"
               :disabled="isLoading.signup"
             >Zarejestruj</MainBtn>

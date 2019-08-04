@@ -11,6 +11,8 @@ import Initialize from '@/pages/initialize/Initialize'
 import Map from '@/pages/map/Map'
 import Payment from '@/pages/payment/Payment'
 import Places from '@/pages/places/Places'
+import AddAppointment from '@/pages/addAppointment/AddAppointment'
+import UpdateAppointment from '@/pages/updateAppointment/UpdateAppointment'
 import Appointments from '@/pages/appointments/Appointments'
 import Redirect404 from '@/pages/404/Redirect404'
 import Error404 from '@/pages/404/Error404'
@@ -69,6 +71,24 @@ const router = new Router({
       path: '/Places',
       name: 'Places',
       component: Places,
+      meta: {
+        requiresLogin: true,
+        requiresValidPayment: true
+      }
+    },
+    {
+      path: '/AddAppointment',
+      name: 'AddAppointment',
+      component: AddAppointment,
+      meta: {
+        requiresLogin: true,
+        requiresValidPayment: true
+      }
+    },
+    {
+      path: '/UpdateAppointment',
+      name: 'UpdateAppointment',
+      component: UpdateAppointment,
       meta: {
         requiresLogin: true,
         requiresValidPayment: true

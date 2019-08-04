@@ -1,5 +1,5 @@
 import { apolloClient } from '@/apollo'
-import { AUTH_TOKEN, API_URL } from '@/apollo/constants'
+import { AUTH_TOKEN } from '@/apollo/constants'
 import {
   LOGIN_MUTATION,
   CREATE_USER_MUTATION,
@@ -7,11 +7,8 @@ import {
   UPDATE_PASSWORD_MUTATION,
   LOGOUT_MUTATION,
   DELETE_ME_MUTATION
-} from './mutations/_index'
-import {
-  ME_QUERY,
-  ME_PESEL_QUERY
-} from './queries/_index'
+} from '@/graphql/mutations/_index'
+import { ME_QUERY, ME_PESEL_QUERY } from '@/graphql/queries/_index'
 
 const getDefaultState = () => {
   return {

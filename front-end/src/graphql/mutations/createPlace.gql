@@ -4,6 +4,5 @@ mutation($data: CreatePlaceInput!) {
     name
     address
     city
-    is_active
   }
 }
