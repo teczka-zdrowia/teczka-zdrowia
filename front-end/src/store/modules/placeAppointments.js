@@ -24,7 +24,7 @@ const mutations = {
 }
 
 const actions = {
-  get ({ commit }, { id, first, after, note, date, orderBy, type }) {
+  get ({ commit }, { id, first, after, note, date, orderBy, type, author_id }) {
     return apolloClient
       .query({
         query: PLACE_APPOINTMENTS_QUERY,
@@ -34,7 +34,8 @@ const actions = {
           after: after,
           note: note,
           date: date,
-          orderBy: orderBy
+          orderBy: orderBy,
+          author_id: author_id
         }
       })
       .then(data => data.data.place.appointments)

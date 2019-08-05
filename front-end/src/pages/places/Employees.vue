@@ -101,7 +101,7 @@ export default {
         return ~userName.search(search);
       });
     },
-    sortedSearchResults: function() {
+    sortedByNameSearchResults: function() {
       return this.sortBy === "ASC"
         ? this.searchResults.sort(
             (a, b) => (a.user.name > b.user.name) - (a.user.name < b.user.name)
@@ -109,6 +109,11 @@ export default {
         : this.searchResults.sort(
             (a, b) => (a.user.name < b.user.name) - (a.user.name > b.user.name)
           );
+    },
+    sortedSearchResults: function () {
+      return this.sortedByNameSearchResults.sort(
+        (a, b) => (a.permission_type > b.permission_type) - (a.permission_type < b.permission_type)
+      );
     },
     placeId: function() {
       return this.selectedRole.place.id;

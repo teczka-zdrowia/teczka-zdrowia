@@ -65,11 +65,9 @@
     <AppointmentsSmall
       :showAppointmentsLink="false"
       :showAddedBy="true"
-      :canEdit="true"
       :showMoreBtn="pageInfo.hasNextPage"
       :loading="loading.next"
       :appointments="appointments"
-      :viewerType="'author'"
       v-on:loadNext="getNextAppointments"
       v-if="canShowAppointments"
     />
@@ -159,7 +157,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      getUserAppointments: "placeAppointments/get"
+      getUserAppointments: "placeAppointments/get",
+      viewerInfo: "userInfo/full"
     }),
     toggleShowUpcoming: function() {
       this.showUpcoming = !this.showUpcoming;

@@ -1,17 +1,29 @@
 import { apolloClient } from '@/apollo'
 import { PLACE_EMPLOYEES_QUERY } from '@/graphql/queries/_index'
-import { CREATE_ROLE_MUTATION } from '@/graphql/mutations/_index'
+import {
+  CREATE_ROLE_MUTATION,
+  UPDATE_ROLE_MUTATION,
+  DELETE_ROLE_MUTATION
+} from '@/graphql/mutations/_index'
 
 const state = {
-  list: []
+  data: []
 }
 
 const mutations = {
   SET_DATA (state, data) {
-    state.list = data
+    state.data = data
   },
   ADD_DATA (state, data) {
-    state.list.push(data)
+    state.data.push(data)
+  },
+  UPDATE_LOCAL (state, data) {
+    const foundIndex = state.data.findIndex(role => role.id === data.id)
+    state.data[foundIndex] = Object.assign(state.data[foundIndex], data)
+  },
+  DELETE_DATA (state, data) {
+    const filteredData = state.data.filter(employee => employee.id !== data.id)
+    state.data = filteredData
   }
 }
 
@@ -42,23 +54,50 @@ const actions = {
         }
       })
       .then(data => data.data.createRole)
-      .then(createRole => {
-        if (createRole) {
-          createRole = Object.assign(createRole, {
+      .then(role => {
+        if (role) {
+          role = Object.assign(role, {
             permission_type: permissionType,
             is_active: true
           })
-          commit('ADD_DATA', createRole)
+          commit('ADD_DATA', role)
         } else {
           throw new Error('Role exists')
         }
+      })
+  },
+  updateRole ({ commit }, { id, data }) {
+    return apolloClient
+      .mutate({
+        mutation: UPDATE_ROLE_MUTATION,
+        variables: {
+          id: id,
+          data: data
+        }
+      })
+      .then(data => data.data.updateRole)
+      .then(role => {
+        commit('UPDATE_LOCAL', role)
+      })
+  },
+  deleteRole ({ commit }, id) {
+    return apolloClient
+      .mutate({
+        mutation: DELETE_ROLE_MUTATION,
+        variables: {
+          id: id
+        }
+      })
+      .then(data => data.data.deleteRole)
+      .then(role => {
+        commit('DELETE_DATA', role)
       })
   }
 }
 
 const getters = {
   list (state) {
-    return state.list
+    return state.data
   }
 }
 

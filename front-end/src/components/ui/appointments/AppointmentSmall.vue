@@ -54,7 +54,7 @@ import MainBtn from "../basic/MainBtn";
 import MainUserInfo from "../basic/MainUserInfo";
 import MainPlaceInfo from "../basic/MainPlaceInfo";
 
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "AppointmentSmall",
@@ -69,10 +69,6 @@ export default {
     showPlace: {
       type: Boolean,
       default: false
-    },
-    viewerType: {
-      type: "patient" | "author",
-      default: "patient"
     }
   },
   components: {
@@ -96,6 +92,12 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      viewer: "userInfo/full"
+    }),
+    viewerType: function() {
+      return this.data.author.id === this.viewer.id ? "author" : "patient";
+    },
     date: function() {
       const dateSlice = this.data.date.slice(0, 10);
       return new Date(dateSlice).toLocaleDateString();

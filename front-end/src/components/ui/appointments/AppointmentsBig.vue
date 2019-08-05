@@ -3,7 +3,6 @@
     <AppointmentBig
       :key="index"
       :data="appointment.node"
-      :viewerType="viewerType"
       v-for="(appointment, index) in appointments"
     />
     <router-link

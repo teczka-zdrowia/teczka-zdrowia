@@ -43,7 +43,7 @@
           class="modal__actions fullwidth modal--ui__info__el"
           v-if="data.role.permission_type && !viewerIsUser"
         >
-          <MainSelect class="modal--ui__select">
+          <MainSelect class="modal--ui__select" :disable="loading.permission" v-on:change.native="changePermissionType($event)">
             <option
               :selected="data.role.permission_type === 'ADMIN'"
               value="ADMIN"
@@ -59,6 +59,8 @@
         v-if="data.role.permission_type && !viewerIsUser"
         :loading="loading.delete"
         :disable="loading.delete"
+        color="#fafafa"
+        v-on:click.native="deleteRole"
         class="modal__btn fullwidth modal__btn--red"
       >Usuń</MainBtn>
       <MainBtn
@@ -100,7 +102,8 @@ export default {
       apiUrl: API_URL,
       loading: {
         delete: false,
-        activate: false
+        activate: false,
+        permission: false
       }
     };
   },
@@ -124,16 +127,42 @@ export default {
     ...mapActions({
       hideModal: "modal/hide",
       updatePatientRole: "placePatients/updateRole",
-      deletePatientRole: "placePatients/deleteRole"
+      deletePatientRole: "placePatients/deleteRole",
+      updateEmployeeRole: "placeEmployees/updateRole",
+      deleteEmployeeRole: "placeEmployees/deleteRole"
     }),
     updateRole: async function(payload) {
       const updateEmployee = this.data.role.permission_type !== undefined;
 
       if (updateEmployee) {
-        //
+        await this.updateEmployeeRole(payload).then(() => {
+          this.$toasted.success("Pomyślnie zaktualizowano pracownika");
+        }).catch(error => {
+          console.error(error);
+          this.$toasted.error("Wystąpił błąd");
+        });
       } else {
         await this.updatePatientRole(payload).then(() => {
-          this.$toasted.success("Poprawnie zaktualizowano pacjenta");
+          this.$toasted.success("Pomyślnie zaktualizowano pacjenta");
+        }).catch(error => {
+          console.error(error);
+          this.$toasted.error("Wystąpił błąd");
+        });
+      }
+    },
+    deleteRoleById: async function(payload) {
+      const updateEmployee = this.data.role.permission_type !== undefined;
+
+      if (updateEmployee) {
+        await this.deleteEmployeeRole(payload).then(() => {
+          this.$toasted.success("Pomyślnie usunięto pracownika");
+        }).catch(error => {
+          console.error(error);
+          this.$toasted.error("Wystąpił błąd");
+        });
+      } else {
+        await this.deletePatientRole(payload).then(() => {
+          this.$toasted.success("Pomyślnie usunięto pacjenta");
         }).catch(error => {
           console.error(error);
           this.$toasted.error("Wystąpił błąd");
@@ -168,8 +197,28 @@ export default {
       
       this.loading.activate = false;
     },
-    deleteRole: function() {
-      //
+    deleteRole: async function() {
+      this.loading.delete = true;
+
+      await this.deleteRoleById(this.data.role.id)
+      
+      this.loading.delete = false;
+      this.hideModal();
+    },
+    changePermissionType: async function (event) {
+      const newPermission = event.target.value;
+      const payload = {
+        id: this.data.role.id,
+        data: {
+          permission_type: newPermission
+        }
+      }
+
+      this.loading.permission = true;
+
+      await this.updateRole(payload)
+      
+      this.loading.permission = false;
     }
   }
 };

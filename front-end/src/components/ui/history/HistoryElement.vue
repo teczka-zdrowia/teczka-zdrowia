@@ -5,6 +5,7 @@
         <MainUserInfo
           class="list__info__el list__info__el--user"
           :data="data.author"
+          :type="'doctor'"
           :isBig="true"
           :userId="1"
         />

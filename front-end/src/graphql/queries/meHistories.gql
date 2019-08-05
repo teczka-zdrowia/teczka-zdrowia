@@ -15,6 +15,8 @@ query($first: Int!, $after: String, $note: String, $orderBy: [OrderByClause!]) {
             avatar
             name
             phone
+            email
+            specialization
           }
           place {
             id

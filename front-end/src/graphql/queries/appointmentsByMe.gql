@@ -29,6 +29,9 @@ query(
           phone
           email
         }
+        author {
+          id
+        }
         place {
           id
           name

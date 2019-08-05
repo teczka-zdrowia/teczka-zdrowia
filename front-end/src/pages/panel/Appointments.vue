@@ -54,7 +54,6 @@
       :showAppointmentsLink="false"
       :showPlace="true"
       :canEdit="true"
-      :viewerType="'author'"
       :showMoreBtn="pageInfo.hasNextPage"
       :loading="loading.next"
       :appointments="appointments"
@@ -110,7 +109,8 @@ export default {
       placeAppointments: "placeAppointments/list",
       appointmentsByMePageInfo: "appointmentsByMe/pageInfo",
       placeAppointmentsPageInfo: "placeAppointments/pageInfo",
-      selectedDate: "appointmentsByMe/date"
+      selectedDate: "appointmentsByMe/date",
+      viewer: "userInfo/full"
     }),
     type: function() {
       return this.selectedRole ? "PLACE" : "ALL";
@@ -188,7 +188,8 @@ export default {
         });
       } else {
         payload = Object.assign(payload, {
-          id: this.selectedRole.place.id
+          id: this.selectedRole.place.id,
+          author_id: this.viewer.id
         });
 
         await this.getPlaceAppointments(payload).catch(error => {

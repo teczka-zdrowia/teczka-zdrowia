@@ -17,9 +17,10 @@ const mutations = {
   ADD_DATA (state, data) {
     state.data.push(data)
   },
-  SET_PATIENT_DATA (state, data) {
+  UPDATE_LOCAL (state, data) {
     const foundIndex = state.data.findIndex(role => role.id === data.id)
-    state.data[foundIndex] = data
+    data.permission_type = undefined
+    state.data[foundIndex] = Object.assign(state.data[foundIndex], data)
   },
   DELETE_DATA (state, data) {
     const filteredData = state.data.filter(patient => patient.id !== data.id)
@@ -77,7 +78,7 @@ const actions = {
       })
       .then(data => data.data.updateRole)
       .then(role => {
-        commit('UPDATE_DATA', role)
+        commit('UPDATE_LOCAL', role)
       })
   },
   deleteRole ({ commit }, id) {
