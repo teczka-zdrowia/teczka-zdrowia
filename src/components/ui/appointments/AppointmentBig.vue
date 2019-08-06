@@ -109,6 +109,10 @@ export default {
     hideBorders: {
       type: Boolean,
       default: false
+    },
+    canChangeAcceptation: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -137,7 +141,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      viewer: "userInfo/"
+      viewer: "userInfo/full"
     }),
     date: function() {
       const dateSlice = this.data.date.slice(0, 10);
@@ -147,7 +151,7 @@ export default {
       return this.data.date.slice(11, 16);
     },
     viewerType: function() {
-      return  
+      return this.data.author && this.viewer.id === this.data.author.id ? "author" : "patient"
     }
   }
 };

@@ -88,6 +88,10 @@
         :disabled="loading.initalize"
       >Utwórz konto</MainBtn>
     </form>
+    <GreyBlock
+      class="addemployee__info"
+      v-if="newAccountCreated"
+    >Utworzono nowe konto użytkownika. Dane logowania zostały wysłane na podany wcześniej adres e-mail.</GreyBlock>
     <MainUserBlockInfo
       class="addemployee__employee"
       v-if="employee"
@@ -101,6 +105,7 @@ import MainPlaceInfo from "../ui/basic/MainPlaceInfo";
 import MainBtn from "../ui/basic/MainBtn";
 import MainInput from "../ui/basic/MainInput";
 import MainUserBlockInfo from "../ui/basic/MainUserBlockInfo";
+import GreyBlock from "../ui/blocks/GreyBlock";
 
 import { mapGetters, mapActions } from "vuex";
 
@@ -118,7 +123,8 @@ export default {
         search: false,
         initalize: false
       },
-      initalizeNew: false
+      initalizeNew: false,
+      newAccountCreated: false
     };
   },
   computed: {
@@ -163,6 +169,7 @@ export default {
 
       await this.initalizeEmployeeAccount(this.data)
         .then(() => {
+          this.newAccountCreated = true;
           this.$toasted.success("Użytkownik utworzony pomyślnie");
           this.$toasted.success(
             "Dane logowania zostały wysłane na podany email",
@@ -186,7 +193,8 @@ export default {
     MainBtn,
     MainInput,
     MainPlaceInfo,
-    MainUserBlockInfo
+    MainUserBlockInfo,
+    GreyBlock
   }
 };
 </script>
@@ -229,6 +237,13 @@ export default {
         color: #fafafc !important;
       }
     }
+  }
+
+  &__info {
+    font-size: 1rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    width: 28rem;
   }
 
   &__employee {
