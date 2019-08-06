@@ -93,7 +93,7 @@ import MainBtn from "../basic/MainBtn";
 import MainUserInfo from "../basic/MainUserInfo";
 import MainPlaceInfo from "../basic/MainPlaceInfo";
 
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "AppointmentBig",
@@ -109,10 +109,6 @@ export default {
     hideBorders: {
       type: Boolean,
       default: false
-    },
-    viewerType: {
-      type: "patient" | "author",
-      default: "patient"
     }
   },
   components: {
@@ -140,12 +136,18 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      viewer: "userInfo/"
+    }),
     date: function() {
       const dateSlice = this.data.date.slice(0, 10);
       return new Date(dateSlice).toLocaleDateString();
     },
     time: function() {
       return this.data.date.slice(11, 16);
+    },
+    viewerType: function() {
+      return  
     }
   }
 };
