@@ -64,7 +64,7 @@
       >
       <div
         class="more__actions"
-        v-if="!isMobile"
+        v-if="!isMobile && canEdit"
       >
         <MainBtn
           class="more__action more__action--edit"
@@ -181,9 +181,13 @@
           v-if="PESEL"
         >{{ userData.pesel }}</div>
         <div
+          class="more__content"
+          v-if="!canShowPesel"
+        >Ukryty</div>
+        <div
           class="more__content more__pesel"
           v-if="!PESEL"
-          v-on:click="getPESEL"
+          v-on:click="getPESEL && canShowPesel"
         >Odkryj</div>
         <div
           v-if="PESEL"
@@ -198,7 +202,7 @@
       </div>
       <div
         class="more__actions"
-        v-if="isMobile"
+        v-if="isMobile && canEdit"
       >
         <MainBtn
           class="more__action more__action--edit"
@@ -247,8 +251,8 @@
 </template>
 
 <script>
-import MainBtn from "../../components/ui/basic/MainBtn";
-import MainLoading from "../../components/ui/basic/MainLoading";
+import MainBtn from "./MainBtn";
+import MainLoading from "./MainLoading";
 import { API_URL } from "@/apollo/constants";
 
 import { mapGetters, mapActions } from "vuex";
@@ -258,9 +262,18 @@ moment.locale("pl");
 
 export default {
   name: "BaseInfo",
-  components: {
-    MainBtn,
-    MainLoading
+  props: {
+    canEdit: {
+      type: Boolean,
+      defualt: true
+    },
+    canShowPesel: {
+      type: Boolean,
+      default: true
+    },
+    data: {
+      type: Object
+    }
   },
   data: function() {
     return {
@@ -280,6 +293,33 @@ export default {
           "YYYY-MM-DD HH:MI:SS"
         ).format("YYYY-MM-DD");
       }
+    }
+  },
+  computed: {
+    ...mapGetters({
+      isMobile: "window/isMobile",
+      PESEL: "userInfo/pesel",
+      viewer: "userInfo/full"
+    }),
+    userData: function() {
+      return this.data ? this.data : this.viewer;
+    },
+    userPhone: function() {
+      if (this.userData.phone)
+        return this.userData.phone.replace(
+          /(\d{1,3})(\d{1,3})(\d{1,4})/g,
+          "$1 $2 $3"
+        );
+    },
+    userAge: function() {
+      return Math.abs(
+        moment(this.userBirthdate, "DD.MM.YYYY").diff(moment(), "years")
+      );
+    },
+    userBirthdate: function() {
+      return moment(this.userData.birthdate, "YYYY-MM-DD HH:MI:SS").format(
+        "DD.MM.YYYY"
+      );
     }
   },
   methods: {
@@ -342,35 +382,15 @@ export default {
       });
     }
   },
-  computed: {
-    ...mapGetters({
-      isMobile: "window/isMobile",
-      PESEL: "userInfo/pesel",
-      userData: "userInfo/full"
-    }),
-    userPhone: function() {
-      if (this.userData.phone)
-        return this.userData.phone.replace(
-          /(\d{1,3})(\d{1,3})(\d{1,4})/g,
-          "$1 $2 $3"
-        );
-    },
-    userAge: function() {
-      return Math.abs(
-        moment(this.userBirthdate, "DD.MM.YYYY").diff(moment(), "years")
-      );
-    },
-    userBirthdate: function() {
-      return moment(this.userData.birthdate, "YYYY-MM-DD HH:MI:SS").format(
-        "DD.MM.YYYY"
-      );
-    }
+  components: {
+    MainBtn,
+    MainLoading
   }
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../../main";
+@import "../../../main.scss";
 
 input[type="date"]::-webkit-inner-spin-button {
   -webkit-appearance: none;

@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <div class="about__top">
-      <BaseInfo class="about__base" />
+      <MainBaseInfo class="about__base" />
       <Block class="about__actions">
         <span
           aria-hidden="true"
@@ -27,10 +27,10 @@
     </div>
   </div>
 </template>
- 
+
 <script>
 import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
-import BaseInfo from "./BaseInfo";
+import MainBaseInfo from "../../components/ui/basic/MainBaseInfo";
 import VioletBlock from "../../components/ui/blocks/VioletBlock";
 import RedBlock from "../../components/ui/blocks/RedBlock";
 
@@ -40,7 +40,7 @@ export default {
   name: "About",
   components: {
     Block: WhiteFunctionalBlock,
-    BaseInfo,
+    MainBaseInfo,
     VioletBlock,
     RedBlock
   },

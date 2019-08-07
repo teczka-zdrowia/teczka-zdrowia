@@ -246,7 +246,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       if (!this.$store.getters["window/isMobile"]) {
-        this.maxAppointments = Math.floor(this.$el.offsetWidth / 320);
+        this.maxAppointments = Math.floor(this.$el.offsetWidth / 330);
         if (this.showAppointmentsLink) {
           this.maxAppointments--;
         }

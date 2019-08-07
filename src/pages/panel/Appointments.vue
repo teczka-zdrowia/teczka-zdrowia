@@ -164,7 +164,8 @@ export default {
       };
     },
     title: function() {
-      const enter = this.type === "ALL" ? "Wszystkie wizyty" : "Wizyty";
+      const enter =
+        this.type === "ALL" ? "Wszystkie twoje wizyty" : "Twoje wizyty";
       const when = this.selectedDate
         ? ` ${new Date(this.selectedDate).toLocaleDateString()}`
         : "";
