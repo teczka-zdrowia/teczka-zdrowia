@@ -31,19 +31,26 @@
         </div>
 
         <div class="modal--ui__info__el">
-          <a href="#">
+          <router-link
+            :to="`/PatientFile/${user.id}`"
+            v-on:click.native="hideModal"
+          >
             <span
               aria-hidden="true"
               class="fas fa-file-medical"
             />
-            Kartkoteka</a>
+            Kartkoteka</router-link>
         </div>
 
         <div
           class="modal__actions fullwidth modal--ui__info__el"
           v-if="data.role.permission_type && !viewerIsUser"
         >
-          <MainSelect class="modal--ui__select" :disable="loading.permission" v-on:change.native="changePermissionType($event)">
+          <MainSelect
+            class="modal--ui__select"
+            :disable="loading.permission"
+            v-on:change.native="changePermissionType($event)"
+          >
             <option
               :selected="data.role.permission_type === 'ADMIN'"
               value="ADMIN"
@@ -135,38 +142,46 @@ export default {
       const updateEmployee = this.data.role.permission_type !== undefined;
 
       if (updateEmployee) {
-        await this.updateEmployeeRole(payload).then(() => {
-          this.$toasted.success("Pomyślnie zaktualizowano pracownika");
-        }).catch(error => {
-          console.error(error);
-          this.$toasted.error("Wystąpił błąd");
-        });
+        await this.updateEmployeeRole(payload)
+          .then(() => {
+            this.$toasted.success("Pomyślnie zaktualizowano pracownika");
+          })
+          .catch(error => {
+            console.error(error);
+            this.$toasted.error("Wystąpił błąd");
+          });
       } else {
-        await this.updatePatientRole(payload).then(() => {
-          this.$toasted.success("Pomyślnie zaktualizowano pacjenta");
-        }).catch(error => {
-          console.error(error);
-          this.$toasted.error("Wystąpił błąd");
-        });
+        await this.updatePatientRole(payload)
+          .then(() => {
+            this.$toasted.success("Pomyślnie zaktualizowano pacjenta");
+          })
+          .catch(error => {
+            console.error(error);
+            this.$toasted.error("Wystąpił błąd");
+          });
       }
     },
     deleteRoleById: async function(payload) {
       const updateEmployee = this.data.role.permission_type !== undefined;
 
       if (updateEmployee) {
-        await this.deleteEmployeeRole(payload).then(() => {
-          this.$toasted.success("Pomyślnie usunięto pracownika");
-        }).catch(error => {
-          console.error(error);
-          this.$toasted.error("Wystąpił błąd");
-        });
+        await this.deleteEmployeeRole(payload)
+          .then(() => {
+            this.$toasted.success("Pomyślnie usunięto pracownika");
+          })
+          .catch(error => {
+            console.error(error);
+            this.$toasted.error("Wystąpił błąd");
+          });
       } else {
-        await this.deletePatientRole(payload).then(() => {
-          this.$toasted.success("Pomyślnie usunięto pacjenta");
-        }).catch(error => {
-          console.error(error);
-          this.$toasted.error("Wystąpił błąd");
-        });
+        await this.deletePatientRole(payload)
+          .then(() => {
+            this.$toasted.success("Pomyślnie usunięto pacjenta");
+          })
+          .catch(error => {
+            console.error(error);
+            this.$toasted.error("Wystąpił błąd");
+          });
       }
     },
     activateRole: async function() {
@@ -175,12 +190,12 @@ export default {
         data: {
           is_active: true
         }
-      }
+      };
 
       this.loading.activate = true;
 
-      await this.updateRole(payload)
-      
+      await this.updateRole(payload);
+
       this.loading.activate = false;
     },
     deactivateRole: async function() {
@@ -189,35 +204,35 @@ export default {
         data: {
           is_active: false
         }
-      }
+      };
 
       this.loading.activate = true;
 
-      await this.updateRole(payload)
-      
+      await this.updateRole(payload);
+
       this.loading.activate = false;
     },
     deleteRole: async function() {
       this.loading.delete = true;
 
-      await this.deleteRoleById(this.data.role.id)
-      
+      await this.deleteRoleById(this.data.role.id);
+
       this.loading.delete = false;
       this.hideModal();
     },
-    changePermissionType: async function (event) {
+    changePermissionType: async function(event) {
       const newPermission = event.target.value;
       const payload = {
         id: this.data.role.id,
         data: {
           permission_type: newPermission
         }
-      }
+      };
 
       this.loading.permission = true;
 
-      await this.updateRole(payload)
-      
+      await this.updateRole(payload);
+
       this.loading.permission = false;
     }
   }

@@ -4,6 +4,7 @@
     title="Najbliższe wizyty"
   >
     <AppointmentsBox
+      :showUserAs="'doctor'"
       :showActions="false"
       :showAppointmentsLink="true"
     />

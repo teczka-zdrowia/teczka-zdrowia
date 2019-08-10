@@ -1,0 +1,14 @@
+query($id: ID!) {
+  user(id: $id) {
+    id
+    roles {
+      id
+      is_active
+      permission_type
+      place {
+        id
+        name
+      }
+    }
+  }
+}

@@ -5,8 +5,8 @@
   >
     <MainUserInfo
       class="appointment__user"
-      :data="viewerType === 'patient' ? data.author : data.patient"
-      :type="viewerType === 'patient' ? 'doctor' : 'patient'"
+      :data="showUserAs === 'patient' ? data.patient : data.author"
+      :type="showUserAs"
       :isClickable="false"
     />
     <div
@@ -69,6 +69,10 @@ export default {
     showPlace: {
       type: Boolean,
       default: false
+    },
+    showUserAs: {
+      type: String,
+      default: "patient"
     }
   },
   components: {
@@ -85,19 +89,13 @@ export default {
         componentName: "AppointmentInfo",
         data: {
           hideBorders: true,
-          viewerType: this.viewerType,
+          showUserAs: this.showUserAs,
           appointment: this.data
         }
       });
     }
   },
   computed: {
-    ...mapGetters({
-      viewer: "userInfo/full"
-    }),
-    viewerType: function() {
-      return this.data.author.id === this.viewer.id ? "author" : "patient";
-    },
     date: function() {
       const dateSlice = this.data.date.slice(0, 10);
       return new Date(dateSlice).toLocaleDateString();

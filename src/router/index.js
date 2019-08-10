@@ -11,9 +11,11 @@ import Initialize from '@/pages/initialize/Initialize'
 import Map from '@/pages/map/Map'
 import Payment from '@/pages/payment/Payment'
 import Places from '@/pages/places/Places'
-import AddAppointment from '@/pages/addAppointment/AddAppointment'
-import UpdateAppointment from '@/pages/updateAppointment/UpdateAppointment'
 import Appointments from '@/pages/appointments/Appointments'
+import AddAppointment from '@/pages/addAppointment/AddAppointment'
+import AddHistory from '@/pages/addHistory/AddHistory'
+import UpdateAppointment from '@/pages/updateAppointment/UpdateAppointment'
+import PatientFile from '@/pages/patientFile/PatientFile'
 import Redirect404 from '@/pages/404/Redirect404'
 import Error404 from '@/pages/404/Error404'
 
@@ -95,6 +97,15 @@ const router = new Router({
       }
     },
     {
+      path: '/AddHistory',
+      name: 'AddHistory',
+      component: AddHistory,
+      meta: {
+        requiresLogin: true,
+        requiresValidPayment: true
+      }
+    },
+    {
       path: '/About',
       name: 'About',
       component: About,
@@ -116,6 +127,15 @@ const router = new Router({
       component: Payment,
       meta: {
         requiresLogin: true
+      }
+    },
+    {
+      path: '/PatientFile/:id',
+      name: 'PatientFile',
+      component: PatientFile,
+      meta: {
+        requiresLogin: true,
+        requiresValidPayment: true
       }
     },
     {

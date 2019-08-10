@@ -7,7 +7,6 @@
           :data="data.author"
           :type="'doctor'"
           :isBig="true"
-          :userId="1"
         />
         <div class="list__info__el list__info__el--column">
           <div class="list__info__el list__info__el--date">{{ data.date.slice(0, 10) }}</div>
@@ -75,6 +74,10 @@ export default {
   props: {
     data: {
       type: Object
+    },
+    type: {
+      type: String,
+      default: "user"
     }
   },
   components: {
@@ -87,22 +90,31 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isMobile: "window/isMobile",
-      userRecommendations: "userRecommendations/active"
+      isMobile: "window/isMobile"
     })
   },
   methods: {
     ...mapActions({
-      getMoreUserHistory: "userHistories/getMore"
+      getMoreUserHistory: "userHistories/getMore",
+      getMorePatientHistory: "patientHistories/getMore"
     }),
     getMore: async function() {
       this.loading.more = true;
       const historyId = this.data.id;
 
-      await this.getMoreUserHistory(historyId).catch(error => {
-        this.$toasted.error("Wystąpił błąd");
-        console.error(error);
-      });
+      if (this.type === "user") {
+        await this.getMoreUserHistory(historyId).catch(error => {
+          this.$toasted.error("Wystąpił błąd");
+          console.error(error);
+        });
+      }
+
+      if (this.type === "patient") {
+        await this.getMorePatientHistory(historyId).catch(error => {
+          this.$toasted.error("Wystąpił błąd");
+          console.error(error);
+        });
+      }
 
       this.loading.more = false;
     },

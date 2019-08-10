@@ -5,7 +5,10 @@
         class="appointments--block"
         title="Wizyty"
       >
-        <AppointmentsBox :showActions="true" />
+        <AppointmentsBox
+          :showActions="true"
+          :showUserAs="'doctor'"
+        />
       </Block>
     </div>
     <div class="row">

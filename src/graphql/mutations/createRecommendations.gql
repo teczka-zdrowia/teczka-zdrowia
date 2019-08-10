@@ -1,0 +1,5 @@
+mutation($data: [CreateRecommendationInput!]!, $history_id: ID!) {
+  createRecommendations(data: $data, history_id: $history_id) {
+    id
+  }
+}

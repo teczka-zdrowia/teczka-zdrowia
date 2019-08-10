@@ -1,7 +1,10 @@
 <template>
   <div class="about">
     <div class="about__top">
-      <MainBaseInfo class="about__base" />
+      <MainBaseInfo
+        class="about__base"
+        :canEdit="true"
+      />
       <Block class="about__actions">
         <span
           aria-hidden="true"

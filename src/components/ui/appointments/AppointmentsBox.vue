@@ -68,6 +68,7 @@
       :showMoreBtn="pageInfo.hasNextPage && !showAppointmentsLink"
       :loading="loading.next"
       :appointments="appointments"
+      :showUserAs="showUserAs"
       v-on:loadNext="getNextAppointments"
       v-if="!isMobile && canShowAppointments"
     />
@@ -76,6 +77,7 @@
       :showMoreBtn="pageInfo.hasNextPage && !showAppointmentsLink"
       :loading="loading.next"
       :appointments="appointments"
+      :showUserAs="showUserAs"
       v-on:loadNext="getNextAppointments"
       v-if="isMobile && canShowAppointments"
     />
@@ -112,6 +114,10 @@ export default {
     showAppointmentsLink: {
       type: Boolean,
       default: false
+    },
+    showUserAs: {
+      type: String,
+      default: "patient"
     }
   },
   data: function() {

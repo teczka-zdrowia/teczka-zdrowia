@@ -54,7 +54,7 @@ const actions = {
       .then(data => data.data.createPlace)
       .then(place => {
         const payload = {
-          permissionType: 'ADMIN',
+          permission_type: 'ADMIN',
           place: {
             ...place,
             is_active: true

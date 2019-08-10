@@ -66,6 +66,7 @@
       :showAppointmentsLink="false"
       :showAddedBy="true"
       :showMoreBtn="pageInfo.hasNextPage"
+      :showUserAs="'patient'"
       :loading="loading.next"
       :appointments="appointments"
       v-on:loadNext="getNextAppointments"

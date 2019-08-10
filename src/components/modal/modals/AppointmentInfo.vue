@@ -3,13 +3,13 @@
     class="modal--ai"
     v-show="!isLoading"
   >
-    <Appointment
+    <AppointmentBig
       :data="data.appointment"
-      :viewerType="data.viewerType"
+      :showUserAs="data.showUserAs"
     />
     <div
       class="modal__actions fullwidth modal--ai__action"
-      v-if="data.viewerType === 'author'"
+      v-if="viewerIsAuthor"
     >
       <button
         class="modal__btn fullwidth modal__btn--violet"
@@ -54,13 +54,18 @@ export default {
     };
   },
   components: {
-    Appointment: AppointmentBig
+    AppointmentBig
   },
   computed: {
     ...mapGetters({
       data: "modal/data",
-      isMobile: "window/isMobile"
-    })
+      isMobile: "window/isMobile",
+      viewer: "userInfo/full"
+    }),
+    viewerIsAuthor: function() {
+      const author = this.data.appointment.author;
+      return author && this.viewer.id === author.id;
+    }
   },
   methods: {
     ...mapActions({

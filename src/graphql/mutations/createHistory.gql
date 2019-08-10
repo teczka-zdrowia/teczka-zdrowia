@@ -1,0 +1,5 @@
+mutation($data: CreateHistoryInput!) {
+  createHistory(data: $data) {
+    id
+  }
+}

@@ -3,6 +3,7 @@ query($id: ID!) {
     id
     note
     treatments
+    agreement
     recommendations {
       id
       title

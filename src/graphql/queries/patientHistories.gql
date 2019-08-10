@@ -1,19 +1,13 @@
 query(
+  $id: ID!
   $first: Int!
   $after: String
   $note: String
-  $date: DateRange!
   $orderBy: [OrderByClause!]
 ) {
-  me {
+  user(id: $id) {
     id
-    appointments(
-      first: $first
-      after: $after
-      note: $note
-      date: $date
-      orderBy: $orderBy
-    ) {
+    histories(first: $first, after: $after, note: $note, orderBy: $orderBy) {
       pageInfo {
         endCursor
         hasNextPage
@@ -22,8 +16,6 @@ query(
         node {
           id
           date
-          note
-          confirmed
           author {
             id
             avatar
@@ -31,9 +23,6 @@ query(
             phone
             email
             specialization
-          }
-          patient {
-            id
           }
           place {
             id

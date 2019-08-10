@@ -1,0 +1,5 @@
+mutation($data: [CreateAttachmentInput!]!, $history_id: ID!) {
+  createAttachments(data: $data, history_id: $history_id) {
+    id
+  }
+}

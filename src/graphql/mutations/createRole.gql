@@ -6,6 +6,7 @@ mutation($data: CreateRoleInput!) {
       avatar
       name
       phone
+      email
     }
   }
 }

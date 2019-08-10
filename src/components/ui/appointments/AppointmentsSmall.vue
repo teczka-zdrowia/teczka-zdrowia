@@ -7,6 +7,7 @@
       :showAddedBy="showAddedBy"
       :showPlace="showPlace"
       :canEdit="canEdit"
+      :showUserAs="showUserAs"
     />
     <router-link
       to="/Appointments"
@@ -76,6 +77,10 @@ export default {
     canEdit: {
       type: Boolean,
       default: false
+    },
+    showUserAs: {
+      type: String,
+      default: "patient"
     }
   },
   components: {

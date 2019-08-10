@@ -1,57 +1,56 @@
 <template>
   <div class="histories">
     <div class="histories__top">
-      <div class="histories__title">Historia</div>
-      <MainSearch
-        class="histories__right"
-        v-show="!loading.init"
-      >
-        <input
-          class="input"
-          slot="input"
-          type="text"
-          v-model.lazy="query.search"
-          placeholder="  Szukaj"
-        >
-        <div
-          class="select"
-          slot="select"
-        >
-          <label>
-            Sortuj przez:
-            <select v-model="query.sortData.field">
-              <option
-                value="date"
-                selected
-              >Data</option>
-              <!--<option>Specjalista</option>
+      <div class="histories__block">
+        <div class="histories__title">Historia</div>
+        <div class="histories__right">
+          <MainSearch v-show="!loading.init">
+            <input
+              class="input"
+              slot="input"
+              type="text"
+              v-model.lazy="query.search"
+              placeholder="  Szukaj"
+            >
+            <div
+              class="select"
+              slot="select"
+            >
+              <label>
+                Sortuj przez:
+                <select v-model="query.sortData.field">
+                  <option
+                    value="date"
+                    selected
+                  >Data</option>
+                  <!--<option>Specjalista</option>
               <option>Gabinet</option>-->
-              <option value="note">Notatka</option>
-              <option value="treatments">Zabiegi</option>
-            </select>
-          </label>
-          <label>
-            Porządkuj:
-            <select v-model="query.sortData.order">
-              <option
-                value="DESC"
-                selected
-              >Malejąco</option>
-              <option value="ASC">Rosnąco</option>
-            </select>
-          </label>
-          <label>
-            Ładuj po:
-            <select v-model="query.first">
-              <option
-                value="5"
-                selected
-              >5</option>
-              <option value="10">10</option>
-              <option value="20">20</option>
-            </select>
-          </label>
-          <!-- <label class="label--highlight">
+                  <option value="note">Notatka</option>
+                  <option value="treatments">Zabiegi</option>
+                </select>
+              </label>
+              <label>
+                Porządkuj:
+                <select v-model="query.sortData.order">
+                  <option
+                    value="DESC"
+                    selected
+                  >Malejąco</option>
+                  <option value="ASC">Rosnąco</option>
+                </select>
+              </label>
+              <label>
+                Ładuj po:
+                <select v-model="query.first">
+                  <option
+                    value="5"
+                    selected
+                  >5</option>
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                </select>
+              </label>
+              <!-- <label class="label--highlight">
             Gabinet:
             <select>
               <option selected>Wszystkie</option>
@@ -59,8 +58,16 @@
               <option>Lorem ipsum</option>
             </select>
           </label> -->
+            </div>
+          </MainSearch>
         </div>
-      </MainSearch>
+      </div>
+      <div class="histories__block">
+        <MainBtn
+          class="histories__btn"
+          v-on:click.native="showAddHistory"
+        >Dodaj</MainBtn>
+      </div>
     </div>
     <div
       class="histories__list"
@@ -70,6 +77,7 @@
         v-for="(history, index) in histories"
         :key="index"
         :data="history.node"
+        :type="'patient'"
       />
       <MainShowMore
         v-on:click.native="getNextHistories"
@@ -91,17 +99,22 @@
 </template>
 
 <script>
-import MainBtn from "../basic/MainBtn";
-import MainSearch from "../basic/MainSearch";
-import HistoryElement from "./HistoryElement";
-import MainLoading from "../basic/MainLoading";
-import GreyBlock from "../blocks/GreyBlock";
-import MainShowMore from "../basic/MainShowMore";
+import MainBtn from "../../components/ui/basic/MainBtn";
+import MainSearch from "../../components/ui/basic/MainSearch";
+import HistoryElement from "../../components/ui/history/HistoryElement";
+import MainLoading from "../../components/ui/basic/MainLoading";
+import GreyBlock from "../../components/ui/blocks/GreyBlock";
+import MainShowMore from "../../components/ui/basic/MainShowMore";
 
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: "History",
+  name: "PatientHistory",
+  props: {
+    patient: {
+      type: Object
+    }
+  },
   data: function() {
     return {
       loading: {
@@ -129,8 +142,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      histories: "userHistories/list",
-      pageInfo: "userHistories/pageInfo"
+      histories: "patientHistories/list",
+      pageInfo: "patientHistories/pageInfo"
     }),
     orderBy: function() {
       return [
@@ -143,12 +156,18 @@ export default {
   },
   methods: {
     ...mapActions({
-      getUserHistories: "userHistories/get"
+      getPatientHistories: "patientHistories/get",
+      setHistoryPatient: "addHistory/setPatient"
     }),
     getHistories: async function(payload, type) {
       this.loading[type] = true;
 
-      await this.getUserHistories(payload).catch(error => {
+      payload = {
+        ...payload,
+        id: this.patient.id
+      };
+
+      await this.getPatientHistories(payload).catch(error => {
         this.$toasted.error("Wystąpił błąd");
         console.error(error);
       });
@@ -176,6 +195,10 @@ export default {
       };
 
       this.getHistories(payload, "next");
+    },
+    showAddHistory: function() {
+      this.setHistoryPatient(this.patient);
+      this.$router.push({ path: "/AddHistory" });
     }
   },
   watch: {
@@ -202,7 +225,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main";
+@import "../../main";
 
 .histories {
   width: 100%;
@@ -222,18 +245,36 @@ export default {
 }
 
 .histories__top {
-  @extend %text--center;
-  font-weight: 700;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto;
   font-weight: 600;
   margin: 2em 0 1em;
+}
+
+.histories__btn {
+  padding: 1rem !important;
+  width: 100% !important;
+}
+
+.histories__block {
+  @extend %text--center;
+  justify-content: space-between;
   width: calc(100% - 2rem);
   padding: 1rem;
-  border-radius: 0.5rem;
   -webkit-box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
-  background: #fafafc;
+  &:first-child {
+    background: #fafafc;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+  }
+  &:last-child {
+    background: #eeeef3;
+    border-bottom-right-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+  }
 }
+
 .histories__title {
   color: #3e3e45;
   font-size: 1.5em;
@@ -355,6 +396,21 @@ export default {
   .histories__info {
     height: 24rem;
     padding: 0 1rem;
+  }
+  .histories__top {
+    grid-template-columns: auto 7rem;
+  }
+  .histories__block {
+    &:first-child {
+      border-radius: 0;
+      border-top-left-radius: 0.5rem;
+      border-bottom-left-radius: 0.5rem;
+    }
+    &:last-child {
+      border-radius: 0;
+      border-top-right-radius: 0.5rem;
+      border-bottom-right-radius: 0.5rem;
+    }
   }
 }
 </style>

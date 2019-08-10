@@ -11,9 +11,12 @@ import placeAppointments from './modules/placeAppointments'
 import placePatients from './modules/placePatients'
 import placeEmployees from './modules/placeEmployees'
 import placeStatistics from './modules/placeStatistics'
+import patientHistories from './modules/patientHistories'
+import patientRoles from './modules/patientRoles'
 import addPatient from './modules/addPatient'
 import addEmployee from './modules/addEmployee'
 import addAppointment from './modules/addAppointment'
+import addHistory from './modules/addHistory'
 import updateAppointment from './modules/updateAppointment'
 import initializeSteps from './modules/initializeSteps'
 import appointmentsByMe from './modules/appointmentsByMe'
@@ -35,9 +38,12 @@ export const store = new Vuex.Store({
     placePatients,
     placeEmployees,
     placeStatistics,
+    patientHistories,
+    patientRoles,
     addPatient,
     addEmployee,
     addAppointment,
+    addHistory,
     updateAppointment,
     initializeSteps,
     appointmentsByMe,

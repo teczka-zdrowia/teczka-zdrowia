@@ -5,8 +5,8 @@
   >
     <MainUserInfo
       class="list__info__el"
-      :data="viewerType === 'patient' ? data.author : data.patient"
-      :type="viewerType === 'patient' ? 'doctor' : 'patient'"
+      :data="showUserAs === 'patient' ? data.patient : data.author"
+      :type="showUserAs"
       :isBig="true"
       :isBigPhone="true"
     />
@@ -41,13 +41,13 @@
     </div>
     <div
       class="appointment__actions"
-      v-if="viewerType === 'patient'"
+      v-if="viewerIsPatient"
     >
       <MainBtn
         class="appointment__btn appointment__btn--confirmed"
         v-if="data.confirmed"
-        :loading="isConfirmationLoading"
-        :disabled="isConfirmationLoading"
+        :loading="confirmationLoading"
+        :disabled="confirmationLoading"
         color="#fafafa"
         v-on:click.native="updateConfirmation(false)"
       ><span
@@ -57,8 +57,8 @@
       <MainBtn
         class="appointment__btn appointment__btn--not-confirmed"
         v-if="!data.confirmed"
-        :loading="isConfirmationLoading"
-        :disabled="isConfirmationLoading"
+        :loading="confirmationLoading"
+        :disabled="confirmationLoading"
         color="#67676e"
         v-on:click.native="updateConfirmation(true)"
       ><span
@@ -68,7 +68,7 @@
     </div>
     <div
       class="appointment__actions"
-      v-if="viewerType === 'author'"
+      v-if="!viewerIsPatient"
     >
       <div
         class="appointment__btn appointment__btn--confirmed"
@@ -99,7 +99,7 @@ export default {
   name: "AppointmentBig",
   data: function() {
     return {
-      isConfirmationLoading: false
+      confirmationLoading: false
     };
   },
   props: {
@@ -110,9 +110,9 @@ export default {
       type: Boolean,
       default: false
     },
-    canChangeAcceptation: {
-      type: Boolean,
-      default: false
+    showUserAs: {
+      type: String,
+      default: "patient"
     }
   },
   components: {
@@ -125,7 +125,7 @@ export default {
       updateUserAppointmentConfirmation: "userAppointments/updateConfirmation"
     }),
     updateConfirmation: async function(val) {
-      this.isConfirmationLoading = true;
+      this.confirmationLoading = true;
       const payload = {
         id: this.data.id,
         confirmed: val
@@ -136,7 +136,7 @@ export default {
         console.error(error);
       });
 
-      this.isConfirmationLoading = false;
+      this.confirmationLoading = false;
     }
   },
   computed: {
@@ -150,8 +150,13 @@ export default {
     time: function() {
       return this.data.date.slice(11, 16);
     },
-    viewerType: function() {
-      return this.data.author && this.viewer.id === this.data.author.id ? "author" : "patient"
+    viewerIsAuthor: function() {
+      const author = this.data.author;
+      return author && this.viewer.id === author.id;
+    },
+    viewerIsPatient: function() {
+      const patient = this.data.patient;
+      return patient && this.viewer.id === patient.id;
     }
   }
 };

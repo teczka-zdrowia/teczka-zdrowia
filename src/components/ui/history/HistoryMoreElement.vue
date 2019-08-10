@@ -44,12 +44,28 @@
         </div>
       </div>
       <div class="more__content more__content--actions">
-        <!--<img
-          class="more__signature"
-          :src="more.signature"
-          title="Podpis pacjenta"
-          alt="Podpis pacjenta"
-        >-->
+        <button
+          class="more__agreement"
+          v-on:click="showAgreement"
+          v-if="data.agreement"
+        >
+          <span
+            aria-hidden="true"
+            class="fas fa-file-contract"
+          />
+          Zgoda na zabieg
+        </button>
+        <button
+          class="more__agreement"
+          v-if="!data.agreement"
+          disabled
+        >
+          <span
+            aria-hidden="true"
+            class="fas fa-file-contract"
+          />
+          Bez zgody
+        </button>
         <div class="more__print">
           <span
             aria-hidden="true"
@@ -63,6 +79,7 @@
 </template>
 
 <script>
+import { API_URL } from "@/apollo/constants";
 import MainBtn from "../basic/MainBtn";
 import MainUserInfo from "../basic/MainUserInfo";
 import MainRecommendation from "../basic/MainRecommendation";
@@ -91,6 +108,14 @@ export default {
     ...mapGetters({
       isMobile: "window/isMobile"
     })
+  },
+  methods: {
+    showAgreement: function() {
+      const authorId = this.data.author.id;
+      const fileName = this.data.agreement;
+      const path = `${API_URL}/storage/files/${authorId}/${fileName}`;
+      window.open(path, "_blank");
+    }
   }
 };
 </script>
@@ -289,13 +314,26 @@ export default {
   }
 }
 
-.more__signature {
-  @extend %text--center;
-  height: 2rem;
-  width: auto;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
+.more__agreement {
   background: #eeeef3;
+  color: #6a6ee1;
+  font-weight: 600;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  transition: 0.2s ease-in-out;
+  span {
+    margin-right: 0.5rem;
+  }
+
+  &:not(:disabled) {
+    cursor: pointer;
+    &:hover {
+      filter: brightness(95%);
+    }
+  }
+  &:disabled {
+    color: #67676e;
+  }
 }
 
 .more__print {

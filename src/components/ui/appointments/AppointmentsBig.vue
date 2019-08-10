@@ -2,6 +2,7 @@
   <div>
     <AppointmentBig
       :key="index"
+      :showUserAs="showUserAs"
       :data="appointment.node"
       v-for="(appointment, index) in appointments"
     />
@@ -53,12 +54,12 @@ export default {
       type: Boolean,
       default: false
     },
-    viewerType: {
-      type: "patient" | "author",
-      default: "patient"
-    },
     appointments: {
       type: Array
+    },
+    showUserAs: {
+      type: String,
+      default: "patient"
     }
   },
   components: {

@@ -27,7 +27,7 @@
           />
           <span
             aria-hidden="true"
-            class="fas fa-camera"
+            class="icon fas fa-camera"
           />
         </label>
       </div>
@@ -73,7 +73,7 @@
         >
           <span
             aria-hidden="true"
-            class="fas fa-pen"
+            class="icon fas fa-pen"
           />
         </MainBtn>
         <MainBtn
@@ -84,7 +84,7 @@
         >
           <span
             aria-hidden="true"
-            class="fas fa-times"
+            class="icon fas fa-times"
           />
         </MainBtn>
         <MainBtn
@@ -96,7 +96,7 @@
           <span
             v-if="!isLoading"
             aria-hidden="true"
-            class="fas fa-check"
+            class="icon fas fa-check"
           />
           <MainLoading v-if="isLoading" />
         </MainBtn>
@@ -107,7 +107,7 @@
         <div class="more__title">
           <span
             aria-hidden="true"
-            class="fas fa-birthday-cake"
+            class="icon fas fa-birthday-cake"
           />
           <span>Urodziny</span>
         </div>
@@ -124,7 +124,7 @@
         <div class="more__title">
           <span
             aria-hidden="true"
-            class="fas fa-at"
+            class="icon fas fa-at"
           />
           <span>Email</span>
         </div>
@@ -147,7 +147,7 @@
         <div class="more__title">
           <span
             aria-hidden="true"
-            class="fas fa-phone"
+            class="icon fas fa-phone"
           />
           <span>Telefon</span>
         </div>
@@ -172,7 +172,7 @@
         <div class="more__title">
           <span
             aria-hidden="true"
-            class="fas fa-id-card-alt"
+            class="icon fas fa-id-card-alt"
           />
           <span>PESEL</span>
         </div>
@@ -186,8 +186,8 @@
         >Ukryty</div>
         <div
           class="more__content more__pesel"
-          v-if="!PESEL"
-          v-on:click="getPESEL && canShowPesel"
+          v-if="!PESEL && canShowPesel"
+          v-on:click="getPESEL"
         >Odkryj</div>
         <div
           v-if="PESEL"
@@ -196,7 +196,7 @@
         >
           <span
             aria-hidden="true"
-            class="fas fa-eye-slash"
+            class="icon fas fa-eye-slash"
           />
         </div>
       </div>
@@ -211,7 +211,7 @@
         >
           <span
             aria-hidden="true"
-            class="fas fa-pen"
+            class="icon fas fa-pen"
           />
           Edytuj
         </MainBtn>
@@ -223,7 +223,7 @@
         >
           <span
             aria-hidden="true"
-            class="fas fa-times"
+            class="icon fas fa-times"
           />
           Anuluj
         </MainBtn>
@@ -236,7 +236,7 @@
           <div v-if="!isLoading">
             <span
               aria-hidden="true"
-              class="fas fa-check"
+              class="icon fas fa-check"
             />
             Zapisz
           </div>
@@ -568,7 +568,7 @@ input.user__specialization {
   width: 1.5rem;
   background: #9394eb;
   color: #fafafc;
-  span {
+  span:not(.icon) {
     display: none;
   }
 }
@@ -642,7 +642,7 @@ input.user__specialization {
     span {
       margin-right: 0.75em;
     }
-    span {
+    span:not(.icon) {
       display: unset;
     }
   }
@@ -661,7 +661,7 @@ input.user__specialization {
     span {
       margin-right: 0.75em;
     }
-    span {
+    span:not(.icon) {
       display: unset;
     }
   }
