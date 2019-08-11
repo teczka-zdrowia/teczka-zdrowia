@@ -49,6 +49,7 @@
         class="modal__btn modal__btn--red"
         :loading="isLoading"
         :disabled="isLoading"
+        color="#fafafa"
         @click="deleteAccount"
       >Usuń konto</MainBtn>
     </div>

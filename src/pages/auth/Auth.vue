@@ -36,6 +36,13 @@
               />
             </button>
           </div>
+          <div class="login__options">
+            <button
+              class="login__forgot"
+              type="button"
+              v-on:click="resetPassword"
+            >Przypomnij hasło</button>
+          </div>
         </Login>
         <Signup
           v-else
@@ -70,6 +77,7 @@ import Logo from "../../components/ui/basic/logo/Logo";
 import Login from "./Login";
 import Signup from "./Signup";
 import MainBtn from "../../components/ui/basic/MainBtn";
+import { mapActions } from "vuex";
 
 export default {
   name: "Auth",
@@ -90,9 +98,17 @@ export default {
     Logo
   },
   methods: {
+    ...mapActions({
+      showModal: "modal/show"
+    }),
     toggleLogin: function() {
       this.isLogin = !this.isLogin;
       this.title = this.title == "Logowanie" ? "Rejestracja" : "Logowanie";
+    },
+    resetPassword: function() {
+      this.showModal({
+        componentName: "ResetPassword"
+      });
     }
   }
 };
@@ -152,6 +168,7 @@ export default {
   height: 100%;
   box-shadow: 0 0 20px 0px $lightgrey;
   overflow: auto;
+  overflow-x: hidden;
 }
 
 .auth__content {
@@ -167,6 +184,7 @@ export default {
 }
 
 .login__actions {
+  margin: 2em 0;
   width: 100%;
   height: 3em;
   display: flex;
@@ -201,7 +219,6 @@ export default {
 .login__options {
   width: 100%;
   display: flex;
-  margin: 2em 0;
   & > * {
     width: auto;
   }
@@ -248,11 +265,13 @@ export default {
   }
 }
 .login__forgot {
-  text-align: right;
+  text-align: center;
   transition: 0.2s ease-in-out;
   font-weight: 600;
-  margin-left: auto;
+  margin: auto;
   color: #91919c;
+  background: none;
+  cursor: pointer;
   &:hover {
     color: #1a1b37;
   }
@@ -299,9 +318,7 @@ export default {
   .auth__header {
     display: flex;
   }
-}
 
-@media only screen and (max-width: 375px) {
   .login__forgot {
     position: absolute;
     bottom: -7rem;

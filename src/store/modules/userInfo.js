@@ -6,9 +6,15 @@ import {
   UPDATE_ME_MUTATION,
   UPDATE_PASSWORD_MUTATION,
   LOGOUT_MUTATION,
-  DELETE_ME_MUTATION
+  DELETE_ME_MUTATION,
+  GET_FREE_PLAN_MUTATION,
+  FORGOT_PASSWORD_MUTATION
 } from '@/graphql/mutations/_index'
-import { ME_QUERY, ME_PESEL_QUERY } from '@/graphql/queries/_index'
+import {
+  ME_QUERY,
+  ME_PESEL_QUERY,
+  ME_STORAGE_QUERY
+} from '@/graphql/queries/_index'
 
 const getDefaultState = () => {
   return {
@@ -20,7 +26,11 @@ const getDefaultState = () => {
     phone: null,
     birthdate: null,
     paid_until: null,
-    is_payment_valid: null
+    is_payment_valid: null,
+    storage: {
+      kb_used: 0,
+      kb_max: 0
+    }
   }
 }
 
@@ -61,6 +71,18 @@ const actions = {
         }
       })
       .then(data => data.data.createUser)
+  },
+  getFreePlan ({ commit }, data) {
+    return apolloClient
+      .mutate({
+        mutation: GET_FREE_PLAN_MUTATION
+      })
+      .then(data => data.data.getFreePlan)
+      .then(plan => {
+        if (plan.status === 'PLAN_NOT_UPDATED') {
+          throw new Error(plan.message)
+        }
+      })
   },
   getData ({ commit }) {
     return apolloClient
@@ -128,6 +150,21 @@ const actions = {
         window.localStorage.removeItem(AUTH_TOKEN)
       })
   },
+  forgotPassword ({ commit }, data) {
+    return apolloClient
+      .mutate({
+        mutation: FORGOT_PASSWORD_MUTATION,
+        variables: {
+          data: data
+        }
+      })
+      .then(data => data.data.forgotPassword)
+      .then(forgotPassword => {
+        if (forgotPassword.status !== 'EMAIL_SENT') {
+          throw new Error('Error occured')
+        }
+      })
+  },
   getPESEL ({ commit }, password) {
     return apolloClient
       .query({
@@ -139,6 +176,17 @@ const actions = {
       .then(data => data.data.pesel)
       .then(pesel => {
         commit('SET_PESEL', pesel)
+      })
+  },
+  getStorage ({ commit }) {
+    return apolloClient
+      .query({
+        query: ME_STORAGE_QUERY,
+        fetchPolicy: 'no-cache'
+      })
+      .then(data => data.data.me.storage)
+      .then(storage => {
+        commit('SET_DATA', { storage: storage })
       })
   },
   hidePESEL ({ commit }) {

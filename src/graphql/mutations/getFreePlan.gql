@@ -1,0 +1,6 @@
+mutation {
+  getFreePlan {
+    status
+    message
+  }
+}

@@ -1,0 +1,8 @@
+{
+  me {
+    storage {
+      kb_used
+      kb_max
+    }
+  }
+}

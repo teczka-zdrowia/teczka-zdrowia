@@ -1,66 +1,52 @@
 <template>
   <div>
-    <div class="payment--info">
-      <VioletBlock
-        class="info__content"
-        v-if="isPaymentValid"
-      >
-        Opłacono do
-        <b>{{ paidUntil }}</b>
-        ({{daysUntil}})
-      </VioletBlock>
-      <RedBlock
-        class="info__content"
-        v-if="!isPaymentValid"
-      >Nieopłacony</RedBlock>
-    </div>
     <div class="payment">
-      <div class="payment__about">
-        <div>
-          <div class="about__title">Pakiet dla specjalistów</div>
-          <div>
-            <div class="about__func">Tworzenie gabinetów</div>
-            <div class="about__func">Terminarz wizyt</div>
-            <div class="about__func">Kartoteki pacjentów</div>
-          </div>
-          <div class="about__cost">
-            <span>XXX zł/msc</span>
-          </div>
+      <div
+        class="payment__present"
+        v-if="daysUntil > 0"
+      >
+        <div class="payment__present__title">
+          Plan:&nbsp;<span>FREE30</span>
+        </div>
+        <div class="payment__present__until">
+          Aktywny do {{ paidUntil }} ({{ daysUntil > 1 ? `${daysUntil} dni` : `${daysUntil} dzień` }})
         </div>
       </div>
-      <div class="payment__container">
-        <div class="payment__choose">
-          <div class="choose__title">Wybierz sposób płatności:</div>
-          <div class="choose__options">
-            <div
-              class="choose__option"
-              style="color: #253b7f;"
-            >
-              <span
-                aria-hidden="true"
-                class="fab fa-paypal"
-              />
-              PayPal
-            </div>
+      <div
+        class="payment__present"
+        v-else
+      >
+        <div class="payment__present__title">
+          Plan nieaktywny
+        </div>
+      </div>
+      <div
+        class="payment__storage"
+        v-if="!loading.storage && gbMax != 0"
+      >
+        <div class="payment__storage__title">
+          Miejsce na pliki: <span>{{ gbMax.toFixed(1) }} GB</span>
+        </div>
+        <div class="payment__storage__bar">
+          <div
+            class="payment__storage__bar--used"
+            :style="`width: ${this.percentageUsed}%`"
+          >
+            <span v-if="percentageUsed > 50">
+              {{ percentageUsed }}%
+            </span>
           </div>
-          <div class="choose__options">
-            <div class="choose__option">
-              <span
-                aria-hidden="true"
-                class="far fa-credit-card"
-              />
-              Karta
-            </div>
+          <div
+            class="payment__storage__bar--free"
+            :style="`width: ${percentageFree}%`"
+          >
+            <span v-if="percentageFree > 50">
+              {{ percentageFree }}%
+            </span>
           </div>
-          <div class="choose__options">
-            <div class="choose__option">
-              <span
-                aria-hidden="true"
-                class="fas fa-money-check"
-              />
-              Przelew
-            </div>
-          </div>
+        </div>
+        <div class="payment__storage__free">
+          Pozostało {{ (gbMax - gbUsed).toFixed(1) }} GB ({{ percentageFree }}%)
         </div>
       </div>
     </div>
@@ -68,37 +54,75 @@
 </template>
 
 <script>
-import VioletBlock from "../../components/ui/blocks/VioletBlock";
-import RedBlock from "../../components/ui/blocks/RedBlock";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 let moment = require("moment");
 moment.locale("pl");
 
 export default {
   name: "Payment",
+  data: function() {
+    return {
+      loading: {
+        storage: true
+      }
+    };
+  },
   computed: {
     ...mapGetters({
-      isPaymentValid: "userInfo/isPaymentValid"
+      viewer: "userInfo/full"
     }),
     paidUntil: function() {
-      return moment(
-        this.$store.getters["userInfo/paidUntil"],
-        "YYYY-MM-DD"
-      ).format("DD.MM.YYYY");
+      return moment(this.viewer.paid_until, "YYYY-MM-DD").format("DD.MM.YYYY");
     },
     daysUntil: function() {
-      let days = moment(
-        this.$store.getters["userInfo/paidUntil"],
-        "YYYY-MM-DD"
-      ).diff(moment(), "days");
-
-      return days > 1 ? `pozostało ${days} dni` : `pozostał ${days} dzień`;
+      return moment(this.viewer.paid_until, "YYYY-MM-DD").diff(
+        moment(),
+        "days"
+      );
+    },
+    kbUsed: function() {
+      return this.viewer.storage ? this.viewer.storage.kb_used : null;
+    },
+    kbMax: function() {
+      return this.viewer.storage ? this.viewer.storage.kb_max : null;
+    },
+    gbUsed: function() {
+      return this.viewer.storage ? this.kbToGB(this.kbUsed) : null;
+    },
+    gbMax: function() {
+      return this.viewer.storage ? this.kbToGB(this.kbMax) : null;
+    },
+    gbFree: function() {
+      return this.viewer.storage ? this.gbMax - this.gbUsed : null;
+    },
+    percentageUsed: function() {
+      const quotient = this.kbUsed / this.kbMax;
+      const percentage = quotient.toFixed(0);
+      return this.viewer.storage ? percentage : null;
+    },
+    percentageFree: function() {
+      return 100 - this.percentageUsed;
+    }
+  },
+  methods: {
+    ...mapActions({
+      getStorage: "userInfo/getStorage"
+    }),
+    getUserStorage: async function() {
+      this.loading.storage = true;
+      await this.getStorage();
+      this.loading.storage = false;
+    },
+    kbToGB: function(val) {
+      return val / 1000 / 1000;
     }
   },
   components: {
-    VioletBlock: VioletBlock,
-    RedBlock: RedBlock
+    //
+  },
+  mounted: function() {
+    this.getUserStorage();
   }
 };
 </script>
@@ -106,119 +130,86 @@ export default {
 <style lang="scss" scoped>
 @import "../../main";
 
-.payment--info {
-  margin: auto;
-  width: 50rem;
-  height: auto;
-  display: flex;
-  margin-bottom: 1em;
-}
-.info__content {
-  padding: 2.5%;
-  text-align: center;
-}
-
 .payment {
-  margin: auto;
-  margin-bottom: 1em;
-  width: 50rem;
-  height: auto;
-  background: #fafafc;
-  border-radius: 0.5em;
-  overflow: hidden;
-  box-shadow: 0 0 20px 0px $lightgrey;
-  display: flex;
-  & > div {
-    width: 50%;
-    padding: 2rem 0;
+  display: grid;
+  grid-gap: 1rem;
+
+  &__present {
+    display: grid;
+    grid-template-rows: auto 3.5rem;
+    color: #3e3e45;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+    background: #fafafa;
+    -webkit-transition: 0.2s ease-in-out;
+    transition: 0.2s ease-in-out;
     overflow: hidden;
-  }
-}
-
-.payment__about {
-  text-align: center;
-  font-size: 1.25em;
-  color: #fafafc;
-  background: #7f83e8;
-  .about__title {
-    font-weight: 600;
-    margin-bottom: 2rem;
-    width: 100%;
-  }
-  .about__func {
-    width: 100%;
-    @extend %text--center;
-    height: 2.5em;
-    padding: 0.5rem;
-    font-weight: 600;
-    background: #6e72e2;
-    transform: rotate(-3deg);
-    margin-left: -0.5rem;
-    &:nth-child(even) {
-      background: #7f83e8;
-    }
-  }
-  .about__cost {
-    margin-top: 2rem;
-    width: 100%;
-    font-weight: 600;
-    @extend %text--center;
-    span {
-      margin-left: auto;
-      border-top-left-radius: 0.5em;
-      border-bottom-left-radius: 0.5em;
-      background: $darkviolet;
-      padding: 0.5em;
-    }
-  }
-}
-.payment__choose {
-  font-weight: 600;
-  color: #3e3e45;
-  font-size: 1.25em;
-  text-align: center;
-  .choose__options {
-    display: block;
-    margin: auto;
-    margin-top: 1.5em;
-    .choose__option {
-      width: 6.5em;
-      display: inline-block;
-      border-radius: 0.5em;
-      padding: 0.5em;
-      font-size: 1.25em;
-      background: #eaeef7;
-      font-weight: 700;
-      cursor: pointer;
+    text-align: center;
+    &__title {
+      @extend %text--center;
+      padding: 1rem;
+      font-size: 1.5rem;
       span {
-        vertical-align: middle;
-        margin-right: 0.5em;
+        color: #6a6ee1;
       }
-      &:not(:last-child) {
-        margin-bottom: 0.5em;
+    }
+    &__until {
+      padding: 1rem;
+      background: #6a6ee1;
+      color: #fafafa;
+      text-align: center;
+      font-size: 1.25rem;
+    }
+  }
+  &__storage {
+    color: #3e3e45;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+    background: #fafafa;
+    -webkit-transition: 0.2s ease-in-out;
+    transition: 0.2s ease-in-out;
+    overflow: hidden;
+    text-align: center;
+    &__title {
+      padding: 1rem;
+      font-size: 1.5rem;
+      span {
+        color: #6a6ee1;
       }
+    }
+    &__bar {
+      display: flex;
+      margin: 1rem;
+      margin-top: 0;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      font-weight: 600;
+      color: #fafafa;
+      & > div {
+        padding: 1rem;
+      }
+      &--used {
+        background: #6a6ee1;
+      }
+      &--free {
+        background: #797de3;
+      }
+    }
+    &__free {
+      padding: 1rem;
+      background: #eeeef3;
+      color: #67676e;
+      text-align: center;
+      font-size: 1.25rem;
     }
   }
 }
 
-@media only screen and (max-width: 56rem) {
-  .payment--info,
+@media screen and (min-width: 960px) {
   .payment {
-    width: 100%;
-    .block--violet {
-      width: 100%;
-      padding: 1em;
-    }
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  .payment {
-    display: block;
-    .payment__about,
-    .payment__container {
-      width: 90%;
-    }
+    grid-template-columns: 1fr 1fr;
   }
 }
 </style>

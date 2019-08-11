@@ -29,24 +29,6 @@
         >
       </MainInput>
     </div>
-    <div class="login__options">
-      <div class="login__remember">
-        <input
-          v-model="isRememberMe"
-          type="checkbox"
-          id="rememberMe"
-        >
-        <label
-          for="rememberMe"
-          class="checkbox--login__remember"
-        ></label>
-        <p>Zapamiętaj mnie</p>
-      </div>
-      <a
-        class="login__forgot"
-        href="#"
-      >Przypomnij hasło</a>
-    </div>
     <slot></slot>
   </form>
 </template>

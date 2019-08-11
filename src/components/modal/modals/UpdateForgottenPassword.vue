@@ -1,7 +1,7 @@
 <template>
   <form
-    class="modal--cpass"
-    @submit.prevent="changePassword"
+    class="modal--ufp"
+    @submit.prevent="updateForgottenPassword"
   >
     <h1 class="modal__title">
       Zmiana hasła
@@ -9,24 +9,13 @@
 
     <div class="modal__info">
       <div class="modal__form">
-        <MainInput class="many novalid">
-          Obecne hasło
+        <MainInput class="many">
+          Nowe hasło
           <input
             type="password"
             name="password"
             minlength="8"
             v-model="data.password"
-            placeholder="••••••••••••••••"
-            required
-          >
-        </MainInput>
-        <MainInput class="many">
-          Nowe hasło
-          <input
-            type="password"
-            name="new_password"
-            minlength="8"
-            v-model="data.new_password"
             placeholder="••••••••••••••••"
             required
           >
@@ -38,9 +27,9 @@
           Powtórz nowe hasło
           <input
             type="password"
-            name="new_password_confirmation"
+            name="password_confirmation"
             minlength="8"
-            v-model="data.new_password_confirmation"
+            v-model="data.password_confirmation"
             placeholder="••••••••••••••••"
             required
           >
@@ -78,8 +67,7 @@ export default {
       isLoading: false,
       data: {
         password: "",
-        new_password: "",
-        new_password_confirmation: ""
+        password_confirmation: ""
       }
     };
   },
@@ -90,12 +78,21 @@ export default {
   methods: {
     ...mapActions({
       hideModal: "modal/hide",
-      updateUserPassword: "userInfo/updatePassword"
+      modalData: "modal/data",
+      updateForgottenPassword: "userInfo/updateForgottenPassword"
     }),
-    changePassword() {
+    changePassword: function() {
       this.isLoading = true;
-      this.updateUserPassword(this.data)
-        .then(() => this.hideModal())
+      const payload = {
+        ...data,
+        ...modalData
+      };
+
+      this.updateUserPassword(payload)
+        .then(() => {
+          this.$toasted.succcess("Pomyślnie zaktualizowano hasło");
+          this.hideModal();
+        })
         .catch(error => {
           this.$toasted.error("Niepoprawne dane");
           console.error(error);
@@ -107,7 +104,7 @@ export default {
   },
   computed: {
     isPasswordsSame: function() {
-      return this.data.new_password === this.data.new_password_confirmation;
+      return this.data.password === this.data.password_confirmation;
     }
   }
 };

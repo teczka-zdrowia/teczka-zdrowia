@@ -1,24 +1,27 @@
 <template>
   <form
-    class="modal--cp"
-    @submit.prevent="getPesel"
+    class="modal--rp"
+    @submit.prevent="sendPasswordReset"
   >
     <h1 class="modal__title">
-      Potwierdź czynność hasłem
+      Przypomnij hasło
     </h1>
 
     <div class="modal__info">
-      <MainInput class="many novalid">
-        Hasło
+      <MainInput v-if="!sent">
+        Email
         <input
-          type="password"
-          name="password"
-          minlength="8"
-          v-model="password"
-          placeholder="••••••••••••••••"
+          type="email"
+          name="email"
+          minlength="4"
+          v-model="email"
+          placeholder="jan@kowalski.com"
           required
         >
       </MainInput>
+      <GreyBlock v-if="sent">
+        E-email wysłany
+      </GreyBlock>
     </div>
 
     <div class="modal__actions">
@@ -26,14 +29,15 @@
         class="modal__btn modal__btn--grey"
         @click="hideModal"
         type="button"
-      >Anuluj</button>
+      >Zamknij</button>
       <MainBtn
         class="modal__btn modal__btn--violet"
+        v-if="!sent"
         :loading="isLoading"
         :disabled="isLoading"
         color="#fafafa"
-        @click="getPesel"
-      >Pokaż PESEL</MainBtn>
+        @click="sendPasswordReset"
+      >Wyślij email</MainBtn>
     </div>
   </form>
 </template>
@@ -48,7 +52,8 @@ export default {
   name: "ConfirmGetPESEL",
   data: function() {
     return {
-      password: "",
+      email: "",
+      sent: false,
       isLoading: false
     };
   },
@@ -64,19 +69,28 @@ export default {
   methods: {
     ...mapActions({
       hideModal: "modal/hide",
-      getUserPESEL: "userInfo/getPESEL"
+      forgotPassword: "userInfo/forgotPassword"
     }),
-    getPesel() {
+    sendPasswordReset: async function() {
       this.isLoading = true;
-      this.getUserPESEL(this.password)
-        .then(() => this.hideModal())
-        .catch(error => {
-          this.$toasted.error("Niepoprawne hasło");
-          console.error(error);
+
+      const payload = {
+        email: this.email
+      };
+
+      await this.forgotPassword(payload)
+        .then(() => {
+          this.$toasted.success(
+            "Wysłano e-mail z linkiem do zresetowania hasła"
+          );
+          this.sent = true;
         })
-        .finally(() => {
-          this.isLoading = false;
+        .catch(error => {
+          console.error(error);
+          this.$toasted.error("Wystąpił błąd");
         });
+
+      this.isLoading = false;
     }
   }
 };
