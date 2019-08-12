@@ -8,7 +8,8 @@ import {
   LOGOUT_MUTATION,
   DELETE_ME_MUTATION,
   GET_FREE_PLAN_MUTATION,
-  FORGOT_PASSWORD_MUTATION
+  FORGOT_PASSWORD_MUTATION,
+  UPDATE_FORGOTTEN_PASSWORD_MUTATION
 } from '@/graphql/mutations/_index'
 import {
   ME_QUERY,
@@ -121,6 +122,21 @@ const actions = {
         }
       })
   },
+  updateForgottenPassword ({ commit }, data) {
+    return apolloClient
+      .mutate({
+        mutation: UPDATE_FORGOTTEN_PASSWORD_MUTATION,
+        variables: {
+          data: data
+        }
+      })
+      .then(data => data.data.updateForgottenPassword)
+      .then(data => {
+        if (data.status !== 'PASSWORD_UPDATED') {
+          throw new Error(data.message)
+        }
+      })
+  },
   logout ({ commit }) {
     return apolloClient
       .mutate({
@@ -161,7 +177,7 @@ const actions = {
       .then(data => data.data.forgotPassword)
       .then(forgotPassword => {
         if (forgotPassword.status !== 'EMAIL_SENT') {
-          throw new Error('Error occured')
+          throw new Error(forgotPassword.message)
         }
       })
   },

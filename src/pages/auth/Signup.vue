@@ -206,13 +206,18 @@ export default {
   },
   methods: {
     ...mapActions({
-      userSignup: "userInfo/signup"
+      userSignup: "userInfo/signup",
+      userLogin: "userInfo/login",
+      userGetFreePlan: "userInfo/getFreePlan"
     }),
     signup: function() {
       this.$emit("loading", true);
       this.userSignup(this.userData)
+        .then(() => this.userLogin(this.loginData))
+        .then(() => (this.profileType == 2 ? this.userGetFreePlan() : true))
         .then(() => {
-          this.$toasted.success("Pomyślnie zarejestrowano. Teraz się zaloguj");
+          this.$toasted.success("Pomyślnie zarejestrowano");
+          window.location.href = "/Dashboard";
         })
         .catch(error => {
           this.$toasted.error("Niepoprawne dane");
@@ -240,6 +245,14 @@ export default {
       } else {
         return this.data;
       }
+    },
+    loginData: function() {
+      const { email, password } = this.data;
+      const data = {
+        username: email,
+        password: password
+      };
+      return data;
     }
   },
   components: {

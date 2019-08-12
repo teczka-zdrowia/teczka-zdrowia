@@ -2,14 +2,13 @@
 import { mapActions } from "vuex";
 
 export default {
-  name: "ForgotPassword",
+  name: "PasswordReset",
   methods: {
     ...mapActions({
       showModal: "modal/show"
     })
   },
-  created: function() {
-    this.router.push({ name: "Auth" });
+  mounted: function() {
     this.showModal({
       componentName: "UpdateForgottenPassword",
       data: {
@@ -17,6 +16,7 @@ export default {
         email: this.$route.params.email
       }
     });
+    this.$router.push({ name: "Auth" });
   }
 };
 </script>

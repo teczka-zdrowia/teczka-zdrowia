@@ -226,6 +226,7 @@ export default {
 
 .login__remember {
   display: flex;
+  margin-top: 2rem;
   & > input {
     display: none !important;
   }

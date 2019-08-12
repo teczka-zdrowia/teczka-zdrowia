@@ -1,7 +1,7 @@
 <template>
   <form
     class="modal--ufp"
-    @submit.prevent="updateForgottenPassword"
+    @submit.prevent="updatePassword"
   >
     <h1 class="modal__title">
       Zmiana hasła
@@ -48,20 +48,20 @@
         :loading="isLoading"
         :disabled="isLoading"
         color="#fafafa"
-        @click="changePassword"
+        @click="updatePassword"
       >Zmień hasło</MainBtn>
     </div>
   </form>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import MainInput from "../../ui/basic/MainInput";
 import MainBtn from "../../ui/basic/MainBtn";
 import "../modal.scss";
 
 export default {
-  name: "ChangePassword",
+  name: "UpdateForgottenPassword",
   data: function() {
     return {
       isLoading: false,
@@ -78,23 +78,19 @@ export default {
   methods: {
     ...mapActions({
       hideModal: "modal/hide",
-      modalData: "modal/data",
       updateForgottenPassword: "userInfo/updateForgottenPassword"
     }),
-    changePassword: function() {
+    updatePassword: function() {
       this.isLoading = true;
-      const payload = {
-        ...data,
-        ...modalData
-      };
+      const payload = Object.assign(this.data, this.modalData);
 
-      this.updateUserPassword(payload)
+      this.updateForgottenPassword(payload)
         .then(() => {
-          this.$toasted.succcess("Pomyślnie zaktualizowano hasło");
+          this.$toasted.success("Pomyślnie zaktualizowano hasło");
           this.hideModal();
         })
         .catch(error => {
-          this.$toasted.error("Niepoprawne dane");
+          this.$toasted.error(error);
           console.error(error);
         })
         .finally(() => {
@@ -103,6 +99,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      modalData: "modal/data"
+    }),
     isPasswordsSame: function() {
       return this.data.password === this.data.password_confirmation;
     }

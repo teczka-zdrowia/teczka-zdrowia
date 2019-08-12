@@ -20,7 +20,7 @@
         >
       </MainInput>
       <GreyBlock v-if="sent">
-        E-email wysłany
+        E-mail wysłany
       </GreyBlock>
     </div>
 
@@ -87,7 +87,7 @@ export default {
         })
         .catch(error => {
           console.error(error);
-          this.$toasted.error("Wystąpił błąd");
+          this.$toasted.error(error);
         });
 
       this.isLoading = false;

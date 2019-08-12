@@ -16,7 +16,7 @@ import AddAppointment from '@/pages/addAppointment/AddAppointment'
 import AddHistory from '@/pages/addHistory/AddHistory'
 import UpdateAppointment from '@/pages/updateAppointment/UpdateAppointment'
 import PatientFile from '@/pages/patientFile/PatientFile'
-import ForgotPassword from '@/pages/forgotPassword/ForgotPassword'
+import PasswordReset from '@/pages/passwordReset/PasswordReset'
 import Redirect404 from '@/pages/404/Redirect404'
 import Error404 from '@/pages/404/Error404'
 
@@ -140,9 +140,9 @@ const router = new Router({
       }
     },
     {
-      path: '/ForgotPassword/:token/:email',
-      name: 'ForgotPassword',
-      component: ForgotPassword
+      path: '/PasswordReset/:token/:email',
+      name: 'PasswordReset',
+      component: PasswordReset
     },
     {
       path: '/404',
