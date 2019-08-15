@@ -1,0 +1,8 @@
+query($city: String!) {
+  places(city: $city) {
+    id
+    name
+    address
+    city
+  }
+}

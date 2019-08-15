@@ -57,6 +57,56 @@
         required
       >
     </div>
+    <div class="settings__el">
+      <div class="settings__title">
+        <span>Zgoda</span>
+      </div>
+      <MainBtn
+        class="settings__content settings__content--fullcolor"
+        v-if="!isEdit && selectedPlace.agreement"
+        v-on:click.native="showAgreement"
+      ><span
+          aria-hidden="true"
+          class="fas fa-file-contract"
+        /> Zobacz szablon</MainBtn>
+      <div
+        class="settings__content"
+        v-if="!isEdit && !selectedPlace.agreement"
+      >Brak szablonu</div>
+      <div
+        class="settings__content settings__content--withbutton"
+        v-if="isEdit && newData.agreement"
+      >
+        <div class="settings__content--withbutton__info">
+          {{ agreementInfo }}
+        </div><button
+          class="settings__content--withbutton__btn"
+          v-on:click="deleteAgreement"
+        >
+          <span
+            class="fas fa-times"
+            aria-hidden="true"
+          />
+        </button>
+      </div>
+      <label
+        v-if="isEdit && !newData.agreement"
+        class="settings__content fileinput settings__content--fullcolor"
+      >
+        <input
+          type="file"
+          name="agreement"
+          accept="image/jpeg,image/gif,image/png,application/pdf"
+          v-on:change="processAgreement($event)"
+          required
+        >
+        <span
+          aria-hidden="true"
+          class="fas fa-file-contract"
+        />
+        Przejślij plik szablonu
+      </label>
+    </div>
     <div class="settings__actions">
       <MainBtn
         class="settings__action settings__action--edit"
@@ -112,7 +162,8 @@
 
 <script>
 import MainBtn from "../../components/ui/basic/MainBtn";
-
+import { API_URL } from "@/apollo/constants";
+import imageCompression from "browser-image-compression";
 import { mapActions, mapGetters } from "vuex";
 
 export default {
@@ -126,7 +177,8 @@ export default {
       newData: {
         name: "",
         city: "",
-        address: ""
+        address: "",
+        agreement: ""
       },
       loading: {
         update: false
@@ -139,6 +191,16 @@ export default {
     }),
     selectedPlace: function() {
       return this.selectedRole.place;
+    },
+    agreementInfo: function() {
+      const agreement = this.newData.agreement;
+      const agreementIsString = typeof agreement === "string";
+
+      return agreementIsString
+        ? agreement
+        : `${agreement.name} | ${this.getOriginalFileSizeInMegabytes(
+            agreement
+          )}`;
     }
   },
   watch: {
@@ -160,9 +222,13 @@ export default {
     updatePlace: async function() {
       this.loading.update = true;
 
+      let newData = this.newData;
+      const agreementIsString = typeof newData.agreement === "string";
+      newData.agreement = agreementIsString ? undefined : newData.agreement;
+
       const payload = {
         id: this.selectedPlace.id,
-        data: this.newData
+        data: newData
       };
 
       await this.updateUserPlace(payload).catch(error => {
@@ -181,6 +247,36 @@ export default {
           name: this.selectedPlace.name
         }
       });
+    },
+    processAgreement: async function(event) {
+      let file = event.target.files[0];
+      file = this.isImage(file) ? await this.compressImage(file) : file;
+      this.newData.agreement = file;
+    },
+    deleteAgreement: function() {
+      this.newData.agreement = null;
+    },
+    showAgreement: function() {
+      const path = `${API_URL}/storage/files/${this.selectedPlace.agreement}`;
+      window.open(path, "_blank");
+    },
+    getOriginalFileSizeInMegabytes: function(file) {
+      const fileSizeInMegabytes = file.size / 1000 / 1000;
+      const sizeIsSmallerThanOne = fileSizeInMegabytes < 1.0;
+      const fileSizeInfo = sizeIsSmallerThanOne
+        ? fileSizeInMegabytes.toFixed(2)
+        : fileSizeInMegabytes.toFixed(1);
+      return `${fileSizeInfo} MB`;
+    },
+    isImage(file) {
+      return file.type.split("/")[0] === "image";
+    },
+    compressImage(file) {
+      this.$toasted.info("Kompresowanie...");
+      const options = {
+        maxSizeMB: 5
+      };
+      return imageCompression(file, options);
     }
   }
 };
@@ -218,18 +314,68 @@ export default {
 
 .settings__content {
   @extend %text--center;
-  width: calc(100% - 3rem);
+  width: calc(100% - 2rem);
   background: #eeeef3;
   color: #91919c;
+  span {
+    margin-right: 1rem;
+  }
   &.settings__pesel {
     @extend %text--center;
     background: #9394eb;
     color: #fafafc;
     cursor: pointer;
   }
+  &.button {
+    width: 100%;
+    background: #9394eb;
+    color: #fafafc;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+  }
+  &.fileinput {
+    cursor: pointer;
+    input {
+      display: none;
+    }
+    span {
+      margin-right: 1rem;
+    }
+  }
   &--fullcolor {
     background: #9394eb;
     color: #fafafc;
+  }
+  &--withbutton {
+    display: grid;
+    grid-template-columns: calc(100% - 4rem) 4rem;
+    padding: 0;
+    &__info {
+      padding: 0.5rem;
+      color: #67676e;
+      width: calc(100% - 1rem);
+      font-weight: 600;
+      word-break: break-word;
+      border-bottom-left-radius: 0.5rem;
+      &:first-child {
+        display: flex;
+        align-items: center;
+        border-top-left-radius: 0.5rem;
+      }
+    }
+    &__btn {
+      padding: 1rem;
+      font-size: 1.5rem;
+      background: #f1f2f7;
+      color: #6a6ee1;
+      border-top-right-radius: 0.5rem;
+      border-bottom-right-radius: 0.5rem;
+      cursor: pointer;
+      transition: 0.2s ease-in-out;
+      &:hover {
+        filter: brightness(95%);
+      }
+    }
   }
 }
 

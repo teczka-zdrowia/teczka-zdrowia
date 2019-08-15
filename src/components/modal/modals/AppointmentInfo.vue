@@ -8,7 +8,7 @@
       :showUserAs="data.showUserAs"
     />
     <div
-      class="modal__actions fullwidth modal--ai__action"
+      class="modal__actions fullwidth modal--ai__action rounded"
       v-if="viewerIsAuthor"
     >
       <button
@@ -73,7 +73,10 @@ export default {
       showModal: "modal/show",
       setUpdateAppointmentOldData: "updateAppointment/setOldData",
       setUpdateAppointmentData: "updateAppointment/setData",
-      deleteUserAppointment: "updateAppointment/delete"
+      deleteUserAppointment: "updateAppointment/delete",
+      deleteLocalAppointmentsByMe: "appointmentsByMe/deleteLocal",
+      deleteLocalPlaceAppointments: "placeAppointments/deleteLocal",
+      deleteLocalUserAppointments: "userAppointments/deleteLocal"
     }),
     edit: function() {
       const appointmentData = this.data.appointment;
@@ -106,8 +109,11 @@ export default {
 
       this.isLoading = true;
 
+      let self = this;
+
       await this.deleteUserAppointment(appointmentData.id)
-        .then(() => {
+        .then(appointment => {
+          self.deleteLocally(appointment);
           this.$toasted.success("Pomyślnie usunięto wizytę");
           this.hideModal();
         })
@@ -117,6 +123,11 @@ export default {
         });
 
       this.isLoading = false;
+    },
+    deleteLocally: function(data) {
+      this.deleteLocalAppointmentsByMe(data);
+      this.deleteLocalPlaceAppointments(data);
+      this.deleteLocalUserAppointments(data);
     }
   }
 };

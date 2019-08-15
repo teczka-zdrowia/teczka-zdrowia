@@ -183,7 +183,10 @@
           />
         </button>
       </div>
-      <label class="addhistory__block__btn">
+      <label
+        class="addhistory__block__btn"
+        for="attachmentInput"
+      >
         <input
           id="attachmentInput"
           type="file"
@@ -194,7 +197,7 @@
           aria-hidden="true"
           class="fas fa-file-upload"
         />
-        Wybierz pliki
+        Prześlij pliki
       </label>
     </Block>
     <Block
@@ -219,21 +222,38 @@
           />
         </button>
       </div>
-      <label
-        class="addhistory__block__btn"
+      <div
+        v-bind:class="{ addhistory__buttons : isMobile }"
         v-if="!data.agreement"
       >
-        <input
-          id="agreementInput"
-          type="file"
-          v-on:change="processAgreement($event)"
-        />
-        <span
-          aria-hidden="true"
-          class="fas fa-file-contract"
-        />
-        Wybierz plik
-      </label>
+        <button
+          class="addhistory__block__btn"
+          type="button"
+          v-on:click="showAgreementModal"
+          v-if="isMobile"
+        >
+          <span
+            aria-hidden="true"
+            class="fas fa-pen-square"
+          />
+          Z szablonu
+        </button>
+        <label
+          class="addhistory__block__btn"
+          for="agreementInput"
+        >
+          <input
+            id="agreementInput"
+            type="file"
+            v-on:change="processAgreement($event)"
+          />
+          <span
+            aria-hidden="true"
+            class="fas fa-file-contract"
+          />
+          Prześlij plik
+        </label>
+      </div>
     </Block>
   </div>
 </template>
@@ -249,6 +269,7 @@ import MainLoading from "../../components/ui/basic/MainLoading";
 import GreyBlock from "../../components/ui/blocks/GreyBlock";
 import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
 
+import imageCompression from "browser-image-compression";
 import { mapGetters, mapActions } from "vuex";
 
 const moment = require("moment");
@@ -289,7 +310,8 @@ export default {
     ...mapActions({
       getPlacePatients: "placePatients/get",
       getPatientRoles: "patientRoles/get",
-      setHistoryData: "addHistory/setData"
+      setHistoryData: "addHistory/setData",
+      showModal: "modal/show"
     }),
     getRoles: async function() {
       this.loading.roles = true;
@@ -327,13 +349,14 @@ export default {
         (recommendation, index) => index !== recommendationIndex
       );
     },
-    processAttachments(event) {
+    processAttachments: async function(event) {
       const files = event.target.files;
-      Array.from(files).forEach(file => {
+      Array.from(files).forEach(async file => {
         const fileName = file.name
           .split(".")
           .slice(0, -1)
           .join(".");
+        file = this.isImage(file) ? await this.compressImage(file) : file;
         const data = {
           title: fileName,
           file: file
@@ -346,8 +369,9 @@ export default {
         (attachment, index) => index !== attachmentIndex
       );
     },
-    processAgreement(event) {
-      const file = event.target.files[0];
+    processAgreement: async function(event) {
+      let file = event.target.files[0];
+      file = this.isImage(file) ? await this.compressImage(file) : file;
       this.data.agreement = file;
     },
     deleteAgreement: function() {
@@ -364,6 +388,25 @@ export default {
     resizeTextarea(event) {
       event.target.style.height = "auto";
       event.target.style.height = event.target.scrollHeight + "px";
+    },
+    isImage(file) {
+      return file.type.split("/")[0] === "image";
+    },
+    compressImage(file) {
+      this.$toasted.info("Kompresowanie...");
+      const options = {
+        maxSizeMB: 5
+      };
+      return imageCompression(file, options);
+    },
+    showAgreementModal: function() {
+      this.showModal({
+        componentName: "SignAgreement",
+        data: {
+          hideBorders: true,
+          template: this.data.agreement
+        }
+      });
     }
   },
   watch: {
@@ -710,6 +753,32 @@ input[type="date"]::-webkit-clear-button {
       &.checked span {
         opacity: 1;
       }
+    }
+  }
+
+  &__buttons {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    & > * {
+      width: 100%;
+    }
+    & > *:first-child {
+      background: #f1f2f7;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    & > *:last-child {
+      border-top-left-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+    }
+    button {
+      width: 100%;
+      font-weight: 600;
+      display: flex;
+      justify-content: center;
+      border-radius: 0.5rem;
+      cursor: pointer;
     }
   }
 }

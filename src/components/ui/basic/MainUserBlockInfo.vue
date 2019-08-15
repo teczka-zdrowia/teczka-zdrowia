@@ -18,7 +18,7 @@
           aria-hidden="true"
           class="fas fa-phone"
         />
-        {{ user.phone}}
+        {{ user.phone }}
       </a>
       <a
         class="user__info__email"

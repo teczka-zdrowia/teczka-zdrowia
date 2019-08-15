@@ -4,6 +4,7 @@ mutation($id: ID!, $data: UpdatePlaceInput!) {
     name
     address
     city
+    agreement
     is_active
   }
 }

@@ -214,7 +214,12 @@ export default {
       this.$emit("loading", true);
       this.userSignup(this.userData)
         .then(() => this.userLogin(this.loginData))
-        .then(() => (this.profileType == 2 ? this.userGetFreePlan() : true))
+        .then(() => {
+          if (this.profileType == 2) {
+            this.userGetFreePlan();
+            this.$toasted.info("Przyznano 30 dni darmowego planu");
+          }
+        })
         .then(() => {
           this.$toasted.success("Pomyślnie zarejestrowano");
           window.location.href = "/Dashboard";

@@ -46,7 +46,10 @@ export default {
     ...mapActions({
       hideModal: "modal/hide",
       showModal: "modal/show",
-      updateUserAppointment: "updateAppointment/update"
+      updateUserAppointment: "updateAppointment/update",
+      updateLocalAppointmentsByMe: "appointmentsByMe/updateLocal",
+      updateLocalPlaceAppointments: "placeAppointments/updateLocal",
+      updateLocalUserAppointments: "userAppointments/updateLocal"
     }),
     updateAppointment: async function() {
       this.isLoading = true;
@@ -58,6 +61,7 @@ export default {
 
       await this.updateUserAppointment(payload)
         .then(appointment => {
+          this.updateLocally(appointment);
           this.$toasted.success("Poprawnie zaktualizowano wizytę");
           this.showModal({
             componentName: "AppointmentInfo",
@@ -74,6 +78,11 @@ export default {
         });
 
       this.isLoading = false;
+    },
+    updateLocally: function(data) {
+      this.updateLocalAppointmentsByMe(data);
+      this.updateLocalPlaceAppointments(data);
+      this.updateLocalUserAppointments(data);
     }
   },
   components: {

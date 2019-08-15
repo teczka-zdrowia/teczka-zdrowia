@@ -10,6 +10,7 @@
         name
         address
         city
+        agreement
         is_active
       }
     }

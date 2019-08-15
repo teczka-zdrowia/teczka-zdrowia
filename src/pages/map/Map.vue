@@ -1,17 +1,14 @@
 <template>
   <div class="map">
-    <div
-      class="map__content"
-      v-bind:class="{ 'block--blur' : showSearch}"
-    >
+    <div class="map__content">
       <l-map
         ref="map"
         :zoom.sync="zoom"
         :options="mapOptions"
-        :center="center"
+        v-on:update:center="getCityFromMap($event)"
       >
         <l-tile-layer :url="url"></l-tile-layer>
-        <l-control-zoom :position="'bottomleft'" />
+
         <l-marker
           v-for="marker in markers"
           :key="marker.id"
@@ -22,15 +19,43 @@
         </l-marker>
       </l-map>
     </div>
-    <MapNavMobile v-if="isMobile" />
-    <MapNav v-else />
+    <MainBtn
+      class="map__position"
+      v-bind:class="{ active: isCurrentPosition }"
+      v-on:click.native="setCurrentPosition"
+    >
+      <span
+        aria-hidden="true"
+        class="fas fa-crosshairs"
+      />
+    </MainBtn>
+    <div class="map__nav">
+      <div
+        class="map__nav--loading"
+        v-if="city.searching"
+      >
+        Szukanie miasta
+        <MainLoading />
+      </div>
+      <MainBtn
+        class="map__nav--search"
+        :loading="city.loadingPlaces"
+        :disaabled="city.loadingPlaces"
+        color="#fafafa"
+        v-on:click.native="getPlaces"
+        v-if="!city.searching"
+      >
+        Szukaj w:&nbsp;<span>{{ city.name }}</span>
+      </MainBtn>
+    </div>
   </div>
 </template>
 
 <script>
-import MapNav from "./MapNav";
-import MapNavMobile from "./MapNavMobile";
-
+import MainLoading from "../../components/ui/basic/MainLoading";
+import MainBtn from "../../components/ui/basic/MainBtn";
+import { apolloClient } from "@/apollo";
+import { PLACES_BY_CITY_QUERY } from "@/graphql/queries/_index";
 import { mapActions } from "vuex";
 
 import {
@@ -42,6 +67,10 @@ import {
 } from "vue2-leaflet";
 import { L } from "vue2-leaflet";
 import "leaflet/dist/leaflet.css";
+import { OpenStreetMapProvider } from "leaflet-geosearch";
+import { setTimeout } from "timers";
+
+const provider = new OpenStreetMapProvider();
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -55,15 +84,13 @@ export default {
     LMarker,
     LControlAttribution,
     LControlZoom,
-    MapNav,
-    MapNavMobile
+    MainLoading,
+    MainBtn
   },
   data: function() {
     return {
       zoom: 6,
       map: null,
-      showSearch: false,
-      center: [52.0715018, 19.5211664],
       mapOptions: {
         zoomControl: false,
         attributionControl: false,
@@ -83,20 +110,14 @@ export default {
           iconAnchor: [25, 25]
         })
       },
-      markers: []
+      markers: [],
+      isCurrentPosition: false,
+      city: {
+        name: "",
+        searching: true,
+        loadingPlaces: false
+      }
     };
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.initMap();
-      this.addMarkers();
-      navigator.geolocation.getCurrentPosition(pos => {
-        this.map = this.$refs.map.mapObject.setView(
-          [pos.coords.latitude, pos.coords.longitude],
-          12
-        );
-      });
-    });
   },
   methods: {
     ...mapActions({
@@ -105,69 +126,126 @@ export default {
     initMap: function() {
       this.map = this.$refs.map.mapObject;
     },
-    addMarkers: function() {
-      /* TODO backend communication */
-      this.markers = [
-        {
-          id: 1,
-          icon: this.icons.place,
-          latLng: [52.2486084, 20.9698996],
-          info: () => this.showPlaceModal(1)
-        },
-        {
-          id: 2,
-          icon: this.icons.doctor,
-          latLng: [53.2486084, 21.9698996],
-          info: () => this.showDoctorModal(1)
-        },
-        {
-          id: 3,
-          icon: this.icons.doctor,
-          latLng: [50.6486084, 21.9698996],
-          info: () => this.showDoctorModal(1)
-        }
-      ];
+    getCityFromMap: function(event) {
+      const data = [event.lat, event.lng];
+      this.isCurrentPosition = false;
+      this.getCity(data);
     },
-    showDoctorModal: function(id) {
-      /* Backend communication TODO */
-      this.showModal({
-        componentName: "DoctorInfo",
-        data: {
-          hideBorders: true,
-          doctor: {
-            id: 1,
-            img:
-              "https://www.mendeley.com/careers/getasset/c475b7c0-d36c-4c73-be33-a34030b6ca82/",
-            name: "Konto Testowe",
-            spec: "fizjoterapeuta",
-            email: "adrian@orlow.me",
-            phone: "111 222 333",
-            birthdate: "2002-12-23 00:11:32.000000"
+    getCity: async function(coords) {
+      this.city.searching = true;
+
+      const search = await provider.search({ query: coords });
+
+      const osm_id = search[0].raw.osm_id;
+
+      await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&osm_id=${osm_id}&osm_type=W&accept-language=pl`
+      )
+        .then(results => results.json())
+        .then(results => {
+          const address = results.address;
+          const place =
+            address.city ||
+            address.town ||
+            address.village ||
+            address.hamlet ||
+            address.suburb;
+          this.city.name = place ? place : this.city.name;
+        });
+
+      this.city.searching = false;
+    },
+    getPlaces: async function() {
+      this.city.loadingPlaces = true;
+
+      await apolloClient
+        .query({
+          query: PLACES_BY_CITY_QUERY,
+          variables: {
+            city: `%${this.city.name}%`
           }
-        }
-      });
+        })
+        .then(data => data.data.places)
+        .then(places => this.addMarkers(places))
+        .catch(error => {
+          this.$toasted.error("Nie znaleziono gabinetów");
+          console.error(error);
+        });
+
+      this.city.loadingPlaces = false;
     },
-    showPlaceModal: function(id) {
-      /* Backend communication TODO */
+    getPlaceLatLng: async function(place) {
+      const results = await provider
+        .search({ query: `${place.address}, ${place.city}` })
+        .catch(error => {
+          this.$toasted.error("Wystąpił błąd");
+          console.error(error);
+        });
+      return [results[0].raw.lat, results[0].raw.lon];
+    },
+    addMarkers: async function(places) {
+      let markers = [];
+      await places.map(async place => {
+        const latLng = await this.getPlaceLatLng(place);
+        markers.push({
+          icon: this.icons.place,
+          latLng: latLng,
+          info: () => this.showPlaceModal(place)
+        });
+      });
+
+      this.markers = markers;
+    },
+    showPlaceModal: function(place) {
       this.showModal({
         componentName: "PlaceInfo",
         data: {
           hideBorders: true,
-          id: 1,
-          name: "MedMax",
-          address: "Kwiatowa 45",
-          city: "Jaworzno",
-          isActive: true,
-          isDeleted: false,
-          isAdmin: false
+          place: place
         }
       });
+    },
+    getCurrentPosition: function(options) {
+      if (navigator.geolocation) {
+        return new Promise((resolve, reject) =>
+          navigator.geolocation.getCurrentPosition(resolve, reject)
+        );
+      } else {
+        return new Promise(resolve => resolve({}));
+      }
+    },
+    setCurrentPosition: function() {
+      this.getCurrentPosition()
+        .then(pos => {
+          if (pos.coords) {
+            this.map = this.$refs.map.mapObject.setView(
+              [pos.coords.latitude, pos.coords.longitude],
+              12
+            );
+          } else {
+            this.map = this.$refs.map.mapObject.setView(
+              [52.0715018, 19.5211664],
+              12
+            );
+          }
+        })
+        .then(() => {
+          const unwatch = this.$watch(
+            "city.searching",
+            function() {
+              this.isCurrentPosition = true;
+              unwatch();
+            },
+            { deep: true }
+          );
+        });
     }
   },
-  computed: {
-    isMobile: function() {
-      return this.$store.getters["window/isMobile"];
-    }
+  mounted: function() {
+    this.$nextTick(() => {
+      this.initMap();
+      this.setCurrentPosition();
+    });
   }
 };
 </script>
@@ -179,6 +257,57 @@ export default {
   width: 100%;
   z-index: 10;
   display: flex;
+  &__position {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 10000;
+    padding: 1em;
+    font-size: 1.25rem;
+    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+    background: #fdfdfd;
+    color: #67676e;
+    height: auto;
+    svg {
+      height: 1.25rem;
+      width: 1.25rem;
+    }
+    &.active {
+      color: #6a6ee1;
+    }
+  }
+  &__nav {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 10000;
+    &--search {
+      padding: 1em !important;
+      font-size: 1.25rem;
+      font-weight: 600;
+      span {
+        font-weight: 700;
+      }
+    }
+    &--loading {
+      padding: 1em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      text-align: center;
+      border-radius: 0.5rem;
+      font-size: 1.25rem;
+      box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+      background: #fdfdfd;
+      color: #6a6ee1;
+      svg {
+        margin-left: 0.5rem;
+        height: 1.5rem;
+        width: 1.5rem;
+      }
+    }
+  }
 }
 
 .map__content {
@@ -188,5 +317,13 @@ export default {
 
 /deep/ .leaflet-tile-pane {
   filter: saturate(0);
+}
+
+@media only screen and (max-width: 460px) {
+  .map__position,
+  .map__nav--search,
+  .map__nav--loading {
+    padding: 1rem !important;
+  }
 }
 </style>

@@ -190,7 +190,7 @@ export default {
       } else {
         payload = Object.assign(payload, {
           id: this.selectedRole.place.id,
-          author_id: this.viewer.id
+          authorId: this.viewer.id
         });
 
         await this.getPlaceAppointments(payload).catch(error => {

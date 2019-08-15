@@ -8,6 +8,7 @@ query($id: ID!) {
       place {
         id
         name
+        agreement
       }
     }
   }

@@ -19,12 +19,21 @@ const mutations = {
   },
   UPDATE_LOCAL (state, data) {
     const foundIndex = state.edges.findIndex(edge => edge.node.id === data.id)
-    state.edges[foundIndex].node = data
+    const dataExists = state.edges[foundIndex]
+    if (dataExists) {
+      state.edges[foundIndex].node = Object.assign(
+        state.edges[foundIndex].node,
+        data
+      )
+    }
+  },
+  DELETE_LOCAL (state, data) {
+    state.edges = state.edges.filter(edge => edge.node.id !== data.id)
   }
 }
 
 const actions = {
-  get ({ commit }, { id, first, after, note, date, orderBy, type, author_id }) {
+  get ({ commit }, { id, first, after, note, date, orderBy, type, authorId }) {
     return apolloClient
       .query({
         query: PLACE_APPOINTMENTS_QUERY,
@@ -35,7 +44,7 @@ const actions = {
           note: note,
           date: date,
           orderBy: orderBy,
-          author_id: author_id
+          author_id: authorId
         }
       })
       .then(data => data.data.place.appointments)
@@ -48,6 +57,12 @@ const actions = {
           commit('ADD_DATA', appointments)
         }
       })
+  },
+  updateLocal ({ commit }, data) {
+    commit('UPDATE_LOCAL', data)
+  },
+  deleteLocal ({ commit }, data) {
+    commit('DELETE_LOCAL', data)
   }
 }
 

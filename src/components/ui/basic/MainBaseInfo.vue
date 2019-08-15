@@ -154,7 +154,7 @@
         <div
           class="more__content"
           v-if="!isEdit"
-        >{{ userPhone }}</div>
+        >{{ userData.phone }}</div>
         <input
           v-if="isEdit"
           class="more__content"
@@ -304,13 +304,6 @@ export default {
     userData: function() {
       return this.data ? this.data : this.viewer;
     },
-    userPhone: function() {
-      if (this.userData.phone)
-        return this.userData.phone.replace(
-          /(\d{1,3})(\d{1,3})(\d{1,4})/g,
-          "$1 $2 $3"
-        );
-    },
     userAge: function() {
       return Math.abs(
         moment(this.userBirthdate, "DD.MM.YYYY").diff(moment(), "years")
@@ -337,6 +330,7 @@ export default {
     updateData: function() {
       const userData = this.userData;
       const newUserData = this.newUserData;
+      this.newUserData.phone = this.newUserData.phone.replace(/\s/g, "");
 
       this.isLoading = true;
 
@@ -348,9 +342,6 @@ export default {
           dataThatChanged[property] = newUserData[property];
         }
       }
-
-      const dataThatChangedHasUpload =
-        typeof dataThatChanged.avatar !== undefined;
 
       this.updateUserData(dataThatChanged)
         .then(() => (this.isEdit = false))

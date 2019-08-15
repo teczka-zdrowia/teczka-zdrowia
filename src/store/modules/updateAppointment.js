@@ -57,7 +57,10 @@ const actions = {
         }
       })
       .then(data => data.data.deleteAppointment)
-      .then(() => commit('CLEAR'))
+      .then(appointment => {
+        commit('CLEAR')
+        return appointment
+      })
   },
   setData ({ commit }, data) {
     commit('SET_DATA', data)

@@ -10,6 +10,10 @@ mutation($id: ID!, $data: UpdateAppointmentInput!) {
       name
       phone
     }
+    author {
+      id
+      name
+    }
     place {
       id
       name

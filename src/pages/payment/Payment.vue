@@ -2,7 +2,7 @@
   <div>
     <div class="payment">
       <div
-        class="payment__present"
+        class="payment__present active"
         v-if="daysUntil > 0"
       >
         <div class="payment__present__title">
@@ -136,7 +136,6 @@ export default {
 
   &__present {
     display: grid;
-    grid-template-rows: auto 3.5rem;
     color: #3e3e45;
     font-weight: 600;
     border-radius: 0.5rem;
@@ -146,6 +145,9 @@ export default {
     transition: 0.2s ease-in-out;
     overflow: hidden;
     text-align: center;
+    &.active {
+      grid-template-rows: auto 3.5rem;
+    }
     &__title {
       @extend %text--center;
       padding: 1rem;

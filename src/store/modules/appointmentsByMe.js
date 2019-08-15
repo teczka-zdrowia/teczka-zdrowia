@@ -23,7 +23,13 @@ const mutations = {
   },
   UPDATE_LOCAL (state, data) {
     const foundIndex = state.edges.findIndex(edge => edge.node.id === data.id)
-    state.edges[foundIndex].node = data
+    const dataExists = state.edges[foundIndex]
+    if (dataExists) {
+      state.edges[foundIndex].node = Object.assign(state.edges[foundIndex].node, data)
+    }
+  },
+  DELETE_LOCAL (state, data) {
+    state.edges = state.edges.filter(edge => edge.node.id !== data.id)
   }
 }
 
@@ -53,6 +59,12 @@ const actions = {
   },
   setDate ({ commit }, date) {
     commit('SET_DATE', date)
+  },
+  updateLocal ({ commit }, data) {
+    commit('UPDATE_LOCAL', data)
+  },
+  deleteLocal ({ commit }, data) {
+    commit('DELETE_LOCAL', data)
   }
 }
 

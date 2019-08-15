@@ -35,6 +35,7 @@
       <router-link
         to="/Places"
         class="nav__el"
+        v-if="isPaymentValid"
       >
         <span
           aria-hidden="true"
@@ -46,6 +47,7 @@
       <router-link
         to="/Panel"
         class="nav__el"
+        v-if="isPaymentValid"
       >
         <span
           aria-hidden="true"
@@ -76,7 +78,10 @@
           <div class="nav__tooltip">Płatności</div>
         </span>
       </router-link>
-      <router-link to="/AddAppointment">
+      <router-link
+        to="/AddAppointment"
+        v-if="isPaymentValid"
+      >
         <MainBtn class="nav__el nav__el--btn">
           <span
             aria-hidden="true"
@@ -96,7 +101,7 @@
 
 <script>
 import MainBtn from "../ui/basic/MainBtn";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "AppSidebar",
@@ -104,6 +109,11 @@ export default {
     return {
       isShowed: false
     };
+  },
+  computed: {
+    ...mapGetters({
+      isPaymentValid: "userInfo/isPaymentValid"
+    })
   },
   methods: {
     ...mapActions({

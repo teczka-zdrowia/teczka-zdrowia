@@ -87,23 +87,25 @@ export default {
     }
   },
   mounted: async function() {
-    await apolloClient
-      .query({
-        query: PLACE_MORE_QUERY,
-        variables: {
-          id: this.data.place.id
-        }
-      })
-      .then(data => data.data.place)
-      .then(place => {
-        const payload = {
-          place: {
-            ...this.data.place,
-            ...place
+    if (!this.data.place.address) {
+      await apolloClient
+        .query({
+          query: PLACE_MORE_QUERY,
+          variables: {
+            id: this.data.place.id
           }
-        };
-        this.updateModalData(payload);
-      });
+        })
+        .then(data => data.data.place)
+        .then(place => {
+          const payload = {
+            place: {
+              ...this.data.place,
+              ...place
+            }
+          };
+          this.updateModalData(payload);
+        });
+    }
 
     this.initMap();
 
