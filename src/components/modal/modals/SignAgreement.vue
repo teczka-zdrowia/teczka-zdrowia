@@ -1,6 +1,9 @@
 <template>
   <div class="modal--sa">
-    <canvas id="canvas"></canvas>
+    <canvas
+      ref="canvas"
+      id="canvas"
+    ></canvas>
     <div class="modal__actions fullwidth modal--sa__action rounded">
       <button
         class="modal__btn fullwidth"
@@ -35,20 +38,38 @@ export default {
   name: "SignAgreement",
   data: function() {
     return {
-      apiUrl: API_URL
+      apiUrl: API_URL,
+      drawing: null
     };
   },
   computed: {
     ...mapGetters({
-      data: "modal/data"
+      data: "modal/data",
+      historyData: "addHistory/data"
     })
   },
   methods: {
     ...mapActions({
-      hideModal: "modal/hide"
-    })
+      hideModal: "modal/hide",
+      setHistory: "addHistory/setData"
+    }),
+    saveAppointmentAgreement: function() {
+      let canvas = this.drawing;
+      const file = canvas.toBlob(file => {
+        const payload = Object.assign(this.historyData, {
+          agreement: file
+        });
+
+        this.setHistory(payload);
+        this.hideModal();
+      });
+    }
   },
-  mounted() {
+  mounted: function() {
+    var self = this;
+    //const imageUrl = `${API_URL}/storage/files/${this.data.template}`;
+    const imageUrl =
+      "https://teczkazdrowia.pl/storage/files/2/z7qlf4bAeyWFmLTrM1feIU7VwuD2Q6vn3dpmwm6i.jpeg";
     const U = undefined;
     const doFor = (count, callback) => {
       var i = 0;
@@ -62,12 +83,19 @@ export default {
     var pinchMode = false; // true while pinching
     var startup = true; // will call init when true
 
+    var img = new Image();
+    img.onload = function() {
+      dCtx.drawImage(img, 0, 0);
+    };
+    img.crossOrigin = "anonymous";
+    img.src = imageUrl;
+
     // the drawing image
     const drawing = document.createElement("canvas");
-    const W = (drawing.width = 512);
-    const H = (drawing.height = 512);
+    const W = (drawing.width = img.width);
+    const H = (drawing.height = img.height);
     const dCtx = drawing.getContext("2d");
-    dCtx.fillStyle = "white";
+    dCtx.fillStyle = "transparent";
     dCtx.fillRect(0, 0, W, H);
 
     // pointer is the interface to the touch
@@ -81,20 +109,21 @@ export default {
 
     // drawing functions and data
     const drawnPoints = []; // array of draw points
+    var iPoints = 0;
+    var lastPt = null;
     function drawOnDrawing() {
       // draw all points on drawingPoint array
       dCtx.fillStyle = "black";
-      dCtx.lineWidth = "3";
-      while (drawnPoints.length > 0) {
-        const point = drawnPoints.shift();
-        //const nextPoint = drawnPoints[0];
-        //dCtx.beginPath();
-        //dCtx.moveTo(point.x, point.y);
-        dCtx.moveTo(point.x, point.y);
-        dCtx.lineTo(point.x, point.y);
-        dCtx.closePath();
-        dCtx.stroke();
-        dCtx.moveTo(point.x, point.y);
+      dCtx.lineWidth = "2";
+      for (; iPoints < drawnPoints.length; iPoints++) {
+        const point = drawnPoints[iPoints];
+        if (lastPt != null) {
+          dCtx.beginPath();
+          dCtx.moveTo(lastPt.x, lastPt.y);
+          dCtx.lineTo(point.x, point.y);
+          dCtx.stroke();
+        }
+        lastPt = { x: point.x, y: point.y };
       }
     }
     // called once at start
@@ -207,10 +236,12 @@ export default {
           touchPoint.oy = touchPoint.y;
         }
         touchPoint.x = point.pageX;
-        touchPoint.y = point.pageY;
+        touchPoint.y = point.pageY - window.scrollY;
         touchPoint.down = down;
         if (!down) {
           touchPoint.id = -1;
+          lastPt = null;
+          self.drawing = drawing;
         }
       }
       function mouseEmulator() {

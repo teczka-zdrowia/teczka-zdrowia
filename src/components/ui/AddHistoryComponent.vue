@@ -223,14 +223,14 @@
         </button>
       </div>
       <div
-        v-bind:class="{ addhistory__buttons : isMobile }"
+        v-bind:class="{ addhistory__buttons : isMobile && selectedPlace.agreement }"
         v-if="!data.agreement"
       >
         <button
           class="addhistory__block__btn"
           type="button"
           v-on:click="showAgreementModal"
-          v-if="isMobile"
+          v-if="isMobile && selectedPlace.agreement"
         >
           <span
             aria-hidden="true"
@@ -304,6 +304,10 @@ export default {
     }),
     placeSelected: function() {
       return this.data.place_id !== null;
+    },
+    selectedPlace: function() {
+      const role = this.roles.find(role => role.place.id == this.data.place_id);
+      return role.place;
     }
   },
   methods: {
@@ -404,7 +408,7 @@ export default {
         componentName: "SignAgreement",
         data: {
           hideBorders: true,
-          template: this.data.agreement
+          template: this.selectedPlace.agreement
         }
       });
     }
