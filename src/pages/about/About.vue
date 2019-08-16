@@ -32,15 +32,15 @@
 </template>
 
 <script>
-import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
-import MainBaseInfo from "../../components/ui/basic/MainBaseInfo";
-import VioletBlock from "../../components/ui/blocks/VioletBlock";
-import RedBlock from "../../components/ui/blocks/RedBlock";
+import WhiteFunctionalBlock from '../../components/ui/blocks/WhiteFunctionalBlock'
+import MainBaseInfo from '../../components/ui/basic/MainBaseInfo'
+import VioletBlock from '../../components/ui/blocks/VioletBlock'
+import RedBlock from '../../components/ui/blocks/RedBlock'
 
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex'
 
 export default {
-  name: "About",
+  name: 'About',
   components: {
     Block: WhiteFunctionalBlock,
     MainBaseInfo,
@@ -49,20 +49,20 @@ export default {
   },
   methods: {
     ...mapActions({
-      showModal: "modal/show"
+      showModal: 'modal/show'
     }),
-    deleteAccount: function() {
+    deleteAccount: function () {
       this.showModal({
-        componentName: "DeleteAccount"
-      });
+        componentName: 'DeleteAccount'
+      })
     },
-    changePassword: function() {
+    changePassword: function () {
       this.showModal({
-        componentName: "ChangePassword"
-      });
+        componentName: 'ChangePassword'
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

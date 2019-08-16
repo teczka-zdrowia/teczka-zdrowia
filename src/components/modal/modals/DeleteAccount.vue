@@ -57,21 +57,21 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import MainBtn from "../../ui/basic/MainBtn";
-import MainInput from "../../ui/basic/MainInput";
-import "../modal.scss";
+import { mapActions, mapGetters } from 'vuex'
+import MainBtn from '../../ui/basic/MainBtn'
+import MainInput from '../../ui/basic/MainInput'
+import '../modal.scss'
 
 export default {
-  name: "DeleteAccount",
-  data: function() {
+  name: 'DeleteAccount',
+  data: function () {
     return {
       isLoading: false,
       data: {
-        password: "",
+        password: '',
         delete_all_files: false
       }
-    };
+    }
   },
   components: {
     MainBtn,
@@ -79,27 +79,27 @@ export default {
   },
   methods: {
     ...mapActions({
-      hideModal: "modal/hide",
-      deleteUser: "userInfo/delete"
+      hideModal: 'modal/hide',
+      deleteUser: 'userInfo/delete'
     }),
-    deleteAccount() {
-      this.isLoading = true;
+    deleteAccount () {
+      this.isLoading = true
       this.deleteUser(this.data)
         .then(() => {
-          this.$router.push({ name: "Auth" });
-          this.$toasted.success("Pomyślnie usunięto konto");
-          this.hideModal();
+          this.$router.push({ name: 'Auth' })
+          this.$toasted.success('Pomyślnie usunięto konto')
+          this.hideModal()
         })
         .catch(error => {
-          this.$toasted.error("Niepoprawne hasło");
-          console.error(error);
+          this.$toasted.error('Niepoprawne hasło')
+          console.error(error)
         })
         .finally(() => {
-          this.isLoading = false;
-        });
+          this.isLoading = false
+        })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

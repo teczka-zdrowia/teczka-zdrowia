@@ -40,49 +40,49 @@
 </template>
 
 <script>
-import DatePick from "../ui/vue-date-pick/vueDatePick";
-import MainInput from "../ui/basic/MainInput";
-import MainSelect from "../ui/basic/MainSelect";
-import MainTextarea from "../ui/basic/MainTextarea";
-import MainUserInfo from "../ui/basic/MainUserInfo";
+import DatePick from '../ui/vue-date-pick/vueDatePick'
+import MainInput from '../ui/basic/MainInput'
+import MainSelect from '../ui/basic/MainSelect'
+import MainTextarea from '../ui/basic/MainTextarea'
+import MainUserInfo from '../ui/basic/MainUserInfo'
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
 
-const moment = require("moment");
-moment.locale("pl");
+const moment = require('moment')
+moment.locale('pl')
 
 export default {
-  name: "AddPatientComponent",
-  data: function() {
+  name: 'AddPatientComponent',
+  data: function () {
     return {
-      date: "",
+      date: '',
       data: {
         place_id: null,
         patient_id: null,
-        date: "",
-        note: ""
+        date: '',
+        note: ''
       }
-    };
+    }
   },
   methods: {
     ...mapActions({
-      setAppointmentData: "addAppointment/setData"
+      setAppointmentData: 'addAppointment/setData'
     }),
-    setFormattedDate: function(event) {
-      this.data.date = moment(event.target.value).format("YYYY-MM-DD HH:mm:ss");
+    setFormattedDate: function (event) {
+      this.data.date = moment(event.target.value).format('YYYY-MM-DD HH:mm:ss')
     }
   },
   computed: {
     ...mapGetters({
-      isMobile: "window/isMobile",
-      oldData: "updateAppointment/oldData",
-      loadedData: "updateAppointment/data"
+      isMobile: 'window/isMobile',
+      oldData: 'updateAppointment/oldData',
+      loadedData: 'updateAppointment/data'
     })
   },
   watch: {
     data: {
-      handler(val) {
-        this.setAppointmentData(val);
+      handler (val) {
+        this.setAppointmentData(val)
       },
       deep: true
     }
@@ -94,11 +94,11 @@ export default {
     MainTextarea,
     MainUserInfo
   },
-  mounted() {
-    this.data = this.loadedData;
-    this.date = moment(this.data.date).format("YYYY-MM-DDTHH:mm");
+  mounted () {
+    this.data = this.loadedData
+    this.date = moment(this.data.date).format('YYYY-MM-DDTHH:mm')
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

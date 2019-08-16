@@ -9,29 +9,29 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "NextStep",
+  name: 'NextStep',
   methods: {
     ...mapActions({
-      nextStep: "initializeSteps/next"
+      nextStep: 'initializeSteps/next'
     }),
-    onClick: function() {
+    onClick: function () {
       if (this.isLastStep) {
-        this.$router.push("/Dashboard");
+        this.$router.push('/Dashboard')
       } else {
-        this.nextStep();
+        this.nextStep()
       }
     }
   },
   computed: {
     ...mapGetters({
-      isCompleted: "initializeSteps/isSelectedCompleted",
-      isLastStep: "initializeSteps/isLastStep"
+      isCompleted: 'initializeSteps/isSelectedCompleted',
+      isLastStep: 'initializeSteps/isLastStep'
     })
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

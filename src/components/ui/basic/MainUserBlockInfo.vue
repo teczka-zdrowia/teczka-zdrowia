@@ -35,48 +35,48 @@
 </template>
 
 <script>
-import { API_URL } from "@/apollo/constants";
-const moment = require("moment");
-moment.locale("pl");
+import { API_URL } from '@/apollo/constants'
+const moment = require('moment')
+moment.locale('pl')
 
 export default {
-  name: "MainUserBlockInfo",
+  name: 'MainUserBlockInfo',
   props: {
     user: {
       type: Object,
-      default: function() {
+      default: function () {
         return {
-          avatar: "avatar.png",
-          name: "Brak danych",
-          email: "Brak danych",
-          phone: "Brak danych",
+          avatar: 'avatar.png',
+          name: 'Brak danych',
+          email: 'Brak danych',
+          phone: 'Brak danych',
           birthdate: null
-        };
+        }
       }
     }
   },
-  data: function() {
+  data: function () {
     return {
       apiUrl: API_URL
-    };
+    }
   },
   computed: {
-    userAge: function() {
+    userAge: function () {
       return this.userBirthdate
         ? Math.abs(
-            moment(this.userBirthdate, "DD.MM.YYYY").diff(moment(), "years")
-          )
-        : "brak";
+          moment(this.userBirthdate, 'DD.MM.YYYY').diff(moment(), 'years')
+        )
+        : 'brak'
     },
-    userBirthdate: function() {
+    userBirthdate: function () {
       return this.user.birthdate
-        ? moment(this.user.birthdate, "YYYY-MM-DD HH:MI:SS").format(
-            "DD.MM.YYYY"
-          )
-        : null;
+        ? moment(this.user.birthdate, 'YYYY-MM-DD HH:MI:SS').format(
+          'DD.MM.YYYY'
+        )
+        : null
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

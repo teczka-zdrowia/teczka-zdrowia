@@ -6,59 +6,59 @@
 </template>
 
 <script>
-import RedBlock from "../../components/ui/blocks/RedBlock";
+import RedBlock from '../../components/ui/blocks/RedBlock'
 
 export default {
-  name: "AirData",
-  data: function() {
+  name: 'AirData',
+  data: function () {
     return {
-      text: "Ładowanie danych...",
-      textBold: "",
+      text: 'Ładowanie danych...',
+      textBold: '',
       levelID: 6
-    };
+    }
   },
   methods: {
-    deg2Rad: function(deg) {
-      return (deg * Math.PI) / 180;
+    deg2Rad: function (deg) {
+      return (deg * Math.PI) / 180
     },
-    pythagorasEquirectangular: function(lat1, lon1, lat2, lon2) {
-      lat1 = this.deg2Rad(lat1);
-      lat2 = this.deg2Rad(lat2);
-      lon1 = this.deg2Rad(lon1);
-      lon2 = this.deg2Rad(lon2);
-      var R = 6371; // km
-      var x = (lon2 - lon1) * Math.cos((lat1 + lat2) / 2);
-      var y = lat2 - lat1;
-      var d = Math.sqrt(x * x + y * y) * R;
-      return d;
+    pythagorasEquirectangular: function (lat1, lon1, lat2, lon2) {
+      lat1 = this.deg2Rad(lat1)
+      lat2 = this.deg2Rad(lat2)
+      lon1 = this.deg2Rad(lon1)
+      lon2 = this.deg2Rad(lon2)
+      var R = 6371 // km
+      var x = (lon2 - lon1) * Math.cos((lat1 + lat2) / 2)
+      var y = lat2 - lat1
+      var d = Math.sqrt(x * x + y * y) * R
+      return d
     },
-    airQuality(stationID) {
+    airQuality (stationID) {
       return fetch(
         `https://cors-anywhere.herokuapp.com/http://api.gios.gov.pl/pjp-api/rest/aqindex/getIndex/${stationID}`
       )
         .then(response => {
-          return response.json();
+          return response.json()
         })
         .then(stationInfo => {
           return {
             levelID: stationInfo.stIndexLevel.id,
             indexLevelName: stationInfo.stIndexLevel.indexLevelName
-          };
+          }
         })
-        .catch(function(error) {
-          console.log(error);
-        });
+        .catch(function (error) {
+          console.log(error)
+        })
     },
-    closestStation: function(lat, lng) {
+    closestStation: function (lat, lng) {
       return fetch(
-        "https://cors-anywhere.herokuapp.com/http://api.gios.gov.pl/pjp-api/rest/station/findAll"
+        'https://cors-anywhere.herokuapp.com/http://api.gios.gov.pl/pjp-api/rest/station/findAll'
       )
         .then(response => {
-          return response.json();
+          return response.json()
         })
         .then(stations => {
-          var mindif = 99999;
-          var closest;
+          var mindif = 99999
+          var closest
 
           for (var i = 0; i < stations.length; ++i) {
             var dif = this.pythagorasEquirectangular(
@@ -66,55 +66,55 @@ export default {
               lng,
               stations[i].gegrLat,
               stations[i].gegrLon
-            );
+            )
             if (dif < mindif) {
-              closest = i;
-              mindif = dif;
+              closest = i
+              mindif = dif
             }
           }
 
-          return stations[closest].id;
+          return stations[closest].id
         })
-        .catch(function(error) {
-          console.log(error);
-        });
+        .catch(function (error) {
+          console.log(error)
+        })
     },
-    getAirData: function(pos) {
+    getAirData: function (pos) {
       const stationID = this.closestStation(
         pos.coords.latitude,
         pos.coords.longitude
-      );
+      )
       stationID
         .then(ID => {
-          return this.airQuality(ID);
+          return this.airQuality(ID)
         })
         .then(response => {
-          this.text = "";
+          this.text = ''
           this.textBold = `Indeks jakości powietrza: ${
             response.indexLevelName
-          }`;
-          this.levelID = response.levelID;
-        });
+          }`
+          this.levelID = response.levelID
+        })
     }
   },
-  mounted() {
+  mounted () {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.getAirData, () => {
-        this.text = "Brak dostępu";
+        this.text = 'Brak dostępu'
         this.$toasted.error(
-          "Zezwól na dostęp do lokalizacji, aby zobaczyć indeks jakości powietrza",
+          'Zezwól na dostęp do lokalizacji, aby zobaczyć indeks jakości powietrza',
           {
-            icon: "times",
+            icon: 'times',
             duration: 2000
           }
-        );
-      });
+        )
+      })
     }
   },
   components: {
     RedBlock
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

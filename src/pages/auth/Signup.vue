@@ -179,92 +179,92 @@
 </template>
 
 <script>
-import MainInput from "../../components/ui/basic/MainInput";
-import MainBtn from "../../components/ui/basic/MainBtn";
+import MainInput from '../../components/ui/basic/MainInput'
+import MainBtn from '../../components/ui/basic/MainBtn'
 
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex'
 
 export default {
-  name: "Signup",
-  data: function() {
+  name: 'Signup',
+  data: function () {
     return {
       showPatientInfo: false,
       showSpecInfo: false,
       profileType: 0,
       data: {
-        password: "",
-        name: "",
-        pesel: "",
-        email: "",
-        phone: "",
+        password: '',
+        name: '',
+        pesel: '',
+        email: '',
+        phone: '',
         rules_accepted: false
       },
       doctorData: {
-        specialization: ""
+        specialization: ''
       }
-    };
+    }
   },
   methods: {
     ...mapActions({
-      userSignup: "userInfo/signup",
-      userLogin: "userInfo/login",
-      userGetFreePlan: "userInfo/getFreePlan"
+      userSignup: 'userInfo/signup',
+      userLogin: 'userInfo/login',
+      userGetFreePlan: 'userInfo/getFreePlan'
     }),
-    signup: function() {
-      this.$emit("loading", true);
+    signup: function () {
+      this.$emit('loading', true)
       this.userSignup(this.userData)
         .then(() => this.userLogin(this.loginData))
         .then(() => {
           if (this.profileType == 2) {
-            this.userGetFreePlan();
-            this.$toasted.info("Przyznano 30 dni darmowego planu");
+            this.userGetFreePlan()
+            this.$toasted.info('Przyznano 30 dni darmowego planu')
           }
         })
         .then(() => {
-          this.$toasted.success("Pomyślnie zarejestrowano");
-          window.location.href = "/Dashboard";
+          this.$toasted.success('Pomyślnie zarejestrowano')
+          window.location.href = '/Dashboard'
         })
         .catch(error => {
-          this.$toasted.error("Niepoprawne dane");
-          console.error(error);
+          this.$toasted.error('Niepoprawne dane')
+          console.error(error)
         })
         .finally(() => {
-          this.$emit("loading", false);
-        });
+          this.$emit('loading', false)
+        })
     }
   },
   computed: {
-    isPeselCorrect: function() {
-      let weights = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3];
-      let sum = 0;
-      let controlNumber = parseInt(this.data.pesel.substring(10, 11));
+    isPeselCorrect: function () {
+      let weights = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3]
+      let sum = 0
+      let controlNumber = parseInt(this.data.pesel.substring(10, 11))
       for (let i = 0; i < weights.length; i++) {
-        sum += parseInt(this.data.pesel.substring(i, i + 1)) * weights[i];
+        sum += parseInt(this.data.pesel.substring(i, i + 1)) * weights[i]
       }
-      sum = sum % 10;
-      return this.data.pesel == null ? false : 10 - sum === controlNumber;
+      sum = sum % 10
+      return this.data.pesel == null ? false : 10 - sum === controlNumber
     },
-    userData: function() {
+    userData: function () {
       if (this.profileType === 2) {
-        return Object.assign(this.data, this.doctorData);
+        return Object.assign(this.data, this.doctorData)
       } else {
-        return this.data;
+        return this.data
       }
     },
-    loginData: function() {
-      const { email, password } = this.data;
+    loginData: function () {
+      const { email, password } = this.data
       const data = {
         username: email,
         password: password
-      };
-      return data;
+      }
+      return data
     }
   },
   components: {
     MainInput: MainInput,
     MainBtn: MainBtn
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

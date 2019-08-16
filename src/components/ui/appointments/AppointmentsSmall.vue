@@ -40,15 +40,15 @@
 </template>
 
 <script>
-import AppointmentSmall from "./AppointmentSmall";
-import MainBtn from "../basic/MainBtn";
+import AppointmentSmall from './AppointmentSmall'
+import MainBtn from '../basic/MainBtn'
 
 export default {
-  name: "AppointmentsSmall",
-  data: function() {
+  name: 'AppointmentsSmall',
+  data: function () {
     return {
       isLoading: false
-    };
+    }
   },
   props: {
     showAppointmentsLink: {
@@ -80,14 +80,14 @@ export default {
     },
     showUserAs: {
       type: String,
-      default: "patient"
+      default: 'patient'
     }
   },
   components: {
     MainBtn,
     AppointmentSmall
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

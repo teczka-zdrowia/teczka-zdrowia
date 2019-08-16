@@ -1,14 +1,14 @@
 {
   "name": "teczka-zdrowia",
   "version": "1.0.0",
+  "private": true,
   "description": "Management App for doctors",
   "author": "Adrian Orłów <adrian@orlow.me>",
-  "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0",
-    "start": "npm run dev",
+    "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src",
-    "build": "node build/build.js"
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0 --https",
+    "start": "npm run dev"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -17,6 +17,7 @@
     "js-cookie": "^2.2.0",
     "leaflet-geosearch": "^2.7.0",
     "moment": "^2.23.0",
+    "register-service-worker": "^1.6.2",
     "vue": "^2.5.22",
     "vue-apollo": "^3.0.0-rc.2",
     "vue-moment": "^4.0.0",
@@ -28,6 +29,7 @@
     "xml-js": "^1.6.9"
   },
   "devDependencies": {
+    "@vue/cli-plugin-pwa": "^3.10.0",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-eslint": "^8.2.1",
@@ -77,13 +79,13 @@
     "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.2.1"
   },
-  "engines": {
-    "node": ">= 6.0.0",
-    "npm": ">= 3.0.0"
-  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
+  }
 }

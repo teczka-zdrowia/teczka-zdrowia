@@ -74,16 +74,16 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex'
 
 export default {
-  name: "AppSidebar",
+  name: 'AppSidebar',
   computed: {
     ...mapGetters({
-      isPaymentValid: "userInfo/isPaymentValid"
+      isPaymentValid: 'userInfo/isPaymentValid'
     })
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

@@ -23,64 +23,64 @@
 </template>
 
 <script>
-import AddEmployeeComponent from "../../ui/AddEmployeeComponent";
-import MainBtn from "../../ui/basic/MainBtn";
-import { mapActions, mapGetters } from "vuex";
+import AddEmployeeComponent from '../../ui/AddEmployeeComponent'
+import MainBtn from '../../ui/basic/MainBtn'
+import { mapActions, mapGetters } from 'vuex'
 
-import "../modal.scss";
+import '../modal.scss'
 
 export default {
-  name: "AddEmployee",
+  name: 'AddEmployee',
   components: {
     AddEmployeeComponent,
     MainBtn
   },
-  data: function() {
+  data: function () {
     return {
       isLoading: false
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      data: "modal/data",
-      processCompleted: "addEmployee/isCompleted",
-      employee: "addEmployee/employee",
-      place: "addEmployee/place"
+      data: 'modal/data',
+      processCompleted: 'addEmployee/isCompleted',
+      employee: 'addEmployee/employee',
+      place: 'addEmployee/place'
     })
   },
   methods: {
     ...mapActions({
-      modalVisible: "modal/visible",
-      hideModal: "modal/hide",
-      createPlaceEmployeeRole: "placeEmployees/createRole",
-      clearData: "addEmployee/clear"
+      modalVisible: 'modal/visible',
+      hideModal: 'modal/hide',
+      createPlaceEmployeeRole: 'placeEmployees/createRole',
+      clearData: 'addEmployee/clear'
     }),
-    createEmployee: async function() {
-      this.isLoading = true;
+    createEmployee: async function () {
+      this.isLoading = true
       const payload = {
         userId: this.employee.id,
         placeId: this.place.id,
-        permissionType: "EMPLOYEE"
-      };
+        permissionType: 'EMPLOYEE'
+      }
 
       this.createPlaceEmployeeRole(payload)
         .then(() => {
-          this.$toasted.success("Poprawnie dodano pracownika");
-          this.hideModal();
+          this.$toasted.success('Poprawnie dodano pracownika')
+          this.hideModal()
         })
         .catch(error => {
-          console.error(error);
-          this.$toasted.error("Wystąpił błąd");
+          console.error(error)
+          this.$toasted.error('Wystąpił błąd')
         })
         .finally(() => {
-          this.isLoading = false;
-        });
+          this.isLoading = false
+        })
     }
   },
-  mounted() {
-    this.clearData();
+  mounted () {
+    this.clearData()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

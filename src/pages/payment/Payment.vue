@@ -54,77 +54,77 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
 
-let moment = require("moment");
-moment.locale("pl");
+let moment = require('moment')
+moment.locale('pl')
 
 export default {
-  name: "Payment",
-  data: function() {
+  name: 'Payment',
+  data: function () {
     return {
       loading: {
         storage: true
       }
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      viewer: "userInfo/full"
+      viewer: 'userInfo/full'
     }),
-    paidUntil: function() {
-      return moment(this.viewer.paid_until, "YYYY-MM-DD").format("DD.MM.YYYY");
+    paidUntil: function () {
+      return moment(this.viewer.paid_until, 'YYYY-MM-DD').format('DD.MM.YYYY')
     },
-    daysUntil: function() {
-      return moment(this.viewer.paid_until, "YYYY-MM-DD").diff(
+    daysUntil: function () {
+      return moment(this.viewer.paid_until, 'YYYY-MM-DD').diff(
         moment(),
-        "days"
-      );
+        'days'
+      )
     },
-    kbUsed: function() {
-      return this.viewer.storage ? this.viewer.storage.kb_used : null;
+    kbUsed: function () {
+      return this.viewer.storage ? this.viewer.storage.kb_used : null
     },
-    kbMax: function() {
-      return this.viewer.storage ? this.viewer.storage.kb_max : null;
+    kbMax: function () {
+      return this.viewer.storage ? this.viewer.storage.kb_max : null
     },
-    gbUsed: function() {
-      return this.viewer.storage ? this.kbToGB(this.kbUsed) : null;
+    gbUsed: function () {
+      return this.viewer.storage ? this.kbToGB(this.kbUsed) : null
     },
-    gbMax: function() {
-      return this.viewer.storage ? this.kbToGB(this.kbMax) : null;
+    gbMax: function () {
+      return this.viewer.storage ? this.kbToGB(this.kbMax) : null
     },
-    gbFree: function() {
-      return this.viewer.storage ? this.gbMax - this.gbUsed : null;
+    gbFree: function () {
+      return this.viewer.storage ? this.gbMax - this.gbUsed : null
     },
-    percentageUsed: function() {
-      const quotient = this.kbUsed / this.kbMax;
-      const percentage = quotient.toFixed(0);
-      return this.viewer.storage ? percentage : null;
+    percentageUsed: function () {
+      const quotient = this.kbUsed / this.kbMax
+      const percentage = quotient.toFixed(0)
+      return this.viewer.storage ? percentage : null
     },
-    percentageFree: function() {
-      return 100 - this.percentageUsed;
+    percentageFree: function () {
+      return 100 - this.percentageUsed
     }
   },
   methods: {
     ...mapActions({
-      getStorage: "userInfo/getStorage"
+      getStorage: 'userInfo/getStorage'
     }),
-    getUserStorage: async function() {
-      this.loading.storage = true;
-      await this.getStorage();
-      this.loading.storage = false;
+    getUserStorage: async function () {
+      this.loading.storage = true
+      await this.getStorage()
+      this.loading.storage = false
     },
-    kbToGB: function(val) {
-      return val / 1000 / 1000;
+    kbToGB: function (val) {
+      return val / 1000 / 1000
     }
   },
   components: {
     //
   },
-  mounted: function() {
-    this.getUserStorage();
+  mounted: function () {
+    this.getUserStorage()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

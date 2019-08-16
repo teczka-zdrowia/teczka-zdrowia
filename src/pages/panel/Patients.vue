@@ -55,84 +55,84 @@
 </template>
 
 <script>
-import MainSearch from "../../components/ui/basic/MainSearch";
-import MainUser from "../../components/ui/basic/MainUser";
-import MainBtn from "../../components/ui/basic/MainBtn";
-import MainLoading from "../../components/ui/basic/MainLoading";
-import GreyBlock from "../../components/ui/blocks/GreyBlock";
+import MainSearch from '../../components/ui/basic/MainSearch'
+import MainUser from '../../components/ui/basic/MainUser'
+import MainBtn from '../../components/ui/basic/MainBtn'
+import MainLoading from '../../components/ui/basic/MainLoading'
+import GreyBlock from '../../components/ui/blocks/GreyBlock'
 
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "Patients",
-  data: function() {
+  name: 'Patients',
+  data: function () {
     return {
       firstTime: true,
-      search: "",
-      sortBy: "ASC",
+      search: '',
+      sortBy: 'ASC',
       loading: false
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      roles: "userRoles/list",
-      selectedRole: "userRoles/selected",
-      placePatients: "placePatients/list",
-      myPatients: "myPatients/list"
+      roles: 'userRoles/list',
+      selectedRole: 'userRoles/selected',
+      placePatients: 'placePatients/list',
+      myPatients: 'myPatients/list'
     }),
-    type: function() {
-      return this.selectedRole ? "PLACE" : "ALL";
+    type: function () {
+      return this.selectedRole ? 'PLACE' : 'ALL'
     },
-    patients: function() {
-      return this.type === "ALL" ? this.myPatients : this.placePatients;
+    patients: function () {
+      return this.type === 'ALL' ? this.myPatients : this.placePatients
     },
-    placeId: function() {
-      return this.selectedRole ? this.selectedRole.place.id : null;
+    placeId: function () {
+      return this.selectedRole ? this.selectedRole.place.id : null
     },
-    searchResults: function() {
+    searchResults: function () {
       return this.patients.filter(role => {
-        const userName = role.user.name.toLowerCase();
-        const search = this.search.toLowerCase();
-        return ~userName.search(search);
-      });
+        const userName = role.user.name.toLowerCase()
+        const search = this.search.toLowerCase()
+        return ~userName.search(search)
+      })
     },
-    sortedSearchResults: function() {
-      return this.sortBy === "ASC"
+    sortedSearchResults: function () {
+      return this.sortBy === 'ASC'
         ? this.searchResults.sort(
-            (a, b) => (a.user.name > b.user.name) - (a.user.name < b.user.name)
-          )
+          (a, b) => (a.user.name > b.user.name) - (a.user.name < b.user.name)
+        )
         : this.searchResults.sort(
-            (a, b) => (a.user.name < b.user.name) - (a.user.name > b.user.name)
-          );
+          (a, b) => (a.user.name < b.user.name) - (a.user.name > b.user.name)
+        )
     },
-    title: function() {
-      return this.type === "ALL"
-        ? "Wszyscy pacjenci"
-        : `Pacjenci w ${this.selectedRole.place.name}`;
+    title: function () {
+      return this.type === 'ALL'
+        ? 'Wszyscy pacjenci'
+        : `Pacjenci w ${this.selectedRole.place.name}`
     }
   },
   methods: {
     ...mapActions({
-      showModal: "modal/show",
-      getPlacePatients: "placePatients/get",
-      getAllPatients: "myPatients/get"
+      showModal: 'modal/show',
+      getPlacePatients: 'placePatients/get',
+      getAllPatients: 'myPatients/get'
     }),
-    getPatients: async function() {
-      this.loading = true;
+    getPatients: async function () {
+      this.loading = true
 
-      if (this.type === "ALL") {
+      if (this.type === 'ALL') {
         await this.getAllPatients().catch(error => {
-          this.$toasted.error("Wystąpił błąd");
-          console.error(error);
-        });
+          this.$toasted.error('Wystąpił błąd')
+          console.error(error)
+        })
       } else {
         await this.getPlacePatients(this.placeId).catch(error => {
-          this.$toasted.error("Wystąpił błąd");
-          console.error(error);
-        });
+          this.$toasted.error('Wystąpił błąd')
+          console.error(error)
+        })
       }
 
-      this.loading = false;
+      this.loading = false
     }
   },
   components: {
@@ -143,13 +143,13 @@ export default {
     MainBtn
   },
   watch: {
-    placeId: function(val) {
+    placeId: function (val) {
       if (val !== undefined) {
-        this.getPatients();
+        this.getPatients()
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

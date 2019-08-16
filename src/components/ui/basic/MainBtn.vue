@@ -14,10 +14,10 @@
 </template>
 
 <script>
-import MainLoading from "./MainLoading";
+import MainLoading from './MainLoading'
 
 export default {
-  name: "MainBtn",
+  name: 'MainBtn',
   components: {
     MainLoading
   },
@@ -28,10 +28,10 @@ export default {
     },
     color: {
       type: String,
-      defualt: "#fafafa"
+      defualt: '#fafafa'
     }
   }
-};
+}
 </script>
 
 <style lang="scss">

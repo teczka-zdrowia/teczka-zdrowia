@@ -19,8 +19,8 @@
 
 <script>
 export default {
-  name: "MainSearch"
-};
+  name: 'MainSearch'
+}
 </script>
 
 <style lang="scss" scoped>

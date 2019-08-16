@@ -29,31 +29,31 @@
 </template>
 
 <script>
-import DatePick from "../../components/ui/vue-date-pick/vueDatePick";
+import DatePick from '../../components/ui/vue-date-pick/vueDatePick'
 
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex'
 
-const moment = require("moment");
-moment.locale("pl");
+const moment = require('moment')
+moment.locale('pl')
 
 export default {
-  name: "Calendar",
+  name: 'Calendar',
   components: { DatePick },
   computed: {
     ...mapGetters({
-      date: "appointmentsByMe/date",
-      dates: "appointmentsByMe/dates"
+      date: 'appointmentsByMe/date',
+      dates: 'appointmentsByMe/dates'
     }),
-    today: function() {
-      return new Date().toISOString().slice(0, 10);
+    today: function () {
+      return new Date().toISOString().slice(0, 10)
     }
   },
   methods: {
     ...mapActions({
-      setDate: "appointmentsByMe/setDate"
+      setDate: 'appointmentsByMe/setDate'
     })
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

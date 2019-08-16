@@ -26,19 +26,19 @@
 </template>
 
 <script>
-import CreatePlaceComponent from "../../ui/CreatePlaceComponent";
-import MainBtn from "../../ui/basic/MainBtn";
+import CreatePlaceComponent from '../../ui/CreatePlaceComponent'
+import MainBtn from '../../ui/basic/MainBtn'
 
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex'
 
-import "../modal.scss";
+import '../modal.scss'
 
 export default {
-  name: "CreatePlace",
-  data: function() {
+  name: 'CreatePlace',
+  data: function () {
     return {
       isLoading: false
-    };
+    }
   },
   components: {
     CreatePlaceComponent,
@@ -46,18 +46,18 @@ export default {
   },
   computed: {
     ...mapGetters({
-      data: "modal/data"
+      data: 'modal/data'
     })
   },
   methods: {
     ...mapActions({
-      hideModal: "modal/hide"
+      hideModal: 'modal/hide'
     }),
-    createPlace: function() {
-      this.$refs.createPlaceComponent.createPlace();
+    createPlace: function () {
+      this.$refs.createPlaceComponent.createPlace()
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

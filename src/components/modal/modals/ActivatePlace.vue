@@ -26,52 +26,52 @@
 </template>
 
 <script>
-import MainBtn from "../../ui/basic/MainBtn";
+import MainBtn from '../../ui/basic/MainBtn'
 
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex'
 
-import "../modal.scss";
+import '../modal.scss'
 
 export default {
-  name: "ActivatePlace",
-  data: function() {
+  name: 'ActivatePlace',
+  data: function () {
     return {
       isLoading: false
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      place: "modal/data"
+      place: 'modal/data'
     })
   },
   methods: {
     ...mapActions({
-      hideModal: "modal/hide",
-      updatePlace: "userRoles/updatePlace"
+      hideModal: 'modal/hide',
+      updatePlace: 'userRoles/updatePlace'
     }),
-    activatePlace: function() {
-      this.isLoading = true;
+    activatePlace: function () {
+      this.isLoading = true
 
       const payload = {
         id: this.place.id,
         data: {
           is_active: true
         }
-      };
+      }
 
       this.updatePlace(payload)
         .then(() => this.hideModal())
         .catch(error => {
-          this.$toasted.error("Wystąpił błąd");
-          console.error(error);
+          this.$toasted.error('Wystąpił błąd')
+          console.error(error)
         })
         .finally(() => {
-          this.isLoading = false;
-        });
+          this.isLoading = false
+        })
     }
   },
   components: {
     MainBtn
   }
-};
+}
 </script>

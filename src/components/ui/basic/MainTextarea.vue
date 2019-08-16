@@ -9,8 +9,8 @@
 
 <script>
 export default {
-  name: "MainInput"
-};
+  name: 'MainInput'
+}
 </script>
 
 <style lang="scss" scoped>

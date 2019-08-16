@@ -55,21 +55,21 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import MainInput from "../../ui/basic/MainInput";
-import MainBtn from "../../ui/basic/MainBtn";
-import "../modal.scss";
+import { mapActions, mapGetters } from 'vuex'
+import MainInput from '../../ui/basic/MainInput'
+import MainBtn from '../../ui/basic/MainBtn'
+import '../modal.scss'
 
 export default {
-  name: "UpdateForgottenPassword",
-  data: function() {
+  name: 'UpdateForgottenPassword',
+  data: function () {
     return {
       isLoading: false,
       data: {
-        password: "",
-        password_confirmation: ""
+        password: '',
+        password_confirmation: ''
       }
-    };
+    }
   },
   components: {
     MainInput,
@@ -77,36 +77,36 @@ export default {
   },
   methods: {
     ...mapActions({
-      hideModal: "modal/hide",
-      updateForgottenPassword: "userInfo/updateForgottenPassword"
+      hideModal: 'modal/hide',
+      updateForgottenPassword: 'userInfo/updateForgottenPassword'
     }),
-    updatePassword: function() {
-      this.isLoading = true;
-      const payload = Object.assign(this.data, this.modalData);
+    updatePassword: function () {
+      this.isLoading = true
+      const payload = Object.assign(this.data, this.modalData)
 
       this.updateForgottenPassword(payload)
         .then(() => {
-          this.$toasted.success("Pomyślnie zaktualizowano hasło");
-          this.hideModal();
+          this.$toasted.success('Pomyślnie zaktualizowano hasło')
+          this.hideModal()
         })
         .catch(error => {
-          this.$toasted.error(error);
-          console.error(error);
+          this.$toasted.error(error)
+          console.error(error)
         })
         .finally(() => {
-          this.isLoading = false;
-        });
+          this.isLoading = false
+        })
     }
   },
   computed: {
     ...mapGetters({
-      modalData: "modal/data"
+      modalData: 'modal/data'
     }),
-    isPasswordsSame: function() {
-      return this.data.password === this.data.password_confirmation;
+    isPasswordsSame: function () {
+      return this.data.password === this.data.password_confirmation
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

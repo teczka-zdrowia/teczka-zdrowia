@@ -9,8 +9,8 @@
 
 <script>
 export default {
-  name: "Icon"
-};
+  name: 'Icon'
+}
 </script>
 
 <style lang="scss" scoped>

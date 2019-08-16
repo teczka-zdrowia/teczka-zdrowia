@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import MainLoading from "./MainLoading";
+import MainLoading from './MainLoading'
 
 export default {
-  name: "MainShowMore",
+  name: 'MainShowMore',
   components: {
     MainLoading
   },
@@ -34,7 +34,7 @@ export default {
       default: false
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

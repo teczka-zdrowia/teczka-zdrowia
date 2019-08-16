@@ -39,18 +39,18 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import MainInput from "../../ui/basic/MainInput";
-import MainBtn from "../../ui/basic/MainBtn";
-import "../modal.scss";
+import { mapActions, mapGetters } from 'vuex'
+import MainInput from '../../ui/basic/MainInput'
+import MainBtn from '../../ui/basic/MainBtn'
+import '../modal.scss'
 
 export default {
-  name: "ConfirmGetPESEL",
-  data: function() {
+  name: 'ConfirmGetPESEL',
+  data: function () {
     return {
-      password: "",
+      password: '',
       isLoading: false
-    };
+    }
   },
   components: {
     MainInput,
@@ -58,26 +58,26 @@ export default {
   },
   computed: {
     ...mapGetters({
-      data: "modal/data"
+      data: 'modal/data'
     })
   },
   methods: {
     ...mapActions({
-      hideModal: "modal/hide",
-      getUserPESEL: "userInfo/getPESEL"
+      hideModal: 'modal/hide',
+      getUserPESEL: 'userInfo/getPESEL'
     }),
-    getPesel() {
-      this.isLoading = true;
+    getPesel () {
+      this.isLoading = true
       this.getUserPESEL(this.password)
         .then(() => this.hideModal())
         .catch(error => {
-          this.$toasted.error("Niepoprawne hasło");
-          console.error(error);
+          this.$toasted.error('Niepoprawne hasło')
+          console.error(error)
         })
         .finally(() => {
-          this.isLoading = false;
-        });
+          this.isLoading = false
+        })
     }
   }
-};
+}
 </script>

@@ -14,32 +14,32 @@
 </template>
 
 <script>
-import CreatePlaceComponent from "../../components/ui/CreatePlaceComponent";
-import NextStep from "./NextStep";
-import { mapActions, mapGetters } from "vuex";
+import CreatePlaceComponent from '../../components/ui/CreatePlaceComponent'
+import NextStep from './NextStep'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "CreatePlace",
+  name: 'CreatePlace',
   components: {
     CreatePlaceComponent,
     NextStep
   },
   methods: {
     ...mapActions({
-      completeStep: "initializeSteps/complete",
-      nextStep: "initializeSteps/next"
+      completeStep: 'initializeSteps/complete',
+      nextStep: 'initializeSteps/next'
     }),
-    createPlace: function() {
-      this.completeStep();
-      //TODO
+    createPlace: function () {
+      this.completeStep()
+      // TODO
     }
   },
   computed: {
     ...mapGetters({
-      isCompleted: "initializeSteps/isSelectedCompleted"
+      isCompleted: 'initializeSteps/isSelectedCompleted'
     })
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

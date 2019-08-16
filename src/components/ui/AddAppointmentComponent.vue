@@ -112,28 +112,28 @@
 </template>
 
 <script>
-import MainSearch from "../../components/ui/basic/MainSearch";
-import DatePick from "../ui/vue-date-pick/vueDatePick";
-import MainInput from "../ui/basic/MainInput";
-import MainSelect from "../ui/basic/MainSelect";
-import MainTextarea from "../ui/basic/MainTextarea";
-import MainUserInfo from "../ui/basic/MainUserInfo";
-import MainLoading from "../../components/ui/basic/MainLoading";
-import GreyBlock from "../../components/ui/blocks/GreyBlock";
+import MainSearch from '../../components/ui/basic/MainSearch'
+import DatePick from '../ui/vue-date-pick/vueDatePick'
+import MainInput from '../ui/basic/MainInput'
+import MainSelect from '../ui/basic/MainSelect'
+import MainTextarea from '../ui/basic/MainTextarea'
+import MainUserInfo from '../ui/basic/MainUserInfo'
+import MainLoading from '../../components/ui/basic/MainLoading'
+import GreyBlock from '../../components/ui/blocks/GreyBlock'
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
 
-const moment = require("moment");
-moment.locale("pl");
+const moment = require('moment')
+moment.locale('pl')
 
 export default {
-  name: "AddPatientComponent",
-  data: function() {
+  name: 'AddPatientComponent',
+  data: function () {
     return {
-      search: "",
-      sortBy: "ASC",
+      search: '',
+      sortBy: 'ASC',
       selected: false,
-      date: "",
+      date: '',
       loading: {
         roles: false,
         patients: false
@@ -141,77 +141,77 @@ export default {
       data: {
         place_id: null,
         patient_id: null,
-        date: "",
-        note: ""
+        date: '',
+        note: ''
       }
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      isMobile: "window/isMobile",
-      roles: "userRoles/list",
-      selectedRole: "userRoles/selected",
-      placePatients: "placePatients/list"
+      isMobile: 'window/isMobile',
+      roles: 'userRoles/list',
+      selectedRole: 'userRoles/selected',
+      placePatients: 'placePatients/list'
     }),
-    patients: function() {
-      return this.placePatients;
+    patients: function () {
+      return this.placePatients
     },
-    searchResults: function() {
+    searchResults: function () {
       return this.patients.filter(role => {
-        const userName = role.user.name.toLowerCase();
-        const search = this.search.toLowerCase();
-        return ~userName.search(search);
-      });
+        const userName = role.user.name.toLowerCase()
+        const search = this.search.toLowerCase()
+        return ~userName.search(search)
+      })
     },
-    sortedSearchResults: function() {
-      return this.sortBy === "ASC"
+    sortedSearchResults: function () {
+      return this.sortBy === 'ASC'
         ? this.searchResults.sort(
-            (a, b) => (a.user.name > b.user.name) - (a.user.name < b.user.name)
-          )
+          (a, b) => (a.user.name > b.user.name) - (a.user.name < b.user.name)
+        )
         : this.searchResults.sort(
-            (a, b) => (a.user.name < b.user.name) - (a.user.name > b.user.name)
-          );
+          (a, b) => (a.user.name < b.user.name) - (a.user.name > b.user.name)
+        )
     }
   },
   methods: {
     ...mapActions({
-      getPlacePatients: "placePatients/get",
-      getUserRoles: "userRoles/get",
-      setAppointmentData: "addAppointment/setData"
+      getPlacePatients: 'placePatients/get',
+      getUserRoles: 'userRoles/get',
+      setAppointmentData: 'addAppointment/setData'
     }),
-    getPatients: async function() {
-      this.loading.patients = true;
+    getPatients: async function () {
+      this.loading.patients = true
 
       await this.getPlacePatients(this.data.place_id).catch(error => {
-        this.$toasted.error("Wystąpił błąd");
-        console.error(error);
-      });
+        this.$toasted.error('Wystąpił błąd')
+        console.error(error)
+      })
 
-      this.loading.patients = false;
+      this.loading.patients = false
     },
-    getRoles: async function() {
-      this.loading.roles = true;
+    getRoles: async function () {
+      this.loading.roles = true
 
       await this.getUserRoles().catch(error => {
-        this.$toasted.error("Wystąpił błąd");
-        console.error(error);
-      });
+        this.$toasted.error('Wystąpił błąd')
+        console.error(error)
+      })
 
-      this.loading.roles = false;
+      this.loading.roles = false
     },
-    selectPlace: function(event) {
-      this.data.place_id = event.target.value;
-      this.getPatients();
-      this.selected = true;
+    selectPlace: function (event) {
+      this.data.place_id = event.target.value
+      this.getPatients()
+      this.selected = true
     },
-    setFormattedDate: function(event) {
-      this.data.date = moment(event.target.value).format("YYYY-MM-DD HH:mm:ss");
+    setFormattedDate: function (event) {
+      this.data.date = moment(event.target.value).format('YYYY-MM-DD HH:mm:ss')
     }
   },
   watch: {
     data: {
-      handler(val) {
-        this.setAppointmentData(val);
+      handler (val) {
+        this.setAppointmentData(val)
       },
       deep: true
     }
@@ -226,12 +226,12 @@ export default {
     MainLoading,
     GreyBlock
   },
-  mounted() {
+  mounted () {
     if (this.roles.length === 0) {
-      this.getRoles();
+      this.getRoles()
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

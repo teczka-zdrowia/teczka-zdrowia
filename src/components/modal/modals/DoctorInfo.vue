@@ -41,31 +41,31 @@
 </template>
 
 <script>
-import { API_URL } from "@/apollo/constants";
-import { mapActions, mapGetters } from "vuex";
-import "../modal.scss";
+import { API_URL } from '@/apollo/constants'
+import { mapActions, mapGetters } from 'vuex'
+import '../modal.scss'
 
 export default {
-  name: "DoctorInfo",
-  data: function() {
+  name: 'DoctorInfo',
+  data: function () {
     return {
       apiUrl: API_URL
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      data: "modal/data"
+      data: 'modal/data'
     }),
-    user: function() {
-      return this.data.role.user;
+    user: function () {
+      return this.data.role.user
     }
   },
   methods: {
     ...mapActions({
-      hideModal: "modal/hide"
+      hideModal: 'modal/hide'
     })
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

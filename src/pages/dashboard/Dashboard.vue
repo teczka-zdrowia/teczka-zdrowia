@@ -14,14 +14,14 @@
 </template>
 
 <script>
-import RecommendationsBlock from "./RecommendationsBlock";
-import LastAppointmentsBlock from "./LastAppointmentsBlock";
-import Map from "../map/Map";
+import RecommendationsBlock from './RecommendationsBlock'
+import LastAppointmentsBlock from './LastAppointmentsBlock'
+import Map from '../map/Map'
 
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex'
 
 export default {
-  name: "Dashboard",
+  name: 'Dashboard',
   components: {
     RecommendationsBlock,
     LastAppointmentsBlock,
@@ -29,10 +29,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isMobile: "window/isMobile"
+      isMobile: 'window/isMobile'
     })
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

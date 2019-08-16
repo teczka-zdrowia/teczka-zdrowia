@@ -15,10 +15,10 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex'
 
 export default {
-  name: "MainPlaceInfo",
+  name: 'MainPlaceInfo',
   props: {
     data: {
       type: Object
@@ -38,19 +38,19 @@ export default {
   },
   methods: {
     ...mapActions({
-      showModal: "modal/show"
+      showModal: 'modal/show'
     }),
-    moreInfo: function() {
+    moreInfo: function () {
       this.showModal({
-        componentName: "PlaceInfo",
+        componentName: 'PlaceInfo',
         data: {
           hideBorders: true,
           place: this.data
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

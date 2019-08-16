@@ -52,11 +52,11 @@
 </template>
 
 <script>
-import MainLoading from "../../components/ui/basic/MainLoading";
-import MainBtn from "../../components/ui/basic/MainBtn";
-import { apolloClient } from "@/apollo";
-import { PLACES_BY_CITY_QUERY } from "@/graphql/queries/_index";
-import { mapActions } from "vuex";
+import MainLoading from '../../components/ui/basic/MainLoading'
+import MainBtn from '../../components/ui/basic/MainBtn'
+import { apolloClient } from '@/apollo'
+import { PLACES_BY_CITY_QUERY } from '@/graphql/queries/_index'
+import { mapActions } from 'vuex'
 
 import {
   LMap,
@@ -64,20 +64,20 @@ import {
   LMarker,
   LControlAttribution,
   LControlZoom
-} from "vue2-leaflet";
-import { L } from "vue2-leaflet";
-import "leaflet/dist/leaflet.css";
-import { OpenStreetMapProvider } from "leaflet-geosearch";
-import { setTimeout } from "timers";
+  , L } from 'vue2-leaflet'
 
-const provider = new OpenStreetMapProvider();
+import 'leaflet/dist/leaflet.css'
+import { OpenStreetMapProvider } from 'leaflet-geosearch'
+import { setTimeout } from 'timers'
 
-delete L.Icon.Default.prototype._getIconUrl;
+const provider = new OpenStreetMapProvider()
 
-var parser = require("xml-js");
+delete L.Icon.Default.prototype._getIconUrl
+
+var parser = require('xml-js')
 
 export default {
-  name: "Map",
+  name: 'Map',
   components: {
     LMap,
     LTileLayer,
@@ -87,7 +87,7 @@ export default {
     MainLoading,
     MainBtn
   },
-  data: function() {
+  data: function () {
     return {
       zoom: 6,
       map: null,
@@ -97,15 +97,15 @@ export default {
         zoomSnap: true
       },
       url:
-        "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
+        'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
       icons: {
         place: L.icon({
-          iconUrl: "static/leaflet/place-icon.png",
+          iconUrl: 'static/leaflet/place-icon.png',
           iconSize: [50, 50],
           iconAnchor: [25, 25]
         }),
         doctor: L.icon({
-          iconUrl: "static/leaflet/doctor-icon.png",
+          iconUrl: 'static/leaflet/doctor-icon.png',
           iconSize: [50, 50],
           iconAnchor: [25, 25]
         })
@@ -113,50 +113,50 @@ export default {
       markers: [],
       isCurrentPosition: false,
       city: {
-        name: "",
+        name: '',
         searching: true,
         loadingPlaces: false
       }
-    };
+    }
   },
   methods: {
     ...mapActions({
-      showModal: "modal/show"
+      showModal: 'modal/show'
     }),
-    initMap: function() {
-      this.map = this.$refs.map.mapObject;
+    initMap: function () {
+      this.map = this.$refs.map.mapObject
     },
-    getCityFromMap: function(event) {
-      const data = [event.lat, event.lng];
-      this.isCurrentPosition = false;
-      this.getCity(data);
+    getCityFromMap: function (event) {
+      const data = [event.lat, event.lng]
+      this.isCurrentPosition = false
+      this.getCity(data)
     },
-    getCity: async function(coords) {
-      this.city.searching = true;
+    getCity: async function (coords) {
+      this.city.searching = true
 
-      const search = await provider.search({ query: coords });
+      const search = await provider.search({ query: coords })
 
-      const osm_id = search[0].raw.osm_id;
+      const osm_id = search[0].raw.osm_id
 
       await fetch(
         `https://nominatim.openstreetmap.org/reverse?format=json&osm_id=${osm_id}&osm_type=W&accept-language=pl`
       )
         .then(results => results.json())
         .then(results => {
-          const address = results.address;
+          const address = results.address
           const place =
             address.city ||
             address.town ||
             address.village ||
             address.hamlet ||
-            address.suburb;
-          this.city.name = place ? place : this.city.name;
-        });
+            address.suburb
+          this.city.name = place || this.city.name
+        })
 
-      this.city.searching = false;
+      this.city.searching = false
     },
-    getPlaces: async function() {
-      this.city.loadingPlaces = true;
+    getPlaces: async function () {
+      this.city.loadingPlaces = true
 
       await apolloClient
         .query({
@@ -168,86 +168,86 @@ export default {
         .then(data => data.data.places)
         .then(places => this.addMarkers(places))
         .catch(error => {
-          this.$toasted.error("Nie znaleziono gabinetów");
-          console.error(error);
-        });
+          this.$toasted.error('Nie znaleziono gabinetów')
+          console.error(error)
+        })
 
-      this.city.loadingPlaces = false;
+      this.city.loadingPlaces = false
     },
-    getPlaceLatLng: async function(place) {
+    getPlaceLatLng: async function (place) {
       const results = await provider
         .search({ query: `${place.address}, ${place.city}` })
         .catch(error => {
-          this.$toasted.error("Wystąpił błąd");
-          console.error(error);
-        });
-      return [results[0].raw.lat, results[0].raw.lon];
+          this.$toasted.error('Wystąpił błąd')
+          console.error(error)
+        })
+      return [results[0].raw.lat, results[0].raw.lon]
     },
-    addMarkers: async function(places) {
-      let markers = [];
+    addMarkers: async function (places) {
+      let markers = []
       await places.map(async place => {
-        const latLng = await this.getPlaceLatLng(place);
+        const latLng = await this.getPlaceLatLng(place)
         markers.push({
           icon: this.icons.place,
           latLng: latLng,
           info: () => this.showPlaceModal(place)
-        });
-      });
+        })
+      })
 
-      this.markers = markers;
+      this.markers = markers
     },
-    showPlaceModal: function(place) {
+    showPlaceModal: function (place) {
       this.showModal({
-        componentName: "PlaceInfo",
+        componentName: 'PlaceInfo',
         data: {
           hideBorders: true,
           place: place
         }
-      });
+      })
     },
-    getCurrentPosition: function(options) {
+    getCurrentPosition: function (options) {
       if (navigator.geolocation) {
         return new Promise((resolve, reject) =>
           navigator.geolocation.getCurrentPosition(resolve, reject)
-        );
+        )
       } else {
-        return new Promise(resolve => resolve({}));
+        return new Promise(resolve => resolve({}))
       }
     },
-    setCurrentPosition: function() {
+    setCurrentPosition: function () {
       this.getCurrentPosition()
         .then(pos => {
           if (pos.coords) {
             this.map = this.$refs.map.mapObject.setView(
               [pos.coords.latitude, pos.coords.longitude],
               12
-            );
+            )
           } else {
             this.map = this.$refs.map.mapObject.setView(
               [52.0715018, 19.5211664],
               12
-            );
+            )
           }
         })
         .then(() => {
           const unwatch = this.$watch(
-            "city.searching",
-            function() {
-              this.isCurrentPosition = true;
-              unwatch();
+            'city.searching',
+            function () {
+              this.isCurrentPosition = true
+              unwatch()
             },
             { deep: true }
-          );
-        });
+          )
+        })
     }
   },
-  mounted: function() {
+  mounted: function () {
     this.$nextTick(() => {
-      this.initMap();
-      this.setCurrentPosition();
-    });
+      this.initMap()
+      this.setCurrentPosition()
+    })
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

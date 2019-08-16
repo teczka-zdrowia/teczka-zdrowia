@@ -36,11 +36,11 @@
 </template>
 
 <script>
-import MainBtn from "../basic/MainBtn";
-import AppointmentBig from "./AppointmentBig";
+import MainBtn from '../basic/MainBtn'
+import AppointmentBig from './AppointmentBig'
 
 export default {
-  name: "AppointmentsBig",
+  name: 'AppointmentsBig',
   props: {
     showAppointmentsLink: {
       type: Boolean,
@@ -59,14 +59,14 @@ export default {
     },
     showUserAs: {
       type: String,
-      default: "patient"
+      default: 'patient'
     }
   },
   components: {
     MainBtn,
     AppointmentBig
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

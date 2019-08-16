@@ -8,16 +8,16 @@
 </template>
 
 <script>
-import MainBtn from "../../components/ui/basic/MainBtn";
-import Logo from "../../components/ui/basic/logo/Logo";
+import MainBtn from '../../components/ui/basic/MainBtn'
+import Logo from '../../components/ui/basic/logo/Logo'
 
 export default {
-  name: "Main",
+  name: 'Main',
   components: {
     MainBtn,
     Logo
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

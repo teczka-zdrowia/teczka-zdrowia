@@ -4,6 +4,7 @@ import router from './router'
 import apolloProvider from './apollo'
 import Toasted from 'vue-toasted'
 import { store } from './store'
+import './registerServiceWorker'
 
 Vue.use(Toasted, {
   iconPack: 'fontawesome',

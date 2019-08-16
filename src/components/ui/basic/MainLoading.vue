@@ -34,12 +34,12 @@
 
 <script>
 export default {
-  name: "MainLoading",
+  name: 'MainLoading',
   props: {
     color: {
       type: String,
-      default: "#6a6ee1"
+      default: '#6a6ee1'
     }
   }
-};
+}
 </script>

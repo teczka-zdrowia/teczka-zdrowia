@@ -1,22 +1,22 @@
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex'
 
 export default {
-  name: "PasswordReset",
+  name: 'PasswordReset',
   methods: {
     ...mapActions({
-      showModal: "modal/show"
+      showModal: 'modal/show'
     })
   },
-  mounted: function() {
+  mounted: function () {
     this.showModal({
-      componentName: "UpdateForgottenPassword",
+      componentName: 'UpdateForgottenPassword',
       data: {
         token: this.$route.params.token,
         email: this.$route.params.email
       }
-    });
-    this.$router.push({ name: "Auth" });
+    })
+    this.$router.push({ name: 'Auth' })
   }
-};
+}
 </script>

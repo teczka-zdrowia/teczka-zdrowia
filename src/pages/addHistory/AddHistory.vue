@@ -23,34 +23,34 @@
 </template>
 
 <script>
-import AddHistoryComponent from "../../components/ui/AddHistoryComponent";
-import MainBtn from "../../components/ui/basic/MainBtn";
-import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
-import { mapActions, mapGetters } from "vuex";
+import AddHistoryComponent from '../../components/ui/AddHistoryComponent'
+import MainBtn from '../../components/ui/basic/MainBtn'
+import WhiteFunctionalBlock from '../../components/ui/blocks/WhiteFunctionalBlock'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "AddHistory",
-  data: function() {
+  name: 'AddHistory',
+  data: function () {
     return {
       isLoading: false
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      historyData: "addHistory/data",
-      historyInstance: "addHistory/history"
+      historyData: 'addHistory/data',
+      historyInstance: 'addHistory/history'
     })
   },
   methods: {
     ...mapActions({
-      addUserHistory: "addHistory/add",
-      addHistoryAttachments: "addHistory/addAttachments",
-      addHistoryRecommendations: "addHistory/addRecommendations"
+      addUserHistory: 'addHistory/add',
+      addHistoryAttachments: 'addHistory/addAttachments',
+      addHistoryRecommendations: 'addHistory/addRecommendations'
     }),
-    createHistory: async function() {
-      this.isLoading = true;
+    createHistory: async function () {
+      this.isLoading = true
 
-      const { recommendations, attachments, ...history } = this.historyData;
+      const { recommendations, attachments, ...history } = this.historyData
 
       await this.addUserHistory(history)
         .then(() =>
@@ -60,32 +60,32 @@ export default {
           ])
         )
         .then(() => {
-          this.$toasted.success("Poprawnie dodano historię");
-          this.$router.go(-1);
+          this.$toasted.success('Poprawnie dodano historię')
+          this.$router.go(-1)
         })
         .catch(error => {
-          console.error(error);
-          this.isLoading = false;
-          this.$toasted.error("Wystąpił błąd");
-        });
+          console.error(error)
+          this.isLoading = false
+          this.$toasted.error('Wystąpił błąd')
+        })
 
-      this.isLoading = false;
+      this.isLoading = false
     },
-    addRecommendations: function(recommendations) {
+    addRecommendations: function (recommendations) {
       const recommendationsPayload = {
         data: recommendations,
         historyId: this.historyInstance.id
-      };
+      }
 
-      return this.addHistoryRecommendations(recommendationsPayload);
+      return this.addHistoryRecommendations(recommendationsPayload)
     },
-    addAttachments: function(attachments) {
+    addAttachments: function (attachments) {
       const attachmentsPayload = {
         data: attachments,
         historyId: this.historyInstance.id
-      };
+      }
 
-      return this.addHistoryAttachments(attachmentsPayload);
+      return this.addHistoryAttachments(attachmentsPayload)
     }
   },
   components: {
@@ -93,7 +93,7 @@ export default {
     MainBtn,
     Block: WhiteFunctionalBlock
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

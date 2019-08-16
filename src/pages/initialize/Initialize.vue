@@ -20,23 +20,23 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: "Initialize",
+  name: 'Initialize',
   computed: {
     ...mapGetters({
-      selectedStepComponent: "initializeSteps/getSelectedComponent",
-      selectedStep: "initializeSteps/getSelected",
-      steps: "initializeSteps/getList"
+      selectedStepComponent: 'initializeSteps/getSelectedComponent',
+      selectedStep: 'initializeSteps/getSelected',
+      steps: 'initializeSteps/getList'
     })
   },
   methods: {
     ...mapActions({
-      selectStep: "initializeSteps/select"
+      selectStep: 'initializeSteps/select'
     })
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

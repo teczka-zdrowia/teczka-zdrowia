@@ -62,71 +62,71 @@
 </template>
 
 <script>
-import MainBtn from "../../components/ui/basic/MainBtn";
-import MainSearch from "../../components/ui/basic/MainSearch";
-import MainUser from "../../components/ui/basic/MainUser";
-import MainLoading from "../../components/ui/basic/MainLoading";
-import GreyBlock from "../../components/ui/blocks/GreyBlock";
+import MainBtn from '../../components/ui/basic/MainBtn'
+import MainSearch from '../../components/ui/basic/MainSearch'
+import MainUser from '../../components/ui/basic/MainUser'
+import MainLoading from '../../components/ui/basic/MainLoading'
+import GreyBlock from '../../components/ui/blocks/GreyBlock'
 
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "Patients",
-  data: function() {
+  name: 'Patients',
+  data: function () {
     return {
-      search: "",
-      sortBy: "ASC",
+      search: '',
+      sortBy: 'ASC',
       loading: {
         init: true
       }
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      selectedRole: "userRoles/selected",
-      patients: "placePatients/list"
+      selectedRole: 'userRoles/selected',
+      patients: 'placePatients/list'
     }),
-    searchResults: function() {
+    searchResults: function () {
       return this.patients.filter(role => {
-        const userName = role.user.name.toLowerCase();
-        const search = this.search.toLowerCase();
-        return ~userName.search(search);
-      });
+        const userName = role.user.name.toLowerCase()
+        const search = this.search.toLowerCase()
+        return ~userName.search(search)
+      })
     },
-    sortedSearchResults: function() {
-      return this.sortBy === "ASC"
+    sortedSearchResults: function () {
+      return this.sortBy === 'ASC'
         ? this.searchResults.sort(
-            (a, b) => (a.user.name > b.user.name) - (a.user.name < b.user.name)
-          )
+          (a, b) => (a.user.name > b.user.name) - (a.user.name < b.user.name)
+        )
         : this.searchResults.sort(
-            (a, b) => (a.user.name < b.user.name) - (a.user.name > b.user.name)
-          );
+          (a, b) => (a.user.name < b.user.name) - (a.user.name > b.user.name)
+        )
     },
-    placeId: function() {
-      return this.selectedRole.place.id;
+    placeId: function () {
+      return this.selectedRole.place.id
     }
   },
   methods: {
     ...mapActions({
-      showModal: "modal/show",
-      initAddPatientPlace: "addPatient/initPlace",
-      getPlacePatients: "placePatients/get"
+      showModal: 'modal/show',
+      initAddPatientPlace: 'addPatient/initPlace',
+      getPlacePatients: 'placePatients/get'
     }),
-    addNewPatient: function() {
-      this.initAddPatientPlace(this.selectedRole.place);
+    addNewPatient: function () {
+      this.initAddPatientPlace(this.selectedRole.place)
       this.showModal({
-        componentName: "AddPatient"
-      });
+        componentName: 'AddPatient'
+      })
     },
-    getPatients: async function() {
-      this.loading.init = true;
+    getPatients: async function () {
+      this.loading.init = true
 
       await this.getPlacePatients(this.placeId).catch(error => {
-        this.$toasted.error("Wystąpił błąd");
-        console.error(error);
-      });
+        this.$toasted.error('Wystąpił błąd')
+        console.error(error)
+      })
 
-      this.loading.init = false;
+      this.loading.init = false
     }
   },
   components: {
@@ -137,14 +137,14 @@ export default {
     GreyBlock
   },
   watch: {
-    placeId: function() {
-      this.getPatients();
+    placeId: function () {
+      this.getPatients()
     }
   },
-  mounted() {
-    this.getPatients();
+  mounted () {
+    this.getPatients()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

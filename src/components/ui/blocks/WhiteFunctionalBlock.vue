@@ -28,9 +28,9 @@
 
 <script>
 export default {
-  name: "WhiteFunctionalBlock",
-  props: ["title", "info"]
-};
+  name: 'WhiteFunctionalBlock',
+  props: ['title', 'info']
+}
 </script>
 
 <style lang="scss" scoped>

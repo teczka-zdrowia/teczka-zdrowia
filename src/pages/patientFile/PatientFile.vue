@@ -27,21 +27,21 @@
 </template>
 
 <script>
-import { apolloClient } from "@/apollo";
-import { USER_BY_ID_QUERY } from "@/graphql/queries/_index";
-import MainBaseInfo from "../../components/ui/basic/MainBaseInfo";
-import PatientHistory from "./PatientHistory";
-import MainLoading from "../../components/ui/basic/MainLoading";
-import GreyBlock from "../../components/ui/blocks/GreyBlock";
+import { apolloClient } from '@/apollo'
+import { USER_BY_ID_QUERY } from '@/graphql/queries/_index'
+import MainBaseInfo from '../../components/ui/basic/MainBaseInfo'
+import PatientHistory from './PatientHistory'
+import MainLoading from '../../components/ui/basic/MainLoading'
+import GreyBlock from '../../components/ui/blocks/GreyBlock'
 
 export default {
-  name: "PatientFile",
-  data: function() {
+  name: 'PatientFile',
+  data: function () {
     return {
       patient: null
-    };
+    }
   },
-  mounted: function() {
+  mounted: function () {
     apolloClient
       .query({
         query: USER_BY_ID_QUERY,
@@ -52,16 +52,16 @@ export default {
       .then(data => data.data.user)
       .then(user => {
         if (user) {
-          this.patient = user;
+          this.patient = user
         } else {
-          throw new Error("User does not exist");
+          throw new Error('User does not exist')
         }
       })
       .catch(error => {
-        console.error(error);
-        this.$toasted.error("Nie znaleziono użytkownika");
-        this.$router.go(-1);
-      });
+        console.error(error)
+        this.$toasted.error('Nie znaleziono użytkownika')
+        this.$router.go(-1)
+      })
   },
   components: {
     MainBaseInfo,
@@ -69,7 +69,7 @@ export default {
     MainLoading,
     GreyBlock
   }
-};
+}
 </script>
 
 <style lang="scss">

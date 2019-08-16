@@ -23,56 +23,56 @@
 </template>
 
 <script>
-import UpdateAppointmentComponent from "../../components/ui/UpdateAppointmentComponent";
-import MainBtn from "../../components/ui/basic/MainBtn";
-import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
-import { mapActions, mapGetters } from "vuex";
+import UpdateAppointmentComponent from '../../components/ui/UpdateAppointmentComponent'
+import MainBtn from '../../components/ui/basic/MainBtn'
+import WhiteFunctionalBlock from '../../components/ui/blocks/WhiteFunctionalBlock'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "AddAppointment",
-  data: function() {
+  name: 'AddAppointment',
+  data: function () {
     return {
       isLoading: false
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      appointmentData: "updateAppointment/data",
-      appointmentOldData: "updateAppointment/oldData"
+      appointmentData: 'updateAppointment/data',
+      appointmentOldData: 'updateAppointment/oldData'
     })
   },
   methods: {
     ...mapActions({
-      updateUserAppointment: "updateAppointment/update",
-      showModal: "modal/show"
+      updateUserAppointment: 'updateAppointment/update',
+      showModal: 'modal/show'
     }),
-    updateAppointment: async function() {
-      this.isLoading = true;
+    updateAppointment: async function () {
+      this.isLoading = true
 
       const payload = {
         id: this.appointmentOldData.id,
         data: this.appointmentData
-      };
+      }
 
       await this.updateUserAppointment(payload)
         .then(appointment => {
-          this.$toasted.success("Poprawnie zaktualizowano wizytę");
-          this.$router.go(-1);
+          this.$toasted.success('Poprawnie zaktualizowano wizytę')
+          this.$router.go(-1)
           this.showModal({
-            componentName: "AppointmentInfo",
+            componentName: 'AppointmentInfo',
             data: {
               hideBorders: true,
-              viewerType: "author",
+              viewerType: 'author',
               appointment: appointment
             }
-          });
+          })
         })
         .catch(error => {
-          console.error(error);
-          this.$toasted.error("Wystąpił błąd");
-        });
+          console.error(error)
+          this.$toasted.error('Wystąpił błąd')
+        })
 
-      this.isLoading = false;
+      this.isLoading = false
     }
   },
   components: {
@@ -80,12 +80,12 @@ export default {
     MainBtn,
     Block: WhiteFunctionalBlock
   },
-  mounted() {
+  mounted () {
     if (this.appointmentData.id === null) {
-      this.$rotuer.go(-1);
+      this.$rotuer.go(-1)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

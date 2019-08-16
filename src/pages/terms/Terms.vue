@@ -23,8 +23,8 @@
 
 <script>
 export default {
-  name: "Terms"
-};
+  name: 'Terms'
+}
 </script>
 
 <style lang="scss" scoped>

@@ -24,17 +24,17 @@
 </template>
 
 <script>
-import MainUserInfo from "./MainUserInfo";
-import { mapActions } from "vuex";
+import MainUserInfo from './MainUserInfo'
+import { mapActions } from 'vuex'
 
 export default {
-  name: "MainUser",
+  name: 'MainUser',
   props: {
     data: {
       type: Object,
-      default: function() {
+      default: function () {
         return {
-          permission_type: "",
+          permission_type: '',
           is_active: false,
           user: {
             id: {
@@ -50,7 +50,7 @@ export default {
               type: String
             }
           }
-        };
+        }
       }
     },
     editAffiliation: {
@@ -63,20 +63,20 @@ export default {
   },
   methods: {
     ...mapActions({
-      showModal: "modal/show"
+      showModal: 'modal/show'
     }),
-    moreInfo: function() {
+    moreInfo: function () {
       this.showModal({
-        componentName: "UserInfo",
+        componentName: 'UserInfo',
         data: {
           hideBorders: true,
           editAffiliation: this.editAffiliation,
           role: this.data
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

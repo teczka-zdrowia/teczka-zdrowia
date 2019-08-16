@@ -86,17 +86,17 @@
 </template>
 
 <script>
-import MainBtn from "../../components/ui/basic/MainBtn";
-import MainSearch from "../../components/ui/basic/MainSearch";
-import MainLoading from "../../components/ui/basic/MainLoading";
-import GreyBlock from "../../components/ui/blocks/GreyBlock";
-import AppointmentsSmall from "../../components/ui/appointments/AppointmentsSmall";
+import MainBtn from '../../components/ui/basic/MainBtn'
+import MainSearch from '../../components/ui/basic/MainSearch'
+import MainLoading from '../../components/ui/basic/MainLoading'
+import GreyBlock from '../../components/ui/blocks/GreyBlock'
+import AppointmentsSmall from '../../components/ui/appointments/AppointmentsSmall'
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: "Timetable",
-  data: function() {
+  name: 'Timetable',
+  data: function () {
     return {
       maxAppointments: 0,
       showUpcoming: true,
@@ -106,93 +106,93 @@ export default {
         next: false
       },
       query: {
-        search: "",
+        search: '',
         first: 5,
         sortData: {
-          order: "ASC",
-          field: "date"
+          order: 'ASC',
+          field: 'date'
         }
       }
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      isMobile: "window/isMobile",
-      selectedRole: "userRoles/selected",
-      appointments: "placeAppointments/list",
-      pageInfo: "placeAppointments/pageInfo"
+      isMobile: 'window/isMobile',
+      selectedRole: 'userRoles/selected',
+      appointments: 'placeAppointments/list',
+      pageInfo: 'placeAppointments/pageInfo'
     }),
-    canShowAppointments: function() {
+    canShowAppointments: function () {
       return (
         !this.loading.init &&
         !this.loading.newQuery &&
         this.appointments.length > 0
-      );
+      )
     },
-    orderBy: function() {
+    orderBy: function () {
       return [
         {
           field: this.query.sortData.field,
           order: this.query.sortData.order
         }
-      ];
+      ]
     },
-    date: function() {
-      const today = new Date().toISOString().slice(0, 10);
-      const futureSafeDate = "2100-01-01";
-      const oldSafeDate = "2000-01-01";
+    date: function () {
+      const today = new Date().toISOString().slice(0, 10)
+      const futureSafeDate = '2100-01-01'
+      const oldSafeDate = '2000-01-01'
 
       return this.showUpcoming
         ? {
-            from: today,
-            to: futureSafeDate
-          }
+          from: today,
+          to: futureSafeDate
+        }
         : {
-            from: oldSafeDate,
-            to: today
-          };
+          from: oldSafeDate,
+          to: today
+        }
     },
-    placeId: function() {
-      return this.selectedRole.place.id;
+    placeId: function () {
+      return this.selectedRole.place.id
     }
   },
   methods: {
     ...mapActions({
-      getUserAppointments: "placeAppointments/get",
-      viewerInfo: "userInfo/full"
+      getUserAppointments: 'placeAppointments/get',
+      viewerInfo: 'userInfo/full'
     }),
-    toggleShowUpcoming: function() {
-      this.showUpcoming = !this.showUpcoming;
+    toggleShowUpcoming: function () {
+      this.showUpcoming = !this.showUpcoming
 
-      const sortData = this.query.sortData;
-      if (sortData.field === "date") {
-        sortData.order = this.showUpcoming ? "ASC" : "DESC";
+      const sortData = this.query.sortData
+      if (sortData.field === 'date') {
+        sortData.order = this.showUpcoming ? 'ASC' : 'DESC'
       }
     },
-    getAppointments: async function(payload, type) {
-      this.loading[type] = true;
+    getAppointments: async function (payload, type) {
+      this.loading[type] = true
 
       await this.getUserAppointments(payload).catch(error => {
-        this.$toasted.error("Wystąpił błąd");
-        console.error(error);
-      });
+        this.$toasted.error('Wystąpił błąd')
+        console.error(error)
+      })
 
-      this.loading[type] = false;
+      this.loading[type] = false
     },
-    getFirstAppointments: function() {
+    getFirstAppointments: function () {
       const payload = {
         id: this.placeId,
         first: this.query.first,
-        after: "",
-        note: "",
+        after: '',
+        note: '',
         date: this.date,
         orderBy: this.orderBy,
-        type: "SET"
-      };
+        type: 'SET'
+      }
 
-      this.getAppointments(payload, "init");
+      this.getAppointments(payload, 'init')
     },
-    getNextAppointments: function() {
+    getNextAppointments: function () {
       const payload = {
         id: this.placeId,
         first: this.query.first,
@@ -200,31 +200,31 @@ export default {
         note: `%${this.query.search}%`,
         date: this.date,
         orderBy: this.orderBy,
-        type: "ADD"
-      };
+        type: 'ADD'
+      }
 
-      this.getAppointments(payload, "next");
+      this.getAppointments(payload, 'next')
     }
   },
   watch: {
     query: {
-      handler() {
+      handler () {
         const payload = {
           id: this.placeId,
           first: this.query.first,
-          after: "",
+          after: '',
           note: `%${this.query.search}%`,
           date: this.date,
           orderBy: this.orderBy,
-          type: "SET"
-        };
+          type: 'SET'
+        }
 
-        this.getAppointments(payload, "newQuery");
+        this.getAppointments(payload, 'newQuery')
       },
       deep: true
     },
-    placeId: function() {
-      this.getFirstAppointments();
+    placeId: function () {
+      this.getFirstAppointments()
     }
   },
   components: {
@@ -234,10 +234,10 @@ export default {
     GreyBlock,
     MainLoading
   },
-  mounted() {
-    this.getFirstAppointments();
+  mounted () {
+    this.getFirstAppointments()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

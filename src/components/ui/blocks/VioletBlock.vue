@@ -6,8 +6,8 @@
 
 <script>
 export default {
-  name: "VioletBlock"
-};
+  name: 'VioletBlock'
+}
 </script>
 
 <style lang="scss" scoped>

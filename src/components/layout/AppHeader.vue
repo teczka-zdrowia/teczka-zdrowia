@@ -12,36 +12,36 @@
 </template>
 
 <script>
-import MainBtn from "../ui/basic/MainBtn";
-import UserInfo from "../ui/UserInfo";
+import MainBtn from '../ui/basic/MainBtn'
+import UserInfo from '../ui/UserInfo'
 
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "AppHeader",
+  name: 'AppHeader',
   components: {
     MainBtn,
     UserInfo
   },
   methods: {
     ...mapActions({
-      showModal: "modal/show"
+      showModal: 'modal/show'
     }),
-    addAppointment: function() {
+    addAppointment: function () {
       this.showModal({
-        componentName: "AddAppointment",
+        componentName: 'AddAppointment',
         data: {
           hideBorders: true
         }
-      });
+      })
     }
   },
   computed: {
     ...mapGetters({
-      isPaymentValid: "userInfo/isPaymentValid"
+      isPaymentValid: 'userInfo/isPaymentValid'
     })
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

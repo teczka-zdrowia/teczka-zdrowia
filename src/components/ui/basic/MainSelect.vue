@@ -6,8 +6,8 @@
 
 <script>
 export default {
-  name: "MainSelect"
-};
+  name: 'MainSelect'
+}
 </script>
 
 <style lang="scss" scoped>

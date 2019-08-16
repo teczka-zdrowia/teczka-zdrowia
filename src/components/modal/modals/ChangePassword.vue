@@ -66,22 +66,22 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-import MainInput from "../../ui/basic/MainInput";
-import MainBtn from "../../ui/basic/MainBtn";
-import "../modal.scss";
+import { mapActions } from 'vuex'
+import MainInput from '../../ui/basic/MainInput'
+import MainBtn from '../../ui/basic/MainBtn'
+import '../modal.scss'
 
 export default {
-  name: "ChangePassword",
-  data: function() {
+  name: 'ChangePassword',
+  data: function () {
     return {
       isLoading: false,
       data: {
-        password: "",
-        new_password: "",
-        new_password_confirmation: ""
+        password: '',
+        new_password: '',
+        new_password_confirmation: ''
       }
-    };
+    }
   },
   components: {
     MainInput,
@@ -89,28 +89,28 @@ export default {
   },
   methods: {
     ...mapActions({
-      hideModal: "modal/hide",
-      updateUserPassword: "userInfo/updatePassword"
+      hideModal: 'modal/hide',
+      updateUserPassword: 'userInfo/updatePassword'
     }),
-    changePassword() {
-      this.isLoading = true;
+    changePassword () {
+      this.isLoading = true
       this.updateUserPassword(this.data)
         .then(() => this.hideModal())
         .catch(error => {
-          this.$toasted.error("Niepoprawne dane");
-          console.error(error);
+          this.$toasted.error('Niepoprawne dane')
+          console.error(error)
         })
         .finally(() => {
-          this.isLoading = false;
-        });
+          this.isLoading = false
+        })
     }
   },
   computed: {
-    isPasswordsSame: function() {
-      return this.data.new_password === this.data.new_password_confirmation;
+    isPasswordsSame: function () {
+      return this.data.new_password === this.data.new_password_confirmation
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

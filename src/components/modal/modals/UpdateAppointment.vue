@@ -22,74 +22,74 @@
 </template>
 
 <script>
-import UpdateAppointmentComponent from "../../ui/UpdateAppointmentComponent";
-import MainBtn from "../../ui/basic/MainBtn";
-import { mapActions, mapGetters } from "vuex";
+import UpdateAppointmentComponent from '../../ui/UpdateAppointmentComponent'
+import MainBtn from '../../ui/basic/MainBtn'
+import { mapActions, mapGetters } from 'vuex'
 
-import "../modal.scss";
+import '../modal.scss'
 
 export default {
-  name: "UpdateAppointment",
-  data: function() {
+  name: 'UpdateAppointment',
+  data: function () {
     return {
       isLoading: false
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      data: "modal/data",
-      appointmentData: "updateAppointment/data",
-      appointmentOldData: "updateAppointment/oldData"
+      data: 'modal/data',
+      appointmentData: 'updateAppointment/data',
+      appointmentOldData: 'updateAppointment/oldData'
     })
   },
   methods: {
     ...mapActions({
-      hideModal: "modal/hide",
-      showModal: "modal/show",
-      updateUserAppointment: "updateAppointment/update",
-      updateLocalAppointmentsByMe: "appointmentsByMe/updateLocal",
-      updateLocalPlaceAppointments: "placeAppointments/updateLocal",
-      updateLocalUserAppointments: "userAppointments/updateLocal"
+      hideModal: 'modal/hide',
+      showModal: 'modal/show',
+      updateUserAppointment: 'updateAppointment/update',
+      updateLocalAppointmentsByMe: 'appointmentsByMe/updateLocal',
+      updateLocalPlaceAppointments: 'placeAppointments/updateLocal',
+      updateLocalUserAppointments: 'userAppointments/updateLocal'
     }),
-    updateAppointment: async function() {
-      this.isLoading = true;
+    updateAppointment: async function () {
+      this.isLoading = true
 
       const payload = {
         id: this.appointmentOldData.id,
         data: this.appointmentData
-      };
+      }
 
       await this.updateUserAppointment(payload)
         .then(appointment => {
-          this.updateLocally(appointment);
-          this.$toasted.success("Poprawnie zaktualizowano wizytę");
+          this.updateLocally(appointment)
+          this.$toasted.success('Poprawnie zaktualizowano wizytę')
           this.showModal({
-            componentName: "AppointmentInfo",
+            componentName: 'AppointmentInfo',
             data: {
               hideBorders: true,
-              viewerType: "author",
+              viewerType: 'author',
               appointment: appointment
             }
-          });
+          })
         })
         .catch(error => {
-          console.error(error);
-          this.$toasted.error("Wystąpił błąd");
-        });
+          console.error(error)
+          this.$toasted.error('Wystąpił błąd')
+        })
 
-      this.isLoading = false;
+      this.isLoading = false
     },
-    updateLocally: function(data) {
-      this.updateLocalAppointmentsByMe(data);
-      this.updateLocalPlaceAppointments(data);
-      this.updateLocalUserAppointments(data);
+    updateLocally: function (data) {
+      this.updateLocalAppointmentsByMe(data)
+      this.updateLocalPlaceAppointments(data)
+      this.updateLocalUserAppointments(data)
     }
   },
   components: {
     UpdateAppointmentComponent,
     MainBtn
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

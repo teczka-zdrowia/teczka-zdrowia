@@ -19,22 +19,22 @@
 </template>
 
 <script>
-import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
-import Settings from "./Settings";
-import Statistics from "./Statistics";
-import Employees from "./Employees";
+import WhiteFunctionalBlock from '../../components/ui/blocks/WhiteFunctionalBlock'
+import Settings from './Settings'
+import Statistics from './Statistics'
+import Employees from './Employees'
 
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "Management",
+  name: 'Management',
   components: {
     Block: WhiteFunctionalBlock,
     Settings,
     Statistics,
     Employees
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

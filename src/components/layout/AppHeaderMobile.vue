@@ -5,16 +5,16 @@
 </template>
 
 <script>
-import MainBtn from "../ui/basic/MainBtn";
-import UserInfo from "../ui/UserInfo";
+import MainBtn from '../ui/basic/MainBtn'
+import UserInfo from '../ui/UserInfo'
 
 export default {
-  name: "AppHeader",
+  name: 'AppHeader',
   components: {
     MainBtn: MainBtn,
     UserInfo: UserInfo
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

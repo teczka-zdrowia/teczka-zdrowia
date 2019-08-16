@@ -11,11 +11,11 @@
 </template>
 
 <script>
-import Logo from "../../components/ui/basic/logo/Logo";
+import Logo from '../../components/ui/basic/logo/Logo'
 
 export default {
-  name: "PageNotFound"
-};
+  name: 'PageNotFound'
+}
 </script>
 
 <style lang="scss" scoped>

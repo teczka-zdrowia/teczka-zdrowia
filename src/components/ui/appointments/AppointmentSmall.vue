@@ -50,14 +50,14 @@
 </template>
 
 <script>
-import MainBtn from "../basic/MainBtn";
-import MainUserInfo from "../basic/MainUserInfo";
-import MainPlaceInfo from "../basic/MainPlaceInfo";
+import MainBtn from '../basic/MainBtn'
+import MainUserInfo from '../basic/MainUserInfo'
+import MainPlaceInfo from '../basic/MainPlaceInfo'
 
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "AppointmentSmall",
+  name: 'AppointmentSmall',
   props: {
     data: {
       type: Object
@@ -72,7 +72,7 @@ export default {
     },
     showUserAs: {
       type: String,
-      default: "patient"
+      default: 'patient'
     }
   },
   components: {
@@ -82,29 +82,29 @@ export default {
   },
   methods: {
     ...mapActions({
-      showModal: "modal/show"
+      showModal: 'modal/show'
     }),
-    moreInfo: function(id) {
+    moreInfo: function (id) {
       this.showModal({
-        componentName: "AppointmentInfo",
+        componentName: 'AppointmentInfo',
         data: {
           hideBorders: true,
           showUserAs: this.showUserAs,
           appointment: this.data
         }
-      });
+      })
     }
   },
   computed: {
-    date: function() {
-      const dateSlice = this.data.date.slice(0, 10);
-      return new Date(dateSlice).toLocaleDateString();
+    date: function () {
+      const dateSlice = this.data.date.slice(0, 10)
+      return new Date(dateSlice).toLocaleDateString()
     },
-    time: function() {
-      return this.data.date.slice(11, 16);
+    time: function () {
+      return this.data.date.slice(11, 16)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

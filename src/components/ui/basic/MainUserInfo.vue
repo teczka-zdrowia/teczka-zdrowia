@@ -30,15 +30,15 @@
 </template>
 
 <script>
-import { API_URL } from "@/apollo/constants";
-import { mapActions } from "vuex";
+import { API_URL } from '@/apollo/constants'
+import { mapActions } from 'vuex'
 
 export default {
-  name: "MainUserInfo",
-  data: function() {
+  name: 'MainUserInfo',
+  data: function () {
     return {
       apiUrl: API_URL
-    };
+    }
   },
   props: {
     data: {
@@ -73,27 +73,27 @@ export default {
   },
   methods: {
     ...mapActions({
-      showModal: "modal/show"
+      showModal: 'modal/show'
     }),
-    moreInfo: function() {
+    moreInfo: function () {
       if (this.isClickable) {
-        const isDoctor = this.type === "doctor";
-        const componentName = isDoctor ? "DoctorInfo" : "UserInfo";
+        const isDoctor = this.type === 'doctor'
+        const componentName = isDoctor ? 'DoctorInfo' : 'UserInfo'
         const data = {
           hideBorders: true,
           role: {
             user: this.data
           }
-        };
+        }
 
         this.showModal({
           componentName: componentName,
           data: data
-        });
+        })
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

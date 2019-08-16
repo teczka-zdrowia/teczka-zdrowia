@@ -56,24 +56,24 @@
 </template>
 
 <script>
-import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
-import GreyBlock from "../../components/ui/blocks/GreyBlock";
-import MainBtn from "../../components/ui/basic/MainBtn";
-import MainLoading from "../../components/ui/basic/MainLoading";
-import MainRecommendation from "../../components/ui/basic/MainRecommendation";
+import WhiteFunctionalBlock from '../../components/ui/blocks/WhiteFunctionalBlock'
+import GreyBlock from '../../components/ui/blocks/GreyBlock'
+import MainBtn from '../../components/ui/basic/MainBtn'
+import MainLoading from '../../components/ui/basic/MainLoading'
+import MainRecommendation from '../../components/ui/basic/MainRecommendation'
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: "RecommendationsBlock",
-  data: function() {
+  name: 'RecommendationsBlock',
+  data: function () {
     return {
       loading: {
         init: true,
         previousPage: false,
         nextPage: false
       }
-    };
+    }
   },
   components: {
     Block: WhiteFunctionalBlock,
@@ -84,55 +84,55 @@ export default {
   },
   computed: {
     ...mapGetters({
-      paginatorInfo: "userRecommendations/paginatorInfo",
-      recommendations: "userRecommendations/list"
+      paginatorInfo: 'userRecommendations/paginatorInfo',
+      recommendations: 'userRecommendations/list'
     })
   },
   methods: {
     ...mapActions({
-      getUserRecommendations: "userRecommendations/get"
+      getUserRecommendations: 'userRecommendations/get'
     }),
-    getRecommendations: async function(payload, type) {
-      this.loading[type] = true;
+    getRecommendations: async function (payload, type) {
+      this.loading[type] = true
 
       await this.getUserRecommendations(payload).catch(error => {
-        this.$toasted.error("Wystąpił błąd");
-        console.error(error);
-      });
+        this.$toasted.error('Wystąpił błąd')
+        console.error(error)
+      })
 
-      this.loading[type] = false;
+      this.loading[type] = false
     },
-    getFirstRecommendations: function() {
+    getFirstRecommendations: function () {
       const payload = {
         page: 1,
         count: 3
-      };
+      }
 
-      this.getRecommendations(payload, "init");
+      this.getRecommendations(payload, 'init')
     },
-    getNextRecommendations: function() {
-      const currentPage = this.paginatorInfo.currentPage;
+    getNextRecommendations: function () {
+      const currentPage = this.paginatorInfo.currentPage
       const payload = {
         page: currentPage + 1,
         count: 3
-      };
+      }
 
-      this.getRecommendations(payload, "nextPage");
+      this.getRecommendations(payload, 'nextPage')
     },
-    getPreviousRecommendations: function() {
-      const currentPage = this.paginatorInfo.currentPage;
+    getPreviousRecommendations: function () {
+      const currentPage = this.paginatorInfo.currentPage
       const payload = {
         page: currentPage - 1,
         count: 3
-      };
+      }
 
-      this.getRecommendations(payload, "previousPage");
+      this.getRecommendations(payload, 'previousPage')
     }
   },
-  mounted: function() {
-    this.getFirstRecommendations();
+  mounted: function () {
+    this.getFirstRecommendations()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

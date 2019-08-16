@@ -12,52 +12,52 @@
 </template>
 
 <script>
-import { API_URL } from "@/apollo/constants";
+import { API_URL } from '@/apollo/constants'
 
 export default {
-  name: "MainAttachment",
+  name: 'MainAttachment',
   props: {
     data: {
       type: Object
     }
   },
   methods: {
-    show: function() {
-      const authorId = this.data.author.id;
-      const fileName = this.data.file_name;
-      const path = `${API_URL}/storage/files/${authorId}/${fileName}`;
-      window.open(path, "_blank");
+    show: function () {
+      const authorId = this.data.author.id
+      const fileName = this.data.file_name
+      const path = `${API_URL}/storage/files/${authorId}/${fileName}`
+      window.open(path, '_blank')
     }
   },
   computed: {
-    icon: function() {
+    icon: function () {
       const icons = [
         {
-          type: "IMAGE",
-          class: "far fa-file-image"
+          type: 'IMAGE',
+          class: 'far fa-file-image'
         },
         {
-          type: "VIDEO",
-          class: "far fa-file-video"
+          type: 'VIDEO',
+          class: 'far fa-file-video'
         },
         {
-          type: "DOCUMENT",
-          class: "far fa-file-alt"
+          type: 'DOCUMENT',
+          class: 'far fa-file-alt'
         },
         {
-          type: "COMPRESSED",
-          class: "far fa-file-archive"
+          type: 'COMPRESSED',
+          class: 'far fa-file-archive'
         },
         {
-          type: "OTHER",
-          class: "far fa-file"
+          type: 'OTHER',
+          class: 'far fa-file'
         }
-      ];
+      ]
 
-      return icons.find(icon => icon.type === this.data.file_type);
+      return icons.find(icon => icon.type === this.data.file_type)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

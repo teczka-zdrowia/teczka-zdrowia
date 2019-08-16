@@ -100,38 +100,38 @@
 </template>
 
 <script>
-import MainBtn from "../ui/basic/MainBtn";
-import { mapActions, mapGetters } from "vuex";
+import MainBtn from '../ui/basic/MainBtn'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "AppSidebar",
-  data: function() {
+  name: 'AppSidebar',
+  data: function () {
     return {
       isShowed: false
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      isPaymentValid: "userInfo/isPaymentValid"
+      isPaymentValid: 'userInfo/isPaymentValid'
     })
   },
   methods: {
     ...mapActions({
-      showModal: "modal/show"
+      showModal: 'modal/show'
     }),
-    addAppointment: function() {
+    addAppointment: function () {
       this.showModal({
-        componentName: "AddAppointment",
+        componentName: 'AddAppointment',
         data: {
           hideBorders: true
         }
-      });
+      })
     }
   },
   components: {
     MainBtn
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

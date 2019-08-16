@@ -36,10 +36,10 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex'
 
 export default {
-  name: "MainRecommendation",
+  name: 'MainRecommendation',
   props: {
     showCancelBtn: {
       type: Boolean,
@@ -69,28 +69,28 @@ export default {
   },
   methods: {
     ...mapActions({
-      showModal: "modal/show"
+      showModal: 'modal/show'
     }),
-    cancelRecommendation: function(id, title) {
+    cancelRecommendation: function (id, title) {
       this.showModal({
-        componentName: "CancelRecommendation",
+        componentName: 'CancelRecommendation',
         data: {
           id: this.data.id,
           title: this.data.title
         }
-      });
+      })
     }
   },
   computed: {
-    daysLeft: function() {
-      let today = new Date();
-      let startDate = new Date(this.data.start_date);
-      let finalDate = new Date();
-      finalDate.setDate(startDate.getDate() + this.data.days);
-      return Math.round((finalDate - startDate) / (1000 * 60 * 60 * 24));
+    daysLeft: function () {
+      let today = new Date()
+      let startDate = new Date(this.data.start_date)
+      let finalDate = new Date()
+      finalDate.setDate(startDate.getDate() + this.data.days)
+      return Math.round((finalDate - startDate) / (1000 * 60 * 60 * 24))
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

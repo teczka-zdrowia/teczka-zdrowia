@@ -205,33 +205,33 @@
 </template>
 
 <script>
-import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
-import MainBtn from "../../components/ui/basic/MainBtn";
-import GreyBlock from "../../components/ui/blocks/GreyBlock";
-import MainSelect from "../../components/ui/basic/MainSelect";
-import MainLoading from "../../components/ui/basic/MainLoading";
-import Patients from "./Patients";
-import Timetable from "./Timetable";
-import Management from "./Management";
+import WhiteFunctionalBlock from '../../components/ui/blocks/WhiteFunctionalBlock'
+import MainBtn from '../../components/ui/basic/MainBtn'
+import GreyBlock from '../../components/ui/blocks/GreyBlock'
+import MainSelect from '../../components/ui/basic/MainSelect'
+import MainLoading from '../../components/ui/basic/MainLoading'
+import Patients from './Patients'
+import Timetable from './Timetable'
+import Management from './Management'
 
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "Places",
-  data: function() {
+  name: 'Places',
+  data: function () {
     return {
       selectedCard: 0,
       showPlaces: false,
       showCards: false,
       cards: {
-        1: "Terminarz",
-        2: "Pacjenci",
-        3: "Administracja"
+        1: 'Terminarz',
+        2: 'Pacjenci',
+        3: 'Administracja'
       },
       loading: {
         init: true
       }
-    };
+    }
   },
   components: {
     Block: WhiteFunctionalBlock,
@@ -244,57 +244,57 @@ export default {
   },
   methods: {
     ...mapActions({
-      setSelectedRole: "userRoles/setSelected",
-      getUserRoles: "userRoles/get",
-      showModal: "modal/show"
+      setSelectedRole: 'userRoles/setSelected',
+      getUserRoles: 'userRoles/get',
+      showModal: 'modal/show'
     }),
-    selectRole: function(id) {
-      this.setSelectedRole(id);
-      this.selectedCard = 1;
+    selectRole: function (id) {
+      this.setSelectedRole(id)
+      this.selectedCard = 1
     },
-    activatePlace: function(id, name) {
+    activatePlace: function (id, name) {
       this.showModal({
-        componentName: "ActivatePlace",
+        componentName: 'ActivatePlace',
         data: {
           id: id,
           name: name
         }
-      });
+      })
     },
-    createPlace: function() {
+    createPlace: function () {
       this.showModal({
-        componentName: "CreatePlace"
-      });
+        componentName: 'CreatePlace'
+      })
     },
-    getRoles: async function() {
-      this.loading.init = true;
+    getRoles: async function () {
+      this.loading.init = true
 
       await this.getUserRoles().catch(error => {
-        this.$toasted.error("Wystąpił błąd");
-        console.error(error);
-      });
+        this.$toasted.error('Wystąpił błąd')
+        console.error(error)
+      })
 
-      this.loading.init = false;
+      this.loading.init = false
     }
   },
   computed: {
     ...mapGetters({
-      roles: "userRoles/list",
-      selectedRole: "userRoles/selected",
-      isMobile: "window/isMobile"
+      roles: 'userRoles/list',
+      selectedRole: 'userRoles/selected',
+      isMobile: 'window/isMobile'
     })
   },
   watch: {
-    selectedRole: function(val) {
+    selectedRole: function (val) {
       if (val === undefined) {
-        this.selectedCard = 0;
+        this.selectedCard = 0
       }
     }
   },
-  mounted() {
-    this.getRoles();
+  mounted () {
+    this.getRoles()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

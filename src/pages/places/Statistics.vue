@@ -38,67 +38,67 @@
 </template>
 
 <script>
-import MainSelect from "../../components/ui/basic/MainSelect";
-import GreyBlock from "../../components/ui/blocks/GreyBlock";
-import MainLoading from "../../components/ui/basic/MainLoading";
+import MainSelect from '../../components/ui/basic/MainSelect'
+import GreyBlock from '../../components/ui/blocks/GreyBlock'
+import MainLoading from '../../components/ui/basic/MainLoading'
 
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "PlaceStatistics",
-  data: function() {
+  name: 'PlaceStatistics',
+  data: function () {
     return {
       initialized: false,
       daysBack: 0,
       loading: false
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      statistics: "placeStatistics/full",
-      selectedRole: "userRoles/selected"
+      statistics: 'placeStatistics/full',
+      selectedRole: 'userRoles/selected'
     }),
-    selectedPlace: function() {
-      return this.selectedRole.place;
+    selectedPlace: function () {
+      return this.selectedRole.place
     },
-    date: function() {
-      const daysBack = this.daysBack;
-      const today = new Date().toISOString().slice(0, 10);
+    date: function () {
+      const daysBack = this.daysBack
+      const today = new Date().toISOString().slice(0, 10)
 
-      var to = new Date();
-      to.setDate(to.getDate() - daysBack);
-      to = to.toISOString().slice(0, 10);
+      var to = new Date()
+      to.setDate(to.getDate() - daysBack)
+      to = to.toISOString().slice(0, 10)
 
       return {
         to: today,
         from: to
-      };
+      }
     }
   },
   methods: {
     ...mapActions({
-      getPlaceStatistics: "placeStatistics/get"
+      getPlaceStatistics: 'placeStatistics/get'
     }),
-    getStatistics: async function() {
-      this.initialized = true;
-      this.loading = true;
+    getStatistics: async function () {
+      this.initialized = true
+      this.loading = true
 
       const payload = {
         id: this.selectedPlace.id,
         date: this.date
-      };
+      }
 
       await this.getPlaceStatistics(payload).catch(error => {
-        this.$toasted.error("Brak danych");
-        console.error(error);
-      });
+        this.$toasted.error('Brak danych')
+        console.error(error)
+      })
 
-      this.loading = false;
+      this.loading = false
     }
   },
   watch: {
-    daysBack: function() {
-      this.getStatistics();
+    daysBack: function () {
+      this.getStatistics()
     }
   },
   components: {
@@ -106,7 +106,7 @@ export default {
     GreyBlock,
     MainLoading
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

@@ -74,17 +74,17 @@
 </template>
 
 <script>
-import MainBtn from "../../components/ui/basic/MainBtn";
-import MainSearch from "../../components/ui/basic/MainSearch";
-import MainLoading from "../../components/ui/basic/MainLoading";
-import GreyBlock from "../../components/ui/blocks/GreyBlock";
-import AppointmentsSmall from "../../components/ui/appointments/AppointmentsSmall";
+import MainBtn from '../../components/ui/basic/MainBtn'
+import MainSearch from '../../components/ui/basic/MainSearch'
+import MainLoading from '../../components/ui/basic/MainLoading'
+import GreyBlock from '../../components/ui/blocks/GreyBlock'
+import AppointmentsSmall from '../../components/ui/appointments/AppointmentsSmall'
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: "Appointments",
-  data: function() {
+  name: 'Appointments',
+  data: function () {
     return {
       loading: {
         init: true,
@@ -92,161 +92,161 @@ export default {
         next: false
       },
       query: {
-        search: "",
+        search: '',
         first: 5,
         sortData: {
-          order: "ASC",
-          field: "date"
+          order: 'ASC',
+          field: 'date'
         }
       }
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      isMobile: "window/isMobile",
-      selectedRole: "userRoles/selected",
-      appointmentsByMe: "appointmentsByMe/list",
-      placeAppointments: "placeAppointments/list",
-      appointmentsByMePageInfo: "appointmentsByMe/pageInfo",
-      placeAppointmentsPageInfo: "placeAppointments/pageInfo",
-      selectedDate: "appointmentsByMe/date",
-      viewer: "userInfo/full"
+      isMobile: 'window/isMobile',
+      selectedRole: 'userRoles/selected',
+      appointmentsByMe: 'appointmentsByMe/list',
+      placeAppointments: 'placeAppointments/list',
+      appointmentsByMePageInfo: 'appointmentsByMe/pageInfo',
+      placeAppointmentsPageInfo: 'placeAppointments/pageInfo',
+      selectedDate: 'appointmentsByMe/date',
+      viewer: 'userInfo/full'
     }),
-    type: function() {
-      return this.selectedRole ? "PLACE" : "ALL";
+    type: function () {
+      return this.selectedRole ? 'PLACE' : 'ALL'
     },
-    appointments: function() {
-      return this.type === "ALL"
+    appointments: function () {
+      return this.type === 'ALL'
         ? this.appointmentsByMe
-        : this.placeAppointments;
+        : this.placeAppointments
     },
-    pageInfo: function() {
-      return this.type === "ALL"
+    pageInfo: function () {
+      return this.type === 'ALL'
         ? this.appointmentsByMePageInfo
-        : this.placeAppointmentsPageInfo;
+        : this.placeAppointmentsPageInfo
     },
-    canShowAppointments: function() {
+    canShowAppointments: function () {
       return (
         !this.loading.init &&
         !this.loading.newQuery &&
         this.appointments.length > 0
-      );
+      )
     },
-    orderBy: function() {
+    orderBy: function () {
       return [
         {
           field: this.query.sortData.field,
           order: this.query.sortData.order
         }
-      ];
+      ]
     },
-    date: function() {
-      const today = new Date().toISOString().slice(0, 10);
-      const futureSafeDate = "2100-01-01";
+    date: function () {
+      const today = new Date().toISOString().slice(0, 10)
+      const futureSafeDate = '2100-01-01'
 
       if (this.selectedDate) {
-        const selected = new Date(this.selectedDate);
+        const selected = new Date(this.selectedDate)
         const nextAfterSelected = new Date(
           selected.setDate(selected.getDate() + 1)
         )
           .toISOString()
-          .slice(0, 10);
+          .slice(0, 10)
 
         return {
           from: this.selectedDate,
           to: nextAfterSelected
-        };
+        }
       }
 
       return {
         from: today,
         to: futureSafeDate
-      };
+      }
     },
-    title: function() {
+    title: function () {
       const enter =
-        this.type === "ALL" ? "Wszystkie twoje wizyty" : "Twoje wizyty";
+        this.type === 'ALL' ? 'Wszystkie twoje wizyty' : 'Twoje wizyty'
       const when = this.selectedDate
         ? ` ${new Date(this.selectedDate).toLocaleDateString()}`
-        : "";
+        : ''
       const where =
-        this.type === "PLACE" ? ` w ${this.selectedRole.place.name}` : "";
-      return `${enter}${when}${where}`;
+        this.type === 'PLACE' ? ` w ${this.selectedRole.place.name}` : ''
+      return `${enter}${when}${where}`
     }
   },
   methods: {
     ...mapActions({
-      getAppointmentsByMe: "appointmentsByMe/get",
-      getPlaceAppointments: "placeAppointments/get"
+      getAppointmentsByMe: 'appointmentsByMe/get',
+      getPlaceAppointments: 'placeAppointments/get'
     }),
-    getAppointments: async function(payload, type) {
-      this.loading[type] = true;
+    getAppointments: async function (payload, type) {
+      this.loading[type] = true
 
-      if (this.type === "ALL") {
+      if (this.type === 'ALL') {
         await this.getAppointmentsByMe(payload).catch(error => {
-          this.$toasted.error("Wystąpił błąd");
-          console.error(error);
-        });
+          this.$toasted.error('Wystąpił błąd')
+          console.error(error)
+        })
       } else {
         payload = Object.assign(payload, {
           id: this.selectedRole.place.id,
           authorId: this.viewer.id
-        });
+        })
 
         await this.getPlaceAppointments(payload).catch(error => {
-          this.$toasted.error("Wystąpił błąd");
-          console.error(error);
-        });
+          this.$toasted.error('Wystąpił błąd')
+          console.error(error)
+        })
       }
 
-      this.loading[type] = false;
+      this.loading[type] = false
     },
-    getFirstAppointments: function() {
+    getFirstAppointments: function () {
       const payload = {
         first: this.query.first,
-        after: "",
-        note: "",
+        after: '',
+        note: '',
         date: this.date,
         orderBy: this.orderBy,
-        type: "SET"
-      };
+        type: 'SET'
+      }
 
-      this.getAppointments(payload, "init");
+      this.getAppointments(payload, 'init')
     },
-    getNextAppointments: function() {
+    getNextAppointments: function () {
       const payload = {
         first: this.query.first,
         after: this.pageInfo.endCursor,
         note: `%${this.query.search}%`,
         date: this.date,
         orderBy: this.orderBy,
-        type: "ADD"
-      };
+        type: 'ADD'
+      }
 
-      this.getAppointments(payload, "next");
+      this.getAppointments(payload, 'next')
     }
   },
   watch: {
     query: {
-      handler() {
+      handler () {
         const payload = {
           first: this.query.first,
-          after: "",
+          after: '',
           note: `%${this.query.search}%`,
           date: this.date,
           orderBy: this.orderBy,
-          type: "SET"
-        };
+          type: 'SET'
+        }
 
-        this.getAppointments(payload, "newQuery");
+        this.getAppointments(payload, 'newQuery')
       },
       deep: true
     },
-    selectedDate: function(val) {
-      this.getFirstAppointments();
+    selectedDate: function (val) {
+      this.getFirstAppointments()
     },
-    selectedRole: function(val) {
-      this.getFirstAppointments();
+    selectedRole: function (val) {
+      this.getFirstAppointments()
     }
   },
   components: {
@@ -256,10 +256,10 @@ export default {
     GreyBlock,
     MainLoading
   },
-  mounted() {
-    this.getFirstAppointments();
+  mounted () {
+    this.getFirstAppointments()
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

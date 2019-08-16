@@ -19,21 +19,21 @@
 </template>
 
 <script>
-import NextStep from "./NextStep";
-import { mapActions } from "vuex";
+import NextStep from './NextStep'
+import { mapActions } from 'vuex'
 
 export default {
-  name: "Hello",
+  name: 'Hello',
   components: { NextStep },
   methods: {
     ...mapActions({
-      nextStep: "initializeSteps/next"
+      nextStep: 'initializeSteps/next'
     }),
-    addToHomeScreen: function(e) {
+    addToHomeScreen: function (e) {
       // TODO
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

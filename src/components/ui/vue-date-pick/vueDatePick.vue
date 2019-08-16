@@ -172,20 +172,20 @@
 </template>
 
 <script>
-const formatRE = /,|\.|-| |:|\/|\\/;
-const dayRE = /D+/;
-const monthRE = /M+/;
-const yearRE = /Y+/;
-const hoursRE = /h+/i;
-const minutesRE = /m+/;
-const secondsRE = /s+/;
+const formatRE = /,|\.|-| |:|\/|\\/
+const dayRE = /D+/
+const monthRE = /M+/
+const yearRE = /Y+/
+const hoursRE = /h+/i
+const minutesRE = /m+/
+const secondsRE = /s+/
 
 export default {
   props: {
-    value: { type: String, default: "" },
+    value: { type: String, default: '' },
     required: { type: Boolean, default: false },
     highlighted: { type: Array, deafult: [] },
-    format: { type: String, default: "YYYY-MM-DD" },
+    format: { type: String, default: 'YYYY-MM-DD' },
     displayFormat: { type: String },
     hasInputElement: { type: Boolean, default: true },
     inputAttributes: { type: Object },
@@ -196,359 +196,359 @@ export default {
     pickMinutes: { type: Boolean, default: true },
     pickSeconds: { type: Boolean, default: false },
     isDateDisabled: { type: Function, default: () => false },
-    nextMonthCaption: { type: String, default: "Następny miesiąc" },
-    prevMonthCaption: { type: String, default: "Poprzedni miesiąc" },
-    setTimeCaption: { type: String, default: "Ustaw czas:" },
+    nextMonthCaption: { type: String, default: 'Następny miesiąc' },
+    prevMonthCaption: { type: String, default: 'Poprzedni miesiąc' },
+    setTimeCaption: { type: String, default: 'Ustaw czas:' },
     mobileBreakpointWidth: { type: Number, default: 500 },
     weekdays: {
       type: Array,
-      default: () => ["Pn", "Wt", "Śr", "Cz", "Pt", "Sb", "Nd"]
+      default: () => ['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb', 'Nd']
     },
     months: {
       type: Array,
       default: () => [
-        "Styczeń",
-        "Luty",
-        "Marzec",
-        "Kwiecień",
-        "Maj",
-        "Czerwiec",
-        "Lipiec",
-        "Sierpień",
-        "Wrzesień",
-        "Październik",
-        "Listopad",
-        "Grudzień"
+        'Styczeń',
+        'Luty',
+        'Marzec',
+        'Kwiecień',
+        'Maj',
+        'Czerwiec',
+        'Lipiec',
+        'Sierpień',
+        'Wrzesień',
+        'Październik',
+        'Listopad',
+        'Grudzień'
       ]
     }
   },
 
-  data() {
+  data () {
     return {
       inputValue: this.valueToInputFormat(this.value),
       currentPeriod: this.getPeriodFromValue(this.value, this.format),
       direction: undefined,
       positionClass: undefined,
       opened: !this.hasInputElement
-    };
+    }
   },
 
   computed: {
-    valueDate() {
-      const value = this.value;
-      const format = this.format;
+    valueDate () {
+      const value = this.value
+      const format = this.format
 
-      return value ? this.parseDateString(value, format) : undefined;
+      return value ? this.parseDateString(value, format) : undefined
     },
 
-    isValidValue() {
-      const valueDate = this.valueDate;
+    isValidValue () {
+      const valueDate = this.valueDate
 
-      return this.value ? Boolean(valueDate) : true;
+      return this.value ? Boolean(valueDate) : true
     },
 
-    currentPeriodDates() {
-      const { year, month } = this.currentPeriod;
-      const days = [];
-      const date = new Date(year, month, 1);
-      const today = new Date();
+    currentPeriodDates () {
+      const { year, month } = this.currentPeriod
+      const days = []
+      const date = new Date(year, month, 1)
+      const today = new Date()
 
       // append prev month dates
-      const startDay = date.getDay() || 7;
+      const startDay = date.getDay() || 7
 
       if (startDay > 1) {
         for (let i = startDay - 2; i >= 0; i--) {
-          const prevDate = new Date(date);
-          prevDate.setDate(-i);
-          days.push({ outOfRange: true, date: prevDate });
+          const prevDate = new Date(date)
+          prevDate.setDate(-i)
+          days.push({ outOfRange: true, date: prevDate })
         }
       }
 
       while (date.getMonth() === month) {
-        days.push({ date: new Date(date) });
-        date.setDate(date.getDate() + 1);
+        days.push({ date: new Date(date) })
+        date.setDate(date.getDate() + 1)
       }
 
       // append next month dates
-      const daysLeft = 7 - (days.length % 7);
+      const daysLeft = 7 - (days.length % 7)
 
       for (let i = 1; i <= daysLeft; i++) {
-        const nextDate = new Date(date);
-        nextDate.setDate(i);
-        days.push({ outOfRange: true, date: nextDate });
+        const nextDate = new Date(date)
+        nextDate.setDate(i)
+        days.push({ outOfRange: true, date: nextDate })
       }
 
       // define day states
       days.forEach(day => {
-        day.disabled = this.isDateDisabled(day.date);
-        day.today = areSameDates(day.date, today);
+        day.disabled = this.isDateDisabled(day.date)
+        day.today = areSameDates(day.date, today)
         day.dateKey = [
           day.date.getFullYear(),
           day.date.getMonth() + 1,
           day.date.getDate()
-        ].join("-");
+        ].join('-')
         day.selected = this.valueDate
           ? areSameDates(day.date, this.valueDate)
-          : false;
-        day.highlighted = this.highlighted.includes(day.dateKey);
-      });
+          : false
+        day.highlighted = this.highlighted.includes(day.dateKey)
+      })
 
-      return chunkArray(days, 7);
+      return chunkArray(days, 7)
     },
 
-    yearRange() {
-      const years = [];
-      const currentYear = this.currentPeriod.year;
-      const startYear = currentYear - this.selectableYearRange;
-      const endYear = currentYear + this.selectableYearRange;
+    yearRange () {
+      const years = []
+      const currentYear = this.currentPeriod.year
+      const startYear = currentYear - this.selectableYearRange
+      const endYear = currentYear + this.selectableYearRange
 
       for (let i = startYear; i <= endYear; i++) {
-        years.push(i);
+        years.push(i)
       }
 
-      return years;
+      return years
     },
 
-    currentTime() {
-      const currentDate = this.valueDate;
+    currentTime () {
+      const currentDate = this.valueDate
 
       return currentDate
         ? {
-            hours: currentDate.getHours(),
-            minutes: currentDate.getMinutes(),
-            seconds: currentDate.getSeconds(),
-            hoursPadded: paddNum(currentDate.getHours(), 1),
-            minutesPadded: paddNum(currentDate.getMinutes(), 2),
-            secondsPadded: paddNum(currentDate.getSeconds(), 2)
-          }
-        : undefined;
+          hours: currentDate.getHours(),
+          minutes: currentDate.getMinutes(),
+          seconds: currentDate.getSeconds(),
+          hoursPadded: paddNum(currentDate.getHours(), 1),
+          minutesPadded: paddNum(currentDate.getMinutes(), 2),
+          secondsPadded: paddNum(currentDate.getSeconds(), 2)
+        }
+        : undefined
     },
 
-    directionClass() {
-      return this.direction ? `vdp${this.direction}Direction` : undefined;
+    directionClass () {
+      return this.direction ? `vdp${this.direction}Direction` : undefined
     }
   },
 
   watch: {
-    value(value) {
+    value (value) {
       if (this.isValidValue) {
-        this.inputValue = this.valueToInputFormat(value);
-        this.currentPeriod = this.getPeriodFromValue(value, this.format);
+        this.inputValue = this.valueToInputFormat(value)
+        this.currentPeriod = this.getPeriodFromValue(value, this.format)
       }
     },
 
-    currentPeriod(currentPeriod, oldPeriod) {
+    currentPeriod (currentPeriod, oldPeriod) {
       const currentDate = new Date(
         currentPeriod.year,
         currentPeriod.month
-      ).getTime();
-      const oldDate = new Date(oldPeriod.year, oldPeriod.month).getTime();
+      ).getTime()
+      const oldDate = new Date(oldPeriod.year, oldPeriod.month).getTime()
 
       this.direction =
         currentDate !== oldDate
           ? currentDate > oldDate
-            ? "Next"
-            : "Prev"
-          : undefined;
+            ? 'Next'
+            : 'Prev'
+          : undefined
     }
   },
 
-  beforeDestroy() {
-    this.removeCloseEvents();
-    this.teardownPosition();
+  beforeDestroy () {
+    this.removeCloseEvents()
+    this.teardownPosition()
   },
 
   methods: {
-    valueToInputFormat(value) {
+    valueToInputFormat (value) {
       return !this.displayFormat
         ? value
         : this.formatDateToString(
-            this.parseDateString(value, this.format),
-            this.displayFormat
-          ) || value;
+          this.parseDateString(value, this.format),
+          this.displayFormat
+        ) || value
     },
 
-    getPeriodFromValue(dateString, format) {
-      const date = this.parseDateString(dateString, format) || new Date();
+    getPeriodFromValue (dateString, format) {
+      const date = this.parseDateString(dateString, format) || new Date()
 
-      return { month: date.getMonth(), year: date.getFullYear() };
+      return { month: date.getMonth(), year: date.getFullYear() }
     },
 
-    parseDateString(dateString, dateFormat) {
+    parseDateString (dateString, dateFormat) {
       return !dateString
         ? undefined
         : this.parseDate
-        ? this.parseDate(dateString, dateFormat)
-        : this.parseSimpleDateString(dateString, dateFormat);
+          ? this.parseDate(dateString, dateFormat)
+          : this.parseSimpleDateString(dateString, dateFormat)
     },
 
-    formatDateToString(date, dateFormat) {
+    formatDateToString (date, dateFormat) {
       return !date
-        ? ""
+        ? ''
         : this.formatDate
-        ? this.formatDate(date, dateFormat)
-        : this.formatSimpleDateToString(date, dateFormat);
+          ? this.formatDate(date, dateFormat)
+          : this.formatSimpleDateToString(date, dateFormat)
     },
 
-    parseSimpleDateString(dateString, dateFormat) {
-      let day, month, year, hours, minutes, seconds;
+    parseSimpleDateString (dateString, dateFormat) {
+      let day, month, year, hours, minutes, seconds
 
-      const dateParts = dateString.split(formatRE);
-      const formatParts = dateFormat.split(formatRE);
-      const partsSize = formatParts.length;
+      const dateParts = dateString.split(formatRE)
+      const formatParts = dateFormat.split(formatRE)
+      const partsSize = formatParts.length
 
       for (let i = 0; i < partsSize; i++) {
         if (formatParts[i].match(dayRE)) {
-          day = parseInt(dateParts[i], 10);
+          day = parseInt(dateParts[i], 10)
         } else if (formatParts[i].match(monthRE)) {
-          month = parseInt(dateParts[i], 10);
+          month = parseInt(dateParts[i], 10)
         } else if (formatParts[i].match(yearRE)) {
-          year = parseInt(dateParts[i], 10);
+          year = parseInt(dateParts[i], 10)
         } else if (formatParts[i].match(hoursRE)) {
-          hours = parseInt(dateParts[i], 10);
+          hours = parseInt(dateParts[i], 10)
         } else if (formatParts[i].match(minutesRE)) {
-          minutes = parseInt(dateParts[i], 10);
+          minutes = parseInt(dateParts[i], 10)
         } else if (formatParts[i].match(secondsRE)) {
-          seconds = parseInt(dateParts[i], 10);
+          seconds = parseInt(dateParts[i], 10)
         }
       }
 
       const resolvedDate = new Date(
-        [paddNum(year, 4), paddNum(month, 2), paddNum(day, 2)].join("-")
-      );
+        [paddNum(year, 4), paddNum(month, 2), paddNum(day, 2)].join('-')
+      )
 
       if (isNaN(resolvedDate)) {
-        return undefined;
+        return undefined
       } else {
         const date = new Date(year, month - 1, day);
 
         [
-          [hours, "setHours"],
-          [minutes, "setMinutes"],
-          [seconds, "setSeconds"]
+          [hours, 'setHours'],
+          [minutes, 'setMinutes'],
+          [seconds, 'setSeconds']
         ].forEach(([value, method]) => {
-          typeof value !== "undefined" && date[method](value);
-        });
+          typeof value !== 'undefined' && date[method](value)
+        })
 
-        return date;
+        return date
       }
     },
 
-    formatSimpleDateToString(date, dateFormat) {
+    formatSimpleDateToString (date, dateFormat) {
       return dateFormat
         .replace(yearRE, match => date.getFullYear())
         .replace(monthRE, match => paddNum(date.getMonth() + 1, match.length))
         .replace(dayRE, match => paddNum(date.getDate(), match.length))
         .replace(hoursRE, match => paddNum(date.getHours(), match.length))
         .replace(minutesRE, match => paddNum(date.getMinutes(), match.length))
-        .replace(secondsRE, match => paddNum(date.getSeconds(), match.length));
+        .replace(secondsRE, match => paddNum(date.getSeconds(), match.length))
     },
 
-    incrementMonth(increment = 1) {
+    incrementMonth (increment = 1) {
       const refDate = new Date(
         this.currentPeriod.year,
         this.currentPeriod.month
-      );
+      )
       const incrementDate = new Date(
         refDate.getFullYear(),
         refDate.getMonth() + increment
-      );
+      )
 
       this.currentPeriod = {
         month: incrementDate.getMonth(),
         year: incrementDate.getFullYear()
-      };
+      }
     },
 
-    processUserInput(userText) {
+    processUserInput (userText) {
       const userDate = this.parseDateString(
         userText,
         this.displayFormat || this.format
-      );
+      )
 
-      this.inputValue = userText;
+      this.inputValue = userText
 
       this.$emit(
-        "input",
+        'input',
         userDate ? this.formatDateToString(userDate, this.format) : userText
-      );
+      )
     },
 
-    open() {
+    open () {
       if (!this.opened) {
-        this.opened = true;
-        this.currentPeriod = this.getPeriodFromValue(this.value, this.format);
-        this.addCloseEvents();
-        this.setupPosition();
+        this.opened = true
+        this.currentPeriod = this.getPeriodFromValue(this.value, this.format)
+        this.addCloseEvents()
+        this.setupPosition()
       }
-      this.direction = undefined;
+      this.direction = undefined
     },
 
-    close() {
+    close () {
       if (this.opened) {
-        this.opened = false;
-        this.direction = undefined;
-        this.removeCloseEvents();
-        this.teardownPosition();
+        this.opened = false
+        this.direction = undefined
+        this.removeCloseEvents()
+        this.teardownPosition()
       }
     },
 
-    closeViaOverlay(e) {
+    closeViaOverlay (e) {
       if (this.hasInputElement && e.target === this.$refs.outerWrap) {
-        this.close();
+        this.close()
       }
     },
 
-    addCloseEvents() {
+    addCloseEvents () {
       if (!this.closeEventListener) {
         this.closeEventListener = e => this.inspectCloseEvent(e);
 
-        ["click", "keyup", "focusin"].forEach(eventName =>
+        ['click', 'keyup', 'focusin'].forEach(eventName =>
           document.addEventListener(eventName, this.closeEventListener)
-        );
+        )
       }
     },
 
-    inspectCloseEvent(event) {
+    inspectCloseEvent (event) {
       if (event.keyCode) {
-        event.keyCode === 27 && this.close();
+        event.keyCode === 27 && this.close()
       } else if (
         !(event.target === this.$el) &&
         !this.$el.contains(event.target)
       ) {
-        this.close();
+        this.close()
       }
     },
 
-    removeCloseEvents() {
+    removeCloseEvents () {
       if (this.closeEventListener) {
-        ["click", "keyup"].forEach(eventName =>
+        ['click', 'keyup'].forEach(eventName =>
           document.removeEventListener(eventName, this.closeEventListener)
-        );
+        )
 
-        delete this.closeEventListener;
+        delete this.closeEventListener
       }
     },
 
-    setupPosition() {
+    setupPosition () {
       if (!this.positionEventListener) {
-        this.positionEventListener = () => this.positionFloater();
-        window.addEventListener("resize", this.positionEventListener);
+        this.positionEventListener = () => this.positionFloater()
+        window.addEventListener('resize', this.positionEventListener)
       }
 
-      this.positionFloater();
+      this.positionFloater()
     },
 
-    positionFloater() {
-      const inputRect = this.$el.getBoundingClientRect();
+    positionFloater () {
+      const inputRect = this.$el.getBoundingClientRect()
 
-      let verticalClass = "vdpPositionTop";
-      let horizontalClass = "vdpPositionLeft";
+      let verticalClass = 'vdpPositionTop'
+      let horizontalClass = 'vdpPositionLeft'
 
       const calculate = () => {
-        const rect = this.$refs.outerWrap.getBoundingClientRect();
-        const floaterHeight = rect.height;
-        const floaterWidth = rect.width;
+        const rect = this.$refs.outerWrap.getBoundingClientRect()
+        const floaterHeight = rect.height
+        const floaterWidth = rect.width
 
         if (window.innerWidth > this.mobileBreakpointWidth) {
           // vertical
@@ -557,101 +557,101 @@ export default {
               window.innerHeight &&
             inputRect.top - floaterHeight > 0
           ) {
-            verticalClass = "vdpPositionBottom";
+            verticalClass = 'vdpPositionBottom'
           }
 
           // horizontal
           if (inputRect.left + floaterWidth > window.innerWidth) {
-            horizontalClass = "vdpPositionRight";
+            horizontalClass = 'vdpPositionRight'
           }
 
           this.positionClass = [
-            "vdpPositionReady",
+            'vdpPositionReady',
             verticalClass,
             horizontalClass
-          ].join(" ");
+          ].join(' ')
         } else {
-          this.positionClass = "vdpPositionFixed";
+          this.positionClass = 'vdpPositionFixed'
         }
-      };
+      }
 
-      this.$refs.outerWrap ? calculate() : this.$nextTick(calculate);
+      this.$refs.outerWrap ? calculate() : this.$nextTick(calculate)
     },
 
-    teardownPosition() {
+    teardownPosition () {
       if (this.positionEventListener) {
-        this.positionClass = undefined;
-        window.removeEventListener("resize", this.positionEventListener);
-        delete this.positionEventListener;
+        this.positionClass = undefined
+        window.removeEventListener('resize', this.positionEventListener)
+        delete this.positionEventListener
       }
     },
 
-    clear() {
-      this.$emit("input", "");
+    clear () {
+      this.$emit('input', '')
     },
 
-    selectDateItem(item) {
+    selectDateItem (item) {
       if (!item.disabled) {
-        const newDate = new Date(item.date);
+        const newDate = new Date(item.date)
 
         if (this.currentTime) {
-          newDate.setHours(this.currentTime.hours);
-          newDate.setMinutes(this.currentTime.minutes);
-          newDate.setSeconds(this.currentTime.seconds);
+          newDate.setHours(this.currentTime.hours)
+          newDate.setMinutes(this.currentTime.minutes)
+          newDate.setSeconds(this.currentTime.seconds)
         }
 
-        this.$emit("input", this.formatDateToString(newDate, this.format));
+        this.$emit('input', this.formatDateToString(newDate, this.format))
 
         if (this.hasInputElement && !this.pickTime) {
-          this.close();
+          this.close()
         }
       }
     },
 
-    inputTime(method, event) {
-      const currentDate = this.valueDate;
-      const maxValues = { setHours: 23, setMinutes: 59, setSeconds: 59 };
+    inputTime (method, event) {
+      const currentDate = this.valueDate
+      const maxValues = { setHours: 23, setMinutes: 59, setSeconds: 59 }
 
-      let numValue = parseInt(event.target.value, 10) || 0;
+      let numValue = parseInt(event.target.value, 10) || 0
 
       if (numValue > maxValues[method]) {
-        numValue = maxValues[method];
+        numValue = maxValues[method]
       } else if (numValue < 0) {
-        numValue = 0;
+        numValue = 0
       }
 
-      event.target.value = paddNum(numValue, method === "setHours" ? 1 : 2);
-      currentDate[method](numValue);
+      event.target.value = paddNum(numValue, method === 'setHours' ? 1 : 2)
+      currentDate[method](numValue)
 
-      this.$emit("input", this.formatDateToString(currentDate, this.format));
+      this.$emit('input', this.formatDateToString(currentDate, this.format))
     }
   }
-};
+}
 
-function paddNum(num, padsize) {
-  return typeof num !== "undefined"
+function paddNum (num, padsize) {
+  return typeof num !== 'undefined'
     ? num.toString().length > padsize
       ? num
-      : new Array(padsize - num.toString().length + 1).join("0") + num
-    : undefined;
+      : new Array(padsize - num.toString().length + 1).join('0') + num
+    : undefined
 }
 
-function chunkArray(inputArray, chunkSize) {
-  const results = [];
+function chunkArray (inputArray, chunkSize) {
+  const results = []
 
   while (inputArray.length) {
-    results.push(inputArray.splice(0, chunkSize));
+    results.push(inputArray.splice(0, chunkSize))
   }
 
-  return results;
+  return results
 }
 
-function areSameDates(date1, date2) {
+function areSameDates (date1, date2) {
   return (
     date1.getDate() === date2.getDate() &&
     date1.getMonth() === date2.getMonth() &&
     date1.getFullYear() === date2.getFullYear()
-  );
+  )
 }
 </script>
 

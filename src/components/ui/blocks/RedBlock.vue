@@ -6,8 +6,8 @@
 
 <script>
 export default {
-  name: "RedBlock"
-};
+  name: 'RedBlock'
+}
 </script>
 
 <style lang="scss" scoped>

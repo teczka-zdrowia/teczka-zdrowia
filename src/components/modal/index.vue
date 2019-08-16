@@ -34,59 +34,59 @@
 </template>
 
 <script>
-import { mapGetters, mapActions, mapState } from "vuex";
-import MainLoading from "../ui/basic/MainLoading";
-import "./modal.scss";
+import { mapGetters, mapActions, mapState } from 'vuex'
+import MainLoading from '../ui/basic/MainLoading'
+import './modal.scss'
 
 export default {
-  name: "Modal",
-  data: function() {
+  name: 'Modal',
+  data: function () {
     return {
       component: null
-    };
+    }
   },
-  created() {
+  created () {
     const escapeHandler = e => {
-      if (e.key === "Escape" && this.visible) {
-        this.hideModal();
+      if (e.key === 'Escape' && this.visible) {
+        this.hideModal()
       }
-    };
+    }
 
-    document.addEventListener("keydown", escapeHandler);
-    this.$once("hook:destroyed", () => {
-      document.removeEventListener("keydown", escapeHandler);
-    });
+    document.addEventListener('keydown', escapeHandler)
+    this.$once('hook:destroyed', () => {
+      document.removeEventListener('keydown', escapeHandler)
+    })
   },
   computed: {
     ...mapGetters({
-      data: "modal/data",
-      visible: "modal/visible",
-      modalComponent: "modal/component"
+      data: 'modal/data',
+      visible: 'modal/visible',
+      modalComponent: 'modal/component'
     }),
-    hideBorders: function() {
+    hideBorders: function () {
       return this.data != null
         ? this.data.hideBorders != null
           ? this.data.hideBorders
           : false
-        : false;
+        : false
     }
   },
   methods: {
     ...mapActions({
-      hideModal: "modal/hide"
+      hideModal: 'modal/hide'
     })
   },
   watch: {
-    modalComponent(componentName) {
-      if (!componentName) return;
+    modalComponent (componentName) {
+      if (!componentName) return
 
       Vue.component(componentName, () => ({
         component: import(`./modals/${componentName}`),
         loading: MainLoading
-      }));
+      }))
 
-      this.component = componentName;
+      this.component = componentName
     }
   }
-};
+}
 </script>

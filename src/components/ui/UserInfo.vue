@@ -65,46 +65,46 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { API_URL } from "@/apollo/constants";
+import { mapGetters, mapActions } from 'vuex'
+import { API_URL } from '@/apollo/constants'
 
 export default {
-  name: "UserInfo",
-  data: function() {
+  name: 'UserInfo',
+  data: function () {
     return {
       apiUrl: API_URL,
       isLoading: false,
       isShowed: false
-    };
+    }
   },
   methods: {
     ...mapActions({
-      userLogout: "userInfo/logout",
-      getAutheticatedUserData: "userInfo/getData"
+      userLogout: 'userInfo/logout',
+      getAutheticatedUserData: 'userInfo/getData'
     }),
-    logout: function() {
+    logout: function () {
       if (!this.isLoading) {
-        this.isLoading = true;
-        this.$toasted.show("Wylogowywanie...");
+        this.isLoading = true
+        this.$toasted.show('Wylogowywanie...')
         this.userLogout()
           .then(() => {
-            this.$toasted.success("Poprawnie wylogowano");
-            this.$router.push({ name: "Auth" });
+            this.$toasted.success('Poprawnie wylogowano')
+            this.$router.push({ name: 'Auth' })
           })
           .catch(error => {
-            this.$toasted.error("Wystąpił błąd");
-            console.error(error);
+            this.$toasted.error('Wystąpił błąd')
+            console.error(error)
           })
-          .finally(() => (this.isLoading = false));
+          .finally(() => (this.isLoading = false))
       }
     }
   },
   computed: {
     ...mapGetters({
-      userData: "userInfo/full"
+      userData: 'userInfo/full'
     })
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
