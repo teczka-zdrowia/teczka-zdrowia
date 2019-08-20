@@ -37,7 +37,7 @@ export default {
   background: #eeeef3;
   padding: 0.75rem;
   font-weight: 600;
-  width: calc(100% - 3rem);
+  width: calc(100% - 4rem);
   transition: 0.2s ease-in-out;
   &:focus {
     @include placeholder {

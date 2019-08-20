@@ -242,7 +242,6 @@
           </div>
           <div v-if="isLoading">
             <MainLoading />
-            Ładowanie
           </div>
         </MainBtn>
       </div>
@@ -255,6 +254,7 @@ import MainBtn from './MainBtn'
 import MainLoading from './MainLoading'
 import { API_URL } from '@/apollo/constants'
 
+import imageCompression from 'browser-image-compression'
 import { mapGetters, mapActions } from 'vuex'
 
 const moment = require('moment')
@@ -353,16 +353,31 @@ export default {
           this.isLoading = false
         })
     },
-    processFile (event) {
-      this.newUserData.avatar = event.target.files[0]
-      this.getBase64OfImage(event.target.files[0])
-        .then(data => {
-          this.newAvatarBase64 = data
-        })
-        .catch(error => {
-          this.$toasted.error('Wystąpił błąd przy ładowaniu pliku')
-          console.error(error)
-        })
+    processFile: async function (event) {
+      const file = event.target.files[0]
+      if (this.isImage(file)) {
+        this.newUserData.avatar = await this.compressImage(file)
+        this.getBase64OfImage(file)
+          .then(data => {
+            this.newAvatarBase64 = data
+          })
+          .catch(error => {
+            this.$toasted.error('Wystąpił błąd przy ładowaniu pliku')
+            console.error(error)
+          })
+      } else {
+        this.$toasted.error('Plik nie jest zdjęciem')
+      }
+    },
+    isImage (file) {
+      return file.type.split('/')[0] === 'image'
+    },
+    compressImage (file) {
+      this.$toasted.info('Przycinanie...')
+      const options = {
+        maxWidthOrHeight: 300
+      }
+      return imageCompression(file, options)
     },
     getBase64OfImage: function (file) {
       return new Promise((resolve, reject) => {

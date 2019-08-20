@@ -187,11 +187,11 @@ export default {
   top: 0em;
   left: -10px;
   width: calc(100% + 20px);
-  height: auto;
+  height: 0;
+  top: 1rem;
   @media only screen and (max-width: 960px) {
     width: auto;
     left: 0;
-    height: 0;
   }
 }
 

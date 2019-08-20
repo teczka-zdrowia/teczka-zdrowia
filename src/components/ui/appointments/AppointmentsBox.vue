@@ -52,8 +52,13 @@
             Ładuj po:
             <select v-model="query.first">
               <option
-                value="5"
+                v-if="maxAppointments != 5"
+                :value="maxAppointments"
                 selected
+              >{{ maxAppointments }}</option>
+              <option
+                value="5"
+                :selected="!maxAppointments || maxAppointments == 5"
               >5</option>
               <option value="10">10</option>
               <option value="20">20</option>
@@ -252,7 +257,7 @@ export default {
   mounted () {
     this.$nextTick(() => {
       if (!this.$store.getters['window/isMobile']) {
-        this.maxAppointments = Math.floor(this.$el.offsetWidth / 330)
+        this.maxAppointments = Math.floor(this.$el.offsetWidth / 380)
         if (this.showAppointmentsLink) {
           this.maxAppointments--
         }

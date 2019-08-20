@@ -96,7 +96,7 @@
         <input
           type="file"
           name="agreement"
-          accept="image/jpeg,image/gif,image/png,application/pdf"
+          accept="image/*"
           v-on:change="processAgreement($event)"
           required
         >

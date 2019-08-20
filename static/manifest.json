@@ -24,7 +24,7 @@
     }
   ],
   "start_url": "/Dashboard",
-  "display": "fullscreen",
+  "display": "standalone",
   "orientation": "portrait",
   "background_color": "#fafafa",
   "theme_color": "#fafafa"
