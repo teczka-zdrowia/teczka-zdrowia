@@ -1,5 +1,8 @@
 <template>
-  <form class="modal--cp" @submit.prevent="createPatient">
+  <form
+    class="modal--cp"
+    @submit.prevent="createPatient"
+  >
     <AddPatientComponent />
     <div class="modal__actions">
       <button
@@ -20,63 +23,70 @@
 </template>
 
 <script>
-import AddPatientComponent from '../../ui/AddPatientComponent'
-import MainBtn from '../../ui/basic/MainBtn'
-import { mapActions, mapGetters } from 'vuex'
+import AddPatientComponent from "../../ui/AddPatientComponent";
+import MainBtn from "../../ui/basic/MainBtn";
+import { mapActions, mapGetters } from "vuex";
 
-import '../modal.scss'
+import "../modal.scss";
 
 export default {
-  name: 'AddPatient',
+  name: "AddPatient",
   components: {
     AddPatientComponent,
     MainBtn
   },
-  data: function () {
+  data: function() {
     return {
       isLoading: false
-    }
+    };
   },
   computed: {
     ...mapGetters({
-      data: 'modal/data',
-      processCompleted: 'addPatient/isCompleted',
-      patient: 'addPatient/patient',
-      place: 'addPatient/place'
+      data: "modal/data",
+      processCompleted: "addPatient/isCompleted",
+      patient: "addPatient/patient",
+      place: "addPatient/place"
     })
   },
   methods: {
     ...mapActions({
-      modalVisible: 'modal/visible',
-      hideModal: 'modal/hide',
-      createPlacePatientRole: 'placePatients/createRole',
-      clearData: 'addPatient/clear'
+      modalVisible: "modal/visible",
+      hideModal: "modal/hide",
+      createPlacePatientRole: "placePatients/createRole",
+      clearData: "addPatient/clear"
     }),
-    createPatient: async function () {
-      this.isLoading = true
+    createPatient: async function() {
+      this.isLoading = true;
       const payload = {
         userId: this.patient.id,
         placeId: this.place.id
-      }
+      };
 
       this.createPlacePatientRole(payload)
         .then(() => {
-          this.$toasted.success('Poprawnie dodano pacjenta')
-          this.hideModal()
+          this.$toasted.success("Poprawnie dodano pacjenta");
+          this.hideModal();
         })
         .catch(error => {
-          console.error(error)
-          this.$toasted.error('Wystąpił błąd')
+          console.error(error);
+          const graphQLErrors = error.graphQLErrors;
+          const validation = graphQLErrors
+            ? graphQLErrors[0].extensions.validation
+            : null;
+          const errorMessage = validation
+            ? validation[Object.keys(validation)[0]][0]
+            : "Wystąpił nieznany błąd";
+          this.$toasted.error(errorMessage);
         })
         .finally(() => {
-          this.isLoading = false
-        })
+          this.isLoading = false;
+        });
     }
   },
-  mounted () {
-    this.clearData()
+  mounted() {
+    this.clearData();
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

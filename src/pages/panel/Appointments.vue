@@ -184,7 +184,7 @@ export default {
 
       if (this.type === "ALL") {
         await this.getAppointmentsByMe(payload).catch(error => {
-          this.$toasted.error("Wystąpił błąd");
+          this.$toasted.error("Wystąpił błąd podczas ładowania wizyt");
           console.error(error);
         });
       } else {
@@ -194,7 +194,7 @@ export default {
         });
 
         await this.getPlaceAppointments(payload).catch(error => {
-          this.$toasted.error("Wystąpił błąd");
+          this.$toasted.error("Wystąpił błąd podczas ładowania wizyt");
           console.error(error);
         });
       }

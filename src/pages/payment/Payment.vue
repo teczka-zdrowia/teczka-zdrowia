@@ -120,9 +120,6 @@ export default {
       return val / 1000 / 1000;
     }
   },
-  components: {
-    //
-  },
   mounted: function() {
     this.getUserStorage();
   }

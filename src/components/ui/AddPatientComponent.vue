@@ -101,23 +101,23 @@
 </template>
 
 <script>
-import MainPlaceInfo from '../ui/basic/MainPlaceInfo'
-import MainBtn from '../ui/basic/MainBtn'
-import MainInput from '../ui/basic/MainInput'
-import MainUserBlockInfo from '../ui/basic/MainUserBlockInfo'
-import GreyBlock from '../ui/blocks/GreyBlock'
+import MainPlaceInfo from "../ui/basic/MainPlaceInfo";
+import MainBtn from "../ui/basic/MainBtn";
+import MainInput from "../ui/basic/MainInput";
+import MainUserBlockInfo from "../ui/basic/MainUserBlockInfo";
+import GreyBlock from "../ui/blocks/GreyBlock";
 
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: 'AddPatientComponent',
-  data: function () {
+  name: "AddPatientComponent",
+  data: function() {
     return {
       data: {
-        pesel: '',
-        name: '',
-        email: '',
-        phone: ''
+        pesel: "",
+        name: "",
+        email: "",
+        phone: ""
       },
       loading: {
         search: false,
@@ -125,69 +125,76 @@ export default {
       },
       initalizeNew: false,
       newAccountCreated: false
-    }
+    };
   },
   computed: {
     ...mapGetters({
-      place: 'addPatient/place',
-      patient: 'addPatient/patient',
-      searchFailed: 'addPatient/searchFailed'
+      place: "addPatient/place",
+      patient: "addPatient/patient",
+      searchFailed: "addPatient/searchFailed"
     }),
-    isPeselCorrect: function () {
-      let weights = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3]
-      let sum = 0
-      let controlNumber = parseInt(this.data.pesel.substring(10, 11))
+    isPeselCorrect: function() {
+      let weights = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3];
+      let sum = 0;
+      let controlNumber = parseInt(this.data.pesel.substring(10, 11));
       for (let i = 0; i < weights.length; i++) {
-        sum += parseInt(this.data.pesel.substring(i, i + 1)) * weights[i]
+        sum += parseInt(this.data.pesel.substring(i, i + 1)) * weights[i];
       }
-      sum = sum % 10
-      return this.data.pesel == null ? false : 10 - sum === controlNumber
+      sum = sum % 10;
+      return this.data.pesel == null ? false : 10 - sum === controlNumber;
     }
   },
   methods: {
     ...mapActions({
-      searchPatientByPesel: 'addPatient/searchByPesel',
-      initalizePatientAccount: 'addPatient/initalizePatient',
-      clearData: 'addPatient/clear'
+      searchPatientByPesel: "addPatient/searchByPesel",
+      initalizePatientAccount: "addPatient/initalizePatient",
+      clearData: "addPatient/clear"
     }),
-    searchPatient: async function () {
-      this.loading.search = true
+    searchPatient: async function() {
+      this.loading.search = true;
 
       await this.searchPatientByPesel(this.data.pesel)
         .then(() => {
-          this.$toasted.success('Znaleziono użytkownika')
+          this.$toasted.success("Znaleziono użytkownika");
         })
         .catch(error => {
-          console.error(error)
-          this.$toasted.error('Brak użytkownika w bazie')
-        })
+          console.error(error);
+          this.$toasted.error("Brak użytkownika w bazie");
+        });
 
-      this.loading.search = false
+      this.loading.search = false;
     },
-    initalizePatient: async function () {
-      this.loading.initalize = true
+    initalizePatient: async function() {
+      this.loading.initalize = true;
 
       await this.initalizePatientAccount(this.data)
         .then(() => {
-          this.newAccountCreated = true
-          this.$toasted.success('Użytkownik utworzony pomyślnie')
+          this.newAccountCreated = true;
+          this.$toasted.success("Użytkownik utworzony pomyślnie");
           this.$toasted.success(
-            'Dane logowania zostały wysłane na podany email',
+            "Dane logowania zostały wysłane na podany email",
             {
               duration: 1000
             }
-          )
+          );
         })
         .catch(error => {
-          this.$toasted.error('Wystąpił błąd')
-          console.error(error)
-        })
+          const graphQLErrors = error.graphQLErrors;
+          const validation = graphQLErrors
+            ? graphQLErrors[0].extensions.validation
+            : null;
+          const errorMessage = validation
+            ? validation[Object.keys(validation)[0]][0]
+            : "Wystąpił nieznany błąd";
+          this.$toasted.error(errorMessage);
+          console.error(error);
+        });
 
-      this.loading.initalize = false
+      this.loading.initalize = false;
     }
   },
-  mounted () {
-    this.clearData()
+  mounted() {
+    this.clearData();
   },
   components: {
     MainBtn,
@@ -196,7 +203,7 @@ export default {
     MainUserBlockInfo,
     GreyBlock
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

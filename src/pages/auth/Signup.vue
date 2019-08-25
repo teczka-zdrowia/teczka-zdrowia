@@ -109,6 +109,8 @@
           type="text"
           name="pesel"
           v-model="data.pesel"
+          minlength="11"
+          maxlength="11"
           placeholder="12345678912"
           required
         >
@@ -231,7 +233,14 @@ export default {
           window.location.href = "/Dashboard";
         })
         .catch(error => {
-          this.$toasted.error("Niepoprawne dane");
+          const graphQLErrors = error.graphQLErrors;
+          const validation = graphQLErrors
+            ? graphQLErrors[0].extensions.validation
+            : null;
+          const errorMessage = validation
+            ? validation[Object.keys(validation)[0]][0]
+            : "Wystąpił nieznany błąd";
+          this.$toasted.error(errorMessage);
           console.error(error);
         })
         .finally(() => {

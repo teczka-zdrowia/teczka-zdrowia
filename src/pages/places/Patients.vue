@@ -125,7 +125,7 @@ export default {
       this.loading.init = true;
 
       await this.getPlacePatients(this.placeId).catch(error => {
-        this.$toasted.error("Wystąpił błąd");
+        this.$toasted.error("Wystąpił błąd podczas ładowania pacjentów");
         console.error(error);
       });
 

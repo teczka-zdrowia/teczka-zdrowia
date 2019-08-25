@@ -161,125 +161,132 @@
 </template>
 
 <script>
-import MainBtn from '../../components/ui/basic/MainBtn'
-import { API_URL } from '@/apollo/constants'
-import imageCompression from 'browser-image-compression'
-import { mapActions, mapGetters } from 'vuex'
+import MainBtn from "../../components/ui/basic/MainBtn";
+import { API_URL } from "@/apollo/constants";
+import imageCompression from "browser-image-compression";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
-  name: 'Settings',
+  name: "Settings",
   components: {
     MainBtn
   },
-  data: function () {
+  data: function() {
     return {
       isEdit: false,
       newData: {
-        name: '',
-        city: '',
-        address: '',
-        agreement: ''
+        name: "",
+        city: "",
+        address: "",
+        agreement: ""
       },
       loading: {
         update: false
       }
-    }
+    };
   },
   computed: {
     ...mapGetters({
-      selectedRole: 'userRoles/selected'
+      selectedRole: "userRoles/selected"
     }),
-    selectedPlace: function () {
-      return this.selectedRole.place
+    selectedPlace: function() {
+      return this.selectedRole.place;
     },
-    agreementInfo: function () {
-      const agreement = this.newData.agreement
-      const agreementIsString = typeof agreement === 'string'
+    agreementInfo: function() {
+      const agreement = this.newData.agreement;
+      const agreementIsString = typeof agreement === "string";
 
       return agreementIsString
         ? agreement
         : `${agreement.name} | ${this.getOriginalFileSizeInMegabytes(
-          agreement
-        )}`
+            agreement
+          )}`;
     }
   },
   watch: {
-    isEdit: function (val) {
+    isEdit: function(val) {
       if (val === true) {
         Object.keys(this.selectedPlace)
           .filter(key => key in this.newData)
           .forEach(key => {
-            this.newData[key] = this.selectedPlace[key]
-          })
+            this.newData[key] = this.selectedPlace[key];
+          });
       }
     }
   },
   methods: {
     ...mapActions({
-      showModal: 'modal/show',
-      updateUserPlace: 'userRoles/updatePlace'
+      showModal: "modal/show",
+      updateUserPlace: "userRoles/updatePlace"
     }),
-    updatePlace: async function () {
-      this.loading.update = true
+    updatePlace: async function() {
+      this.loading.update = true;
 
-      let newData = this.newData
-      const agreementIsString = typeof newData.agreement === 'string'
-      newData.agreement = agreementIsString ? undefined : newData.agreement
+      let newData = this.newData;
+      const agreementIsString = typeof newData.agreement === "string";
+      newData.agreement = agreementIsString ? undefined : newData.agreement;
 
       const payload = {
         id: this.selectedPlace.id,
         data: newData
-      }
+      };
 
       await this.updateUserPlace(payload).catch(error => {
-        this.$toasted.error('Wystąpił błąd')
-        console.error(error)
-      })
+        const graphQLErrors = error.graphQLErrors;
+        const validation = graphQLErrors
+          ? graphQLErrors[0].extensions.validation
+          : null;
+        const errorMessage = validation
+          ? validation[Object.keys(validation)[0]][0]
+          : "Wystąpił nieznany błąd";
+        this.$toasted.error(errorMessage);
+        console.error(error);
+      });
 
-      this.isEdit = false
-      this.loading.update = false
+      this.isEdit = false;
+      this.loading.update = false;
     },
-    deactivatePlace: function () {
+    deactivatePlace: function() {
       this.showModal({
-        componentName: 'DeactivatePlace',
+        componentName: "DeactivatePlace",
         data: {
           id: this.selectedPlace.id,
           name: this.selectedPlace.name
         }
-      })
+      });
     },
-    processAgreement: async function (event) {
-      let file = event.target.files[0]
-      file = this.isImage(file) ? await this.compressImage(file) : file
-      this.newData.agreement = file
+    processAgreement: async function(event) {
+      let file = event.target.files[0];
+      file = this.isImage(file) ? await this.compressImage(file) : file;
+      this.newData.agreement = file;
     },
-    deleteAgreement: function () {
-      this.newData.agreement = null
+    deleteAgreement: function() {
+      this.newData.agreement = null;
     },
-    showAgreement: function () {
-      const path = `${API_URL}/storage/files/${this.selectedPlace.agreement}`
-      window.open(path, '_blank')
+    showAgreement: function() {
+      const path = `${API_URL}/storage/files/${this.selectedPlace.agreement}`;
+      window.open(path, "_blank");
     },
-    getOriginalFileSizeInMegabytes: function (file) {
-      const fileSizeInMegabytes = file.size / 1000 / 1000
-      const sizeIsSmallerThanOne = fileSizeInMegabytes < 1.0
+    getOriginalFileSizeInMegabytes: function(file) {
+      const fileSizeInMegabytes = file.size / 1000 / 1000;
+      const sizeIsSmallerThanOne = fileSizeInMegabytes < 1.0;
       const fileSizeInfo = sizeIsSmallerThanOne
         ? fileSizeInMegabytes.toFixed(2)
-        : fileSizeInMegabytes.toFixed(1)
-      return `${fileSizeInfo} MB`
+        : fileSizeInMegabytes.toFixed(1);
+      return `${fileSizeInfo} MB`;
     },
-    isImage (file) {
-      return file.type.split('/')[0] === 'image'
+    isImage(file) {
+      return file.type.split("/")[0] === "image";
     },
-    compressImage (file) {
-      this.$toasted.info('Kompresowanie...')
+    compressImage(file) {
+      this.$toasted.info("Kompresowanie...");
       const options = {
         maxSizeMB: 5
-      }
-      return imageCompression(file, options)
+      };
+      return imageCompression(file, options);
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -109,14 +109,14 @@ export default {
 
       if (this.type === "user") {
         await this.getMoreUserHistory(historyId).catch(error => {
-          this.$toasted.error("Wystąpił błąd");
+          this.$toasted.error("Wystąpił błąd podczas ładowania historii");
           console.error(error);
         });
       }
 
       if (this.type === "patient") {
         await this.getMorePatientHistory(historyId).catch(error => {
-          this.$toasted.error("Wystąpił błąd");
+          this.$toasted.error("Wystąpił błąd podczas ładowania historii");
           console.error(error);
         });
       }

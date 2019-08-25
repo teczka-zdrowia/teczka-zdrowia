@@ -22,51 +22,58 @@
 </template>
 
 <script>
-import AddAppointmentComponent from '../../ui/AddAppointmentComponent'
-import MainBtn from '../../ui/basic/MainBtn'
-import { mapActions, mapGetters } from 'vuex'
+import AddAppointmentComponent from "../../ui/AddAppointmentComponent";
+import MainBtn from "../../ui/basic/MainBtn";
+import { mapActions, mapGetters } from "vuex";
 
-import '../modal.scss'
+import "../modal.scss";
 
 export default {
-  name: 'AddAppointment',
-  data: function () {
+  name: "AddAppointment",
+  data: function() {
     return {
       isLoading: false
-    }
+    };
   },
   computed: {
     ...mapGetters({
-      data: 'modal/data',
-      appointmentData: 'addAppointment/data'
+      data: "modal/data",
+      appointmentData: "addAppointment/data"
     })
   },
   methods: {
     ...mapActions({
-      hideModal: 'modal/hide',
-      addUserAppointment: 'addAppointment/add'
+      hideModal: "modal/hide",
+      addUserAppointment: "addAppointment/add"
     }),
-    addAppointment: async function () {
-      this.isLoading = true
+    addAppointment: async function() {
+      this.isLoading = true;
 
       await this.addUserAppointment(this.appointmentData)
         .then(() => {
-          this.$toasted.success('Poprawnie dodano wizytę')
-          this.hideModal()
+          this.$toasted.success("Poprawnie dodano wizytę");
+          this.hideModal();
         })
         .catch(error => {
-          console.error(error)
-          this.$toasted.error('Wystąpił błąd')
-        })
+          console.error(error);
+          const graphQLErrors = error.graphQLErrors;
+          const validation = graphQLErrors
+            ? graphQLErrors[0].extensions.validation
+            : null;
+          const errorMessage = validation
+            ? validation[Object.keys(validation)[0]][0]
+            : "Wystąpił nieznany błąd";
+          this.$toasted.error(errorMessage);
+        });
 
-      this.isLoading = false
+      this.isLoading = false;
     }
   },
   components: {
     AddAppointmentComponent,
     MainBtn
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -168,7 +168,9 @@ export default {
       };
 
       await this.getPatientHistories(payload).catch(error => {
-        this.$toasted.error("Wystąpił błąd");
+        this.$toasted.error(
+          "Wystąpił błąd podczas ładowania historii pacjenta"
+        );
         console.error(error);
       });
 

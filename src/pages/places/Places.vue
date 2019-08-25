@@ -25,46 +25,40 @@
           class="nav__list nav__list--left"
           v-bind:class="{ showed : showPlaces }"
         >
-          <transition-group
-            name="fade"
-            tag="div"
-            class="places"
+          <div
+            class="place"
+            v-for="role in roles"
+            :key="role.id"
+            v-bind:class="{ 'disabled' : !role.place.is_active }"
+            v-on:click="selectRole(role.id)"
           >
-            <div
-              class="place"
-              v-for="role in roles"
-              :key="role.id"
-              v-bind:class="{ 'disabled' : !role.place.is_active }"
-              v-on:click="selectRole(role.id)"
-            >
-              <div class="place__content">
-                <div class="place__title">{{ role.place.name }}</div>
-                <div class="place__info">{{ role.place.address }}, {{ role.place.city }}</div>
-              </div>
-              <span
-                aria-hidden="true"
-                class="fas fa-angle-right place__select place__select--white"
-                title="Wybierz gabinet"
-                v-if="role.place.is_active"
-              />
-              <span
-                aria-hidden="true"
-                class="fas fa-unlock place__select place__select--white"
-                title="Odblokuj"
-                v-if="!role.place.is_active && role.permission_type === 'ADMIN'"
-              />
+            <div class="place__content">
+              <div class="place__title">{{ role.place.name }}</div>
+              <div class="place__info">{{ role.place.address }}, {{ role.place.city }}</div>
             </div>
-            <MainBtn
-              class="places__btn"
-              v-if="!loading.init"
-              v-on:click.native="createPlace"
-            >
-              <span
-                aria-hidden="true"
-                class="fas fa-plus"
-              />Nowy gabinet
-            </MainBtn>
-          </transition-group>
+            <span
+              aria-hidden="true"
+              class="fas fa-angle-right place__select place__select--white"
+              title="Wybierz gabinet"
+              v-if="role.place.is_active"
+            />
+            <span
+              aria-hidden="true"
+              class="fas fa-unlock place__select place__select--white"
+              title="Odblokuj"
+              v-if="!role.place.is_active && role.permission_type === 'ADMIN'"
+            />
+          </div>
+          <MainBtn
+            class="places__btn"
+            v-if="!loading.init"
+            v-on:click.native="createPlace"
+          >
+            <span
+              aria-hidden="true"
+              class="fas fa-plus"
+            />Nowy gabinet
+          </MainBtn>
         </div>
       </div>
       <div
@@ -274,7 +268,7 @@ export default {
       this.loading.init = true;
 
       await this.getUserRoles().catch(error => {
-        this.$toasted.error("Wystąpił błąd");
+        this.$toasted.error("Wystąpił błąd podczas ładowania gabinetów");
         console.error(error);
       });
 
@@ -298,7 +292,7 @@ export default {
   mounted() {
     this.getRoles();
 
-    if (this.selectRole) {
+    if (this.selectedRole) {
       this.selectedCard = 1;
     }
   }

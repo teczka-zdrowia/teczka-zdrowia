@@ -60,19 +60,19 @@
 </template>
 
 <script>
-import MainInput from '../ui/basic/MainInput'
-import { LMap, LTileLayer, LMarker, L } from 'vue2-leaflet'
+import MainInput from "../ui/basic/MainInput";
+import { LMap, LTileLayer, LMarker, L } from "vue2-leaflet";
 
-import 'leaflet/dist/leaflet.css'
-import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch'
-import { mapActions } from 'vuex'
-delete L.Icon.Default.prototype._getIconUrl
+import "leaflet/dist/leaflet.css";
+import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
+import { mapActions } from "vuex";
+delete L.Icon.Default.prototype._getIconUrl;
 
-const provider = new OpenStreetMapProvider()
+const provider = new OpenStreetMapProvider();
 
 export default {
-  name: 'CreatePlaceComponent',
-  data: function () {
+  name: "CreatePlaceComponent",
+  data: function() {
     return {
       zoom: 0,
       map: null,
@@ -82,61 +82,68 @@ export default {
         zoomSnap: true
       },
       url:
-        'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
+        "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
       icon: L.icon({
-        iconUrl: 'static/leaflet/place-icon.png',
+        iconUrl: "static/leaflet/place-icon.png",
         iconSize: [50, 50],
         iconAnchor: [25, 25]
       }),
       marker: null,
       data: {
-        name: '',
-        address: '',
-        city: ''
+        name: "",
+        address: "",
+        city: ""
       }
-    }
+    };
   },
-  mounted: function () {
-    this.$nextTick(this.initMap())
+  mounted: function() {
+    this.$nextTick(this.initMap());
   },
   methods: {
     ...mapActions({
-      createUserPlace: 'userRoles/createPlace'
+      createUserPlace: "userRoles/createPlace"
     }),
-    initMap: function () {
-      this.map = this.$refs.map.mapObject
+    initMap: function() {
+      this.map = this.$refs.map.mapObject;
     },
-    getMarkerPos: function (payload) {
+    getMarkerPos: function(payload) {
       provider
         .search({ query: `${payload.address}, ${payload.city}` })
         .then(result => {
           this.map = this.$refs.map.mapObject.setView(
             [result[0].y, result[0].x],
             16
-          )
-          this.marker = L.latLng(result[0].y, result[0].x)
-        })
+          );
+          this.marker = L.latLng(result[0].y, result[0].x);
+        });
     },
-    createPlace: function () {
-      this.$emit('loading', true)
+    createPlace: function() {
+      this.$emit("loading", true);
       this.createUserPlace(this.data)
         .then(() => {
-          this.$emit('finished')
-          this.$toasted.success('Pomyślnie dodano gabinet')
+          this.$emit("finished");
+          this.$toasted.success("Pomyślnie dodano gabinet");
         })
         .catch(error => {
-          this.$toasted.error('Wystąpił błąd')
-          console.error(error)
+          const graphQLErrors = error.graphQLErrors;
+          const validation = graphQLErrors
+            ? graphQLErrors[0].extensions.validation
+            : null;
+          const errorMessage = validation
+            ? validation[Object.keys(validation)[0]][0]
+            : "Wystąpił nieznany błąd";
+          this.$toasted.error(errorMessage);
+          console.error(error);
         })
         .finally(() => {
-          this.$emit('loading', false)
-        })
+          this.$emit("loading", false);
+        });
     }
   },
   watch: {
     data: {
-      handler: function (val) {
-        this.getMarkerPos(val)
+      handler: function(val) {
+        this.getMarkerPos(val);
       },
       deep: true
     }
@@ -147,7 +154,7 @@ export default {
     LTileLayer,
     LMarker
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

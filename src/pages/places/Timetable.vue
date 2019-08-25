@@ -173,7 +173,7 @@ export default {
       this.loading[type] = true;
 
       await this.getUserAppointments(payload).catch(error => {
-        this.$toasted.error("Wystąpił błąd");
+        this.$toasted.error("Wystąpił błąd podczas ładowania wizyt");
         console.error(error);
       });
 

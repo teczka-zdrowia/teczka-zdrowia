@@ -186,7 +186,9 @@ export default {
       this.loading.patients = true;
 
       await this.getPlacePatients(this.data.place_id).catch(error => {
-        this.$toasted.error("Wystąpił błąd");
+        this.$toasted.error(
+          "Wystąpił błąd podczas ładowania pacjentów gabinetu"
+        );
         console.error(error);
       });
 
@@ -196,7 +198,7 @@ export default {
       this.loading.roles = true;
 
       await this.getUserRoles().catch(error => {
-        this.$toasted.error("Wystąpił błąd");
+        this.$toasted.error("Wystąpił błąd podczas ładowania gabientów");
         console.error(error);
       });
 

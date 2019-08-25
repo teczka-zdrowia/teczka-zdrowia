@@ -43,19 +43,19 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import MainInput from '../../ui/basic/MainInput'
-import MainBtn from '../../ui/basic/MainBtn'
-import '../modal.scss'
+import { mapActions, mapGetters } from "vuex";
+import MainInput from "../../ui/basic/MainInput";
+import MainBtn from "../../ui/basic/MainBtn";
+import "../modal.scss";
 
 export default {
-  name: 'ConfirmGetPESEL',
-  data: function () {
+  name: "ConfirmGetPESEL",
+  data: function() {
     return {
-      email: '',
+      email: "",
       sent: false,
       isLoading: false
-    }
+    };
   },
   components: {
     MainInput,
@@ -63,35 +63,42 @@ export default {
   },
   computed: {
     ...mapGetters({
-      data: 'modal/data'
+      data: "modal/data"
     })
   },
   methods: {
     ...mapActions({
-      hideModal: 'modal/hide',
-      forgotPassword: 'userInfo/forgotPassword'
+      hideModal: "modal/hide",
+      forgotPassword: "userInfo/forgotPassword"
     }),
-    sendPasswordReset: async function () {
-      this.isLoading = true
+    sendPasswordReset: async function() {
+      this.isLoading = true;
 
       const payload = {
         email: this.email
-      }
+      };
 
       await this.forgotPassword(payload)
         .then(() => {
           this.$toasted.success(
-            'Wysłano e-mail z linkiem do zresetowania hasła'
-          )
-          this.sent = true
+            "Wysłano e-mail z linkiem do zresetowania hasła"
+          );
+          this.sent = true;
         })
         .catch(error => {
-          console.error(error)
-          this.$toasted.error(error)
-        })
+          const graphQLErrors = error.graphQLErrors;
+          const validation = graphQLErrors
+            ? graphQLErrors[0].extensions.validation
+            : null;
+          const errorMessage = validation
+            ? validation[Object.keys(validation)[0]][0]
+            : "Wystąpił nieznany błąd";
+          this.$toasted.error(errorMessage);
+          this.$toasted.error(error);
+        });
 
-      this.isLoading = false
+      this.isLoading = false;
     }
   }
-}
+};
 </script>

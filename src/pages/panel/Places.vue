@@ -81,7 +81,7 @@ export default {
       this.loading.init = true;
 
       await this.getUserRoles().catch(error => {
-        this.$toasted.error("Wystąpił błąd");
+        this.$toasted.error("Wystąpił błąd podczas ładowania gabinetów");
         console.error(error);
       });
 

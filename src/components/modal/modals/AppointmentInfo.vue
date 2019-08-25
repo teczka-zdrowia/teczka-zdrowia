@@ -42,95 +42,102 @@
 </template>
 
 <script>
-import AppointmentBig from '../../ui/appointments/AppointmentBig'
-import { mapActions, mapGetters } from 'vuex'
-import '../modal.scss'
+import AppointmentBig from "../../ui/appointments/AppointmentBig";
+import { mapActions, mapGetters } from "vuex";
+import "../modal.scss";
 
 export default {
-  name: 'AppointmentInfo',
-  data: function () {
+  name: "AppointmentInfo",
+  data: function() {
     return {
       isLoading: false
-    }
+    };
   },
   components: {
     AppointmentBig
   },
   computed: {
     ...mapGetters({
-      data: 'modal/data',
-      isMobile: 'window/isMobile',
-      viewer: 'userInfo/full'
+      data: "modal/data",
+      isMobile: "window/isMobile",
+      viewer: "userInfo/full"
     }),
-    viewerIsAuthor: function () {
-      const author = this.data.appointment.author
-      return author && this.viewer.id === author.id
+    viewerIsAuthor: function() {
+      const author = this.data.appointment.author;
+      return author && this.viewer.id === author.id;
     }
   },
   methods: {
     ...mapActions({
-      hideModal: 'modal/hide',
-      showModal: 'modal/show',
-      setUpdateAppointmentOldData: 'updateAppointment/setOldData',
-      setUpdateAppointmentData: 'updateAppointment/setData',
-      deleteUserAppointment: 'updateAppointment/delete',
-      deleteLocalAppointmentsByMe: 'appointmentsByMe/deleteLocal',
-      deleteLocalPlaceAppointments: 'placeAppointments/deleteLocal',
-      deleteLocalUserAppointments: 'userAppointments/deleteLocal'
+      hideModal: "modal/hide",
+      showModal: "modal/show",
+      setUpdateAppointmentOldData: "updateAppointment/setOldData",
+      setUpdateAppointmentData: "updateAppointment/setData",
+      deleteUserAppointment: "updateAppointment/delete",
+      deleteLocalAppointmentsByMe: "appointmentsByMe/deleteLocal",
+      deleteLocalPlaceAppointments: "placeAppointments/deleteLocal",
+      deleteLocalUserAppointments: "userAppointments/deleteLocal"
     }),
-    edit: function () {
-      const appointmentData = this.data.appointment
+    edit: function() {
+      const appointmentData = this.data.appointment;
 
       this.setUpdateAppointmentOldData({
         id: appointmentData.id,
         place: appointmentData.place,
         patient: appointmentData.patient
-      })
+      });
 
       this.setUpdateAppointmentData({
         note: appointmentData.note,
         date: appointmentData.date
-      })
+      });
 
       if (this.isMobile) {
-        this.hideModal()
-        this.$router.push({ name: 'UpdateAppointment' })
+        this.hideModal();
+        this.$router.push({ name: "UpdateAppointment" });
       } else {
         this.showModal({
-          componentName: 'UpdateAppointment',
+          componentName: "UpdateAppointment",
           data: {
             hideBorders: true
           }
-        })
+        });
       }
     },
-    deleteAppointment: async function () {
-      const appointmentData = this.data.appointment
+    deleteAppointment: async function() {
+      const appointmentData = this.data.appointment;
 
-      this.isLoading = true
+      this.isLoading = true;
 
-      let self = this
+      let self = this;
 
       await this.deleteUserAppointment(appointmentData.id)
         .then(appointment => {
-          self.deleteLocally(appointment)
-          this.$toasted.success('Pomyślnie usunięto wizytę')
-          this.hideModal()
+          self.deleteLocally(appointment);
+          this.$toasted.success("Pomyślnie usunięto wizytę");
+          this.hideModal();
         })
         .catch(error => {
-          this.$toasted.error('Wystąpił błąd')
-          console.error(error)
-        })
+          const graphQLErrors = error.graphQLErrors;
+          const validation = graphQLErrors
+            ? graphQLErrors[0].extensions.validation
+            : null;
+          const errorMessage = validation
+            ? validation[Object.keys(validation)[0]][0]
+            : "Wystąpił nieznany błąd";
+          this.$toasted.error(errorMessage);
+          console.error(error);
+        });
 
-      this.isLoading = false
+      this.isLoading = false;
     },
-    deleteLocally: function (data) {
-      this.deleteLocalAppointmentsByMe(data)
-      this.deleteLocalPlaceAppointments(data)
-      this.deleteLocalUserAppointments(data)
+    deleteLocally: function(data) {
+      this.deleteLocalAppointmentsByMe(data);
+      this.deleteLocalPlaceAppointments(data);
+      this.deleteLocalUserAppointments(data);
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

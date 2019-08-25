@@ -140,7 +140,7 @@ export default {
       this.loading.init = true;
 
       await this.getPlaceEmployees(this.placeId).catch(error => {
-        this.$toasted.error("Wystąpił błąd");
+        this.$toasted.error("Wystąpił błąd podczas ładowania pracowników");
         console.error(error);
       });
 

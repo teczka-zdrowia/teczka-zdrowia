@@ -23,41 +23,48 @@
 </template>
 
 <script>
-import AddAppointmentComponent from '../../components/ui/AddAppointmentComponent'
-import MainBtn from '../../components/ui/basic/MainBtn'
-import WhiteFunctionalBlock from '../../components/ui/blocks/WhiteFunctionalBlock'
-import { mapActions, mapGetters } from 'vuex'
+import AddAppointmentComponent from "../../components/ui/AddAppointmentComponent";
+import MainBtn from "../../components/ui/basic/MainBtn";
+import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
-  name: 'AddAppointment',
-  data: function () {
+  name: "AddAppointment",
+  data: function() {
     return {
       isLoading: false
-    }
+    };
   },
   computed: {
     ...mapGetters({
-      appointmentData: 'addAppointment/data'
+      appointmentData: "addAppointment/data"
     })
   },
   methods: {
     ...mapActions({
-      addUserAppointment: 'addAppointment/add'
+      addUserAppointment: "addAppointment/add"
     }),
-    addAppointment: async function () {
-      this.isLoading = true
+    addAppointment: async function() {
+      this.isLoading = true;
 
       await this.addUserAppointment(this.appointmentData)
         .then(() => {
-          this.$toasted.success('Poprawnie dodano wizytę')
-          this.$router.go(-1)
+          this.$toasted.success("Poprawnie dodano wizytę");
+          this.$router.go(-1);
         })
         .catch(error => {
-          console.error(error)
-          this.$toasted.error('Wystąpił błąd')
-        })
+          const graphQLErrors = error.graphQLErrors;
+          const validation = graphQLErrors
+            ? graphQLErrors[0].extensions.validation
+            : null;
+          const errorMessage = validation
+            ? validation[Object.keys(validation)[0]][0]
+            : "Wystąpił nieznany błąd";
+          this.$toasted.error(errorMessage);
+          console.error(error);
+        });
 
-      this.isLoading = false
+      this.isLoading = false;
     }
   },
   components: {
@@ -65,7 +72,7 @@ export default {
     MainBtn,
     Block: WhiteFunctionalBlock
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

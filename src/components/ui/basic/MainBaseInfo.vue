@@ -346,7 +346,14 @@ export default {
       this.updateUserData(dataThatChanged)
         .then(() => (this.isEdit = false))
         .catch(error => {
-          this.$toasted.error("Wystąpił błąd");
+          const graphQLErrors = error.graphQLErrors;
+          const validation = graphQLErrors
+            ? graphQLErrors[0].extensions.validation
+            : null;
+          const errorMessage = validation
+            ? validation[Object.keys(validation)[0]][0]
+            : "Wystąpił nieznany błąd";
+          this.$toasted.error(errorMessage);
           console.error(error);
         })
         .finally(() => {
@@ -522,6 +529,7 @@ input::-webkit-inner-spin-button {
 input.user__specialization {
   text-align: center;
   background: #eeeef3;
+  color: #3e3e45;
   border-bottom-right-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
   width: 100%;
@@ -607,6 +615,10 @@ input.user__specialization {
   &:not(:last-child) {
     width: calc(100% - 6rem);
   }
+}
+
+input.more__content {
+  color: #3e3e45;
 }
 
 .more__actions {

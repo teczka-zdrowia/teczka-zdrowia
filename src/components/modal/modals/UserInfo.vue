@@ -96,15 +96,15 @@
 </template>
 
 <script>
-import MainSelect from '../../ui/basic/MainSelect'
-import MainBtn from '../../ui/basic/MainBtn'
-import { API_URL } from '@/apollo/constants'
-import { mapActions, mapGetters } from 'vuex'
-import '../modal.scss'
+import MainSelect from "../../ui/basic/MainSelect";
+import MainBtn from "../../ui/basic/MainBtn";
+import { API_URL } from "@/apollo/constants";
+import { mapActions, mapGetters } from "vuex";
+import "../modal.scss";
 
 export default {
-  name: 'PatientInfo',
-  data: function () {
+  name: "PatientInfo",
+  data: function() {
     return {
       apiUrl: API_URL,
       loading: {
@@ -112,7 +112,7 @@ export default {
         activate: false,
         permission: false
       }
-    }
+    };
   },
   components: {
     MainSelect,
@@ -120,123 +120,145 @@ export default {
   },
   computed: {
     ...mapGetters({
-      data: 'modal/data',
-      loggedInUser: 'userInfo/full'
+      data: "modal/data",
+      loggedInUser: "userInfo/full"
     }),
-    user: function () {
-      return this.data.role.user
+    user: function() {
+      return this.data.role.user;
     },
-    viewerIsUser: function () {
-      return this.loggedInUser.id === this.user.id
+    viewerIsUser: function() {
+      return this.loggedInUser.id === this.user.id;
     }
   },
   methods: {
     ...mapActions({
-      hideModal: 'modal/hide',
-      updatePatientRole: 'placePatients/updateRole',
-      deletePatientRole: 'placePatients/deleteRole',
-      updateEmployeeRole: 'placeEmployees/updateRole',
-      deleteEmployeeRole: 'placeEmployees/deleteRole'
+      hideModal: "modal/hide",
+      updatePatientRole: "placePatients/updateRole",
+      deletePatientRole: "placePatients/deleteRole",
+      updateEmployeeRole: "placeEmployees/updateRole",
+      deleteEmployeeRole: "placeEmployees/deleteRole"
     }),
-    updateRole: async function (payload) {
-      const updateEmployee = this.data.role.permission_type !== undefined
+    updateRole: async function(payload) {
+      const updateEmployee = this.data.role.permission_type !== undefined;
 
       if (updateEmployee) {
         await this.updateEmployeeRole(payload)
           .then(() => {
-            this.$toasted.success('Pomyślnie zaktualizowano pracownika')
+            this.$toasted.success("Pomyślnie zaktualizowano pracownika");
           })
           .catch(error => {
-            console.error(error)
-            this.$toasted.error('Wystąpił błąd')
-          })
+            console.error(error);
+            const validation = error.graphQLErrors[0].extensions.validation;
+            const errorMessage =
+              validation[Object.keys(validation)[0]][0] ||
+              "Wystąpił nieznany błąd";
+            this.$toasted.error(errorMessage);
+          });
       } else {
         await this.updatePatientRole(payload)
           .then(() => {
-            this.$toasted.success('Pomyślnie zaktualizowano pacjenta')
+            this.$toasted.success("Pomyślnie zaktualizowano pacjenta");
           })
           .catch(error => {
-            console.error(error)
-            this.$toasted.error('Wystąpił błąd')
-          })
+            console.error(error);
+            const validation = error.graphQLErrors[0].extensions.validation;
+            const errorMessage =
+              validation[Object.keys(validation)[0]][0] ||
+              "Wystąpił nieznany błąd";
+            this.$toasted.error(errorMessage);
+          });
       }
     },
-    deleteRoleById: async function (payload) {
-      const updateEmployee = this.data.role.permission_type !== undefined
+    deleteRoleById: async function(payload) {
+      const updateEmployee = this.data.role.permission_type !== undefined;
 
       if (updateEmployee) {
         await this.deleteEmployeeRole(payload)
           .then(() => {
-            this.$toasted.success('Pomyślnie usunięto pracownika')
+            this.$toasted.success("Pomyślnie usunięto pracownika");
           })
           .catch(error => {
-            console.error(error)
-            this.$toasted.error('Wystąpił błąd')
-          })
+            console.error(error);
+            const graphQLErrors = error.graphQLErrors;
+            const validation = graphQLErrors
+              ? graphQLErrors[0].extensions.validation
+              : null;
+            const errorMessage = validation
+              ? validation[Object.keys(validation)[0]][0]
+              : "Wystąpił nieznany błąd";
+            this.$toasted.error(errorMessage);
+          });
       } else {
         await this.deletePatientRole(payload)
           .then(() => {
-            this.$toasted.success('Pomyślnie usunięto pacjenta')
+            this.$toasted.success("Pomyślnie usunięto pacjenta");
           })
           .catch(error => {
-            console.error(error)
-            this.$toasted.error('Wystąpił błąd')
-          })
+            console.error(error);
+            const graphQLErrors = error.graphQLErrors;
+            const validation = graphQLErrors
+              ? graphQLErrors[0].extensions.validation
+              : null;
+            const errorMessage = validation
+              ? validation[Object.keys(validation)[0]][0]
+              : "Wystąpił nieznany błąd";
+            this.$toasted.error(errorMessage);
+          });
       }
     },
-    activateRole: async function () {
+    activateRole: async function() {
       const payload = {
         id: this.data.role.id,
         data: {
           is_active: true
         }
-      }
+      };
 
-      this.loading.activate = true
+      this.loading.activate = true;
 
-      await this.updateRole(payload)
+      await this.updateRole(payload);
 
-      this.loading.activate = false
+      this.loading.activate = false;
     },
-    deactivateRole: async function () {
+    deactivateRole: async function() {
       const payload = {
         id: this.data.role.id,
         data: {
           is_active: false
         }
-      }
+      };
 
-      this.loading.activate = true
+      this.loading.activate = true;
 
-      await this.updateRole(payload)
+      await this.updateRole(payload);
 
-      this.loading.activate = false
+      this.loading.activate = false;
     },
-    deleteRole: async function () {
-      this.loading.delete = true
+    deleteRole: async function() {
+      this.loading.delete = true;
 
-      await this.deleteRoleById(this.data.role.id)
+      await this.deleteRoleById(this.data.role.id);
 
-      this.loading.delete = false
-      this.hideModal()
+      this.loading.delete = false;
+      this.hideModal();
     },
-    changePermissionType: async function (event) {
-      const newPermission = event.target.value
+    changePermissionType: async function(event) {
+      const newPermission = event.target.value;
       const payload = {
         id: this.data.role.id,
         data: {
           permission_type: newPermission
         }
-      }
+      };
 
-      this.loading.permission = true
+      this.loading.permission = true;
 
-      await this.updateRole(payload)
+      await this.updateRole(payload);
 
-      this.loading.permission = false
+      this.loading.permission = false;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

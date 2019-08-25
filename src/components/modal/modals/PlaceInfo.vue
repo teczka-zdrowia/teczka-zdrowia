@@ -38,22 +38,22 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import { apolloClient } from '@/apollo'
-import { PLACE_MORE_QUERY } from '@/graphql/queries/_index'
-import { LMap, LTileLayer, LMarker, L } from 'vue2-leaflet'
+import { mapActions, mapGetters } from "vuex";
+import { apolloClient } from "@/apollo";
+import { PLACE_MORE_QUERY } from "@/graphql/queries/_index";
+import { LMap, LTileLayer, LMarker, L } from "vue2-leaflet";
 
-import 'leaflet/dist/leaflet.css'
-import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch'
+import "leaflet/dist/leaflet.css";
+import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 
-import '../modal.scss'
-delete L.Icon.Default.prototype._getIconUrl
+import "../modal.scss";
+delete L.Icon.Default.prototype._getIconUrl;
 
-const provider = new OpenStreetMapProvider()
+const provider = new OpenStreetMapProvider();
 
 export default {
-  name: 'PlaceInfo',
-  data: function () {
+  name: "PlaceInfo",
+  data: function() {
     return {
       zoom: 6,
       map: null,
@@ -63,30 +63,30 @@ export default {
         zoomSnap: true
       },
       url:
-        'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
+        "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
       icon: L.icon({
-        iconUrl: 'static/leaflet/place-icon.png',
+        iconUrl: "static/leaflet/place-icon.png",
         iconSize: [50, 50],
         iconAnchor: [25, 25]
       }),
       marker: null
-    }
+    };
   },
   computed: {
     ...mapGetters({
-      data: 'modal/data'
+      data: "modal/data"
     })
   },
   methods: {
     ...mapActions({
-      hideModal: 'modal/hide',
-      updateModalData: 'modal/updateData'
+      hideModal: "modal/hide",
+      updateModalData: "modal/updateData"
     }),
-    initMap: function () {
-      this.map = this.$refs.map.mapObject
+    initMap: function() {
+      this.map = this.$refs.map.mapObject;
     }
   },
-  mounted: async function () {
+  mounted: async function() {
     if (!this.data.place.address) {
       await apolloClient
         .query({
@@ -102,12 +102,18 @@ export default {
               ...this.data.place,
               ...place
             }
-          }
-          this.updateModalData(payload)
+          };
+          this.updateModalData(payload);
         })
+        .catch(error => {
+          console.error(error);
+          this.$toasted.error(
+            "Wystąpił błąd podczas ładowania adresu gabinetu"
+          );
+        });
     }
 
-    this.initMap()
+    this.initMap();
 
     provider
       .search({ query: `${this.data.place.address}, ${this.data.place.city}` })
@@ -115,16 +121,16 @@ export default {
         this.map = this.$refs.map.mapObject.setView(
           [result[0].y, result[0].x],
           16
-        )
-        this.marker = L.latLng(result[0].y, result[0].x)
-      })
+        );
+        this.marker = L.latLng(result[0].y, result[0].x);
+      });
   },
   components: {
     LMap,
     LTileLayer,
     LMarker
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

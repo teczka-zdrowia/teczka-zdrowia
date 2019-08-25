@@ -18,23 +18,18 @@
 </template>
 
 <script>
-import WhiteFunctionalBlock from '../../components/ui/blocks/WhiteFunctionalBlock'
-import AppointmentsBox from '../../components/ui/appointments/AppointmentsBox'
-import HistoryBox from '../../components/ui/history/HistoryBox'
+import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
+import AppointmentsBox from "../../components/ui/appointments/AppointmentsBox";
+import HistoryBox from "../../components/ui/history/HistoryBox";
 
 export default {
-  name: 'Appointments',
+  name: "Appointments",
   components: {
     Block: WhiteFunctionalBlock,
     AppointmentsBox,
     HistoryBox
-  },
-  computed: {
-    isMobile: function () {
-      return this.$store.getters.window.width < 960
-    }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

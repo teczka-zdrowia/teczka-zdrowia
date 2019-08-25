@@ -154,7 +154,7 @@ export default {
       this.loading[type] = true;
 
       await this.getUserHistories(payload).catch(error => {
-        this.$toasted.error("Wystąpił błąd");
+        this.$toasted.error("Wystąpił błąd podczas ładowania historii");
         console.error(error);
       });
 

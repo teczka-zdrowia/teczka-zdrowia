@@ -125,12 +125,12 @@ export default {
 
       if (this.type === "ALL") {
         await this.getAllPatients().catch(error => {
-          this.$toasted.error("Wystąpił błąd");
+          this.$toasted.error("Wystąpił błąd podczas ładowania pacjentów");
           console.error(error);
         });
       } else {
         await this.getPlacePatients(this.placeId).catch(error => {
-          this.$toasted.error("Wystąpił błąd");
+          this.$toasted.error("Wystąpił błąd podczas ładowania pacjentów");
           console.error(error);
         });
       }
