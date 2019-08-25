@@ -16,8 +16,8 @@
           <div class="more__row">
             <div class="more__row__title">Zalecenia</div>
             <MainRecommendation
-              v-for="(recommendation, index) in data.recommendations"
-              :key="index"
+              v-for="recommendation in data.recommendations"
+              :key="recommendation.id"
               :data="recommendation"
               :showCancelBtn="false"
               :isTimeleft="false"
@@ -31,8 +31,8 @@
             <div class="more__row__title">Załączniki</div>
             <div class="more__row__attachments">
               <MainAttachment
-                v-for="(attachment, index) in data.attachments"
-                :key="index"
+                v-for="attachment in data.attachments"
+                :key="attachment.id"
                 :data="attachment"
               />
               <GreyBlock
@@ -79,18 +79,18 @@
 </template>
 
 <script>
-import { API_URL } from '@/apollo/constants'
-import MainBtn from '../basic/MainBtn'
-import MainUserInfo from '../basic/MainUserInfo'
-import MainRecommendation from '../basic/MainRecommendation'
-import MainAttachment from '../basic/MainAttachment'
-import MainPlaceInfo from '../basic/MainPlaceInfo'
-import GreyBlock from '../blocks/GreyBlock'
+import { API_URL } from "@/apollo/constants";
+import MainBtn from "../basic/MainBtn";
+import MainUserInfo from "../basic/MainUserInfo";
+import MainRecommendation from "../basic/MainRecommendation";
+import MainAttachment from "../basic/MainAttachment";
+import MainPlaceInfo from "../basic/MainPlaceInfo";
+import GreyBlock from "../blocks/GreyBlock";
 
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'HistoryElement',
+  name: "HistoryElement",
   props: {
     data: {
       type: Object
@@ -106,18 +106,18 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isMobile: 'window/isMobile'
+      isMobile: "window/isMobile"
     })
   },
   methods: {
-    showAgreement: function () {
-      const authorId = this.data.author.id
-      const fileName = this.data.agreement
-      const path = `${API_URL}/storage/files/${authorId}/${fileName}`
-      window.open(path, '_blank')
+    showAgreement: function() {
+      const authorId = this.data.author.id;
+      const fileName = this.data.agreement;
+      const path = `${API_URL}/storage/files/${authorId}/${fileName}`;
+      window.open(path, "_blank");
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

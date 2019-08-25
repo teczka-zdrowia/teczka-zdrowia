@@ -89,18 +89,18 @@
 </template>
 
 <script>
-import MainBtn from '../basic/MainBtn'
-import MainUserInfo from '../basic/MainUserInfo'
-import MainPlaceInfo from '../basic/MainPlaceInfo'
+import MainBtn from "../basic/MainBtn";
+import MainUserInfo from "../basic/MainUserInfo";
+import MainPlaceInfo from "../basic/MainPlaceInfo";
 
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from "vuex";
 
 export default {
-  name: 'AppointmentBig',
-  data: function () {
+  name: "AppointmentBig",
+  data: function() {
     return {
       confirmationLoading: false
-    }
+    };
   },
   props: {
     data: {
@@ -112,7 +112,7 @@ export default {
     },
     showUserAs: {
       type: String,
-      default: 'patient'
+      default: "patient"
     }
   },
   components: {
@@ -122,44 +122,44 @@ export default {
   },
   methods: {
     ...mapActions({
-      updateUserAppointmentConfirmation: 'userAppointments/updateConfirmation'
+      updateUserAppointmentConfirmation: "userAppointments/updateConfirmation"
     }),
-    updateConfirmation: async function (val) {
-      this.confirmationLoading = true
+    updateConfirmation: async function(val) {
+      this.confirmationLoading = true;
       const payload = {
         id: this.data.id,
         confirmed: val
-      }
+      };
 
       await this.updateUserAppointmentConfirmation(payload).catch(error => {
-        this.$toasted.error('Wystąpił błąd')
-        console.error(error)
-      })
+        this.$toasted.error("Wystąpił błąd");
+        console.error(error);
+      });
 
-      this.confirmationLoading = false
+      this.confirmationLoading = false;
     }
   },
   computed: {
     ...mapGetters({
-      viewer: 'userInfo/full'
+      viewer: "userInfo/full"
     }),
-    date: function () {
-      const dateSlice = this.data.date.slice(0, 10)
-      return new Date(dateSlice).toLocaleDateString()
+    date: function() {
+      const dateSlice = this.data.date.slice(0, 10);
+      return new Date(dateSlice).toLocaleDateString();
     },
-    time: function () {
-      return this.data.date.slice(11, 16)
+    time: function() {
+      return this.data.date.slice(11, 16);
     },
-    viewerIsAuthor: function () {
-      const author = this.data.author
-      return author && this.viewer.id === author.id
+    viewerIsAuthor: function() {
+      const author = this.data.author;
+      return author && this.viewer.id === author.id;
     },
-    viewerIsPatient: function () {
-      const patient = this.data.patient
-      return patient && this.viewer.id === patient.id
+    viewerIsPatient: function() {
+      const patient = this.data.patient;
+      return patient && this.viewer.id === patient.id;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

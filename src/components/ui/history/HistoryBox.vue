@@ -66,11 +66,16 @@
       class="histories__list"
       v-if="!loading.init && !loading.newQuery"
     >
-      <HistoryElement
-        v-for="(history, index) in histories"
-        :key="index"
-        :data="history.node"
-      />
+      <transition-group
+        name="fade"
+        tag="div"
+      >
+        <HistoryElement
+          v-for="history in histories"
+          :key="history.node.id"
+          :data="history.node"
+        />
+      </transition-group>
       <MainShowMore
         v-on:click.native="getNextHistories"
         v-if="pageInfo.hasNextPage"
@@ -79,7 +84,7 @@
     </div>
     <GreyBlock
       class="histories__info"
-      v-if="!loading.init && histories.length === 0"
+      v-if="!loading.init && !loading.newQuery && histories.length === 0"
     >Brak historii</GreyBlock>
     <GreyBlock
       class="histories__info histories__info--loading"
@@ -91,18 +96,18 @@
 </template>
 
 <script>
-import MainBtn from '../basic/MainBtn'
-import MainSearch from '../basic/MainSearch'
-import HistoryElement from './HistoryElement'
-import MainLoading from '../basic/MainLoading'
-import GreyBlock from '../blocks/GreyBlock'
-import MainShowMore from '../basic/MainShowMore'
+import MainBtn from "../basic/MainBtn";
+import MainSearch from "../basic/MainSearch";
+import HistoryElement from "./HistoryElement";
+import MainLoading from "../basic/MainLoading";
+import GreyBlock from "../blocks/GreyBlock";
+import MainShowMore from "../basic/MainShowMore";
 
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: 'History',
-  data: function () {
+  name: "History",
+  data: function() {
     return {
       loading: {
         init: true,
@@ -110,14 +115,14 @@ export default {
         newQuery: false
       },
       query: {
-        search: '',
+        search: "",
         first: 5,
         sortData: {
-          order: 'ASC',
-          field: 'date'
+          order: "ASC",
+          field: "date"
         }
       }
-    }
+    };
   },
   components: {
     MainBtn,
@@ -129,76 +134,76 @@ export default {
   },
   computed: {
     ...mapGetters({
-      histories: 'userHistories/list',
-      pageInfo: 'userHistories/pageInfo'
+      histories: "userHistories/list",
+      pageInfo: "userHistories/pageInfo"
     }),
-    orderBy: function () {
+    orderBy: function() {
       return [
         {
           field: this.query.sortData.field,
           order: this.query.sortData.order
         }
-      ]
+      ];
     }
   },
   methods: {
     ...mapActions({
-      getUserHistories: 'userHistories/get'
+      getUserHistories: "userHistories/get"
     }),
-    getHistories: async function (payload, type) {
-      this.loading[type] = true
+    getHistories: async function(payload, type) {
+      this.loading[type] = true;
 
       await this.getUserHistories(payload).catch(error => {
-        this.$toasted.error('Wystąpił błąd')
-        console.error(error)
-      })
+        this.$toasted.error("Wystąpił błąd");
+        console.error(error);
+      });
 
-      this.loading[type] = false
+      this.loading[type] = false;
     },
-    getFirstHistories: function () {
+    getFirstHistories: function() {
       const payload = {
         first: this.query.first,
-        after: '',
-        note: '',
+        after: "",
+        note: "",
         orderBy: this.orderBy,
-        type: 'SET'
-      }
+        type: "SET"
+      };
 
-      this.getHistories(payload, 'init')
+      this.getHistories(payload, "init");
     },
-    getNextHistories: function () {
+    getNextHistories: function() {
       const payload = {
         first: this.query.first,
         after: this.pageInfo.endCursor,
         note: `%${this.query.search}%`,
         orderBy: this.orderBy,
-        type: 'ADD'
-      }
+        type: "ADD"
+      };
 
-      this.getHistories(payload, 'next')
+      this.getHistories(payload, "next");
     }
   },
   watch: {
     query: {
-      handler () {
+      handler() {
         const payload = {
           first: this.query.first,
-          after: '',
+          after: "",
           note: `%${this.query.search}%`,
           date: this.date,
           orderBy: this.orderBy,
-          type: 'SET'
-        }
+          type: "SET"
+        };
 
-        this.getHistories(payload, 'newQuery')
+        this.getHistories(payload, "newQuery");
       },
       deep: true
     }
   },
-  mounted () {
-    this.getFirstHistories()
+  mounted() {
+    this.getFirstHistories();
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

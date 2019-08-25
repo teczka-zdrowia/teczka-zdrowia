@@ -26,7 +26,7 @@
     <div class="wrapper">
       <div
         class="info__menu"
-        v-bind:style="[isShowed ? {'visibility': 'visible', 'opacity': 1, 'z-index': 99999999} : {'visibility': 'hidden', 'opacity': 0, 'z-index': 0}]"
+        v-bind:class="{visible: isShowed}"
       >
         <router-link
           to="/About"
@@ -65,46 +65,47 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import { API_URL } from '@/apollo/constants'
+import { mapGetters, mapActions } from "vuex";
+import { API_URL } from "@/apollo/constants";
 
 export default {
-  name: 'UserInfo',
-  data: function () {
+  name: "UserInfo",
+  data: function() {
     return {
       apiUrl: API_URL,
       isLoading: false,
       isShowed: false
-    }
+    };
   },
   methods: {
     ...mapActions({
-      userLogout: 'userInfo/logout',
-      getAutheticatedUserData: 'userInfo/getData'
+      userLogout: "userInfo/logout",
+      getAutheticatedUserData: "userInfo/getData"
     }),
-    logout: function () {
+    logout: function() {
       if (!this.isLoading) {
-        this.isLoading = true
-        this.$toasted.show('Wylogowywanie...')
+        this.isLoading = true;
+        this.$toasted.show("Wylogowywanie...");
         this.userLogout()
           .then(() => {
-            this.$toasted.success('Poprawnie wylogowano')
-            this.$router.push({ name: 'Auth' })
+            const logoutRoute = this.$router.resolve({ name: "Auth" });
+            this.$toasted.success("Poprawnie wylogowano");
+            window.location.href = logoutRoute.href;
           })
           .catch(error => {
-            this.$toasted.error('Wystąpił błąd')
-            console.error(error)
+            this.$toasted.error("Wystąpił błąd");
+            console.error(error);
           })
-          .finally(() => (this.isLoading = false))
+          .finally(() => (this.isLoading = false));
       }
     }
   },
   computed: {
     ...mapGetters({
-      userData: 'userInfo/full'
+      userData: "userInfo/full"
     })
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -203,13 +204,19 @@ export default {
   background: #fff;
   box-shadow: 0 0 20px 0px $grey;
   background: #fff;
-  z-index: 100;
+  z-index: 0;
   border-radius: 0.5em;
   font-weight: 600;
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
   transition: visibility 0s, opacity 0.2s ease-in-out;
+  &.visible {
+    z-index: 9999999;
+    opacity: 1;
+    visibility: visible;
+    transition: visibility 0s, opacity 0.2s ease-in-out;
+  }
   .menu__el {
     transition: 0.2s ease-in-out;
     color: #67676e;

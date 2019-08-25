@@ -37,39 +37,44 @@
         </div>
       </div>
     </div>
-    <More
-      v-if="showMore && !loading.more"
-      :data="data"
-    />
-    <GreyBlock
-      class="history__info history__info--loading"
-      v-if="loading.more"
-    >Ładowanie
-      <MainLoading color="#67676e" />
-    </GreyBlock>
+    <transition
+      name="fade"
+      mode="in-out"
+    >
+      <More
+        v-if="showMore && !loading.more"
+        :data="data"
+      />
+      <GreyBlock
+        class="history__info history__info--loading"
+        v-if="loading.more"
+      >Ładowanie
+        <MainLoading color="#67676e" />
+      </GreyBlock>
+    </transition>
   </div>
 </template>
 
 <script>
-import MainBtn from '../basic/MainBtn'
-import MainUserInfo from '../basic/MainUserInfo'
-import MainRecommendation from '../basic/MainRecommendation'
-import MainPlaceInfo from '../basic/MainPlaceInfo'
-import HistoryMoreElement from './HistoryMoreElement'
-import MainLoading from '../basic/MainLoading'
-import GreyBlock from '../blocks/GreyBlock'
+import MainBtn from "../basic/MainBtn";
+import MainUserInfo from "../basic/MainUserInfo";
+import MainRecommendation from "../basic/MainRecommendation";
+import MainPlaceInfo from "../basic/MainPlaceInfo";
+import HistoryMoreElement from "./HistoryMoreElement";
+import MainLoading from "../basic/MainLoading";
+import GreyBlock from "../blocks/GreyBlock";
 
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: 'HistoryElement',
-  data: function () {
+  name: "HistoryElement",
+  data: function() {
     return {
       showMore: false,
       loading: {
         more: false
       }
-    }
+    };
   },
   props: {
     data: {
@@ -77,7 +82,7 @@ export default {
     },
     type: {
       type: String,
-      default: 'user'
+      default: "user"
     }
   },
   components: {
@@ -90,43 +95,43 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isMobile: 'window/isMobile'
+      isMobile: "window/isMobile"
     })
   },
   methods: {
     ...mapActions({
-      getMoreUserHistory: 'userHistories/getMore',
-      getMorePatientHistory: 'patientHistories/getMore'
+      getMoreUserHistory: "userHistories/getMore",
+      getMorePatientHistory: "patientHistories/getMore"
     }),
-    getMore: async function () {
-      this.loading.more = true
-      const historyId = this.data.id
+    getMore: async function() {
+      this.loading.more = true;
+      const historyId = this.data.id;
 
-      if (this.type === 'user') {
+      if (this.type === "user") {
         await this.getMoreUserHistory(historyId).catch(error => {
-          this.$toasted.error('Wystąpił błąd')
-          console.error(error)
-        })
+          this.$toasted.error("Wystąpił błąd");
+          console.error(error);
+        });
       }
 
-      if (this.type === 'patient') {
+      if (this.type === "patient") {
         await this.getMorePatientHistory(historyId).catch(error => {
-          this.$toasted.error('Wystąpił błąd')
-          console.error(error)
-        })
+          this.$toasted.error("Wystąpił błąd");
+          console.error(error);
+        });
       }
 
-      this.loading.more = false
+      this.loading.more = false;
     },
-    toggleShowMore: async function () {
+    toggleShowMore: async function() {
       if (!this.showMore) {
-        await this.getMore()
+        await this.getMore();
       }
 
-      this.showMore = !this.showMore
+      this.showMore = !this.showMore;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

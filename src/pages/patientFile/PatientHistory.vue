@@ -74,8 +74,8 @@
       v-if="!loading.init && !loading.newQuery"
     >
       <HistoryElement
-        v-for="(history, index) in histories"
-        :key="index"
+        v-for="history in histories"
+        :key="history.id"
         :data="history.node"
         :type="'patient'"
       />
@@ -99,23 +99,23 @@
 </template>
 
 <script>
-import MainBtn from '../../components/ui/basic/MainBtn'
-import MainSearch from '../../components/ui/basic/MainSearch'
-import HistoryElement from '../../components/ui/history/HistoryElement'
-import MainLoading from '../../components/ui/basic/MainLoading'
-import GreyBlock from '../../components/ui/blocks/GreyBlock'
-import MainShowMore from '../../components/ui/basic/MainShowMore'
+import MainBtn from "../../components/ui/basic/MainBtn";
+import MainSearch from "../../components/ui/basic/MainSearch";
+import HistoryElement from "../../components/ui/history/HistoryElement";
+import MainLoading from "../../components/ui/basic/MainLoading";
+import GreyBlock from "../../components/ui/blocks/GreyBlock";
+import MainShowMore from "../../components/ui/basic/MainShowMore";
 
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: 'PatientHistory',
+  name: "PatientHistory",
   props: {
     patient: {
       type: Object
     }
   },
-  data: function () {
+  data: function() {
     return {
       loading: {
         init: true,
@@ -123,14 +123,14 @@ export default {
         newQuery: false
       },
       query: {
-        search: '',
+        search: "",
         first: 5,
         sortData: {
-          order: 'ASC',
-          field: 'date'
+          order: "ASC",
+          field: "date"
         }
       }
-    }
+    };
   },
   components: {
     MainBtn,
@@ -142,86 +142,86 @@ export default {
   },
   computed: {
     ...mapGetters({
-      histories: 'patientHistories/list',
-      pageInfo: 'patientHistories/pageInfo'
+      histories: "patientHistories/list",
+      pageInfo: "patientHistories/pageInfo"
     }),
-    orderBy: function () {
+    orderBy: function() {
       return [
         {
           field: this.query.sortData.field,
           order: this.query.sortData.order
         }
-      ]
+      ];
     }
   },
   methods: {
     ...mapActions({
-      getPatientHistories: 'patientHistories/get',
-      setHistoryPatient: 'addHistory/setPatient'
+      getPatientHistories: "patientHistories/get",
+      setHistoryPatient: "addHistory/setPatient"
     }),
-    getHistories: async function (payload, type) {
-      this.loading[type] = true
+    getHistories: async function(payload, type) {
+      this.loading[type] = true;
 
       payload = {
         ...payload,
         id: this.patient.id
-      }
+      };
 
       await this.getPatientHistories(payload).catch(error => {
-        this.$toasted.error('Wystąpił błąd')
-        console.error(error)
-      })
+        this.$toasted.error("Wystąpił błąd");
+        console.error(error);
+      });
 
-      this.loading[type] = false
+      this.loading[type] = false;
     },
-    getFirstHistories: function () {
+    getFirstHistories: function() {
       const payload = {
         first: this.query.first,
-        after: '',
-        note: '',
+        after: "",
+        note: "",
         orderBy: this.orderBy,
-        type: 'SET'
-      }
+        type: "SET"
+      };
 
-      this.getHistories(payload, 'init')
+      this.getHistories(payload, "init");
     },
-    getNextHistories: function () {
+    getNextHistories: function() {
       const payload = {
         first: this.query.first,
         after: this.pageInfo.endCursor,
         note: `%${this.query.search}%`,
         orderBy: this.orderBy,
-        type: 'ADD'
-      }
+        type: "ADD"
+      };
 
-      this.getHistories(payload, 'next')
+      this.getHistories(payload, "next");
     },
-    showAddHistory: function () {
-      this.setHistoryPatient(this.patient)
-      this.$router.push({ path: '/AddHistory' })
+    showAddHistory: function() {
+      this.setHistoryPatient(this.patient);
+      this.$router.push({ path: "/AddHistory" });
     }
   },
   watch: {
     query: {
-      handler () {
+      handler() {
         const payload = {
           first: this.query.first,
-          after: '',
+          after: "",
           note: `%${this.query.search}%`,
           date: this.date,
           orderBy: this.orderBy,
-          type: 'SET'
-        }
+          type: "SET"
+        };
 
-        this.getHistories(payload, 'newQuery')
+        this.getHistories(payload, "newQuery");
       },
       deep: true
     }
   },
-  mounted () {
-    this.getFirstHistories()
+  mounted() {
+    this.getFirstHistories();
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

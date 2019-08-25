@@ -1,14 +1,16 @@
 <template>
   <div>
-    <AppointmentSmall
-      v-for="(appointment, index) in appointments"
-      :key="index"
-      :data="appointment.node"
-      :showAddedBy="showAddedBy"
-      :showPlace="showPlace"
-      :canEdit="canEdit"
-      :showUserAs="showUserAs"
-    />
+    <transition-group name="fade">
+      <AppointmentSmall
+        v-for="appointment in appointments"
+        :key="appointment.node.id"
+        :data="appointment.node"
+        :showAddedBy="showAddedBy"
+        :showPlace="showPlace"
+        :canEdit="canEdit"
+        :showUserAs="showUserAs"
+      />
+    </transition-group>
     <router-link
       to="/Appointments"
       v-if="showAppointmentsLink"
@@ -40,15 +42,15 @@
 </template>
 
 <script>
-import AppointmentSmall from './AppointmentSmall'
-import MainBtn from '../basic/MainBtn'
+import AppointmentSmall from "./AppointmentSmall";
+import MainBtn from "../basic/MainBtn";
 
 export default {
-  name: 'AppointmentsSmall',
-  data: function () {
+  name: "AppointmentsSmall",
+  data: function() {
     return {
       isLoading: false
-    }
+    };
   },
   props: {
     showAppointmentsLink: {
@@ -80,14 +82,14 @@ export default {
     },
     showUserAs: {
       type: String,
-      default: 'patient'
+      default: "patient"
     }
   },
   components: {
     MainBtn,
     AppointmentSmall
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

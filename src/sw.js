@@ -1,5 +1,7 @@
 workbox.precaching.precacheAndRoute(self.__precacheManifest || [])
 
+workbox.routing.registerNavigationRoute('/index.html')
+
 // Cache JS and CSS files
 workbox.routing.registerRoute(
   /\.(?:js|css|ico)$/,

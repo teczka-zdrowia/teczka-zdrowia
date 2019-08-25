@@ -250,18 +250,18 @@
 </template>
 
 <script>
-import MainBtn from './MainBtn'
-import MainLoading from './MainLoading'
-import { API_URL } from '@/apollo/constants'
+import MainBtn from "./MainBtn";
+import MainLoading from "./MainLoading";
+import { API_URL } from "@/apollo/constants";
 
-import imageCompression from 'browser-image-compression'
-import { mapGetters, mapActions } from 'vuex'
+import imageCompression from "browser-image-compression";
+import { mapGetters, mapActions } from "vuex";
 
-const moment = require('moment')
-moment.locale('pl')
+const moment = require("moment");
+moment.locale("pl");
 
 export default {
-  name: 'BaseInfo',
+  name: "BaseInfo",
   props: {
     canEdit: {
       type: Boolean,
@@ -275,124 +275,124 @@ export default {
       type: Object
     }
   },
-  data: function () {
+  data: function() {
     return {
       apiUrl: API_URL,
       isEdit: false,
       isLoading: false,
       newAvatarBase64: null,
       newUserData: {}
-    }
+    };
   },
   watch: {
-    isEdit: function (val) {
+    isEdit: function(val) {
       if (val == true) {
-        this.newUserData = Object.assign({}, this.userData)
+        this.newUserData = Object.assign({}, this.userData);
         this.newUserData.birthdate = moment(
           this.newUserData.birthdate,
-          'YYYY-MM-DD HH:MI:SS'
-        ).format('YYYY-MM-DD')
+          "YYYY-MM-DD HH:MI:SS"
+        ).format("YYYY-MM-DD");
       }
     }
   },
   computed: {
     ...mapGetters({
-      isMobile: 'window/isMobile',
-      PESEL: 'userInfo/pesel',
-      viewer: 'userInfo/full'
+      isMobile: "window/isMobile",
+      PESEL: "userInfo/pesel",
+      viewer: "userInfo/full"
     }),
-    userData: function () {
-      return this.data ? this.data : this.viewer
+    userData: function() {
+      return this.data ? this.data : this.viewer;
     },
-    userAge: function () {
+    userAge: function() {
       return Math.abs(
-        moment(this.userBirthdate, 'DD.MM.YYYY').diff(moment(), 'years')
-      )
+        moment(this.userBirthdate, "DD.MM.YYYY").diff(moment(), "years")
+      );
     },
-    userBirthdate: function () {
-      return moment(this.userData.birthdate, 'YYYY-MM-DD HH:MI:SS').format(
-        'DD.MM.YYYY'
-      )
+    userBirthdate: function() {
+      return moment(this.userData.birthdate, "YYYY-MM-DD HH:MI:SS").format(
+        "DD.MM.YYYY"
+      );
     }
   },
   methods: {
     ...mapActions({
-      hidePESEL: 'userInfo/hidePESEL',
-      showModal: 'modal/show',
-      updateUserData: 'userInfo/updateData',
-      getUserData: 'userInfo/updateData'
+      hidePESEL: "userInfo/hidePESEL",
+      showModal: "modal/show",
+      updateUserData: "userInfo/updateData",
+      getUserData: "userInfo/updateData"
     }),
-    getPESEL: function () {
+    getPESEL: function() {
       this.showModal({
-        componentName: 'ConfirmGetPESEL'
-      })
+        componentName: "ConfirmGetPESEL"
+      });
     },
-    updateData: function () {
-      const userData = this.userData
-      const newUserData = this.newUserData
-      this.newUserData.phone = this.newUserData.phone.replace(/\s/g, '')
+    updateData: function() {
+      const userData = this.userData;
+      const newUserData = this.newUserData;
+      this.newUserData.phone = this.newUserData.phone.replace(/\s/g, "");
 
-      this.isLoading = true
+      this.isLoading = true;
 
-      let dataThatChanged = {}
+      let dataThatChanged = {};
       for (let property in newUserData) {
         const newDataAppearsInProperty =
-          newUserData[property] !== userData[property]
+          newUserData[property] !== userData[property];
         if (newDataAppearsInProperty) {
-          dataThatChanged[property] = newUserData[property]
+          dataThatChanged[property] = newUserData[property];
         }
       }
 
       this.updateUserData(dataThatChanged)
         .then(() => (this.isEdit = false))
         .catch(error => {
-          this.$toasted.error('Wystąpił błąd')
-          console.error(error)
+          this.$toasted.error("Wystąpił błąd");
+          console.error(error);
         })
         .finally(() => {
-          this.isLoading = false
-        })
+          this.isLoading = false;
+        });
     },
-    processFile: async function (event) {
-      const file = event.target.files[0]
+    processFile: async function(event) {
+      const file = event.target.files[0];
       if (this.isImage(file)) {
-        this.newUserData.avatar = await this.compressImage(file)
+        this.newUserData.avatar = await this.compressImage(file);
         this.getBase64OfImage(file)
           .then(data => {
-            this.newAvatarBase64 = data
+            this.newAvatarBase64 = data;
           })
           .catch(error => {
-            this.$toasted.error('Wystąpił błąd przy ładowaniu pliku')
-            console.error(error)
-          })
+            this.$toasted.error("Wystąpił błąd przy ładowaniu pliku");
+            console.error(error);
+          });
       } else {
-        this.$toasted.error('Plik nie jest zdjęciem')
+        this.$toasted.error("Plik nie jest zdjęciem");
       }
     },
-    isImage (file) {
-      return file.type.split('/')[0] === 'image'
+    isImage(file) {
+      return file.type.split("/")[0] === "image";
     },
-    compressImage (file) {
-      this.$toasted.info('Przycinanie...')
+    compressImage(file) {
+      this.$toasted.info("Przycinanie...");
       const options = {
         maxWidthOrHeight: 300
-      }
-      return imageCompression(file, options)
+      };
+      return imageCompression(file, options);
     },
-    getBase64OfImage: function (file) {
+    getBase64OfImage: function(file) {
       return new Promise((resolve, reject) => {
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onload = () => resolve(reader.result)
-        reader.onerror = error => reject(error)
-      })
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
     }
   },
   components: {
     MainBtn,
     MainLoading
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

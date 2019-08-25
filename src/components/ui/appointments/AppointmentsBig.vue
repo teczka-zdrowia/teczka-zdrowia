@@ -1,10 +1,10 @@
 <template>
   <div>
     <AppointmentBig
-      :key="index"
+      :key="appointment.node.id"
       :showUserAs="showUserAs"
       :data="appointment.node"
-      v-for="(appointment, index) in appointments"
+      v-for="appointment in appointments"
     />
     <router-link
       to="/Appointments"
@@ -36,11 +36,11 @@
 </template>
 
 <script>
-import MainBtn from '../basic/MainBtn'
-import AppointmentBig from './AppointmentBig'
+import MainBtn from "../basic/MainBtn";
+import AppointmentBig from "./AppointmentBig";
 
 export default {
-  name: 'AppointmentsBig',
+  name: "AppointmentsBig",
   props: {
     showAppointmentsLink: {
       type: Boolean,
@@ -59,14 +59,14 @@ export default {
     },
     showUserAs: {
       type: String,
-      default: 'patient'
+      default: "patient"
     }
   },
   components: {
     MainBtn,
     AppointmentBig
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

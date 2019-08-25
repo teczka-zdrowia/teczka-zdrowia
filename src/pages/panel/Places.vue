@@ -7,8 +7,8 @@
       <div class="place places__title">Gabinet</div>
       <div
         class="place"
-        v-for="(role, index) in roles"
-        :key="index"
+        v-for="role in roles"
+        :key="role.id"
         v-show="role.permission_type !== 'PATIENT' && role.is_active && role.place.is_active"
         v-on:click="selectRole(role.id)"
         v-bind:class="{ 'selected' : role.place === selectedPlace }"
@@ -50,63 +50,63 @@
 </template>
 
 <script>
-import GreyBlock from '../../components/ui/blocks/GreyBlock'
-import MainLoading from '../../components/ui/basic/MainLoading'
-import { mapActions, mapGetters } from 'vuex'
+import GreyBlock from "../../components/ui/blocks/GreyBlock";
+import MainLoading from "../../components/ui/basic/MainLoading";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
-  name: 'Places',
-  data: function () {
+  name: "Places",
+  data: function() {
     return {
       loading: {
         init: false
       },
       select: true
-    }
+    };
   },
   methods: {
     ...mapActions({
-      setSelectedRole: 'userRoles/setSelected',
-      getUserRoles: 'userRoles/get'
+      setSelectedRole: "userRoles/setSelected",
+      getUserRoles: "userRoles/get"
     }),
-    selectRole: function (Id) {
+    selectRole: function(Id) {
       if (this.selectedRole && Id === this.selectedRole.id) {
-        this.setSelectedRole(null)
+        this.setSelectedRole(null);
       } else {
-        this.setSelectedRole(Id)
-        this.select = false
+        this.setSelectedRole(Id);
+        this.select = false;
       }
     },
-    getRoles: async function () {
-      this.loading.init = true
+    getRoles: async function() {
+      this.loading.init = true;
 
       await this.getUserRoles().catch(error => {
-        this.$toasted.error('Wystąpił błąd')
-        console.error(error)
-      })
+        this.$toasted.error("Wystąpił błąd");
+        console.error(error);
+      });
 
-      this.loading.init = false
+      this.loading.init = false;
     }
   },
   computed: {
     ...mapGetters({
-      roles: 'userRoles/list',
-      selectedRole: 'userRoles/selected'
+      roles: "userRoles/list",
+      selectedRole: "userRoles/selected"
     }),
-    selectedPlace: function () {
-      return this.selectedRole ? this.selectedRole.place : null
+    selectedPlace: function() {
+      return this.selectedRole ? this.selectedRole.place : null;
     }
   },
   components: {
     GreyBlock,
     MainLoading
   },
-  mounted () {
+  mounted() {
     if (this.roles.length === 0) {
-      this.getRoles()
+      this.getRoles();
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

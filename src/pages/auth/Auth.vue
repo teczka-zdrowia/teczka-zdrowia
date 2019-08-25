@@ -73,23 +73,23 @@
 </template>
 
 <script>
-import Logo from '../../components/ui/basic/logo/Logo'
-import Login from './Login'
-import Signup from './Signup'
-import MainBtn from '../../components/ui/basic/MainBtn'
-import { mapActions } from 'vuex'
+import Logo from "../../components/ui/basic/logo/Logo";
+import Login from "./Login";
+import Signup from "./Signup";
+import MainBtn from "../../components/ui/basic/MainBtn";
+import { mapActions } from "vuex";
 
 export default {
-  name: 'Auth',
-  data: function () {
+  name: "Auth",
+  data: function() {
     return {
-      title: 'Logowanie',
+      title: "Logowanie",
       isLogin: true,
       isLoading: {
         login: false,
         signup: false
       }
-    }
+    };
   },
   components: {
     Login,
@@ -99,19 +99,19 @@ export default {
   },
   methods: {
     ...mapActions({
-      showModal: 'modal/show'
+      showModal: "modal/show"
     }),
-    toggleLogin: function () {
-      this.isLogin = !this.isLogin
-      this.title = this.title == 'Logowanie' ? 'Rejestracja' : 'Logowanie'
+    toggleLogin: function() {
+      this.isLogin = !this.isLogin;
+      this.title = this.title == "Logowanie" ? "Rejestracja" : "Logowanie";
     },
-    resetPassword: function () {
+    resetPassword: function() {
       this.showModal({
-        componentName: 'ResetPassword'
-      })
+        componentName: "ResetPassword"
+      });
     }
   }
-}
+};
 </script>
 
 <style lang="scss">

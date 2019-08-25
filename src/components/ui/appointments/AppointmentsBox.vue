@@ -100,17 +100,17 @@
 </template>
 
 <script>
-import MainBtn from '../basic/MainBtn'
-import MainSearch from '../basic/MainSearch'
-import MainLoading from '../basic/MainLoading'
-import GreyBlock from '../blocks/GreyBlock'
-import AppointmentsBig from './AppointmentsBig'
-import AppointmentsSmall from './AppointmentsSmall'
+import MainBtn from "../basic/MainBtn";
+import MainSearch from "../basic/MainSearch";
+import MainLoading from "../basic/MainLoading";
+import GreyBlock from "../blocks/GreyBlock";
+import AppointmentsBig from "./AppointmentsBig";
+import AppointmentsSmall from "./AppointmentsSmall";
 
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  name: 'AppointmentsBox',
+  name: "AppointmentsBox",
   props: {
     showActions: {
       type: Boolean,
@@ -122,10 +122,10 @@ export default {
     },
     showUserAs: {
       type: String,
-      default: 'patient'
+      default: "patient"
     }
   },
-  data: function () {
+  data: function() {
     return {
       maxAppointments: 0,
       showUpcoming: true,
@@ -135,113 +135,113 @@ export default {
         next: false
       },
       query: {
-        search: '',
+        search: "",
         first: 5,
         sortData: {
-          order: 'ASC',
-          field: 'date'
+          order: "ASC",
+          field: "date"
         }
       }
-    }
+    };
   },
   computed: {
     ...mapGetters({
-      isMobile: 'window/isMobile',
-      appointments: 'userAppointments/list',
-      pageInfo: 'userAppointments/pageInfo',
-      appointments: 'userAppointments/list'
+      isMobile: "window/isMobile",
+      appointments: "userAppointments/list",
+      pageInfo: "userAppointments/pageInfo",
+      appointments: "userAppointments/list"
     }),
-    canShowAppointments: function () {
+    canShowAppointments: function() {
       return (
         !this.loading.init &&
         !this.loading.newQuery &&
         this.appointments.length > 0
-      )
+      );
     },
-    orderBy: function () {
+    orderBy: function() {
       return [
         {
           field: this.query.sortData.field,
           order: this.query.sortData.order
         }
-      ]
+      ];
     },
-    date: function () {
-      const today = new Date().toISOString().slice(0, 10)
-      const futureSafeDate = '2100-01-01'
-      const oldSafeDate = '2000-01-01'
+    date: function() {
+      const today = new Date().toISOString().slice(0, 10);
+      const futureSafeDate = "2100-01-01";
+      const oldSafeDate = "2000-01-01";
 
       return this.showUpcoming
         ? {
-          from: today,
-          to: futureSafeDate
-        }
+            from: today,
+            to: futureSafeDate
+          }
         : {
-          from: oldSafeDate,
-          to: today
-        }
+            from: oldSafeDate,
+            to: today
+          };
     }
   },
   methods: {
     ...mapActions({
-      getUserAppointments: 'userAppointments/get'
+      getUserAppointments: "userAppointments/get"
     }),
-    toggleShowUpcoming: function () {
-      this.showUpcoming = !this.showUpcoming
+    toggleShowUpcoming: function() {
+      this.showUpcoming = !this.showUpcoming;
 
-      const sortData = this.query.sortData
-      if (sortData.field === 'date') {
-        sortData.order = this.showUpcoming ? 'ASC' : 'DESC'
+      const sortData = this.query.sortData;
+      if (sortData.field === "date") {
+        sortData.order = this.showUpcoming ? "ASC" : "DESC";
       }
     },
-    getAppointments: async function (payload, type) {
-      this.loading[type] = true
+    getAppointments: async function(payload, type) {
+      this.loading[type] = true;
 
       await this.getUserAppointments(payload).catch(error => {
-        this.$toasted.error('Wystąpił błąd')
-        console.error(error)
-      })
+        this.$toasted.error("Wystąpił błąd");
+        console.error(error);
+      });
 
-      this.loading[type] = false
+      this.loading[type] = false;
     },
-    getFirstAppointments: function () {
+    getFirstAppointments: function() {
       const payload = {
         first: this.query.first,
-        after: '',
-        note: '',
+        after: "",
+        note: "",
         date: this.date,
         orderBy: this.orderBy,
-        type: 'SET'
-      }
+        type: "SET"
+      };
 
-      this.getAppointments(payload, 'init')
+      this.getAppointments(payload, "init");
     },
-    getNextAppointments: function () {
+    getNextAppointments: function() {
       const payload = {
         first: this.query.first,
         after: this.pageInfo.endCursor,
         note: `%${this.query.search}%`,
         date: this.date,
         orderBy: this.orderBy,
-        type: 'ADD'
-      }
+        type: "ADD"
+      };
 
-      this.getAppointments(payload, 'next')
+      this.getAppointments(payload, "next");
     }
   },
   watch: {
     query: {
-      handler () {
+      handler() {
         const payload = {
           first: this.query.first,
-          after: '',
+          after: "",
           note: `%${this.query.search}%`,
           date: this.date,
           orderBy: this.orderBy,
-          type: 'SET'
-        }
+          type: "SET"
+        };
 
-        this.getAppointments(payload, 'newQuery')
+        this.getAppointments(payload, "newQuery");
       },
       deep: true
     }
@@ -254,19 +254,19 @@ export default {
     GreyBlock,
     MainLoading
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
-      if (!this.$store.getters['window/isMobile']) {
-        this.maxAppointments = Math.floor(this.$el.offsetWidth / 380)
+      if (!this.$store.getters["window/isMobile"]) {
+        this.maxAppointments = Math.floor(this.$el.offsetWidth / 380);
         if (this.showAppointmentsLink) {
-          this.maxAppointments--
+          this.maxAppointments--;
         }
-        this.query.first = this.maxAppointments
+        this.query.first = this.maxAppointments;
       }
-      this.getFirstAppointments()
-    })
+      this.getFirstAppointments();
+    });
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -113,6 +113,70 @@ button {
   border-bottom: 0.5px solid rgba(145, 145, 156, 0.3);
 }
 
+.animated {
+  animation-duration: 0.2s;
+  animation-fill-mode: both;
+  z-index: 901;
+}
+
+.fadeIn {
+  animation-name: fadeIn;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+.fadeOut {
+  animation-name: fadeOut;
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+}
+.fadeInUp {
+  animation-name: fadeInUp;
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 100%, 0);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+.fadeOutDown {
+  animation-name: fadeOutDown;
+  @keyframes fadeOutDown {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+      transform: translate3d(0, 100%, 0);
+    }
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
 @media only screen and (max-width: 960px) {
   .app {
     width: 100vw;
