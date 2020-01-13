@@ -13,6 +13,7 @@
       <router-link
         to="/Dashboard"
         class="nav__el"
+        v-if="viewAsPatient"
       >
         <span
           aria-hidden="true"
@@ -23,6 +24,7 @@
       </router-link>
       <router-link
         to="/Map"
+        v-if="viewAsPatient"
         class="nav__el"
       >
         <span
@@ -33,21 +35,9 @@
         </span>
       </router-link>
       <router-link
-        to="/Places"
-        class="nav__el"
-        v-if="isPaymentValid"
-      >
-        <span
-          aria-hidden="true"
-          class="fas fa-hospital"
-        >
-          <div class="nav__tooltip">Moje gabinety</div>
-        </span>
-      </router-link>
-      <router-link
         to="/Panel"
         class="nav__el"
-        v-if="isPaymentValid"
+        v-if="hasDoctorPermissions && viewAsDoctor"
       >
         <span
           aria-hidden="true"
@@ -57,7 +47,20 @@
         </span>
       </router-link>
       <router-link
+        to="/Places"
+        class="nav__el"
+        v-if="hasDoctorPermissions && viewAsDoctor"
+      >
+        <span
+          aria-hidden="true"
+          class="fas fa-hospital"
+        >
+          <div class="nav__tooltip">Moje gabinety</div>
+        </span>
+      </router-link>
+      <router-link
         to="/Appointments"
+        v-if="viewAsPatient"
         class="nav__el"
       >
         <span
@@ -67,7 +70,7 @@
           <div class="nav__tooltip">Wizyty</div>
         </span>
       </router-link>
-      <router-link
+      <!--<router-link
         to="/Payment"
         class="nav__el"
       >
@@ -77,10 +80,10 @@
         >
           <div class="nav__tooltip">Płatności</div>
         </span>
-      </router-link>
+      </router-link>>-->
       <router-link
         to="/AddAppointment"
-        v-if="isPaymentValid"
+        v-if="isPaymentValid && viewAsDoctor"
       >
         <MainBtn class="nav__el nav__el--btn">
           <span
@@ -112,8 +115,16 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isPaymentValid: 'userInfo/isPaymentValid'
-    })
+      hasDoctorPermissions: 'userInfo/hasDoctorPermissions',
+      isPaymentValid: 'userInfo/isPaymentValid',
+      viewAs: 'settings/viewAs'
+    }),
+    viewAsPatient: function () {
+      return this.viewAs === 'patient'
+    },
+    viewAsDoctor: function () {
+      return this.viewAs === 'doctor'
+    }
   },
   methods: {
     ...mapActions({

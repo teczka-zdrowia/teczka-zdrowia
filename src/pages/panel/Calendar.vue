@@ -4,24 +4,15 @@
       :value="date"
       v-on:input="e => setDate(e)"
       :hasInputElement="false"
-      :highlighted="[]"
+      :highlighted="dates"
       :selectableYearRange="20"
     />
     <div class="calendar__bottom">
-      <div
-        class="calendar__btn"
-        v-on:click="setDate(today)"
-      >
-        <span
-          aria-hidden="true"
-          class="fas fa-calendar-day"
-        />
+      <div class="calendar__btn" v-on:click="setDate(today)">
+        <span aria-hidden="true" class="fas fa-calendar-day" />
         Dzisiaj
       </div>
-      <div
-        class="calendar__btn"
-        v-on:click="setDate('')"
-      >
+      <div class="calendar__btn" v-on:click="setDate('')">
         Wyczyść
       </div>
     </div>
@@ -29,28 +20,28 @@
 </template>
 
 <script>
-import DatePick from '../../components/ui/vue-date-pick/vueDatePick'
+import DatePick from "../../components/ui/vue-date-pick/vueDatePick"
 
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters } from "vuex"
 
-const moment = require('moment')
-moment.locale('pl')
+const moment = require("moment")
+moment.locale("pl")
 
 export default {
-  name: 'Calendar',
+  name: "Calendar",
   components: { DatePick },
   computed: {
     ...mapGetters({
-      date: 'appointmentsByMe/date',
-      dates: 'appointmentsByMe/dates'
+      date: "appointmentsByMe/date",
+      dates: "appointmentsByMe/dates"
     }),
-    today: function () {
+    today: function() {
       return new Date().toISOString().slice(0, 10)
     }
   },
   methods: {
     ...mapActions({
-      setDate: 'appointmentsByMe/setDate'
+      setDate: "appointmentsByMe/setDate"
     })
   }
 }

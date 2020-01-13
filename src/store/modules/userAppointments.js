@@ -89,6 +89,9 @@ const actions = {
         commit('UPDATE_LOCAL', appointment)
       })
   },
+  addLocal ({ commit }, data) {
+    commit('ADD_LOCAL', data)
+  },
   updateLocal ({ commit }, data) {
     commit('UPDATE_LOCAL', data)
   },

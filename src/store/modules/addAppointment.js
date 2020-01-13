@@ -19,7 +19,7 @@ const mutations = {
     state.data = data
   },
   CLEAR (state) {
-    getDefaultState()
+    state = getDefaultState()
   }
 }
 
@@ -33,7 +33,10 @@ const actions = {
         }
       })
       .then(data => data.data.createAppointment)
-      .then(() => commit('CLEAR'))
+      .then(appointment => {
+        commit('CLEAR')
+        return appointment
+      })
   },
   setData ({ commit }, data) {
     commit('SET_DATA', data)

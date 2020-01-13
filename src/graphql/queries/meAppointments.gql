@@ -30,6 +30,7 @@ query(
             name
             phone
             email
+            address
             specialization
           }
           patient {

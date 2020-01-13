@@ -7,7 +7,9 @@
       <div
         class="settings__content"
         v-if="!isEdit"
-      >{{ selectedPlace.name }}</div>
+      >
+        {{ selectedPlace.name }}
+      </div>
       <input
         v-if="isEdit"
         v-model="newData.name"
@@ -17,7 +19,7 @@
         minlength="4"
         placeholder="MedMax"
         required
-      >
+      />
     </div>
     <div class="settings__el">
       <div class="settings__title">
@@ -26,7 +28,9 @@
       <div
         class="settings__content"
         v-if="!isEdit"
-      >{{ selectedPlace.address }}</div>
+      >
+        {{ selectedPlace.address }}
+      </div>
       <input
         v-if="isEdit"
         v-model="newData.address"
@@ -36,7 +40,7 @@
         minlength="4"
         placeholder="Kwiatowa 4"
         required
-      >
+      />
     </div>
     <div class="settings__el">
       <div class="settings__title">
@@ -45,7 +49,9 @@
       <div
         class="settings__content"
         v-if="!isEdit"
-      >{{ selectedPlace.city }}</div>
+      >
+        {{ selectedPlace.city }}
+      </div>
       <input
         v-if="isEdit"
         v-model="newData.city"
@@ -55,7 +61,7 @@
         minlength="4"
         placeholder="Kwiatowa 4"
         required
-      >
+      />
     </div>
     <div class="settings__el">
       <div class="settings__title">
@@ -68,18 +74,22 @@
       ><span
           aria-hidden="true"
           class="fas fa-file-contract"
-        /> Zobacz szablon</MainBtn>
+        /> Zobacz
+        szablon</MainBtn>
       <div
         class="settings__content"
         v-if="!isEdit && !selectedPlace.agreement"
-      >Brak szablonu</div>
+      >
+        Brak szablonu
+      </div>
       <div
         class="settings__content settings__content--withbutton"
         v-if="isEdit && newData.agreement"
       >
         <div class="settings__content--withbutton__info">
           {{ agreementInfo }}
-        </div><button
+        </div>
+        <button
           class="settings__content--withbutton__btn"
           v-on:click="deleteAgreement"
         >
@@ -99,12 +109,12 @@
           accept="image/*"
           v-on:change="processAgreement($event)"
           required
-        >
+        />
         <span
           aria-hidden="true"
           class="fas fa-file-contract"
         />
-        Przejślij plik szablonu
+        Prześlij zdjęcie/skan szablonu
       </label>
     </div>
     <div class="settings__actions">
@@ -257,8 +267,12 @@ export default {
     },
     processAgreement: async function(event) {
       let file = event.target.files[0];
-      file = this.isImage(file) ? await this.compressImage(file) : file;
-      this.newData.agreement = file;
+      if (this.isImage(file)) {
+        await this.compressImage(file);
+        this.newData.agreement = file;
+      } else {
+        this.$toasted.error("Dozwolone są jedynie obrazy");
+      }
     },
     deleteAgreement: function() {
       this.newData.agreement = null;
@@ -384,6 +398,10 @@ export default {
       }
     }
   }
+}
+
+input.settings__content {
+  color: #3e3e45;
 }
 
 .settings__actions {

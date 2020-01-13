@@ -106,6 +106,7 @@ import MainBtn from '../ui/basic/MainBtn'
 import MainInput from '../ui/basic/MainInput'
 import MainUserBlockInfo from '../ui/basic/MainUserBlockInfo'
 import GreyBlock from '../ui/blocks/GreyBlock'
+import handleErrors from '../../utils/handleErrors'
 
 import { mapGetters, mapActions } from 'vuex'
 
@@ -178,10 +179,7 @@ export default {
             }
           )
         })
-        .catch(error => {
-          this.$toasted.error('Wystąpił błąd')
-          console.error(error)
-        })
+        .catch(error => handleErrors(error))
 
       this.loading.initalize = false
     }

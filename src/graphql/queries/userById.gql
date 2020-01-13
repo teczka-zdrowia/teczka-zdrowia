@@ -5,6 +5,7 @@ query($id: ID!) {
     name
     email
     phone
+    address
     birthdate
   }
 }

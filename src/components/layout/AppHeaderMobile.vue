@@ -1,20 +1,31 @@
 <template>
   <div class="header">
-    <UserInfo />
+    <MainViewSwitch
+      :small="true"
+      v-if="hasDoctorPermissions"
+    />
+    <UserInfo class="header__userinfo" />
   </div>
 </template>
 
 <script>
-import MainBtn from '../ui/basic/MainBtn'
-import UserInfo from '../ui/UserInfo'
+import UserInfo from "../ui/UserInfo";
+import MainViewSwitch from "../ui/basic/MainViewSwitch";
+
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'AppHeader',
+  name: "AppHeader",
   components: {
-    MainBtn: MainBtn,
-    UserInfo: UserInfo
+    UserInfo,
+    MainViewSwitch
+  },
+  computed: {
+    ...mapGetters({
+      hasDoctorPermissions: "userInfo/hasDoctorPermissions"
+    })
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -33,6 +44,9 @@ $primrary-light: #fafafa;
   display: flex;
   justify-content: flex-end;
   box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+  &__userinfo {
+    width: 6rem;
+  }
   .button {
     position: fixed;
     right: 1rem;

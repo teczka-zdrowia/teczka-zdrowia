@@ -1,18 +1,17 @@
 <template>
   <div>
-    <div
-      class="appointments__actions"
-      v-if="showActions && !loading.init"
-    >
+    <div class="appointments__actions" v-if="showActions && !loading.init">
       <div class="appointments__types">
         <MainBtn
           v-on:click.native="toggleShowUpcoming"
-          v-bind:class="{active : showUpcoming}"
-        >Nadchodzące</MainBtn>
+          v-bind:class="{ active: showUpcoming }"
+          >Nadchodzące</MainBtn
+        >
         <MainBtn
           v-on:click.native="toggleShowUpcoming"
-          v-bind:class="{active : !showUpcoming}"
-        >Minione</MainBtn>
+          v-bind:class="{ active: !showUpcoming }"
+          >Minione</MainBtn
+        >
       </div>
       <MainSearch class="appointments__right">
         <input
@@ -21,18 +20,12 @@
           type="text"
           v-model.lazy="query.search"
           placeholder="  Szukaj"
-        >
-        <div
-          class="select"
-          slot="select"
-        >
+        />
+        <div class="select" slot="select">
           <label>
             Sortuj przez:
             <select v-on:change="query.sortData.field">
-              <option
-                value="date"
-                selected
-              >Data</option>
+              <option value="date" selected>Data</option>
               <!--<option>Specjalista</option>
               <option>Gabinet</option>-->
               <option value="note">Opis</option>
@@ -41,10 +34,7 @@
           <label>
             Porządkuj:
             <select v-model="query.sortData.order">
-              <option
-                value="DESC"
-                selected
-              >Malejąco</option>
+              <option value="DESC" selected>Malejąco</option>
               <option value="ASC">Rosnąco</option>
             </select>
           </label>
@@ -55,11 +45,13 @@
                 v-if="maxAppointments != 5"
                 :value="maxAppointments"
                 selected
-              >{{ maxAppointments }}</option>
+                >{{ maxAppointments }}</option
+              >
               <option
                 value="5"
                 :selected="!maxAppointments || maxAppointments == 5"
-              >5</option>
+                >5</option
+              >
               <option value="10">10</option>
               <option value="20">20</option>
             </select>
@@ -88,29 +80,31 @@
     />
     <GreyBlock
       class="appointments__info"
-      v-if="!loading.init && appointments.length === 0"
-    >Brak wizyt</GreyBlock>
+      v-if="!loading.init && !loading.newQuery && appointments.length === 0"
+      >Brak wizyt</GreyBlock
+    >
     <GreyBlock
       class="appointments__info appointments__info--loading"
       v-if="loading.init || loading.newQuery"
-    >Ładowanie
+      >Ładowanie
       <MainLoading color="#67676e" />
     </GreyBlock>
   </div>
 </template>
 
 <script>
-import MainBtn from "../basic/MainBtn";
-import MainSearch from "../basic/MainSearch";
-import MainLoading from "../basic/MainLoading";
-import GreyBlock from "../blocks/GreyBlock";
-import AppointmentsBig from "./AppointmentsBig";
-import AppointmentsSmall from "./AppointmentsSmall";
+import MainBtn from '../basic/MainBtn'
+import MainSearch from '../basic/MainSearch'
+import MainLoading from '../basic/MainLoading'
+import GreyBlock from '../blocks/GreyBlock'
+import AppointmentsBig from './AppointmentsBig'
+import AppointmentsSmall from './AppointmentsSmall'
+import handleErrors from '../../../utils/handleErrors'
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: "AppointmentsBox",
+  name: 'AppointmentsBox',
   props: {
     showActions: {
       type: Boolean,
@@ -122,10 +116,10 @@ export default {
     },
     showUserAs: {
       type: String,
-      default: "patient"
+      default: 'patient'
     }
   },
-  data: function() {
+  data: function () {
     return {
       maxAppointments: 0,
       showUpcoming: true,
@@ -135,113 +129,111 @@ export default {
         next: false
       },
       query: {
-        search: "",
+        search: '',
         first: 5,
         sortData: {
-          order: "ASC",
-          field: "date"
+          order: 'ASC',
+          field: 'date'
         }
       }
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      isMobile: "window/isMobile",
-      appointments: "userAppointments/list",
-      pageInfo: "userAppointments/pageInfo",
-      appointments: "userAppointments/list"
+      isMobile: 'window/isMobile',
+      appointments: 'userAppointments/list',
+      pageInfo: 'userAppointments/pageInfo',
+      appointments: 'userAppointments/list'
     }),
-    canShowAppointments: function() {
+    canShowAppointments: function () {
       return (
         !this.loading.init &&
         !this.loading.newQuery &&
         this.appointments.length > 0
-      );
+      )
     },
-    orderBy: function() {
+    orderBy: function () {
       return [
         {
           field: this.query.sortData.field,
           order: this.query.sortData.order
         }
-      ];
+      ]
     },
-    date: function() {
-      const today = new Date().toISOString().slice(0, 10);
-      const futureSafeDate = "2100-01-01";
-      const oldSafeDate = "2000-01-01";
+    date: function () {
+      const today = new Date().toISOString().slice(0, 10)
+      const futureSafeDate = '2100-01-01'
+      const oldSafeDate = '2000-01-01'
 
       return this.showUpcoming
         ? {
-            from: today,
-            to: futureSafeDate
-          }
+          from: today,
+          to: futureSafeDate
+        }
         : {
-            from: oldSafeDate,
-            to: today
-          };
+          from: oldSafeDate,
+          to: today
+        }
     }
   },
   methods: {
     ...mapActions({
-      getUserAppointments: "userAppointments/get"
+      getUserAppointments: 'userAppointments/get'
     }),
-    toggleShowUpcoming: function() {
-      this.showUpcoming = !this.showUpcoming;
+    toggleShowUpcoming: function () {
+      this.showUpcoming = !this.showUpcoming
 
-      const sortData = this.query.sortData;
-      if (sortData.field === "date") {
-        sortData.order = this.showUpcoming ? "ASC" : "DESC";
+      const sortData = this.query.sortData
+      if (sortData.field === 'date') {
+        sortData.order = this.showUpcoming ? 'ASC' : 'DESC'
       }
     },
-    getAppointments: async function(payload, type) {
-      this.loading[type] = true;
+    getAppointments: async function (payload, type) {
+      this.loading[type] = true
 
-      await this.getUserAppointments(payload).catch(error => {
-        this.$toasted.error("Wystąpił błąd");
-        console.error(error);
-      });
+      await this.getUserAppointments(payload)
+        .catch(errors => handleErrors(errors))
 
-      this.loading[type] = false;
+      this.loading[type] = false
     },
-    getFirstAppointments: function() {
+    getFirstAppointments: function () {
       const payload = {
         first: this.query.first,
-        after: "",
-        note: "",
+        after: '',
+        note: '',
         date: this.date,
         orderBy: this.orderBy,
-        type: "SET"
-      };
+        type: 'SET'
+      }
 
-      this.getAppointments(payload, "init");
+      this.getAppointments(payload, 'init')
     },
-    getNextAppointments: function() {
+    getNextAppointments: function () {
       const payload = {
         first: this.query.first,
         after: this.pageInfo.endCursor,
         note: `%${this.query.search}%`,
         date: this.date,
         orderBy: this.orderBy,
-        type: "ADD"
-      };
+        type: 'ADD'
+      }
 
-      this.getAppointments(payload, "next");
+      this.getAppointments(payload, 'next')
     }
   },
   watch: {
     query: {
-      handler() {
+      handler () {
         const payload = {
           first: this.query.first,
-          after: "",
+          after: '',
           note: `%${this.query.search}%`,
           date: this.date,
           orderBy: this.orderBy,
-          type: "SET"
-        };
+          type: 'SET'
+        }
 
-        this.getAppointments(payload, "newQuery");
+        this.getAppointments(payload, 'newQuery')
       },
       deep: true
     }
@@ -254,19 +246,25 @@ export default {
     GreyBlock,
     MainLoading
   },
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
-      if (!this.$store.getters["window/isMobile"]) {
-        this.maxAppointments = Math.floor(this.$el.offsetWidth / 380);
+      if (!this.$store.getters['window/isMobile']) {
+        this.maxAppointments = Math.floor(this.$el.offsetWidth / 380)
         if (this.showAppointmentsLink) {
-          this.maxAppointments--;
+          this.maxAppointments--
         }
-        this.query.first = this.maxAppointments;
+        this.query.first = this.maxAppointments
       }
-      this.getFirstAppointments();
-    });
+      this.getFirstAppointments()
+    })
+  },
+  created () {
+    this.$eventBus.$on('new-appointment', this.getFirstAppointments)
+  },
+  beforeDestroy () {
+    this.$eventBus.$off('new-appointment')
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -320,7 +318,7 @@ export default {
 .appointments__info {
   height: unset;
   padding: 1rem;
-  margin-top: 2em;
+  margin-top: 0;
   &--loading {
     svg {
       height: 2rem;
@@ -345,6 +343,7 @@ export default {
   .appointments__info {
     height: 24rem;
     padding: 0 1rem;
+    margin-top: 1rem;
   }
 }
 </style>

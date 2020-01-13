@@ -26,6 +26,7 @@ const getDefaultState = () => {
     email: null,
     phone: null,
     birthdate: null,
+    address: null,
     paid_until: null,
     is_payment_valid: null,
     storage: {
@@ -231,6 +232,9 @@ const getters = {
   },
   isPaymentValid (state) {
     return state.is_payment_valid
+  },
+  hasDoctorPermissions (state) {
+    return state.paid_until !== null
   },
   isLoggedIn (state) {
     return window.localStorage.getItem(AUTH_TOKEN) !== null

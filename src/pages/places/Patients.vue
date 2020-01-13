@@ -3,6 +3,7 @@
     <div class="patients__actions">
       <MainBtn
         class="actions__btn"
+        v-if="isPaymentValid"
         v-on:click.native="addNewPatient"
       >
         <span
@@ -87,7 +88,8 @@ export default {
   computed: {
     ...mapGetters({
       selectedRole: "userRoles/selected",
-      patients: "placePatients/list"
+      patients: "placePatients/list",
+      isPaymentValid: "userInfo/isPaymentValid"
     }),
     searchResults: function() {
       return this.patients.filter(role => {
@@ -176,13 +178,14 @@ export default {
   border-radius: 0.5rem;
 }
 
+.patients__search:only-child {
+  width: 100%;
+}
+
 .actions__btn {
   height: 100%;
   padding: 0.75rem;
   margin-right: 1rem;
-  span {
-    margin-right: 0.75rem;
-  }
 }
 
 .actions__patients {
@@ -306,6 +309,10 @@ export default {
   .patients__info {
     height: 24rem;
     padding: 0 1rem;
+  }
+
+  .actions__btn span {
+    margin-right: 0.75rem;
   }
 }
 </style>

@@ -36,7 +36,6 @@ export default {
 @import "../../main";
 
 .row {
-  margin-bottom: 1em;
   display: flex;
   width: 100%;
   justify-content: space-between;

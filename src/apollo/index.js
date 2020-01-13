@@ -27,8 +27,15 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 
 export const apolloClient = new ApolloClient({
   link: ApolloLink.from([authMiddleware, uploadLink, httpLink]),
-  cache: new InMemoryCache(),
-  connectToDevTools: true
+  connectToDevTools: true,
+  cache: new InMemoryCache({
+    dataIdFromObject: o => o['_id']
+  }),
+  defaultOptions: {
+    query: {
+      fetchPolicy: 'network-only'
+    }
+  }
 })
 
 const apolloProvider = new VueApollo({

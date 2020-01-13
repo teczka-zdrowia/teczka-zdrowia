@@ -62,6 +62,7 @@
 <script>
 import MainInput from "../ui/basic/MainInput";
 import { LMap, LTileLayer, LMarker, L } from "vue2-leaflet";
+import handleErrors from "../../utils/handleErrors";
 
 import "leaflet/dist/leaflet.css";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
@@ -124,20 +125,7 @@ export default {
           this.$emit("finished");
           this.$toasted.success("Pomyślnie dodano gabinet");
         })
-        .catch(error => {
-          const graphQLErrors = error.graphQLErrors;
-          const validation = graphQLErrors
-            ? graphQLErrors[0].extensions.validation
-            : null;
-          const errorMessage = validation
-            ? validation[Object.keys(validation)[0]][0]
-            : "Wystąpił nieznany błąd";
-          this.$toasted.error(errorMessage);
-          console.error(error);
-        })
-        .finally(() => {
-          this.$emit("loading", false);
-        });
+        .catch(error => handleErrors(error));
     }
   },
   watch: {

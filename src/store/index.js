@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import window from './modules/window'
+import settings from './modules/settings'
 import modal from './modules/modal'
 import userInfo from './modules/userInfo'
 import userRecommendations from './modules/userRecommendations'
@@ -28,6 +29,7 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   modules: {
     window,
+    settings,
     modal,
     userInfo,
     userRecommendations,
@@ -51,7 +53,7 @@ export const store = new Vuex.Store({
   },
   plugins: [
     createPersistedState({
-      paths: ['userInfo']
+      paths: ['userInfo', 'settings']
     })
   ]
 })

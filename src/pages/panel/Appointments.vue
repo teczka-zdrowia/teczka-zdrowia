@@ -9,18 +9,12 @@
           type="text"
           v-model.lazy="query.search"
           placeholder="  Szukaj"
-        >
-        <div
-          class="select"
-          slot="select"
-        >
+        />
+        <div class="select" slot="select">
           <label>
             Sortuj przez:
             <select v-on:change="query.sortData.field">
-              <option
-                value="date"
-                selected
-              >Data</option>
+              <option value="date" selected>Data</option>
               <!--<option>Specjalista</option>
               <option>Gabinet</option>-->
               <option value="note">Opis</option>
@@ -29,20 +23,14 @@
           <label>
             Porządkuj:
             <select v-model="query.sortData.order">
-              <option
-                value="DESC"
-                selected
-              >Malejąco</option>
+              <option value="DESC" selected>Malejąco</option>
               <option value="ASC">Rosnąco</option>
             </select>
           </label>
           <label>
             Ładuj po:
             <select v-model="query.first">
-              <option
-                value="5"
-                selected
-              >5</option>
+              <option value="5" selected>5</option>
               <option value="10">10</option>
               <option value="20">20</option>
             </select>
@@ -51,6 +39,7 @@
       </MainSearch>
     </div>
     <AppointmentsSmall
+      class="appointments__list"
       :showAppointmentsLink="false"
       :showPlace="true"
       :canEdit="true"
@@ -63,24 +52,25 @@
     <GreyBlock
       class="appointments__info"
       v-if="!loading.init && !loading.newQuery && appointments.length === 0"
-    >Brak wizyt</GreyBlock>
+      >Brak wizyt</GreyBlock
+    >
     <GreyBlock
       class="appointments__info appointments__info--loading"
       v-if="loading.init || loading.newQuery"
-    >Ładowanie
+      >Ładowanie
       <MainLoading color="#67676e" />
     </GreyBlock>
   </div>
 </template>
 
 <script>
-import MainBtn from "../../components/ui/basic/MainBtn";
-import MainSearch from "../../components/ui/basic/MainSearch";
-import MainLoading from "../../components/ui/basic/MainLoading";
-import GreyBlock from "../../components/ui/blocks/GreyBlock";
-import AppointmentsSmall from "../../components/ui/appointments/AppointmentsSmall";
+import MainBtn from "../../components/ui/basic/MainBtn"
+import MainSearch from "../../components/ui/basic/MainSearch"
+import MainLoading from "../../components/ui/basic/MainLoading"
+import GreyBlock from "../../components/ui/blocks/GreyBlock"
+import AppointmentsSmall from "../../components/ui/appointments/AppointmentsSmall"
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex"
 
 export default {
   name: "Appointments",
@@ -99,7 +89,7 @@ export default {
           field: "date"
         }
       }
-    };
+    }
   },
   computed: {
     ...mapGetters({
@@ -113,24 +103,24 @@ export default {
       viewer: "userInfo/full"
     }),
     type: function() {
-      return this.selectedRole ? "PLACE" : "ALL";
+      return this.selectedRole ? "PLACE" : "ALL"
     },
     appointments: function() {
       return this.type === "ALL"
         ? this.appointmentsByMe
-        : this.placeAppointments;
+        : this.placeAppointments
     },
     pageInfo: function() {
       return this.type === "ALL"
         ? this.appointmentsByMePageInfo
-        : this.placeAppointmentsPageInfo;
+        : this.placeAppointmentsPageInfo
     },
     canShowAppointments: function() {
       return (
         !this.loading.init &&
         !this.loading.newQuery &&
         this.appointments.length > 0
-      );
+      )
     },
     orderBy: function() {
       return [
@@ -138,40 +128,40 @@ export default {
           field: this.query.sortData.field,
           order: this.query.sortData.order
         }
-      ];
+      ]
     },
     date: function() {
-      const today = new Date().toISOString().slice(0, 10);
-      const futureSafeDate = "2100-01-01";
+      const today = new Date().toISOString().slice(0, 10)
+      const futureSafeDate = "2100-01-01"
 
       if (this.selectedDate) {
-        const selected = new Date(this.selectedDate);
+        const selected = new Date(this.selectedDate)
         const nextAfterSelected = new Date(
           selected.setDate(selected.getDate() + 1)
         )
           .toISOString()
-          .slice(0, 10);
+          .slice(0, 10)
 
         return {
           from: this.selectedDate,
           to: nextAfterSelected
-        };
+        }
       }
 
       return {
         from: today,
         to: futureSafeDate
-      };
+      }
     },
     title: function() {
       const enter =
-        this.type === "ALL" ? "Wszystkie twoje wizyty" : "Twoje wizyty";
+        this.type === "ALL" ? "Wszystkie twoje wizyty" : "Twoje wizyty"
       const when = this.selectedDate
         ? ` ${new Date(this.selectedDate).toLocaleDateString()}`
-        : "";
+        : ""
       const where =
-        this.type === "PLACE" ? ` w ${this.selectedRole.place.name}` : "";
-      return `${enter}${when}${where}`;
+        this.type === "PLACE" ? ` w ${this.selectedRole.place.name}` : ""
+      return `${enter}${when}${where}`
     }
   },
   methods: {
@@ -180,26 +170,26 @@ export default {
       getPlaceAppointments: "placeAppointments/get"
     }),
     getAppointments: async function(payload, type) {
-      this.loading[type] = true;
+      this.loading[type] = true
 
       if (this.type === "ALL") {
         await this.getAppointmentsByMe(payload).catch(error => {
-          this.$toasted.error("Wystąpił błąd podczas ładowania wizyt");
-          console.error(error);
-        });
+          this.$toasted.error("Wystąpił błąd podczas ładowania wizyt")
+          console.error(error)
+        })
       } else {
         payload = Object.assign(payload, {
           id: this.selectedRole.place.id,
           authorId: this.viewer.id
-        });
+        })
 
         await this.getPlaceAppointments(payload).catch(error => {
-          this.$toasted.error("Wystąpił błąd podczas ładowania wizyt");
-          console.error(error);
-        });
+          this.$toasted.error("Wystąpił błąd podczas ładowania wizyt")
+          console.error(error)
+        })
       }
 
-      this.loading[type] = false;
+      this.loading[type] = false
     },
     getFirstAppointments: function() {
       const payload = {
@@ -209,9 +199,9 @@ export default {
         date: this.date,
         orderBy: this.orderBy,
         type: "SET"
-      };
+      }
 
-      this.getAppointments(payload, "init");
+      this.getAppointments(payload, "init")
     },
     getNextAppointments: function() {
       const payload = {
@@ -221,9 +211,9 @@ export default {
         date: this.date,
         orderBy: this.orderBy,
         type: "ADD"
-      };
+      }
 
-      this.getAppointments(payload, "next");
+      this.getAppointments(payload, "next")
     }
   },
   watch: {
@@ -236,17 +226,17 @@ export default {
           date: this.date,
           orderBy: this.orderBy,
           type: "SET"
-        };
+        }
 
-        this.getAppointments(payload, "newQuery");
+        this.getAppointments(payload, "newQuery")
       },
       deep: true
     },
     selectedDate: function(val) {
-      this.getFirstAppointments();
+      this.getFirstAppointments()
     },
     selectedRole: function(val) {
-      this.getFirstAppointments();
+      this.getFirstAppointments()
     }
   },
   components: {
@@ -257,9 +247,15 @@ export default {
     MainLoading
   },
   mounted() {
-    this.getFirstAppointments();
+    this.getFirstAppointments()
+  },
+  created() {
+    this.$eventBus.$on("new-appointment", this.getFirstAppointments)
+  },
+  beforeDestroy() {
+    this.$eventBus.$off("new-appointment")
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -401,6 +397,12 @@ export default {
   }
   .appointments__title {
     padding-bottom: 1rem;
+  }
+  .appointments__list {
+    & /deep/ .appointment {
+      flex-direction: column;
+      height: auto;
+    }
   }
 }
 </style>

@@ -8,14 +8,17 @@
             class="addappointment__btn addappointment__btn--grey"
             type="button"
             v-on:click="$router.go(-1)"
-          >Anuluj</button>
+          >
+            Anuluj
+          </button>
           <MainBtn
             class="addappointment__btn addappointment__btn--violet"
             :loading="isLoading"
             :disabled="isLoading"
             color="#fafafa"
             v-on:click="addAppointment"
-          >Dodaj wizytę</MainBtn>
+            >Dodaj wizytę</MainBtn
+          >
         </div>
       </form>
     </Block>
@@ -23,48 +26,41 @@
 </template>
 
 <script>
-import AddAppointmentComponent from "../../components/ui/AddAppointmentComponent";
-import MainBtn from "../../components/ui/basic/MainBtn";
-import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
-import { mapActions, mapGetters } from "vuex";
+import AddAppointmentComponent from '../../components/ui/AddAppointmentComponent'
+import MainBtn from '../../components/ui/basic/MainBtn'
+import WhiteFunctionalBlock from '../../components/ui/blocks/WhiteFunctionalBlock'
+import handleErrors from '../../utils/handleErrors'
+
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "AddAppointment",
-  data: function() {
+  name: 'AddAppointment',
+  data: function () {
     return {
       isLoading: false
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      appointmentData: "addAppointment/data"
+      appointmentData: 'addAppointment/data'
     })
   },
   methods: {
     ...mapActions({
-      addUserAppointment: "addAppointment/add"
+      addUserAppointment: 'addAppointment/add'
     }),
-    addAppointment: async function() {
-      this.isLoading = true;
+    addAppointment: async function () {
+      this.isLoading = true
 
       await this.addUserAppointment(this.appointmentData)
-        .then(() => {
-          this.$toasted.success("Poprawnie dodano wizytę");
-          this.$router.go(-1);
+        .then(appointment => {
+          this.$toasted.success('Poprawnie dodano wizytę')
+          this.$eventBus.$emit('new-appointment', appointment)
+          this.$router.go(-1)
         })
-        .catch(error => {
-          const graphQLErrors = error.graphQLErrors;
-          const validation = graphQLErrors
-            ? graphQLErrors[0].extensions.validation
-            : null;
-          const errorMessage = validation
-            ? validation[Object.keys(validation)[0]][0]
-            : "Wystąpił nieznany błąd";
-          this.$toasted.error(errorMessage);
-          console.error(error);
-        });
+        .catch(errors => handleErrors(errors))
 
-      this.isLoading = false;
+      this.isLoading = false
     }
   },
   components: {
@@ -72,7 +68,7 @@ export default {
     MainBtn,
     Block: WhiteFunctionalBlock
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

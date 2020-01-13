@@ -5,6 +5,7 @@ query($pesel: String!) {
     name
     email
     phone
+    address
     birthdate
   }
 }

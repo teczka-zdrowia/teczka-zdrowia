@@ -27,7 +27,7 @@ const mutations = {
     state.completed = value
   },
   CLEAR_ADDPATIENT (state, value) {
-    getDefaultState()
+    state = getDefaultState()
   }
 }
 
@@ -72,6 +72,9 @@ const actions = {
   },
   clear ({ commit }) {
     commit('CLEAR_ADDPATIENT')
+  },
+  clearPatient ({ commit }) {
+    commit('SET_PATIENT', false)
   }
 }
 

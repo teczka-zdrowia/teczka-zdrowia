@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="list__el">
+    <div
+      class="list__el"
+    >
       <div class="list__info">
         <MainUserInfo
           class="list__info__el list__info__el--user"
@@ -8,7 +10,10 @@
           :type="'doctor'"
           :isBig="true"
         />
-        <div class="list__info__el list__info__el--column">
+        <div
+          class="list__info__el list__info__el--column"
+          v-on:click="isMobile && toggleShowMore()"
+        >
           <div class="list__info__el list__info__el--date">{{ data.date.slice(0, 10) }}</div>
           <div class="list__info__el--line"></div>
           <div class="list__info__el list__info__el--place">
@@ -27,6 +32,7 @@
       </div>
       <div
         class="list__more"
+        v-if="!isMobile"
         v-on:click="toggleShowMore"
       >
         <div class="list__btn">
@@ -56,25 +62,25 @@
 </template>
 
 <script>
-import MainBtn from "../basic/MainBtn";
-import MainUserInfo from "../basic/MainUserInfo";
-import MainRecommendation from "../basic/MainRecommendation";
-import MainPlaceInfo from "../basic/MainPlaceInfo";
-import HistoryMoreElement from "./HistoryMoreElement";
-import MainLoading from "../basic/MainLoading";
-import GreyBlock from "../blocks/GreyBlock";
+import MainBtn from '../basic/MainBtn'
+import MainUserInfo from '../basic/MainUserInfo'
+import MainRecommendation from '../basic/MainRecommendation'
+import MainPlaceInfo from '../basic/MainPlaceInfo'
+import HistoryMoreElement from './HistoryMoreElement'
+import MainLoading from '../basic/MainLoading'
+import GreyBlock from '../blocks/GreyBlock'
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: "HistoryElement",
-  data: function() {
+  name: 'HistoryElement',
+  data: function () {
     return {
       showMore: false,
       loading: {
         more: false
       }
-    };
+    }
   },
   props: {
     data: {
@@ -82,7 +88,7 @@ export default {
     },
     type: {
       type: String,
-      default: "user"
+      default: 'user'
     }
   },
   components: {
@@ -95,43 +101,43 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isMobile: "window/isMobile"
+      isMobile: 'window/isMobile'
     })
   },
   methods: {
     ...mapActions({
-      getMoreUserHistory: "userHistories/getMore",
-      getMorePatientHistory: "patientHistories/getMore"
+      getMoreUserHistory: 'userHistories/getMore',
+      getMorePatientHistory: 'patientHistories/getMore'
     }),
-    getMore: async function() {
-      this.loading.more = true;
-      const historyId = this.data.id;
+    getMore: async function () {
+      this.loading.more = true
+      const historyId = this.data.id
 
-      if (this.type === "user") {
+      if (this.type === 'user') {
         await this.getMoreUserHistory(historyId).catch(error => {
-          this.$toasted.error("Wystąpił błąd podczas ładowania historii");
-          console.error(error);
-        });
+          this.$toasted.error('Wystąpił błąd podczas ładowania historii')
+          console.error(error)
+        })
       }
 
-      if (this.type === "patient") {
+      if (this.type === 'patient') {
         await this.getMorePatientHistory(historyId).catch(error => {
-          this.$toasted.error("Wystąpił błąd podczas ładowania historii");
-          console.error(error);
-        });
+          this.$toasted.error('Wystąpił błąd podczas ładowania historii')
+          console.error(error)
+        })
       }
 
-      this.loading.more = false;
+      this.loading.more = false
     },
-    toggleShowMore: async function() {
+    toggleShowMore: async function () {
       if (!this.showMore) {
-        await this.getMore();
+        await this.getMore()
       }
 
-      this.showMore = !this.showMore;
+      this.showMore = !this.showMore
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -173,6 +179,9 @@ export default {
   display: flex;
   align-items: center;
   overflow: hidden;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 100%;
 }
 
 .list__info__el {
@@ -411,6 +420,9 @@ export default {
   .list__info__el--user,
   .list__info__el--date {
     width: unset;
+  }
+  .list__info__el {
+    cursor: pointer;
   }
 }
 

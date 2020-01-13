@@ -77,7 +77,10 @@
         </div>
       </div>
     </div>
-    <div v-if="profileType != 0">
+    <div
+      v-show="profileType != 0"
+      v-bind:class="{flash: profileChanges}"
+    >
       <MainInput class="many">
         Imię i nazwisko
         <input
@@ -187,99 +190,106 @@
 </template>
 
 <script>
-import MainInput from "../../components/ui/basic/MainInput";
-import MainBtn from "../../components/ui/basic/MainBtn";
+import MainInput from '../../components/ui/basic/MainInput'
+import MainBtn from '../../components/ui/basic/MainBtn'
+import handleErrors from '../../utils/handleErrors'
 
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex'
 
 export default {
-  name: "Signup",
-  data: function() {
+  name: 'Signup',
+  data: function () {
     return {
       showPatientInfo: false,
       showSpecInfo: false,
       profileType: 0,
+      profileChanges: false,
       data: {
-        password: "",
-        name: "",
-        pesel: "",
-        email: "",
-        phone: "",
+        password: '',
+        name: '',
+        pesel: '',
+        email: '',
+        phone: '',
         rules_accepted: false
       },
       doctorData: {
-        specialization: ""
+        specialization: ''
       }
-    };
+    }
   },
   methods: {
     ...mapActions({
-      userSignup: "userInfo/signup",
-      userLogin: "userInfo/login",
-      userGetFreePlan: "userInfo/getFreePlan"
+      userSignup: 'userInfo/signup',
+      userLogin: 'userInfo/login',
+      userGetFreePlan: 'userInfo/getFreePlan'
     }),
-    signup: function() {
-      this.$emit("loading", true);
+    signup: function () {
+      this.$emit('loading', true)
       this.userSignup(this.userData)
         .then(() => this.userLogin(this.loginData))
         .then(() => {
           if (this.profileType == 2) {
-            this.userGetFreePlan();
-            this.$toasted.info("Przyznano 30 dni darmowego planu");
+            this.userGetFreePlan()
+            this.$toasted.info('Przyznano 30 dni darmowego planu')
           }
         })
         .then(() => {
-          this.$toasted.success("Pomyślnie zarejestrowano");
-          window.location.href = "/Dashboard";
+          this.$toasted.success('Pomyślnie zarejestrowano')
+          window.location.href = '/Dashboard'
         })
-        .catch(error => {
-          const graphQLErrors = error.graphQLErrors;
-          const validation = graphQLErrors
-            ? graphQLErrors[0].extensions.validation
-            : null;
-          const errorMessage = validation
-            ? validation[Object.keys(validation)[0]][0]
-            : "Wystąpił nieznany błąd";
-          this.$toasted.error(errorMessage);
-          console.error(error);
-        })
+        .catch(errors => handleErrors(errors))
         .finally(() => {
-          this.$emit("loading", false);
-        });
+          this.$emit('loading', false)
+        })
     }
   },
   computed: {
-    isPeselCorrect: function() {
-      let weights = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3];
-      let sum = 0;
-      let controlNumber = parseInt(this.data.pesel.substring(10, 11));
-      for (let i = 0; i < weights.length; i++) {
-        sum += parseInt(this.data.pesel.substring(i, i + 1)) * weights[i];
+    isPeselCorrect: function () {
+      if (!/^[0-9]{11}$/.test(this.data.pesel)) {
+        return false
       }
-      sum = sum % 10;
-      return this.data.pesel == null ? false : 10 - sum === controlNumber;
+      const times = [1, 3, 7, 9]
+      const digits = `${this.data.pesel}`
+        .split('')
+        .map(digit => parseInt(digit, 10))
+      const dig11 = digits.splice(-1)[0]
+      let control =
+        digits.reduce(
+          (previousValue, currentValue, index) =>
+            previousValue + currentValue * times[index % 4]
+        ) % 10
+
+      return 10 - (control === 0 ? 10 : control) === dig11
     },
-    userData: function() {
+    userData: function () {
       if (this.profileType === 2) {
-        return Object.assign(this.data, this.doctorData);
+        return Object.assign(this.data, this.doctorData)
       } else {
-        return this.data;
+        return this.data
       }
     },
-    loginData: function() {
-      const { email, password } = this.data;
+    loginData: function () {
+      const { email, password } = this.data
       const data = {
         username: email,
         password: password
-      };
-      return data;
+      }
+      return data
+    }
+  },
+  watch: {
+    profileType: function () {
+      this.profileChanges = true
+      setTimeout(() => {
+        this.profileChanges = false
+      }, 1000)
     }
   },
   components: {
     MainInput: MainInput,
     MainBtn: MainBtn
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -299,6 +309,29 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+@-webkit-keyframes flash {
+  0% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes flash {
+  0% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.flash {
+  opacity: 1;
+  -webkit-animation: flash 1s;
+  animation: flash 1s;
 }
 
 .login__type {

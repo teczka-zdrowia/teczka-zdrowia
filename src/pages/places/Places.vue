@@ -51,7 +51,7 @@
           </div>
           <MainBtn
             class="places__btn"
-            v-if="!loading.init"
+            v-if="!loading.init && isPaymentValid"
             v-on:click.native="createPlace"
           >
             <span
@@ -154,6 +154,7 @@
           </GreyBlock>
           <MainBtn
             class="places__btn"
+            v-if="isPaymentValid"
             v-on:click.native="createPlace"
           >
             <span
@@ -279,7 +280,8 @@ export default {
     ...mapGetters({
       roles: "userRoles/list",
       selectedRole: "userRoles/selected",
-      isMobile: "window/isMobile"
+      isMobile: "window/isMobile",
+      isPaymentValid: "userInfo/isPaymentValid"
     })
   },
   watch: {

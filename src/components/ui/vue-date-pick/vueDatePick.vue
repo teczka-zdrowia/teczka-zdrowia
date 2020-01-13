@@ -290,7 +290,7 @@ export default {
         day.selected = this.valueDate
           ? areSameDates(day.date, this.valueDate)
           : false
-        day.highlighted = this.highlighted.includes(day.dateKey)
+        day.highlighted = this.highlighted && this.highlighted.includes(day.dateKey)
       })
 
       return chunkArray(days, 7)

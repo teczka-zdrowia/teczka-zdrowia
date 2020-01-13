@@ -4,6 +4,7 @@ mutation($data: InitializeUserInput!) {
     name
     email
     phone
+    address
     birthdate
   }
 }

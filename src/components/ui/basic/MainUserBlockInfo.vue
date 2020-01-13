@@ -8,7 +8,7 @@
     </div>
     <div class="user__info">
       <div class="user__info__name">
-        {{ user.name }} ({{ userAge }} lat)
+        {{ user.name }}&nbsp;({{ userAge }} lat)
       </div>
       <a
         class="user__info__phone"
@@ -112,6 +112,8 @@ export default {
     &__phone,
     &__email {
       font-weight: 600;
+      max-width: 50vw;
+      word-break: break-word;
     }
   }
 }

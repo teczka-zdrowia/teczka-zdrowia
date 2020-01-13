@@ -7,6 +7,7 @@ mutation($data: UpdateUserInput!) {
     phone
     birthdate
     paid_until
+    address
     is_payment_valid
     specialization
   }

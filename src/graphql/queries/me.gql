@@ -6,6 +6,7 @@
     email
     phone
     birthdate
+    address
     paid_until
     is_payment_valid
     specialization

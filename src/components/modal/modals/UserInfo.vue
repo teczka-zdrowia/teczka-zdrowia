@@ -1,33 +1,38 @@
 <template>
   <div class="modal--ui">
-
     <div class="modal--ui__content">
       <div class="modal--ui__top">
         <img
           class="modal--ui__img"
           :alt="user.name"
-          :src="user.avatar ? `${apiUrl}/storage/avatars/${user.avatar}` : '/static/img/icons/avatar.png'"
-        >
+          :src="
+            user.avatar
+              ? `${apiUrl}/storage/avatars/${user.avatar}`
+              : '/static/img/icons/avatar.png'
+          "
+        />
         <div class="modal--ui__name">
           <span>{{ user.name }}</span>
         </div>
       </div>
       <div class="modal--ui__info">
         <div class="modal--ui__info__el">
-          <span
-            aria-hidden="true"
-            class="fas fa-phone"
-          />
-          <a :href="`tel:${ user.phone }`">
-            {{ user.phone }}</a>
+          <span aria-hidden="true" class="fas fa-phone" />
+          <a :href="`tel:${user.phone}`"> {{ user.phone }}</a>
         </div>
         <div class="modal--ui__info__el">
-          <span
-            aria-hidden="true"
-            class="far fa-envelope"
-          />
-          <a :href="`mailto:${ user.email }`">
-            {{ user.email }}</a>
+          <span aria-hidden="true" class="far fa-envelope" />
+          <a :href="`mailto:${user.email}`"> {{ user.email }}</a>
+        </div>
+
+        <div class="modal--ui__info__el">
+          <span aria-hidden="true" class="fas fa-map-marked" />
+          <a
+            target="_blank"
+            :href="`http://maps.google.com/?q= ${user.address}`"
+          >
+            {{ user.address }}</a
+          >
         </div>
 
         <div class="modal--ui__info__el">
@@ -35,11 +40,9 @@
             :to="`/PatientFile/${user.id}`"
             v-on:click.native="hideModal"
           >
-            <span
-              aria-hidden="true"
-              class="fas fa-file-medical"
-            />
-            Kartkoteka</router-link>
+            <span aria-hidden="true" class="fas fa-file-medical" />
+            Kartkoteka</router-link
+          >
         </div>
 
         <div
@@ -54,11 +57,13 @@
             <option
               :selected="data.role.permission_type === 'ADMIN'"
               value="ADMIN"
-            >&#xf521;&nbsp;&nbsp;&nbsp;Administrator</option>
+              >&#xf521;&nbsp;&nbsp;&nbsp;Administrator</option
+            >
             <option
               :selected="data.role.permission_type === 'EMPLOYEE'"
               value="EMPLOYEE"
-            >&#xf007;&nbsp;&nbsp;&nbsp;Pracownik</option>
+              >&#xf007;&nbsp;&nbsp;&nbsp;Pracownik</option
+            >
           </MainSelect>
         </div>
       </div>
@@ -69,7 +74,8 @@
         color="#fafafa"
         v-on:click.native="deleteRole"
         class="modal__btn fullwidth modal__btn--red"
-      >Usuń</MainBtn>
+        >Usuń</MainBtn
+      >
       <MainBtn
         v-if="data.editAffiliation && !data.role.is_active && !viewerIsUser"
         :loading="loading.activate"
@@ -77,7 +83,8 @@
         color="#fafafa"
         v-on:click.native="activateRole"
         class="modal__btn fullwidth modal__btn--green"
-      >Aktywuj</MainBtn>
+        >Aktywuj</MainBtn
+      >
       <MainBtn
         v-if="data.editAffiliation && data.role.is_active && !viewerIsUser"
         :loading="loading.activate"
@@ -85,26 +92,29 @@
         color="#fafafa"
         v-on:click.native="deactivateRole"
         class="modal__btn fullwidth modal__btn--violet"
-      >Dezaktywuj</MainBtn>
+        >Dezaktywuj</MainBtn
+      >
       <MainBtn
         class="modal__btn fullwidth modal__btn--grey"
         type="button"
         v-on:click.native="hideModal"
-      >Zamknij</MainBtn>
+        >Zamknij</MainBtn
+      >
     </div>
   </div>
 </template>
 
 <script>
-import MainSelect from "../../ui/basic/MainSelect";
-import MainBtn from "../../ui/basic/MainBtn";
-import { API_URL } from "@/apollo/constants";
-import { mapActions, mapGetters } from "vuex";
-import "../modal.scss";
+import MainSelect from '../../ui/basic/MainSelect'
+import MainBtn from '../../ui/basic/MainBtn'
+import { API_URL } from '@/apollo/constants'
+import { mapActions, mapGetters } from 'vuex'
+import '../modal.scss'
+import handleErrors from '../../../utils/handleErrors'
 
 export default {
-  name: "PatientInfo",
-  data: function() {
+  name: 'PatientInfo',
+  data: function () {
     return {
       apiUrl: API_URL,
       loading: {
@@ -112,7 +122,7 @@ export default {
         activate: false,
         permission: false
       }
-    };
+    }
   },
   components: {
     MainSelect,
@@ -120,145 +130,111 @@ export default {
   },
   computed: {
     ...mapGetters({
-      data: "modal/data",
-      loggedInUser: "userInfo/full"
+      data: 'modal/data',
+      loggedInUser: 'userInfo/full'
     }),
-    user: function() {
-      return this.data.role.user;
+    user: function () {
+      return this.data.role.user
     },
-    viewerIsUser: function() {
-      return this.loggedInUser.id === this.user.id;
+    viewerIsUser: function () {
+      return this.loggedInUser.id === this.user.id
     }
   },
   methods: {
     ...mapActions({
-      hideModal: "modal/hide",
-      updatePatientRole: "placePatients/updateRole",
-      deletePatientRole: "placePatients/deleteRole",
-      updateEmployeeRole: "placeEmployees/updateRole",
-      deleteEmployeeRole: "placeEmployees/deleteRole"
+      hideModal: 'modal/hide',
+      updatePatientRole: 'placePatients/updateRole',
+      deletePatientRole: 'placePatients/deleteRole',
+      updateEmployeeRole: 'placeEmployees/updateRole',
+      deleteEmployeeRole: 'placeEmployees/deleteRole'
     }),
-    updateRole: async function(payload) {
-      const updateEmployee = this.data.role.permission_type !== undefined;
+    updateRole: async function (payload) {
+      const updateEmployee = this.data.role.permission_type !== undefined
 
       if (updateEmployee) {
         await this.updateEmployeeRole(payload)
           .then(() => {
-            this.$toasted.success("Pomyślnie zaktualizowano pracownika");
+            this.$toasted.success('Pomyślnie zaktualizowano pracownika')
           })
-          .catch(error => {
-            console.error(error);
-            const validation = error.graphQLErrors[0].extensions.validation;
-            const errorMessage =
-              validation[Object.keys(validation)[0]][0] ||
-              "Wystąpił nieznany błąd";
-            this.$toasted.error(errorMessage);
-          });
+          .catch(errors => handleErrors(errors))
       } else {
         await this.updatePatientRole(payload)
           .then(() => {
-            this.$toasted.success("Pomyślnie zaktualizowano pacjenta");
+            this.$toasted.success('Pomyślnie zaktualizowano pacjenta')
           })
-          .catch(error => {
-            console.error(error);
-            const validation = error.graphQLErrors[0].extensions.validation;
-            const errorMessage =
-              validation[Object.keys(validation)[0]][0] ||
-              "Wystąpił nieznany błąd";
-            this.$toasted.error(errorMessage);
-          });
+          .catch(errors => handleErrors(errors))
       }
     },
-    deleteRoleById: async function(payload) {
-      const updateEmployee = this.data.role.permission_type !== undefined;
+    deleteRoleById: async function (payload) {
+      const updateEmployee = this.data.role.permission_type !== undefined
 
       if (updateEmployee) {
         await this.deleteEmployeeRole(payload)
           .then(() => {
-            this.$toasted.success("Pomyślnie usunięto pracownika");
+            this.$toasted.success('Pomyślnie usunięto pracownika')
           })
-          .catch(error => {
-            console.error(error);
-            const graphQLErrors = error.graphQLErrors;
-            const validation = graphQLErrors
-              ? graphQLErrors[0].extensions.validation
-              : null;
-            const errorMessage = validation
-              ? validation[Object.keys(validation)[0]][0]
-              : "Wystąpił nieznany błąd";
-            this.$toasted.error(errorMessage);
-          });
+          .catch(errors => handleErrors(errors))
       } else {
         await this.deletePatientRole(payload)
           .then(() => {
-            this.$toasted.success("Pomyślnie usunięto pacjenta");
+            this.$toasted.success('Pomyślnie usunięto pacjenta')
           })
-          .catch(error => {
-            console.error(error);
-            const graphQLErrors = error.graphQLErrors;
-            const validation = graphQLErrors
-              ? graphQLErrors[0].extensions.validation
-              : null;
-            const errorMessage = validation
-              ? validation[Object.keys(validation)[0]][0]
-              : "Wystąpił nieznany błąd";
-            this.$toasted.error(errorMessage);
-          });
+          .catch(errors => handleErrors(errors))
       }
     },
-    activateRole: async function() {
+    activateRole: async function () {
       const payload = {
         id: this.data.role.id,
         data: {
           is_active: true
         }
-      };
+      }
 
-      this.loading.activate = true;
+      this.loading.activate = true
 
-      await this.updateRole(payload);
+      await this.updateRole(payload)
 
-      this.loading.activate = false;
+      this.loading.activate = false
     },
-    deactivateRole: async function() {
+    deactivateRole: async function () {
       const payload = {
         id: this.data.role.id,
         data: {
           is_active: false
         }
-      };
+      }
 
-      this.loading.activate = true;
+      this.loading.activate = true
 
-      await this.updateRole(payload);
+      await this.updateRole(payload)
 
-      this.loading.activate = false;
+      this.loading.activate = false
     },
-    deleteRole: async function() {
-      this.loading.delete = true;
+    deleteRole: async function () {
+      this.loading.delete = true
 
-      await this.deleteRoleById(this.data.role.id);
+      await this.deleteRoleById(this.data.role.id)
 
-      this.loading.delete = false;
-      this.hideModal();
+      this.loading.delete = false
+      this.hideModal()
     },
-    changePermissionType: async function(event) {
-      const newPermission = event.target.value;
+    changePermissionType: async function (event) {
+      const newPermission = event.target.value
       const payload = {
         id: this.data.role.id,
         data: {
           permission_type: newPermission
         }
-      };
+      }
 
-      this.loading.permission = true;
+      this.loading.permission = true
 
-      await this.updateRole(payload);
+      await this.updateRole(payload)
 
-      this.loading.permission = false;
+      this.loading.permission = false
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

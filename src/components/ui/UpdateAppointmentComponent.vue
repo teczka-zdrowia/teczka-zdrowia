@@ -1,15 +1,14 @@
 <template>
   <div class="addappointment">
     <div class="addappointment__info">
-      <MainInput>
-        Kiedy?
-        <input
-          :value="date"
-          type="datetime-local"
-          v-on:change="setFormattedDate($event)"
-          :required="true"
-        >
-      </MainInput>
+      <date-pick
+        v-model="data.date"
+        :hasInputElement="false"
+        :pickTime="true"
+        :selectableYearRange="20"
+        :format="'YYYY-MM-DD HH:mm:ss'"
+        :required="true"
+      />
       <MainSelect
         class="addappointment__select"
         disabled
@@ -40,37 +39,33 @@
 </template>
 
 <script>
-import DatePick from "../ui/vue-date-pick/vueDatePick";
-import MainInput from "../ui/basic/MainInput";
-import MainSelect from "../ui/basic/MainSelect";
-import MainTextarea from "../ui/basic/MainTextarea";
-import MainUserInfo from "../ui/basic/MainUserInfo";
+import DatePick from "../ui/vue-date-pick/vueDatePick"
+import MainInput from "../ui/basic/MainInput"
+import MainSelect from "../ui/basic/MainSelect"
+import MainTextarea from "../ui/basic/MainTextarea"
+import MainUserInfo from "../ui/basic/MainUserInfo"
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex"
 
-const moment = require("moment");
-moment.locale("pl");
+const moment = require("moment")
+moment.locale("pl")
 
 export default {
   name: "AddPatientComponent",
   data: function() {
     return {
-      date: "",
       data: {
         place_id: null,
         patient_id: null,
         date: "",
         note: ""
       }
-    };
+    }
   },
   methods: {
     ...mapActions({
       setAppointmentData: "addAppointment/setData"
-    }),
-    setFormattedDate: function(event) {
-      this.data.date = moment(event.target.value).format("YYYY-MM-DD HH:mm:ss");
-    }
+    })
   },
   computed: {
     ...mapGetters({
@@ -82,7 +77,7 @@ export default {
   watch: {
     data: {
       handler(val) {
-        this.setAppointmentData(val);
+        this.setAppointmentData(val)
       },
       deep: true
     }
@@ -95,10 +90,9 @@ export default {
     MainUserInfo
   },
   mounted() {
-    this.data = this.loadedData;
-    this.date = moment(this.data.date).format("YYYY-MM-DDTHH:mm");
+    this.data = this.loadedData
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -131,7 +125,7 @@ export default {
   &__who {
     border-left: 1px solid rgba(145, 145, 156, 0.15);
     border-top-right-radius: 0.5rem;
-    max-height: 20rem;
+    max-height: 40rem;
   }
 
   &__patients,

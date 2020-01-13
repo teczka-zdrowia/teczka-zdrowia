@@ -1,5 +1,22 @@
 mutation($data: CreateAppointmentInput!) {
   createAppointment(data: $data) {
     id
+    date
+    note
+    patient {
+      id
+      avatar
+      name
+      phone
+      address
+    }
+    author {
+      id
+      name
+    }
+    place {
+      id
+      name
+    }
   }
 }

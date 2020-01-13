@@ -10,6 +10,7 @@ query($id: ID!) {
         name
         phone
         email
+        address
       }
     }
   }

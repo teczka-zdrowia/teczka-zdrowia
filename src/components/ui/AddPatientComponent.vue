@@ -4,10 +4,7 @@
       <span class="addpatient__place__title">
         Gabinet:
       </span>
-      <MainPlaceInfo
-        class="addpatient__place__info"
-        :data="place"
-      />
+      <MainPlaceInfo class="addpatient__place__info" :data="place" />
     </div>
     <form
       class="addpatient__form"
@@ -24,7 +21,7 @@
           v-model="data.pesel"
           placeholder="12345678912"
           required
-        >
+        />
       </MainInput>
       <MainBtn
         class="addpatient__form__btn"
@@ -32,13 +29,15 @@
         color="#fafafa"
         :loading="loading.search"
         :disabled="loading.search"
-      >Wyszukaj pacjenta po PESEL</MainBtn>
+        >Wyszukaj pacjenta po PESEL</MainBtn
+      >
     </form>
     <MainBtn
       class="addpatient__form__btn addpatient__form__btn--red"
       v-if="isPeselCorrect && searchFailed && !initalizeNew"
       v-on:click.native="initalizeNew = !initalizeNew"
-    >Utwórz konto użytkownika</MainBtn>
+      >Utwórz konto użytkownika</MainBtn
+    >
     <form
       class="addpatient__form"
       v-if="initalizeNew"
@@ -54,7 +53,7 @@
             placeholder="Jan Kowalski"
             maxlength="100"
             required
-          >
+          />
         </MainInput>
         <MainInput class="many">
           E-mail
@@ -66,7 +65,7 @@
             minlength="4"
             maxlength="100"
             required
-          >
+          />
         </MainInput>
         <MainInput class="many">
           Telefon
@@ -78,7 +77,18 @@
             minlength="9"
             maxlength="15"
             required
-          >
+          />
+        </MainInput>
+        <MainInput class="many">
+          Adres
+          <input
+            type="text"
+            name="address"
+            v-model="data.address"
+            placeholder="Kwiatowa 4, Warszawa"
+            maxlength="100"
+            required
+          />
         </MainInput>
       </div>
       <MainBtn
@@ -86,38 +96,41 @@
         color="#fafafa"
         :loading="loading.initalize"
         :disabled="loading.initalize"
-      >Utwórz konto</MainBtn>
+        >Utwórz konto</MainBtn
+      >
     </form>
-    <GreyBlock
-      class="addpatient__info"
-      v-if="newAccountCreated"
-    >Utworzono nowe konto użytkownika. Dane logowania zostały wysłane na podany wcześniej adres e-mail.</GreyBlock>
+    <GreyBlock class="addpatient__info" v-if="newAccountCreated"
+      >Utworzono nowe konto użytkownika. Dane logowania zostały wysłane na
+      podany wcześniej adres e-mail.</GreyBlock
+    >
     <MainUserBlockInfo
       class="addpatient__patient"
       v-if="patient"
-      :user="patient || undefined"
+      :user="patient"
     />
   </div>
 </template>
 
 <script>
-import MainPlaceInfo from "../ui/basic/MainPlaceInfo";
-import MainBtn from "../ui/basic/MainBtn";
-import MainInput from "../ui/basic/MainInput";
-import MainUserBlockInfo from "../ui/basic/MainUserBlockInfo";
-import GreyBlock from "../ui/blocks/GreyBlock";
+import MainPlaceInfo from '../ui/basic/MainPlaceInfo'
+import MainBtn from '../ui/basic/MainBtn'
+import MainInput from '../ui/basic/MainInput'
+import MainUserBlockInfo from '../ui/basic/MainUserBlockInfo'
+import GreyBlock from '../ui/blocks/GreyBlock'
+import handleErrors from '../../utils/handleErrors'
 
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: "AddPatientComponent",
-  data: function() {
+  name: 'AddPatientComponent',
+  data: function () {
     return {
       data: {
-        pesel: "",
-        name: "",
-        email: "",
-        phone: ""
+        pesel: '',
+        name: '',
+        email: '',
+        phone: '',
+        address: ''
       },
       loading: {
         search: false,
@@ -125,76 +138,79 @@ export default {
       },
       initalizeNew: false,
       newAccountCreated: false
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      place: "addPatient/place",
-      patient: "addPatient/patient",
-      searchFailed: "addPatient/searchFailed"
+      place: 'addPatient/place',
+      patient: 'addPatient/patient',
+      searchFailed: 'addPatient/searchFailed'
     }),
-    isPeselCorrect: function() {
-      let weights = [1, 3, 7, 9, 1, 3, 7, 9, 1, 3];
-      let sum = 0;
-      let controlNumber = parseInt(this.data.pesel.substring(10, 11));
-      for (let i = 0; i < weights.length; i++) {
-        sum += parseInt(this.data.pesel.substring(i, i + 1)) * weights[i];
+    isPeselCorrect: function () {
+      if (!/^[0-9]{11}$/.test(this.data.pesel)) {
+        return false
       }
-      sum = sum % 10;
-      return this.data.pesel == null ? false : 10 - sum === controlNumber;
+      const times = [1, 3, 7, 9]
+      const digits = `${this.data.pesel}`
+        .split('')
+        .map(digit => parseInt(digit, 10))
+      const dig11 = digits.splice(-1)[0]
+      let control =
+        digits.reduce(
+          (previousValue, currentValue, index) =>
+            previousValue + currentValue * times[index % 4]
+        ) % 10
+
+      return 10 - (control === 0 ? 10 : control) === dig11
     }
   },
   methods: {
     ...mapActions({
-      searchPatientByPesel: "addPatient/searchByPesel",
-      initalizePatientAccount: "addPatient/initalizePatient",
-      clearData: "addPatient/clear"
+      searchPatientByPesel: 'addPatient/searchByPesel',
+      initalizePatientAccount: 'addPatient/initalizePatient',
+      clearData: 'addPatient/clear',
+      clearPatient: 'addPatient/clearPatient'
     }),
-    searchPatient: async function() {
-      this.loading.search = true;
+    searchPatient: async function () {
+      this.clearPatient()
+      this.loading.search = true
 
       await this.searchPatientByPesel(this.data.pesel)
         .then(() => {
-          this.$toasted.success("Znaleziono użytkownika");
+          this.$toasted.success('Znaleziono użytkownika')
         })
-        .catch(error => {
-          console.error(error);
-          this.$toasted.error("Brak użytkownika w bazie");
-        });
+        .catch(error => handleErrors(error))
 
-      this.loading.search = false;
+      this.loading.search = false
     },
-    initalizePatient: async function() {
-      this.loading.initalize = true;
+    initalizePatient: async function () {
+      this.loading.initalize = true
 
       await this.initalizePatientAccount(this.data)
         .then(() => {
-          this.newAccountCreated = true;
-          this.$toasted.success("Użytkownik utworzony pomyślnie");
+          this.newAccountCreated = true
+          this.$toasted.success('Użytkownik utworzony pomyślnie')
           this.$toasted.success(
-            "Dane logowania zostały wysłane na podany email",
+            'Dane logowania zostały wysłane na podany email',
             {
               duration: 1000
             }
-          );
+          )
         })
-        .catch(error => {
-          const graphQLErrors = error.graphQLErrors;
-          const validation = graphQLErrors
-            ? graphQLErrors[0].extensions.validation
-            : null;
-          const errorMessage = validation
-            ? validation[Object.keys(validation)[0]][0]
-            : "Wystąpił nieznany błąd";
-          this.$toasted.error(errorMessage);
-          console.error(error);
-        });
+        .catch(error => handleErrors(error))
 
-      this.loading.initalize = false;
+      this.loading.initalize = false
     }
   },
-  mounted() {
-    this.clearData();
+  watch: {
+    isPeselCorrect: function (newVal, oldVal) {
+      if (newVal === false && oldVal === true) {
+        this.clearPatient()
+      }
+    }
+  },
+  mounted () {
+    this.clearPatient()
   },
   components: {
     MainBtn,
@@ -203,7 +219,7 @@ export default {
     MainUserBlockInfo,
     GreyBlock
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -251,6 +267,7 @@ export default {
     padding: 1rem;
     margin-top: 1rem;
     width: 28rem;
+     max-width: 90vw;
   }
 
   &__patient {

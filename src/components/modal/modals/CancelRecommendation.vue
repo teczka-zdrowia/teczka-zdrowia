@@ -29,58 +29,49 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import MainBtn from "../../ui/basic/MainBtn";
+import { mapActions, mapGetters } from 'vuex'
+import MainBtn from '../../ui/basic/MainBtn'
+import handleErrors from '../../../utils/handleErrors'
 
-import "../modal.scss";
+import '../modal.scss'
 
 export default {
-  name: "CancelRecommendation",
-  data: function() {
+  name: 'CancelRecommendation',
+  data: function () {
     return {
       isLoading: false
-    };
+    }
   },
   components: {
     MainBtn
   },
   computed: {
     ...mapGetters({
-      recommendation: "modal/data",
-      recommendationsListPaginatorInfo: "userRecommendations/paginatorInfo"
+      recommendation: 'modal/data',
+      recommendationsListPaginatorInfo: 'userRecommendations/paginatorInfo'
     })
   },
   methods: {
     ...mapActions({
-      hideModal: "modal/hide",
-      updateRecommendation: "userRecommendations/update"
+      hideModal: 'modal/hide',
+      updateRecommendation: 'userRecommendations/update'
     }),
-    cancelRecommendation() {
-      this.isLoading = true;
-      const data = { is_active: false };
-      const id = this.recommendation.id;
+    cancelRecommendation () {
+      this.isLoading = true
+      const data = { is_active: false }
+      const id = this.recommendation.id
       const payload = {
         id: id,
         data: data
-      };
+      }
 
       this.updateRecommendation(payload)
         .then(() => this.hideModal())
-        .catch(error => {
-          const graphQLErrors = error.graphQLErrors;
-          const validation = graphQLErrors
-            ? graphQLErrors[0].extensions.validation
-            : null;
-          const errorMessage = validation
-            ? validation[Object.keys(validation)[0]][0]
-            : "Wystąpił nieznany błąd";
-          this.$toasted.error(errorMessage);
-          console.error(error);
-        })
+        .catch(errors => handleErrors(errors))
         .finally(() => {
-          this.isLoading = false;
-        });
+          this.isLoading = false
+        })
     }
   }
-};
+}
 </script>

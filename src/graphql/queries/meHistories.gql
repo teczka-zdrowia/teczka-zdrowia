@@ -16,6 +16,7 @@ query($first: Int!, $after: String, $note: String, $orderBy: [OrderByClause!]) {
             name
             phone
             email
+            address
             specialization
           }
           place {

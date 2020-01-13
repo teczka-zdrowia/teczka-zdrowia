@@ -7,6 +7,16 @@
       <AppHeaderMobile v-if="isMobile && isUserLoggedIn" />
 
       <transition name="fade">
+        <div
+          class="app__payment-info"
+          v-if="!isPaymentValid && routeRequiresDoctorPermissions"
+        ><span
+            class="fas fa-exclamation-circle"
+            aria-hidden="true"
+          /> Plan nieaktywny</div>
+      </transition>
+
+      <transition name="fade">
         <router-view
           class="app__router"
           v-bind:class="{ 'app--absolute' : isRouteMap }"
@@ -54,7 +64,8 @@ export default {
     ...mapGetters({
       isMobile: "window/isMobile",
       isModalVisible: "modal/visible",
-      isUserLoggedIn: "userInfo/isLoggedIn"
+      isUserLoggedIn: "userInfo/isLoggedIn",
+      isPaymentValid: "userInfo/isPaymentValid"
     }),
     isAppRoute: function() {
       const paths = ["/", "/auth", "/terms", "/dtm6gz", "/404", "/initialize"];
@@ -64,6 +75,9 @@ export default {
     isRouteMap: function() {
       const routePath = this.$route.path.toLowerCase();
       return routePath == "/map";
+    },
+    routeRequiresDoctorPermissions: function() {
+      return !!this.$route.meta.requiresDoctorPermissions;
     }
   },
   created() {
@@ -82,3 +96,20 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.app {
+  &__payment-info {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: 1rem;
+    text-align: center;
+    font-weight: 600;
+    color: #67676e;
+    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+    background: #eeeef3;
+    z-index: 10000;
+  }
+}
+</style>

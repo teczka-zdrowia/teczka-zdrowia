@@ -17,14 +17,14 @@
 </template>
 
 <script>
-import WhiteFunctionalBlock from '../../components/ui/blocks/WhiteFunctionalBlock'
-import Calendar from './Calendar'
-import Appointments from './Appointments'
-import Patients from './Patients'
-import Places from './Places'
+import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock";
+import Calendar from "./Calendar";
+import Appointments from "./Appointments";
+import Patients from "./Patients";
+import Places from "./Places";
 
 export default {
-  name: 'Panel',
+  name: "Panel",
   components: {
     Block: WhiteFunctionalBlock,
     Calendar,
@@ -32,7 +32,7 @@ export default {
     Patients,
     Places
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -72,7 +72,7 @@ export default {
     "patients appointments";
   grid-gap: 1rem;
   width: 100%;
-  grid-auto-rows: 26rem auto;
+  grid-auto-rows: 28.5rem auto;
 }
 
 .appointments {
@@ -93,7 +93,7 @@ export default {
       "patients";
     grid-gap: 1rem;
     width: 100%;
-    grid-auto-rows: 26rem auto;
+    grid-auto-rows: 28rem auto;
   }
 
   .calendar {

@@ -41,7 +41,7 @@
         </router-link>
         <div
           class="menu__el"
-          v-on:click.native="isShowed = !isShowed"
+          v-on:click="showSettings"
         >
           <span
             aria-hidden="true"
@@ -65,47 +65,55 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import { API_URL } from "@/apollo/constants";
+import { mapGetters, mapActions } from 'vuex'
+import { API_URL } from '@/apollo/constants'
 
 export default {
-  name: "UserInfo",
-  data: function() {
+  name: 'UserInfo',
+  data: function () {
     return {
       apiUrl: API_URL,
       isLoading: false,
       isShowed: false
-    };
+    }
   },
   methods: {
     ...mapActions({
-      userLogout: "userInfo/logout",
-      getAutheticatedUserData: "userInfo/getData"
+      userLogout: 'userInfo/logout',
+      getAutheticatedUserData: 'userInfo/getData',
+      showModal: 'modal/show'
     }),
-    logout: function() {
+    logout: function () {
       if (!this.isLoading) {
-        this.isLoading = true;
-        this.$toasted.show("Wylogowywanie...");
+        this.isLoading = true
+        this.$toasted.show('Wylogowywanie...')
         this.userLogout()
           .then(() => {
-            const logoutRoute = this.$router.resolve({ name: "Auth" });
-            this.$toasted.success("Poprawnie wylogowano");
-            window.location.href = logoutRoute.href;
+            const logoutRoute = this.$router.resolve({ name: 'Auth' })
+            this.$toasted.success('Poprawnie wylogowano')
+            window.location.href = logoutRoute.href
           })
           .catch(error => {
-            this.$toasted.error("Wystąpił błąd");
-            console.error(error);
+            this.$toasted.error('Wystąpił błąd')
+            console.error(error)
           })
-          .finally(() => (this.isLoading = false));
+          .finally(() => (this.isLoading = false))
       }
+    },
+    showSettings: function () {
+      this.isShowed = false
+
+      this.showModal({
+        componentName: 'Settings'
+      })
     }
   },
   computed: {
     ...mapGetters({
-      userData: "userInfo/full"
+      userData: 'userInfo/full'
     })
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -192,7 +200,7 @@ export default {
   top: 1rem;
   @media only screen and (max-width: 960px) {
     width: auto;
-    left: 0;
+    left: -100%;
   }
 }
 
@@ -211,6 +219,10 @@ export default {
   opacity: 0;
   visibility: hidden;
   transition: visibility 0s, opacity 0.2s ease-in-out;
+  @media only screen and (max-width: 960px) {
+    margin-top: 1.5rem;
+    width: 12rem;
+  }
   &.visible {
     z-index: 9999999;
     opacity: 1;

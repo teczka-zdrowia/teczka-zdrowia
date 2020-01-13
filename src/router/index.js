@@ -67,7 +67,7 @@ const router = new Router({
       component: Panel,
       meta: {
         requiresLogin: true,
-        requiresValidPayment: true
+        requiresDoctorPermissions: true
       }
     },
     {
@@ -76,7 +76,7 @@ const router = new Router({
       component: Places,
       meta: {
         requiresLogin: true,
-        requiresValidPayment: true
+        requiresDoctorPermissions: true
       }
     },
     {
@@ -85,7 +85,7 @@ const router = new Router({
       component: AddAppointment,
       meta: {
         requiresLogin: true,
-        requiresValidPayment: true
+        requiresDoctorPermissions: true
       }
     },
     {
@@ -94,7 +94,7 @@ const router = new Router({
       component: UpdateAppointment,
       meta: {
         requiresLogin: true,
-        requiresValidPayment: true
+        requiresDoctorPermissions: true
       }
     },
     {
@@ -103,7 +103,7 @@ const router = new Router({
       component: AddHistory,
       meta: {
         requiresLogin: true,
-        requiresValidPayment: true
+        requiresDoctorPermissions: true
       }
     },
     {
@@ -136,7 +136,7 @@ const router = new Router({
       component: PatientFile,
       meta: {
         requiresLogin: true,
-        requiresValidPayment: true
+        requiresDoctorPermissions: true
       }
     },
     {
@@ -159,16 +159,16 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const userLoggedIn = store.getters['userInfo/isLoggedIn']
-  const userPaymentValid = store.getters['userInfo/isPaymentValid']
+  const userHasDoctorPermissions = store.getters['userInfo/hasDoctorPermissions']
   const pathRequiresLogin = to.matched.some(record => record.meta.requiresLogin)
-  const pathRequiresValidPayment = to.matched.some(
-    record => record.meta.requiresValidPayment
+  const pathRequiresDoctorPermissions = to.matched.some(
+    record => record.meta.requiresDoctorPermissions
   )
 
   if (pathRequiresLogin && !userLoggedIn) {
     next({ name: 'Auth' })
-  } else if (pathRequiresValidPayment && !userPaymentValid) {
-    next({ name: 'Payment' })
+  } else if (pathRequiresDoctorPermissions && !userHasDoctorPermissions) {
+    next({ name: 'Dashboard' })
   } else {
     next()
   }

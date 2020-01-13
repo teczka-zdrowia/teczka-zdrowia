@@ -250,7 +250,7 @@ export default {
   display: grid;
   grid-template-columns: auto;
   font-weight: 600;
-  margin: 2em 0 1em;
+  margin: 1rem 0;
 }
 
 .histories__btn {

@@ -7,6 +7,7 @@
     >
       <MainBtn
         class="actions__btn"
+        v-if="isPaymentValid"
         v-on:click.native="addNewEmployee"
       >
         <span
@@ -95,7 +96,8 @@ export default {
   computed: {
     ...mapGetters({
       selectedRole: "userRoles/selected",
-      employees: "placeEmployees/list"
+      employees: "placeEmployees/list",
+      isPaymentValid: "userInfo/isPaymentValid"
     }),
     searchResults: function() {
       return this.employees.filter(role => {
@@ -215,6 +217,10 @@ export default {
   grid-template-columns: 100%;
   grid-column-gap: 1em;
   row-gap: 1em;
+}
+
+.employees__search:only-child {
+  width: 100%;
 }
 
 .actions__btn {

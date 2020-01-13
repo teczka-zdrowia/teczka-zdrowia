@@ -28,6 +28,7 @@ query(
           name
           phone
           email
+          address
         }
         author {
           id

@@ -1,30 +1,21 @@
 <template>
   <div class="about">
     <div class="about__top">
-      <MainBaseInfo
-        class="about__base"
-        :canEdit="true"
-      />
+      <MainBaseInfo class="about__base" :canEdit="true" />
       <Block class="about__actions">
         <span
           aria-hidden="true"
           class="fas fa-cog actions__settings"
+          v-on:click="showSettings"
         />
         <div class="actions__buttons">
-          <div
-            class="action"
-            v-on:click="changePassword"
-          >
-            <span
-              aria-hidden="true"
-              class="fas fa-unlock"
-            />
+          <div class="action" v-on:click="changePassword">
+            <span aria-hidden="true" class="fas fa-unlock" />
             <div class="action__title">Zmień hasło</div>
           </div>
-          <div
-            class="action action--red"
-            v-on:click="deleteAccount"
-          >USUŃ KONTO</div>
+          <div class="action action--red" v-on:click="deleteAccount">
+            USUŃ KONTO
+          </div>
         </div>
       </Block>
     </div>
@@ -32,15 +23,15 @@
 </template>
 
 <script>
-import WhiteFunctionalBlock from '../../components/ui/blocks/WhiteFunctionalBlock'
-import MainBaseInfo from '../../components/ui/basic/MainBaseInfo'
-import VioletBlock from '../../components/ui/blocks/VioletBlock'
-import RedBlock from '../../components/ui/blocks/RedBlock'
+import WhiteFunctionalBlock from "../../components/ui/blocks/WhiteFunctionalBlock"
+import MainBaseInfo from "../../components/ui/basic/MainBaseInfo"
+import VioletBlock from "../../components/ui/blocks/VioletBlock"
+import RedBlock from "../../components/ui/blocks/RedBlock"
 
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from "vuex"
 
 export default {
-  name: 'About',
+  name: "About",
   components: {
     Block: WhiteFunctionalBlock,
     MainBaseInfo,
@@ -49,18 +40,28 @@ export default {
   },
   methods: {
     ...mapActions({
-      showModal: 'modal/show'
+      showModal: "modal/show"
     }),
-    deleteAccount: function () {
+    deleteAccount: function() {
       this.showModal({
-        componentName: 'DeleteAccount'
+        componentName: "DeleteAccount"
       })
     },
-    changePassword: function () {
+    changePassword: function() {
       this.showModal({
-        componentName: 'ChangePassword'
+        componentName: "ChangePassword"
+      })
+    },
+    showSettings: function() {
+      this.showModal({
+        componentName: "Settings"
       })
     }
+  },
+  computed: {
+    ...mapGetters({
+      userData: "userInfo/full"
+    })
   }
 }
 </script>
