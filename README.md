@@ -19,6 +19,6 @@ npm run build
 
 ## License
 
-Teczka Zdrowia is [fair-code](http://faircode.io) licensed under [**Apache 2.0 with Commons Clause**](https://github.com/teczka-zdrowia/teczka-zdrowia-api/blob/master/LICENSE.md).
+Teczka Zdrowia is [fair-code](http://faircode.io) licensed under [**Apache 2.0 with Commons Clause**](https://github.com/teczka-zdrowia/teczka-zdrowia/blob/master/LICENSE.md).
 
 Learn more about **Commons Clause** [here](https://commonsclause.com/).
