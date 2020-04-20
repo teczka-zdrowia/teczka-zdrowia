@@ -16,14 +16,16 @@
         class="modal__btn modal__btn--grey"
         @click="hideModal"
         type="button"
-      >Anuluj</button>
+      >Anuluj
+      </button>
       <MainBtn
         class="modal__btn modal__btn--red"
         :loading="isLoading"
         :disabled="isLoading"
         color="#fafafa"
         @click.native="deactivatePlace"
-      >Dezaktywuj</MainBtn>
+      >Dezaktywuj
+      </MainBtn>
     </div>
   </div>
 </template>

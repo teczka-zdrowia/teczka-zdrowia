@@ -19,18 +19,21 @@
         selected
         disabled
         :value="null"
-      >Ładowanie gabinetów</option>
+      >Ładowanie gabinetów
+      </option>
       <option
         v-else
         selected
         disabled
         :value="null"
-      >Wybierz gabinet</option>
+      >Wybierz gabinet
+      </option>
       <option
         v-for="(role, index) in roles"
         :key="index"
         :value="role.place.id"
-      >{{ role.place.name }}</option>
+      >{{ role.place.name }}
+      </option>
     </MainSelect>
     <MainInput
       class="addhistory__date"
@@ -132,7 +135,8 @@
           v-on:click="recommendation.days = 1"
           v-if="recommendation.days <= 0"
         >
-          <div class="addhistory__recommendation__days__title addhistory__recommendation__days__title--undefined fullwidth">
+          <div
+            class="addhistory__recommendation__days__title addhistory__recommendation__days__title--undefined fullwidth">
             Czas nieokreślony
           </div>
           <div class="addhistory__recommendation__days__checkbox">
@@ -148,9 +152,10 @@
         class="addhistory__block__btn"
         v-on:click.native="showNewRecommendation"
       ><span
-          class="fas fa-plus"
-          aria-hidden="true"
-        />Dodaj</MainBtn>
+        class="fas fa-plus"
+        aria-hidden="true"
+      />Dodaj
+      </MainBtn>
     </Block>
     <Block
       class="addhistory__block addhistory__attachments"
@@ -450,445 +455,479 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../main";
+  @import "../../main";
 
-input[type="date"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  display: none;
-}
-
-input[type="date"]::-webkit-clear-button {
-  display: none;
-  -webkit-appearance: none;
-}
-
-.addhistory {
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "Patient"
-    "Place"
-    "Date"
-    "Note"
-    "Treatments"
-    "Recommendations"
-    "Attachments"
-    "Agreement";
-  grid-gap: 1rem;
-  padding: 1rem;
-  width: calc(100% - 2rem);
-  border-bottom: 1px solid rgba(145, 145, 156, 0.15);
-  &__info {
-    padding: 1rem;
-    max-width: 20rem;
-  }
-
-  &__patient {
-    grid-area: Patient;
-  }
-
-  &__select {
-    grid-area: Place;
-    width: 100%;
-    background-color: #fdfdff !important;
-  }
-
-  &__date {
-    grid-area: Date;
-  }
-
-  &__note {
-    grid-area: Note;
-  }
-
-  &__treatments {
-    grid-area: Treatments;
-  }
-
-  &__recommendations {
-    grid-area: Recommendations;
-  }
-
-  &__attachments {
-    grid-area: Attachments;
-  }
-
-  &__agreement {
-    grid-area: Agreement;
-  }
-
-  &__patients,
-  &__places {
-    overflow: auto;
-    height: 15rem;
-    padding: 0 1rem;
-    width: calc(100% - 2rem);
-  }
-
-  &__search {
-    padding: 1rem;
-    width: calc(100% - 2rem);
-  }
-
-  &__block {
-    width: 90%;
-    padding: 5%;
-    border-radius: 0.5em;
-    background: #fdfdff !important;
-    display: inline-block;
-    box-shadow: none;
-    & /deep/ {
-      .block__top {
-        margin-bottom: 1rem !important;
-      }
-      .block__content {
-        display: grid;
-        grid-gap: 1rem;
-      }
-      .top__title {
-        color: #91919c !important;
-        font-size: 1rem !important;
-        font-weight: 600 !important;
-      }
-    }
-    &__btn {
-      @extend %text--center;
-      padding: 1rem;
-      width: 100%;
-      background: #e4e7ef;
-      color: #91919c;
-      span {
-        margin-right: 0.75rem;
-      }
-      input {
-        display: none;
-      }
-    }
-    label.addhistory__block__btn {
-      width: calc(100% - 2rem);
-      font-weight: 600;
-      display: flex;
-      justify-content: center;
-      border-radius: 0.5rem;
-      cursor: pointer;
-    }
-  }
-
-  &__recommendation {
-    &__top {
-      display: grid;
-      grid-template-columns: auto 4rem;
-    }
-    &__title {
-      padding: 0.5rem;
-      background: #e4e7ef;
-      color: #3e3e45;
-      width: calc(100% - 1rem);
-      font-weight: 700;
-      border-top-left-radius: 0.5rem;
-    }
-    &__description {
-      padding: 0.5rem;
-      background: #f1f2f7;
-      color: #67676e;
-      width: calc(100% - 1rem);
-      font-weight: 600;
-    }
-    &__btn {
-      padding: 1rem;
-      font-size: 1.5rem;
-      background: #f1f2f7;
-      color: #6a6ee1;
-      border-top-right-radius: 0.5rem;
-      cursor: pointer;
-      transition: 0.2s ease-in-out;
-      &:hover {
-        filter: brightness(95%);
-      }
-    }
-    &__date {
-      display: grid;
-      grid-template-columns: 8rem auto;
-      width: 100%;
-      &__title {
-        padding: 0.5rem;
-        background: #e4e7ef;
-        font-weight: 600;
-        color: #757575;
-        display: flex;
-        align-items: center;
-      }
-      &__input {
-        padding: 0.5rem;
-        text-align: center;
-        font-weight: 600;
-        color: #9191a2;
-        background: #fafafc;
-        width: calc(100% - 1rem);
-      }
-    }
-    &__days {
-      display: grid;
-      grid-template-columns: 8rem auto;
-      width: 100%;
-      &--undefined {
-        cursor: pointer;
-        grid-template-columns: auto 2rem;
-      }
-      &__title {
-        padding: 0.5rem;
-        background: #e4e7ef;
-        font-weight: 600;
-        color: #757575;
-        display: flex;
-        align-items: center;
-        border-bottom-left-radius: 0.5rem;
-        &--undefined {
-          background: #f1f2f7;
-          width: 100%;
-          text-align: center;
-        }
-      }
-      &__input {
-        padding: 0.5rem;
-        text-align: center;
-        font-weight: 600;
-        color: #9191a2;
-        background: #fafafc;
-        width: calc(100% - 1rem);
-        border-bottom-right-radius: 0.5rem;
-      }
-      &__checkbox {
-        @extend %text--center;
-        padding: 0.5rem;
-        width: 1rem;
-        color: #9191a2;
-        background: #e4e7ef;
-        border-bottom-right-radius: 0.5rem;
-      }
-    }
-  }
-  &__attachment {
-    display: grid;
-    grid-template-columns: auto 4rem;
-    &__title {
-      padding: 0.5rem;
-      background: #e4e7ef;
-      color: #3e3e45;
-      width: calc(100% - 1rem);
-      font-weight: 700;
-      border-top-left-radius: 0.5rem;
-    }
-    &__info {
-      padding: 0.5rem;
-      background: #f1f2f7;
-      color: #67676e;
-      width: calc(100% - 1rem);
-      font-weight: 600;
-      word-break: break-word;
-      border-bottom-left-radius: 0.5rem;
-      &:first-child {
-        display: flex;
-        align-items: center;
-        border-top-left-radius: 0.5rem;
-      }
-    }
-    &__btn {
-      padding: 1rem;
-      font-size: 1.5rem;
-      background: #f1f2f7;
-      color: #6a6ee1;
-      border-top-right-radius: 0.5rem;
-      border-bottom-right-radius: 0.5rem;
-      cursor: pointer;
-      transition: 0.2s ease-in-out;
-      &:hover {
-        filter: brightness(95%);
-      }
-    }
-  }
-
-  .places__info,
-  .patients__info {
-    width: calc(100% - 2rem);
-    padding: 1rem;
-    &--loading {
-      svg {
-        height: 2rem;
-        width: 2rem;
-        margin-left: 1rem;
-        margin-right: unset;
-      }
-    }
-  }
-
-  .patient__el {
-    display: flex;
-    border-radius: 0.5rem;
-    overflow: hidden;
-    background: #fafafc;
-    &:not(:last-child) {
-      margin-bottom: 1rem;
-    }
-    &__info {
-      padding: 0.5rem;
-      padding-right: 1rem;
-    }
-    &__checkbox {
-      @extend %text--center;
-      margin-left: auto;
-      font-size: 1.75rem;
-      height: 4.5rem;
-      width: 4.5rem;
-      background: #fafafc;
-      cursor: pointer;
-      input {
-        display: none;
-      }
-      span {
-        color: #27ae60;
-        opacity: 0;
-        transition: 0.2s ease-in-out;
-      }
-      &:hover span {
-        opacity: 0.5;
-      }
-      &.checked span {
-        opacity: 1;
-      }
-    }
-  }
-
-  &__buttons {
-    display: grid;
-    width: 100%;
-    grid-template-columns: 1fr 1fr;
-    & > * {
-      width: 100%;
-    }
-    & > *:first-child {
-      background: #f1f2f7;
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-    & > *:last-child {
-      border-top-left-radius: 0 !important;
-      border-bottom-left-radius: 0 !important;
-    }
-    button {
-      width: 100%;
-      font-weight: 600;
-      display: flex;
-      justify-content: center;
-      border-radius: 0.5rem;
-      cursor: pointer;
-    }
-  }
-}
-
-.places__list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  grid-gap: 1rem;
-  margin-bottom: 1rem;
-  margin: 1rem;
-}
-
-.place {
-  @extend %text--center;
-  color: #3e3e45;
-  font-weight: 600;
-  width: calc(100% - 2.5rem);
-  padding: 1.25rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
-  background: #eeeef3;
-  transition: 0.2s ease-in-out;
-  text-align: center;
-  cursor: pointer;
-  &.selected,
-  &.places__title {
-    background: #fafafc;
-  }
-  &.inactive {
+  input[type="date"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
     display: none;
   }
-  &--selected {
-    display: grid;
-    grid-template-columns: 10rem auto 5rem;
-    margin-bottom: 1rem;
-    & > .places__title {
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-    }
-    & > .place.selected {
-      border-radius: 0;
-      background: #efefef;
-      cursor: unset;
-    }
-    & > .place__back {
-      padding: 1rem;
-      background: #8789e8;
-      color: #fafafa;
-      border-top-right-radius: 0.5rem;
-      border-bottom-right-radius: 0.5rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
+
+  input[type="date"]::-webkit-clear-button {
+    display: none;
+    -webkit-appearance: none;
   }
-}
 
-.place__select {
-  margin-left: auto;
-  font-size: 1.5em;
-  width: 1em;
-  height: 1em;
-  text-align: center;
-  border-radius: 0.5em;
-  transition: 0.2s ease-in-out;
-  color: #6a6ee1;
-}
-
-@media only screen and (min-width: 920px) {
   .addhistory {
-    grid-template-columns: 1fr 1fr;
-    padding: 2rem;
-    width: calc(100% - 4rem);
-    grid-template-areas:
-      "Patient Place"
-      "Date Date"
-      "Note Note"
-      "Treatments Treatments"
-      "Recommendations Recommendations"
-      "Attachments Attachments"
-      "Agreement Agreement";
-    & > * {
-      padding: 1rem !important;
-      width: calc(100% - 2rem) !important;
-      &.addhistory__select {
-        width: 100% !important;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: "Patient" "Place" "Date" "Note" "Treatments" "Recommendations" "Attachments" "Agreement";
+    grid-gap: 1rem;
+    padding: 1rem;
+    width: calc(100% - 2rem);
+    border-bottom: 1px solid rgba(145, 145, 156, 0.15);
+
+    &__info {
+      padding: 1rem;
+      max-width: 20rem;
+    }
+
+    &__patient {
+      grid-area: Patient;
+    }
+
+    &__select {
+      grid-area: Place;
+      width: 100%;
+      background-color: #fdfdff !important;
+    }
+
+    &__date {
+      grid-area: Date;
+    }
+
+    &__note {
+      grid-area: Note;
+    }
+
+    &__treatments {
+      grid-area: Treatments;
+    }
+
+    &__recommendations {
+      grid-area: Recommendations;
+    }
+
+    &__attachments {
+      grid-area: Attachments;
+    }
+
+    &__agreement {
+      grid-area: Agreement;
+    }
+
+    &__patients,
+    &__places {
+      overflow: auto;
+      height: 15rem;
+      padding: 0 1rem;
+      width: calc(100% - 2rem);
+    }
+
+    &__search {
+      padding: 1rem;
+      width: calc(100% - 2rem);
+    }
+
+    &__block {
+      width: 90%;
+      padding: 5%;
+      border-radius: 0.5em;
+      background: #fdfdff !important;
+      display: inline-block;
+      box-shadow: none;
+
+      & /deep/ {
+        .block__top {
+          margin-bottom: 1rem !important;
+        }
+
+        .block__content {
+          display: grid;
+          grid-gap: 1rem;
+        }
+
+        .top__title {
+          color: #91919c !important;
+          font-size: 1rem !important;
+          font-weight: 600 !important;
+        }
+      }
+
+      &__btn {
+        @extend %text--center;
+        padding: 1rem;
+        width: 100%;
+        background: #e4e7ef;
+        color: #91919c;
+
+        span {
+          margin-right: 0.75rem;
+        }
+
+        input {
+          display: none;
+        }
+      }
+
+      label.addhistory__block__btn {
+        width: calc(100% - 2rem);
+        font-weight: 600;
+        display: flex;
+        justify-content: center;
+        border-radius: 0.5rem;
+        cursor: pointer;
       }
     }
-    &__block:not(.addhistory__agreement) {
-      & /deep/ {
-        .block__content {
-          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+    &__recommendation {
+      &__top {
+        display: grid;
+        grid-template-columns: auto 4rem;
+      }
+
+      &__title {
+        padding: 0.5rem;
+        background: #e4e7ef;
+        color: #3e3e45;
+        width: calc(100% - 1rem);
+        font-weight: 700;
+        border-top-left-radius: 0.5rem;
+      }
+
+      &__description {
+        padding: 0.5rem;
+        background: #f1f2f7;
+        color: #67676e;
+        width: calc(100% - 1rem);
+        font-weight: 600;
+      }
+
+      &__btn {
+        padding: 1rem;
+        font-size: 1.5rem;
+        background: #f1f2f7;
+        color: #6a6ee1;
+        border-top-right-radius: 0.5rem;
+        cursor: pointer;
+        transition: 0.2s ease-in-out;
+
+        &:hover {
+          filter: brightness(95%);
+        }
+      }
+
+      &__date {
+        display: grid;
+        grid-template-columns: 8rem auto;
+        width: 100%;
+
+        &__title {
+          padding: 0.5rem;
+          background: #e4e7ef;
+          font-weight: 600;
+          color: #757575;
+          display: flex;
+          align-items: center;
+        }
+
+        &__input {
+          padding: 0.5rem;
+          text-align: center;
+          font-weight: 600;
+          color: #9191a2;
+          background: #fafafc;
+          width: calc(100% - 1rem);
+        }
+      }
+
+      &__days {
+        display: grid;
+        grid-template-columns: 8rem auto;
+        width: 100%;
+
+        &--undefined {
+          cursor: pointer;
+          grid-template-columns: auto 2rem;
+        }
+
+        &__title {
+          padding: 0.5rem;
+          background: #e4e7ef;
+          font-weight: 600;
+          color: #757575;
+          display: flex;
+          align-items: center;
+          border-bottom-left-radius: 0.5rem;
+
+          &--undefined {
+            background: #f1f2f7;
+            width: 100%;
+            text-align: center;
+          }
+        }
+
+        &__input {
+          padding: 0.5rem;
+          text-align: center;
+          font-weight: 600;
+          color: #9191a2;
+          background: #fafafc;
+          width: calc(100% - 1rem);
+          border-bottom-right-radius: 0.5rem;
+        }
+
+        &__checkbox {
+          @extend %text--center;
+          padding: 0.5rem;
+          width: 1rem;
+          color: #9191a2;
+          background: #e4e7ef;
+          border-bottom-right-radius: 0.5rem;
+        }
+      }
+    }
+
+    &__attachment {
+      display: grid;
+      grid-template-columns: auto 4rem;
+
+      &__title {
+        padding: 0.5rem;
+        background: #e4e7ef;
+        color: #3e3e45;
+        width: calc(100% - 1rem);
+        font-weight: 700;
+        border-top-left-radius: 0.5rem;
+      }
+
+      &__info {
+        padding: 0.5rem;
+        background: #f1f2f7;
+        color: #67676e;
+        width: calc(100% - 1rem);
+        font-weight: 600;
+        word-break: break-word;
+        border-bottom-left-radius: 0.5rem;
+
+        &:first-child {
+          display: flex;
+          align-items: center;
+          border-top-left-radius: 0.5rem;
+        }
+      }
+
+      &__btn {
+        padding: 1rem;
+        font-size: 1.5rem;
+        background: #f1f2f7;
+        color: #6a6ee1;
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+        cursor: pointer;
+        transition: 0.2s ease-in-out;
+
+        &:hover {
+          filter: brightness(95%);
+        }
+      }
+    }
+
+    .places__info,
+    .patients__info {
+      width: calc(100% - 2rem);
+      padding: 1rem;
+
+      &--loading {
+        svg {
+          height: 2rem;
+          width: 2rem;
+          margin-left: 1rem;
+          margin-right: unset;
+        }
+      }
+    }
+
+    .patient__el {
+      display: flex;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      background: #fafafc;
+
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+
+      &__info {
+        padding: 0.5rem;
+        padding-right: 1rem;
+      }
+
+      &__checkbox {
+        @extend %text--center;
+        margin-left: auto;
+        font-size: 1.75rem;
+        height: 4.5rem;
+        width: 4.5rem;
+        background: #fafafc;
+        cursor: pointer;
+
+        input {
+          display: none;
+        }
+
+        span {
+          color: #27ae60;
+          opacity: 0;
+          transition: 0.2s ease-in-out;
+        }
+
+        &:hover span {
+          opacity: 0.5;
+        }
+
+        &.checked span {
+          opacity: 1;
+        }
+      }
+    }
+
+    &__buttons {
+      display: grid;
+      width: 100%;
+      grid-template-columns: 1fr 1fr;
+
+      & > * {
+        width: 100%;
+      }
+
+      & > *:first-child {
+        background: #f1f2f7;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      & > *:last-child {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+      }
+
+      button {
+        width: 100%;
+        font-weight: 600;
+        display: flex;
+        justify-content: center;
+        border-radius: 0.5rem;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .places__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-gap: 1rem;
+    margin-bottom: 1rem;
+    margin: 1rem;
+  }
+
+  .place {
+    @extend %text--center;
+    color: #3e3e45;
+    font-weight: 600;
+    width: calc(100% - 2.5rem);
+    padding: 1.25rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+    background: #eeeef3;
+    transition: 0.2s ease-in-out;
+    text-align: center;
+    cursor: pointer;
+
+    &.selected,
+    &.places__title {
+      background: #fafafc;
+    }
+
+    &.inactive {
+      display: none;
+    }
+
+    &--selected {
+      display: grid;
+      grid-template-columns: 10rem auto 5rem;
+      margin-bottom: 1rem;
+
+      & > .places__title {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      & > .place.selected {
+        border-radius: 0;
+        background: #efefef;
+        cursor: unset;
+      }
+
+      & > .place__back {
+        padding: 1rem;
+        background: #8789e8;
+        color: #fafafa;
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .place__select {
+    margin-left: auto;
+    font-size: 1.5em;
+    width: 1em;
+    height: 1em;
+    text-align: center;
+    border-radius: 0.5em;
+    transition: 0.2s ease-in-out;
+    color: #6a6ee1;
+  }
+
+  @media only screen and (min-width: 920px) {
+    .addhistory {
+      grid-template-columns: 1fr 1fr;
+      padding: 2rem;
+      width: calc(100% - 4rem);
+      grid-template-areas: "Patient Place" "Date Date" "Note Note" "Treatments Treatments" "Recommendations Recommendations" "Attachments Attachments" "Agreement Agreement";
+
+      & > * {
+        padding: 1rem !important;
+        width: calc(100% - 2rem) !important;
+
+        &.addhistory__select {
+          width: 100% !important;
+        }
+      }
+
+      &__block:not(.addhistory__agreement) {
+        & /deep/ {
+          .block__content {
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          }
         }
       }
     }
   }
-}
 
-@media only screen and (max-width: 720px) and (orientation: portrait) {
-  .addhistory {
-    grid-template-columns: 1fr;
-    height: calc(100% - 5rem);
-    &__info {
-      max-width: 100%;
-      height: auto;
+  @media only screen and (max-width: 720px) and (orientation: portrait) {
+    .addhistory {
+      grid-template-columns: 1fr;
+      height: calc(100% - 5rem);
+
+      &__info {
+        max-width: 100%;
+        height: auto;
+      }
     }
   }
-}
 </style>

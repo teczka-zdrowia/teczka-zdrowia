@@ -4,7 +4,7 @@
       <span class="addpatient__place__title">
         Gabinet:
       </span>
-      <MainPlaceInfo class="addpatient__place__info" :data="place" />
+      <MainPlaceInfo class="addpatient__place__info" :data="place"/>
     </div>
     <form
       class="addpatient__form"
@@ -29,14 +29,16 @@
         color="#fafafa"
         :loading="loading.search"
         :disabled="loading.search"
-        >Wyszukaj pacjenta po PESEL</MainBtn
+      >Wyszukaj pacjenta po PESEL
+      </MainBtn
       >
     </form>
     <MainBtn
       class="addpatient__form__btn addpatient__form__btn--red"
       v-if="isPeselCorrect && searchFailed && !initalizeNew"
       v-on:click.native="initalizeNew = !initalizeNew"
-      >Utwórz konto użytkownika</MainBtn
+    >Utwórz konto użytkownika
+    </MainBtn
     >
     <form
       class="addpatient__form"
@@ -96,12 +98,14 @@
         color="#fafafa"
         :loading="loading.initalize"
         :disabled="loading.initalize"
-        >Utwórz konto</MainBtn
+      >Utwórz konto
+      </MainBtn
       >
     </form>
     <GreyBlock class="addpatient__info" v-if="newAccountCreated"
-      >Utworzono nowe konto użytkownika. Dane logowania zostały wysłane na
-      podany wcześniej adres e-mail.</GreyBlock
+    >Utworzono nowe konto użytkownika. Dane logowania zostały wysłane na
+      podany wcześniej adres e-mail.
+    </GreyBlock
     >
     <MainUserBlockInfo
       class="addpatient__patient"
@@ -156,10 +160,10 @@ export default {
         .map(digit => parseInt(digit, 10))
       const dig11 = digits.splice(-1)[0]
       let control =
-        digits.reduce(
-          (previousValue, currentValue, index) =>
-            previousValue + currentValue * times[index % 4]
-        ) % 10
+          digits.reduce(
+            (previousValue, currentValue, index) =>
+              previousValue + currentValue * times[index % 4]
+          ) % 10
 
       return 10 - (control === 0 ? 10 : control) === dig11
     }
@@ -223,56 +227,60 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../main";
+  @import "../../main";
 
-.addpatient {
-  &__place {
-    display: flex;
-    width: 100%;
-    margin-bottom: 1rem;
-    background: #f5f5f5;
-    border-radius: 0.5rem;
-    &__title {
-      @extend %text--center;
-      font-weight: 600;
-      padding: 1rem;
-    }
-    &__info {
+  .addpatient {
+    &__place {
+      display: flex;
       width: 100%;
-    }
-  }
+      margin-bottom: 1rem;
+      background: #f5f5f5;
+      border-radius: 0.5rem;
 
-  &__form {
-    @media only screen and (min-width: 35rem) {
-      width: 30rem;
-    }
+      &__title {
+        @extend %text--center;
+        font-weight: 600;
+        padding: 1rem;
+      }
 
-    label {
-      padding: 1.5rem !important;
-      width: calc(100% - 3rem) !important;
-      background: #eeeef3 !important;
-    }
-    &__btn {
-      margin-top: 1rem;
-      width: 100%;
-      &--red {
-        background: #d91e18 !important;
-        color: #fafafc !important;
+      &__info {
+        width: 100%;
       }
     }
-  }
 
-  &__info {
-    font-size: 1rem;
-    padding: 1rem;
-    margin-top: 1rem;
-    width: 28rem;
-     max-width: 90vw;
-  }
+    &__form {
+      @media only screen and (min-width: 35rem) {
+        width: 30rem;
+      }
 
-  &__patient {
-    width: 100% !important;
-    margin-top: 1rem;
+      label {
+        padding: 1.5rem !important;
+        width: calc(100% - 3rem) !important;
+        background: #eeeef3 !important;
+      }
+
+      &__btn {
+        margin-top: 1rem;
+        width: 100%;
+
+        &--red {
+          background: #d91e18 !important;
+          color: #fafafc !important;
+        }
+      }
+    }
+
+    &__info {
+      font-size: 1rem;
+      padding: 1rem;
+      margin-top: 1rem;
+      width: 28rem;
+      max-width: 90vw;
+    }
+
+    &__patient {
+      width: 100% !important;
+      margin-top: 1rem;
+    }
   }
-}
 </style>

@@ -17,16 +17,16 @@
       </div>
       <div class="modal--ui__info">
         <div class="modal--ui__info__el">
-          <span aria-hidden="true" class="fas fa-phone" />
+          <span aria-hidden="true" class="fas fa-phone"/>
           <a :href="`tel:${user.phone}`"> {{ user.phone }}</a>
         </div>
         <div class="modal--ui__info__el">
-          <span aria-hidden="true" class="far fa-envelope" />
+          <span aria-hidden="true" class="far fa-envelope"/>
           <a :href="`mailto:${user.email}`"> {{ user.email }}</a>
         </div>
 
         <div class="modal--ui__info__el">
-          <span aria-hidden="true" class="fas fa-map-marked" />
+          <span aria-hidden="true" class="fas fa-map-marked"/>
           <a
             target="_blank"
             :href="`http://maps.google.com/?q= ${user.address}`"
@@ -40,8 +40,9 @@
             :to="`/PatientFile/${user.id}`"
             v-on:click.native="hideModal"
           >
-            <span aria-hidden="true" class="fas fa-file-medical" />
-            Kartkoteka</router-link
+            <span aria-hidden="true" class="fas fa-file-medical"/>
+            Kartkoteka
+          </router-link
           >
         </div>
 
@@ -57,12 +58,14 @@
             <option
               :selected="data.role.permission_type === 'ADMIN'"
               value="ADMIN"
-              >&#xf521;&nbsp;&nbsp;&nbsp;Administrator</option
+            >&#xf521;&nbsp;&nbsp;&nbsp;Administrator
+            </option
             >
             <option
               :selected="data.role.permission_type === 'EMPLOYEE'"
               value="EMPLOYEE"
-              >&#xf007;&nbsp;&nbsp;&nbsp;Pracownik</option
+            >&#xf007;&nbsp;&nbsp;&nbsp;Pracownik
+            </option
             >
           </MainSelect>
         </div>
@@ -74,7 +77,8 @@
         color="#fafafa"
         v-on:click.native="deleteRole"
         class="modal__btn fullwidth modal__btn--red"
-        >Usuń</MainBtn
+      >Usuń
+      </MainBtn
       >
       <MainBtn
         v-if="data.editAffiliation && !data.role.is_active && !viewerIsUser"
@@ -83,7 +87,8 @@
         color="#fafafa"
         v-on:click.native="activateRole"
         class="modal__btn fullwidth modal__btn--green"
-        >Aktywuj</MainBtn
+      >Aktywuj
+      </MainBtn
       >
       <MainBtn
         v-if="data.editAffiliation && data.role.is_active && !viewerIsUser"
@@ -92,13 +97,15 @@
         color="#fafafa"
         v-on:click.native="deactivateRole"
         class="modal__btn fullwidth modal__btn--violet"
-        >Dezaktywuj</MainBtn
+      >Dezaktywuj
+      </MainBtn
       >
       <MainBtn
         class="modal__btn fullwidth modal__btn--grey"
         type="button"
         v-on:click.native="hideModal"
-        >Zamknij</MainBtn
+      >Zamknij
+      </MainBtn
       >
     </div>
   </div>
@@ -238,95 +245,112 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main";
+  @import "../../../main";
 
-.modal--ui {
-  &__top {
-    padding: 1rem;
-    width: calc(100% - 2rem);
-    color: #3e3e45;
-    font-weight: 700;
-    text-align: center;
-    background: #ececec;
-    font-size: 1.5rem;
-    display: flex;
-    height: 6rem;
-  }
-  &__img {
-    display: block;
-    width: 4rem;
-    margin: auto 0;
-    border-radius: 1rem;
-    border: 5px solid #fafafa;
-    margin-right: 1rem;
-  }
-  &__name {
-    @extend %text--center;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-  }
-  &__content {
-    border-radius: 0.5em;
-    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
-    background: #fafafc;
-    overflow: hidden;
-  }
-  &__info {
-    padding: 1.5rem;
-    &__title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      padding-bottom: 0.5rem;
-    }
-    &__el {
-      padding: 0.5rem 0;
+  .modal--ui {
+    &__top {
+      padding: 1rem;
+      width: calc(100% - 2rem);
+      color: #3e3e45;
+      font-weight: 700;
+      text-align: center;
+      background: #ececec;
+      font-size: 1.5rem;
       display: flex;
-      & > span {
-        padding: 1rem;
-        border-radius: 0.5rem;
-        background: #ececec;
-      }
-      a {
-        margin-left: 1rem;
+      height: 6rem;
+    }
+
+    &__img {
+      display: block;
+      width: 4rem;
+      margin: auto 0;
+      border-radius: 1rem;
+      border: 5px solid #fafafa;
+      margin-right: 1rem;
+    }
+
+    &__name {
+      @extend %text--center;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    &__content {
+      border-radius: 0.5em;
+      box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+      background: #fafafc;
+      overflow: hidden;
+    }
+
+    &__info {
+      padding: 1.5rem;
+
+      &__title {
+        font-size: 1.25rem;
         font-weight: 600;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        background: #f5f5f5;
-        width: 100%;
-        transition: 0.2s ease-in-out;
-        &:only-child {
-          margin-left: 0;
+        padding-bottom: 0.5rem;
+      }
+
+      &__el {
+        padding: 0.5rem 0;
+        display: flex;
+
+        & > span {
+          padding: 1rem;
+          border-radius: 0.5rem;
           background: #ececec;
-          text-align: center;
-          span {
-            margin-right: 1rem;
+        }
+
+        a {
+          margin-left: 1rem;
+          font-weight: 600;
+          padding: 1rem;
+          border-radius: 0.5rem;
+          background: #f5f5f5;
+          width: 100%;
+          transition: 0.2s ease-in-out;
+
+          &:only-child {
+            margin-left: 0;
+            background: #ececec;
+            text-align: center;
+
+            span {
+              margin-right: 1rem;
+            }
+          }
+
+          &:hover {
+            filter: brightness(95%);
           }
         }
-        &:hover {
-          filter: brightness(95%);
-        }
       }
     }
-  }
-  &__select {
-    font-family: $font-awesome, Montserrat;
-    width: 100%;
-    &--gold {
-      color: #f1c40f !important;
-    }
-    &--violet {
-      color: #6a6ee1 !important;
-    }
-    option {
-      font-weight: 600;
+
+    &__select {
+      font-family: $font-awesome, Montserrat;
+      width: 100%;
+
+      &--gold {
+        color: #f1c40f !important;
+      }
+
+      &--violet {
+        color: #6a6ee1 !important;
+      }
+
+      option {
+        font-weight: 600;
+
+        &::first-letter {
+          margin-right: 1rem;
+        }
+      }
+
       &::first-letter {
         margin-right: 1rem;
       }
     }
-    &::first-letter {
-      margin-right: 1rem;
-    }
   }
-}
 </style>

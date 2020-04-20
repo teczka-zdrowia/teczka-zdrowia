@@ -34,7 +34,7 @@
             :disabled="isLoading"
             v-on:change="processFile($event)"
           />
-          <span aria-hidden="true" class="icon fas fa-camera" />
+          <span aria-hidden="true" class="icon fas fa-camera"/>
         </label>
       </div>
       <div class="user__name" v-if="!isEdit">{{ userData.name }}</div>
@@ -70,7 +70,7 @@
           v-on:click.native="isEdit = true"
           v-if="!isEdit"
         >
-          <span aria-hidden="true" class="icon fas fa-pen" />
+          <span aria-hidden="true" class="icon fas fa-pen"/>
         </MainBtn>
         <MainBtn
           class="more__action more__action--cancel"
@@ -78,7 +78,7 @@
           :disabled="isLoading"
           v-if="isEdit"
         >
-          <span aria-hidden="true" class="icon fas fa-times" />
+          <span aria-hidden="true" class="icon fas fa-times"/>
         </MainBtn>
         <MainBtn
           class="more__action more__action--save"
@@ -91,14 +91,14 @@
             aria-hidden="true"
             class="icon fas fa-check"
           />
-          <MainLoading v-if="isLoading" />
+          <MainLoading v-if="isLoading"/>
         </MainBtn>
       </div>
     </div>
     <div class="base__more">
       <div class="more__el">
         <div class="more__title">
-          <span aria-hidden="true" class="icon fas fa-birthday-cake" />
+          <span aria-hidden="true" class="icon fas fa-birthday-cake"/>
           <span>Urodziny</span>
         </div>
         <div class="more__content" v-if="!isEdit">
@@ -110,7 +110,7 @@
       </div>
       <div class="more__el">
         <div class="more__title">
-          <span aria-hidden="true" class="icon fas fa-at" />
+          <span aria-hidden="true" class="icon fas fa-at"/>
           <span>Email</span>
         </div>
         <div class="more__content" v-if="!isEdit">{{ userData.email }}</div>
@@ -127,7 +127,7 @@
       </div>
       <div class="more__el">
         <div class="more__title">
-          <span aria-hidden="true" class="icon fas fa-phone" />
+          <span aria-hidden="true" class="icon fas fa-phone"/>
           <span>Telefon</span>
         </div>
         <div class="more__content" v-if="!isEdit">{{ userData.phone }}</div>
@@ -146,7 +146,7 @@
       </div>
       <div class="more__el">
         <div class="more__title">
-          <span aria-hidden="true" class="icon fas fa-id-card-alt" />
+          <span aria-hidden="true" class="icon fas fa-id-card-alt"/>
           <span>PESEL</span>
         </div>
         <div class="more__content" v-if="PESEL">{{ userData.pesel }}</div>
@@ -163,12 +163,12 @@
           v-on:click="hidePESEL"
           class="more__content more__content__btn more__content--fullcolor"
         >
-          <span aria-hidden="true" class="icon fas fa-eye-slash" />
+          <span aria-hidden="true" class="icon fas fa-eye-slash"/>
         </div>
       </div>
       <div class="more__el more__el--fullwidth">
         <div class="more__title">
-          <span aria-hidden="true" class="icon fas fa-map-marked" />
+          <span aria-hidden="true" class="icon fas fa-map-marked"/>
           <span>Adres</span>
         </div>
         <div class="more__content" v-if="!isEdit">
@@ -191,7 +191,7 @@
           v-on:click.native="isEdit = true"
           v-if="!isEdit"
         >
-          <span aria-hidden="true" class="icon fas fa-pen" />
+          <span aria-hidden="true" class="icon fas fa-pen"/>
           Edytuj
         </MainBtn>
         <MainBtn
@@ -200,7 +200,7 @@
           :disabled="isLoading"
           v-if="isEdit"
         >
-          <span aria-hidden="true" class="icon fas fa-times" />
+          <span aria-hidden="true" class="icon fas fa-times"/>
           Anuluj
         </MainBtn>
         <MainBtn
@@ -210,11 +210,11 @@
           v-if="isEdit"
         >
           <div v-if="!isLoading">
-            <span aria-hidden="true" class="icon fas fa-check" />
+            <span aria-hidden="true" class="icon fas fa-check"/>
             Zapisz
           </div>
           <div v-if="isLoading">
-            <MainLoading />
+            <MainLoading/>
           </div>
         </MainBtn>
       </div>
@@ -311,7 +311,7 @@ export default {
       let dataThatChanged = {}
       for (let property in newUserData) {
         const newDataAppearsInProperty =
-          newUserData[property] !== userData[property]
+            newUserData[property] !== userData[property]
         if (newDataAppearsInProperty) {
           dataThatChanged[property] = newUserData[property]
         }
@@ -367,333 +367,358 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main.scss";
+  @import "../../../main.scss";
 
-input[type="date"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  display: none;
-}
+  input[type="date"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    display: none;
+  }
 
-::-webkit-clear-button {
-  display: none;
-  -webkit-appearance: none;
-}
+  ::-webkit-clear-button {
+    display: none;
+    -webkit-appearance: none;
+  }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 
-.info--base {
-  width: 100%;
-  padding: 2rem;
-  background: #fafafc;
-  border-radius: 0.5rem;
-  box-shadow: 0 0 20px 0px $lightgrey;
-}
+  .info--base {
+    width: 100%;
+    padding: 2rem;
+    background: #fafafc;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 20px 0px $lightgrey;
+  }
 
-.base__top {
-  display: grid;
-  grid-template-columns: 4rem auto;
-  grid-template-areas:
-    "img name"
-    "img spec";
-  grid-column-gap: 1em;
-  height: 4rem;
-  transition: 0.2s ease-in-out;
-  width: 100%;
-  font-size: 1.25em;
-  margin-bottom: 1em;
-  &--no-specialization {
-    grid-template-areas:
-      "img name"
-      "img name";
-    .user__name {
-      input {
-        border-bottom-left-radius: 0.5rem;
-        border-bottom-right-radius: 0.5rem;
+  .base__top {
+    display: grid;
+    grid-template-columns: 4rem auto;
+    grid-template-areas: "img name" "img spec";
+    grid-column-gap: 1em;
+    height: 4rem;
+    transition: 0.2s ease-in-out;
+    width: 100%;
+    font-size: 1.25em;
+    margin-bottom: 1em;
+
+    &--no-specialization {
+      grid-template-areas: "img name" "img name";
+
+      .user__name {
+        input {
+          border-bottom-left-radius: 0.5rem;
+          border-bottom-right-radius: 0.5rem;
+        }
       }
     }
   }
-}
 
-.user__img {
-  grid-area: img;
-  height: 4rem;
-  transition: 0.2s ease-in-out;
-  border-radius: 1rem;
-  overflow: hidden;
-  -webkit-filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
-  filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
-  position: relative;
-  img {
+  .user__img {
+    grid-area: img;
+    height: 4rem;
+    transition: 0.2s ease-in-out;
+    border-radius: 1rem;
+    overflow: hidden;
+    -webkit-filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
+    filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3));
+    position: relative;
+
+    img {
+      height: 4rem;
+      width: 4rem;
+      object-fit: cover;
+      position: absolute;
+    }
+
+    input {
+      display: none;
+    }
+  }
+
+  .img__edit {
+    position: absolute;
     height: 4rem;
     width: 4rem;
     object-fit: cover;
-    position: absolute;
-  }
-  input {
-    display: none;
-  }
-}
+    background-size: cover;
+    background: rgba(238, 238, 243, 0.5);
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
 
-.img__edit {
-  position: absolute;
-  height: 4rem;
-  width: 4rem;
-  object-fit: cover;
-  background-size: cover;
-  background: rgba(238, 238, 243, 0.5);
-  transition: 0.2s ease-in-out;
-  cursor: pointer;
-  &:hover {
-    background: rgba(230, 230, 232, 0.7);
-  }
-  span {
-    padding: 0.5em;
-    right: 0;
-    color: #9394eb;
-    border-bottom-left-radius: 0.5em;
-    position: absolute;
-    background: rgba(230, 230, 232, 0.9);
-  }
-}
-
-.user__name {
-  @extend %text--center;
-  grid-area: name;
-  font-weight: 700;
-  color: #3e3e45;
-  justify-content: left;
-  input {
-    height: 100%;
-    width: 100%;
-    text-align: center;
-    background: #e6e6e8;
-    color: #3e3e45;
-    font-weight: 700;
-    &:first-child {
-      border-top-left-radius: 0.5rem;
+    &:hover {
+      background: rgba(230, 230, 232, 0.7);
     }
-    &:last-child {
-      border-top-right-radius: 0.5rem;
+
+    span {
+      padding: 0.5em;
+      right: 0;
+      color: #9394eb;
+      border-bottom-left-radius: 0.5em;
+      position: absolute;
+      background: rgba(230, 230, 232, 0.9);
     }
   }
-}
 
-.user__specialization {
-  @extend %text--center;
-  grid-area: spec;
-  font-weight: 600;
-  color: #67676e;
-  justify-content: left;
-}
-
-input.user__specialization {
-  text-align: center;
-  background: #eeeef3;
-  color: #3e3e45;
-  border-bottom-right-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
-  width: 100%;
-}
-
-@media only screen and (max-width: 350px) {
   .user__name {
-    display: block;
-    width: 100%;
+    @extend %text--center;
+    grid-area: name;
+    font-weight: 700;
+    color: #3e3e45;
+    justify-content: left;
+
     input {
+      height: 100%;
       width: 100%;
+      text-align: center;
+      background: #e6e6e8;
+      color: #3e3e45;
+      font-weight: 700;
+
       &:first-child {
+        border-top-left-radius: 0.5rem;
+      }
+
+      &:last-child {
         border-top-right-radius: 0.5rem;
       }
-      &:last-child {
-        border-top-right-radius: 0;
+    }
+  }
+
+  .user__specialization {
+    @extend %text--center;
+    grid-area: spec;
+    font-weight: 600;
+    color: #67676e;
+    justify-content: left;
+  }
+
+  input.user__specialization {
+    text-align: center;
+    background: #eeeef3;
+    color: #3e3e45;
+    border-bottom-right-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    width: 100%;
+  }
+
+  @media only screen and (max-width: 350px) {
+    .user__name {
+      display: block;
+      width: 100%;
+
+      input {
+        width: 100%;
+
+        &:first-child {
+          border-top-right-radius: 0.5rem;
+        }
+
+        &:last-child {
+          border-top-right-radius: 0;
+        }
       }
     }
   }
-}
 
-@media only screen and (max-width: 959px) {
-  .info--base {
-    padding: 1.5rem;
-    width: calc(100% - 3rem);
-    margin-bottom: 1em;
-  }
-}
-
-/* --- MF --- */
-
-.more__el {
-  width: calc(100% - 0.5rem);
-  display: flex;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  &--fullwidth {
-    grid-column-end: 3;
-    grid-column-start: 1;
-  }
-  &:not(:last-child) {
-    margin-bottom: 1em;
-  }
-}
-
-.more__title,
-.more__content {
-  padding: 1rem;
-  font-weight: 600;
-}
-
-.more__title {
-  @extend %text--center;
-  width: 1.5rem;
-  background: #9394eb;
-  color: #fafafc;
-  span:not(.icon) {
-    display: none;
-  }
-}
-
-.more__content {
-  @extend %text--center;
-  width: calc(100% - 3rem);
-  background: #eeeef3;
-  color: #91919c;
-  &.more__pesel {
-    @extend %text--center;
-    background: #9394eb;
-    color: #fafafc;
-    cursor: pointer;
-  }
-  &--fullcolor {
-    background: #9394eb;
-    color: #fafafc;
-  }
-  &__btn {
-    width: 1rem !important;
-    cursor: pointer;
-    background: #ececec;
-    color: #3e3e45;
-    transition: 0.2s ease-in-out;
-    &:hover {
-      filter: brightness(95%);
+  @media only screen and (max-width: 959px) {
+    .info--base {
+      padding: 1.5rem;
+      width: calc(100% - 3rem);
+      margin-bottom: 1em;
     }
   }
-  &:not(:last-child) {
-    width: calc(100% - 6rem);
-  }
-}
 
-input.more__content {
-  color: #3e3e45;
-}
+  /* --- MF --- */
 
-.more__actions {
-  display: flex;
-  width: 100%;
-  & > *:not(:first-child) {
-    margin-left: 1rem;
-  }
-}
-
-.more__action {
-  padding: 1rem !important;
-  width: 100% !important;
-  background: #eeeef3 !important;
-  &--edit {
-    color: #6a6ee1 !important;
-  }
-  &--cancel {
-    color: #c0392b !important;
-  }
-  &--save {
-    color: #27ae60 !important;
-  }
-  span {
-    margin-right: 1em;
-  }
-  svg {
-    height: 1.5rem;
-    width: 1.5rem;
+  .more__el {
+    width: calc(100% - 0.5rem);
     display: flex;
-    margin: auto;
-  }
-}
+    border-radius: 0.5rem;
+    overflow: hidden;
 
-@media only screen and (min-width: 425px) and (max-width: 960px) {
-  .more__title {
-    width: 7rem;
-    justify-content: left;
-    span {
-      margin-right: 0.75em;
+    &--fullwidth {
+      grid-column-end: 3;
+      grid-column-start: 1;
     }
-    span:not(.icon) {
-      display: unset;
-    }
-  }
-  .more__content {
-    width: calc(100% - 11rem);
+
     &:not(:last-child) {
-      width: calc(100% - 14rem);
+      margin-bottom: 1em;
     }
   }
-}
 
-@media only screen and (min-width: 1200px) {
-  .more__title {
-    width: 7rem;
-    justify-content: left;
-    span {
-      margin-right: 0.75em;
-    }
-    span:not(.icon) {
-      display: unset;
-    }
-  }
-  .more__content {
-    width: calc(100% - 11rem);
-    &:not(:last-child) {
-      width: calc(100% - 14rem);
-    }
-  }
-}
-
-@media only screen and (min-width: 960px) {
-  .base__more {
-    display: grid;
-    grid-template-columns: 50% 50%;
-    column-gap: 1rem;
-    row-gap: 1rem;
-  }
   .more__title,
   .more__content {
-    padding: 0.75rem 1rem;
+    padding: 1rem;
+    font-weight: 600;
   }
-  .more__el {
+
+  .more__title {
+    @extend %text--center;
+    width: 1.5rem;
+    background: #9394eb;
+    color: #fafafc;
+
+    span:not(.icon) {
+      display: none;
+    }
+  }
+
+  .more__content {
+    @extend %text--center;
+    width: calc(100% - 3rem);
+    background: #eeeef3;
+    color: #91919c;
+
+    &.more__pesel {
+      @extend %text--center;
+      background: #9394eb;
+      color: #fafafc;
+      cursor: pointer;
+    }
+
+    &--fullcolor {
+      background: #9394eb;
+      color: #fafafc;
+    }
+
+    &__btn {
+      width: 1rem !important;
+      cursor: pointer;
+      background: #ececec;
+      color: #3e3e45;
+      transition: 0.2s ease-in-out;
+
+      &:hover {
+        filter: brightness(95%);
+      }
+    }
+
     &:not(:last-child) {
-      margin-bottom: 0;
+      width: calc(100% - 6rem);
     }
   }
+
+  input.more__content {
+    color: #3e3e45;
+  }
+
   .more__actions {
+    display: flex;
     width: 100%;
-    grid-area: actions;
+
+    & > *:not(:first-child) {
+      margin-left: 1rem;
+    }
   }
+
   .more__action {
+    padding: 1rem !important;
+    width: 100% !important;
+    background: #eeeef3 !important;
+
+    &--edit {
+      color: #6a6ee1 !important;
+    }
+
+    &--cancel {
+      color: #c0392b !important;
+    }
+
+    &--save {
+      color: #27ae60 !important;
+    }
+
     span {
-      margin-right: 0;
+      margin-right: 1em;
+    }
+
+    svg {
+      height: 1.5rem;
+      width: 1.5rem;
+      display: flex;
+      margin: auto;
     }
   }
-  .base__top {
-    grid-template-columns: 4rem auto 10rem;
-    grid-template-areas:
-      "img name actions"
-      "img spec actions";
-    &--no-specialization {
-      grid-template-areas:
-        "img name actions"
-        "img name actions";
+
+  @media only screen and (min-width: 425px) and (max-width: 960px) {
+    .more__title {
+      width: 7rem;
+      justify-content: left;
+
+      span {
+        margin-right: 0.75em;
+      }
+
+      span:not(.icon) {
+        display: unset;
+      }
+    }
+    .more__content {
+      width: calc(100% - 11rem);
+
+      &:not(:last-child) {
+        width: calc(100% - 14rem);
+      }
     }
   }
-}
+
+  @media only screen and (min-width: 1200px) {
+    .more__title {
+      width: 7rem;
+      justify-content: left;
+
+      span {
+        margin-right: 0.75em;
+      }
+
+      span:not(.icon) {
+        display: unset;
+      }
+    }
+    .more__content {
+      width: calc(100% - 11rem);
+
+      &:not(:last-child) {
+        width: calc(100% - 14rem);
+      }
+    }
+  }
+
+  @media only screen and (min-width: 960px) {
+    .base__more {
+      display: grid;
+      grid-template-columns: 50% 50%;
+      column-gap: 1rem;
+      row-gap: 1rem;
+    }
+    .more__title,
+    .more__content {
+      padding: 0.75rem 1rem;
+    }
+    .more__el {
+      &:not(:last-child) {
+        margin-bottom: 0;
+      }
+    }
+    .more__actions {
+      width: 100%;
+      grid-area: actions;
+    }
+    .more__action {
+      span {
+        margin-right: 0;
+      }
+    }
+    .base__top {
+      grid-template-columns: 4rem auto 10rem;
+      grid-template-areas: "img name actions" "img spec actions";
+
+      &--no-specialization {
+        grid-template-areas: "img name actions" "img name actions";
+      }
+    }
+  }
 </style>

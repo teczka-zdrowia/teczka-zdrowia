@@ -13,6 +13,7 @@
   align-items: center;
   z-index: 1000;
   visibility: hidden;
+
   &.visible {
     visibility: visible;
   }
@@ -41,11 +42,13 @@
     max-width: 50rem;
     color: #3e3e45;
     margin: 1rem;
+
     &.noborders {
       padding: 0;
       background: none;
       box-shadow: none;
     }
+
     svg {
       margin: auto;
       display: flex;
@@ -61,6 +64,7 @@
     padding: 2rem 0;
     font-size: 1.25rem;
     line-height: 1.2;
+
     b {
       font-weight: 700;
     }
@@ -69,15 +73,19 @@
   &__actions {
     display: flex;
     justify-content: flex-end;
+
     &.fullwidth {
       justify-content: space-between;
+
       &.rounded {
         border-radius: 0.5rem;
         overflow: hidden;
       }
+
       & > .modal__btn {
         width: 100%;
         max-width: 50%;
+
         &:not(:last-child) {
           margin-right: 0;
         }
@@ -91,45 +99,56 @@
     border-radius: 0.5rem;
     cursor: pointer;
     transition: 0.2s ease-in-out;
+
     &.fullwidth {
       width: 100%;
+
       &:not(.rounded) {
         &:first-child {
           border-top-right-radius: 0;
           border-bottom-right-radius: 0;
         }
+
         &:last-child {
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
         }
       }
     }
+
     &:not(:last-child) {
       margin-right: 1rem;
     }
+
     &--grey {
       background: #f5f5f5;
       color: #1a1b37;
     }
+
     &--darkgrey {
       background: #ececec;
       color: #1a1b37;
     }
+
     &--violet {
       background: #6a6ee1;
       color: #fafafc;
     }
+
     &--red {
       background: #d91e18;
       color: #fafafc;
     }
+
     &--green {
       background: #27ae60;
       color: #fafafc;
     }
+
     &--icon {
       max-width: 3rem !important;
     }
+
     &:hover {
       filter: brightness(92.5%);
     }

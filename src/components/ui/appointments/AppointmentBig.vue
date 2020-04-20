@@ -51,9 +51,10 @@
         color="#fafafa"
         v-on:click.native="updateConfirmation(false)"
       ><span
-          aria-hidden="true"
-          class="fas fa-check-circle"
-        ></span>Potwierdzono</MainBtn>
+        aria-hidden="true"
+        class="fas fa-check-circle"
+      ></span>Potwierdzono
+      </MainBtn>
       <MainBtn
         class="appointment__btn appointment__btn--not-confirmed"
         v-if="!data.confirmed"
@@ -62,9 +63,10 @@
         color="#67676e"
         v-on:click.native="updateConfirmation(true)"
       ><span
-          aria-hidden="true"
-          class="far fa-check-circle"
-        ></span>Potwierdź</MainBtn>
+        aria-hidden="true"
+        class="far fa-check-circle"
+      ></span>Potwierdź
+      </MainBtn>
     </div>
     <div
       class="appointment__actions"
@@ -74,16 +76,18 @@
         class="appointment__btn appointment__btn--confirmed"
         v-if="data.confirmed"
       ><span
-          aria-hidden="true"
-          class="fas fa-check-circle"
-        ></span>Potwierdzona</div>
+        aria-hidden="true"
+        class="fas fa-check-circle"
+      ></span>Potwierdzona
+      </div>
       <div
         class="appointment__btn appointment__btn--not-confirmed"
         v-if="!data.confirmed"
       ><span
-          aria-hidden="true"
-          class="far fa-times-circle"
-        ></span>Niepotwierdzona</div>
+        aria-hidden="true"
+        class="far fa-times-circle"
+      ></span>Niepotwierdzona
+      </div>
     </div>
   </div>
 </template>
@@ -162,103 +166,113 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main";
+  @import "../../../main";
 
-.appointment {
-  padding: 1rem;
-  border-radius: 0.5em;
-  box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
-  background: #fff;
-  width: calc(100% - 2rem);
-  &.noborders {
-    padding: 0;
-    border-radius: 0;
-    box-shadow: none;
-    background: transparent;
-    width: 100%;
-  }
-}
+  .appointment {
+    padding: 1rem;
+    border-radius: 0.5em;
+    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+    background: #fff;
+    width: calc(100% - 2rem);
 
-.appointment__content {
-  margin-top: 2em;
-  margin-bottom: 1em;
-  text-align: center;
-}
-
-.content__el {
-  @extend %text--center;
-  text-align: left;
-  justify-content: left;
-  padding: 1em;
-  background: #fafafc;
-  display: inline-flex;
-  width: auto;
-  font-weight: 600;
-  color: #3e3e45;
-  border-radius: 1rem;
-  width: calc(100% - 2em);
-  span {
-    color: $darkviolet;
-    margin-right: 10px;
-  }
-  &:not(:last-child) {
-    margin-bottom: 1rem;
-  }
-}
-
-.content__few {
-  width: 100%;
-  display: flex;
-  div {
-    justify-content: center;
-  }
-  div:first-child {
-    margin-right: 1em;
-  }
-  div:last-child {
-    margin-bottom: 1rem;
-  }
-}
-
-.appointment__actions {
-  width: 100%;
-  display: flex;
-  overflow: hidden;
-  border-radius: 0.5em;
-}
-
-.appointment__btn {
-  @extend %text--center;
-  padding: 0.75em;
-  display: flex;
-  font-weight: 700;
-  background: #eeeef3;
-  color: #67676e;
-  border-radius: 0;
-  filter: none;
-  width: 100%;
-  & > span {
-    @extend %text--center;
-    font-size: 1.5em;
-    margin-right: 0.7rem;
-    span {
-      margin-right: 1rem;
+    &.noborders {
+      padding: 0;
+      border-radius: 0;
+      box-shadow: none;
+      background: transparent;
+      width: 100%;
     }
   }
-  &--confirmed {
-    background: $darkviolet;
-    color: #fafafa;
+
+  .appointment__content {
+    margin-top: 2em;
+    margin-bottom: 1em;
+    text-align: center;
   }
-  &--not-confirmed {
+
+  .content__el {
+    @extend %text--center;
+    text-align: left;
+    justify-content: left;
+    padding: 1em;
+    background: #fafafc;
+    display: inline-flex;
+    width: auto;
+    font-weight: 600;
+    color: #3e3e45;
+    border-radius: 1rem;
+    width: calc(100% - 2em);
+
+    span {
+      color: $darkviolet;
+      margin-right: 10px;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .content__few {
+    width: 100%;
+    display: flex;
+
+    div {
+      justify-content: center;
+    }
+
+    div:first-child {
+      margin-right: 1em;
+    }
+
+    div:last-child {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .appointment__actions {
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+    border-radius: 0.5em;
+  }
+
+  .appointment__btn {
+    @extend %text--center;
+    padding: 0.75em;
+    display: flex;
+    font-weight: 700;
     background: #eeeef3;
     color: #67676e;
-  }
-}
+    border-radius: 0;
+    filter: none;
+    width: 100%;
 
-@media only screen and (max-width: 800px) {
-  .appointment {
-    width: calc(100% - 2em);
-    max-width: 100%;
+    & > span {
+      @extend %text--center;
+      font-size: 1.5em;
+      margin-right: 0.7rem;
+
+      span {
+        margin-right: 1rem;
+      }
+    }
+
+    &--confirmed {
+      background: $darkviolet;
+      color: #fafafa;
+    }
+
+    &--not-confirmed {
+      background: #eeeef3;
+      color: #67676e;
+    }
   }
-}
+
+  @media only screen and (max-width: 800px) {
+    .appointment {
+      width: calc(100% - 2em);
+      max-width: 100%;
+    }
+  }
 </style>

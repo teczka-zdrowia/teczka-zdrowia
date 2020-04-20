@@ -166,9 +166,9 @@ router.beforeEach((to, from, next) => {
   )
 
   if (pathRequiresLogin && !userLoggedIn) {
-    next({ name: 'Auth' })
+    next({name: 'Auth'})
   } else if (pathRequiresDoctorPermissions && !userHasDoctorPermissions) {
-    next({ name: 'Dashboard' })
+    next({name: 'Dashboard'})
   } else {
     next()
   }

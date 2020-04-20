@@ -35,7 +35,7 @@
         v-if="city.searching"
       >
         Szukanie miasta
-        <MainLoading />
+        <MainLoading/>
       </div>
       <MainBtn
         class="map__nav--search"
@@ -64,7 +64,8 @@ import {
   LMarker,
   LControlAttribution,
   LControlZoom
-  , L } from 'vue2-leaflet'
+  , L
+} from 'vue2-leaflet'
 
 import 'leaflet/dist/leaflet.css'
 import { OpenStreetMapProvider } from 'leaflet-geosearch'
@@ -97,7 +98,7 @@ export default {
         zoomSnap: true
       },
       url:
-        'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
+          'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
       icons: {
         place: L.icon({
           iconUrl: 'static/leaflet/place-icon.png',
@@ -134,7 +135,7 @@ export default {
     getCity: async function (coords) {
       this.city.searching = true
 
-      const search = await provider.search({ query: coords })
+      const search = await provider.search({query: coords})
 
       const osm_id = search[0].raw.osm_id
 
@@ -145,11 +146,11 @@ export default {
         .then(results => {
           const address = results.address
           const place =
-            address.city ||
-            address.town ||
-            address.village ||
-            address.hamlet ||
-            address.suburb
+              address.city ||
+              address.town ||
+              address.village ||
+              address.hamlet ||
+              address.suburb
           this.city.name = place || this.city.name
         })
 
@@ -176,7 +177,7 @@ export default {
     },
     getPlaceLatLng: async function (place) {
       const results = await provider
-        .search({ query: `${place.address}, ${place.city}` })
+        .search({query: `${place.address}, ${place.city}`})
         .catch(error => {
           this.$toasted.error('Wystąpił błąd')
           console.error(error)
@@ -236,7 +237,7 @@ export default {
               this.isCurrentPosition = true
               unwatch()
             },
-            { deep: true }
+            {deep: true}
           )
         })
     }
@@ -251,79 +252,87 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../main";
+  @import "../../main";
 
-.map {
-  width: 100%;
-  z-index: 10;
-  display: flex;
-  &__position {
-    position: absolute;
-    bottom: 1rem;
-    left: 1rem;
-    z-index: 10000;
-    padding: 1em;
-    font-size: 1.25rem;
-    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
-    background: #fdfdfd;
-    color: #67676e;
-    height: auto;
-    svg {
-      height: 1.25rem;
-      width: 1.25rem;
-    }
-    &.active {
-      color: #6a6ee1;
-    }
-  }
-  &__nav {
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-    z-index: 10000;
-    &--search {
-      padding: 1em !important;
-      font-size: 1.25rem;
-      font-weight: 600;
-      span {
-        font-weight: 700;
-      }
-    }
-    &--loading {
+  .map {
+    width: 100%;
+    z-index: 10;
+    display: flex;
+
+    &__position {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      z-index: 10000;
       padding: 1em;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: 700;
-      text-align: center;
-      border-radius: 0.5rem;
       font-size: 1.25rem;
       box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
       background: #fdfdfd;
-      color: #6a6ee1;
+      color: #67676e;
+      height: auto;
+
       svg {
-        margin-left: 0.5rem;
-        height: 1.5rem;
-        width: 1.5rem;
+        height: 1.25rem;
+        width: 1.25rem;
+      }
+
+      &.active {
+        color: #6a6ee1;
+      }
+    }
+
+    &__nav {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      z-index: 10000;
+
+      &--search {
+        padding: 1em !important;
+        font-size: 1.25rem;
+        font-weight: 600;
+
+        span {
+          font-weight: 700;
+        }
+      }
+
+      &--loading {
+        padding: 1em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 700;
+        text-align: center;
+        border-radius: 0.5rem;
+        font-size: 1.25rem;
+        box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+        background: #fdfdfd;
+        color: #6a6ee1;
+
+        svg {
+          margin-left: 0.5rem;
+          height: 1.5rem;
+          width: 1.5rem;
+        }
       }
     }
   }
-}
 
-.map__content {
-  height: 100%;
-  width: 100%;
-}
-
-/deep/ .leaflet-tile-pane {
-  filter: saturate(0);
-}
-
-@media only screen and (max-width: 460px) {
-  .map__position,
-  .map__nav--search,
-  .map__nav--loading {
-    padding: 1rem !important;
+  .map__content {
+    height: 100%;
+    width: 100%;
   }
-}
+
+  /deep/ .leaflet-tile-pane {
+    filter: saturate(0);
+  }
+
+  @media only screen and (max-width: 460px) {
+    .map__position,
+    .map__nav--search,
+    .map__nav--loading {
+      padding: 1rem !important;
+    }
+  }
 </style>

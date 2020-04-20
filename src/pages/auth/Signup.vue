@@ -181,7 +181,8 @@
           <router-link
             to="/Terms"
             target="_blank"
-          >regulamin</router-link>
+          >regulamin
+          </router-link>
         </p>
       </div>
     </div>
@@ -254,10 +255,10 @@ export default {
         .map(digit => parseInt(digit, 10))
       const dig11 = digits.splice(-1)[0]
       let control =
-        digits.reduce(
-          (previousValue, currentValue, index) =>
-            previousValue + currentValue * times[index % 4]
-        ) % 10
+          digits.reduce(
+            (previousValue, currentValue, index) =>
+              previousValue + currentValue * times[index % 4]
+          ) % 10
 
       return 10 - (control === 0 ? 10 : control) === dig11
     },
@@ -269,7 +270,7 @@ export default {
       }
     },
     loginData: function () {
-      const { email, password } = this.data
+      const {email, password} = this.data
       const data = {
         username: email,
         password: password
@@ -293,169 +294,184 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../main";
+  @import "../../main";
 
-input[type="date"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  display: none;
-}
-
-::-webkit-clear-button {
-  display: none;
-  -webkit-appearance: none;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-@-webkit-keyframes flash {
-  0% {
-    opacity: 0.3;
+  input[type="date"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    display: none;
   }
-  100% {
-    opacity: 1;
-  }
-}
-@keyframes flash {
-  0% {
-    opacity: 0.3;
-  }
-  100% {
-    opacity: 1;
-  }
-}
 
-.flash {
-  opacity: 1;
-  -webkit-animation: flash 1s;
-  animation: flash 1s;
-}
-
-.login__type {
-  margin: 1em 0;
-  background: #f0f0f4;
-  position: relative;
-  width: 100%;
-  border-radius: 0.5em;
-  transition: 0.2s ease-in-out;
-  height: auto;
-  transition: height 5s ease-in-out;
-  box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.5);
-  display: block;
-  overflow: hidden;
-}
-
-.type__top {
-  display: flex;
-  width: 100%;
-}
-
-.type__btn {
-  @extend %text--center;
-  padding: 5%;
-  display: flex;
-  color: #3e3e45;
-  font-weight: 600;
-  width: 90%;
-  cursor: pointer;
-}
-
-.type__content {
-  width: 100%;
-  display: block;
-  background: #fff;
-}
-
-.type__el {
-  width: 100%;
-  cursor: pointer;
-  display: flex;
-  .el__icon {
-    @extend %text--center;
-    font-size: 1.5rem;
-    padding: 1.5rem;
-    color: #3e3e45;
-    transition: 0.2s ease-in-out;
+  ::-webkit-clear-button {
+    display: none;
+    -webkit-appearance: none;
   }
-  .el__title {
-    @extend %text--center;
-    font-weight: 600;
-    width: 100%;
-    padding: 1em 0;
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
-  .el__info {
-    @extend %text--center;
-    font-size: 1.5rem;
-    padding: 1.5rem;
-    min-width: 1.5rem;
-    color: #3e3e45;
-    background: #e8e8ec;
-    cursor: pointer;
-  }
-  &--info {
-    @extend %text--center;
-    flex-direction: column;
-    text-align: center;
-    font-weight: 600;
-    color: #3e3e45;
-    background: #e8e8ec;
-    padding: 1rem;
-    width: calc(100% - 2rem);
-    user-select: none;
-    div:last-child {
-      margin-top: 0.5rem;
-      color: #6a6ee1;
+
+  @-webkit-keyframes flash {
+    0% {
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 1;
     }
   }
-  .el__btn {
+
+  @keyframes flash {
+    0% {
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .flash {
+    opacity: 1;
+    -webkit-animation: flash 1s;
+    animation: flash 1s;
+  }
+
+  .login__type {
+    margin: 1em 0;
+    background: #f0f0f4;
+    position: relative;
+    width: 100%;
+    border-radius: 0.5em;
     transition: 0.2s ease-in-out;
+    height: auto;
+    transition: height 5s ease-in-out;
+    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.5);
+    display: block;
+    overflow: hidden;
+  }
+
+  .type__top {
     display: flex;
     width: 100%;
-    &:hover {
-      background: #f5f5f5;
-      &,
-      .el__icon {
-        color: #7f82e6;
-      }
-    }
-    &.selected {
-      background: #f5f5f5;
-      &,
-      .el__icon {
-        color: #5356ae;
-      }
-    }
   }
-}
 
-.type__btn--action {
-  background: transparent;
-  span {
-    transition: 0.2s ease-in-out;
+  .type__btn {
+    @extend %text--center;
+    padding: 5%;
+    display: flex;
     color: #3e3e45;
-    font-size: 1.2em;
-    margin-left: 0.5em;
+    font-weight: 600;
+    width: 90%;
+    cursor: pointer;
   }
-}
 
-@media only screen and (max-width: 425px) {
-  .input--double-container {
+  .type__content {
+    width: 100%;
     display: block;
-    border-bottom: none !important;
-    .input--main {
-      width: 90% !important;
-      border-right: none !important;
-      border-bottom: 0.5px solid rgba(145, 145, 156, 0.3) !important;
-      &:first-child {
-        border-top-right-radius: 0.5em !important;
+    background: #fff;
+  }
+
+  .type__el {
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+
+    .el__icon {
+      @extend %text--center;
+      font-size: 1.5rem;
+      padding: 1.5rem;
+      color: #3e3e45;
+      transition: 0.2s ease-in-out;
+    }
+
+    .el__title {
+      @extend %text--center;
+      font-weight: 600;
+      width: 100%;
+      padding: 1em 0;
+    }
+
+    .el__info {
+      @extend %text--center;
+      font-size: 1.5rem;
+      padding: 1.5rem;
+      min-width: 1.5rem;
+      color: #3e3e45;
+      background: #e8e8ec;
+      cursor: pointer;
+    }
+
+    &--info {
+      @extend %text--center;
+      flex-direction: column;
+      text-align: center;
+      font-weight: 600;
+      color: #3e3e45;
+      background: #e8e8ec;
+      padding: 1rem;
+      width: calc(100% - 2rem);
+      user-select: none;
+
+      div:last-child {
+        margin-top: 0.5rem;
+        color: #6a6ee1;
       }
-      &:last-child {
-        border-radius: 0 !important;
+    }
+
+    .el__btn {
+      transition: 0.2s ease-in-out;
+      display: flex;
+      width: 100%;
+
+      &:hover {
+        background: #f5f5f5;
+
+        &,
+        .el__icon {
+          color: #7f82e6;
+        }
+      }
+
+      &.selected {
+        background: #f5f5f5;
+
+        &,
+        .el__icon {
+          color: #5356ae;
+        }
       }
     }
   }
-}
+
+  .type__btn--action {
+    background: transparent;
+
+    span {
+      transition: 0.2s ease-in-out;
+      color: #3e3e45;
+      font-size: 1.2em;
+      margin-left: 0.5em;
+    }
+  }
+
+  @media only screen and (max-width: 425px) {
+    .input--double-container {
+      display: block;
+      border-bottom: none !important;
+
+      .input--main {
+        width: 90% !important;
+        border-right: none !important;
+        border-bottom: 0.5px solid rgba(145, 145, 156, 0.3) !important;
+
+        &:first-child {
+          border-top-right-radius: 0.5em !important;
+        }
+
+        &:last-child {
+          border-radius: 0 !important;
+        }
+      }
+    }
+  }
 </style>

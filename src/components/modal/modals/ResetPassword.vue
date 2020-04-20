@@ -29,7 +29,8 @@
         class="modal__btn modal__btn--grey"
         @click="hideModal"
         type="button"
-      >Zamknij</button>
+      >Zamknij
+      </button>
       <MainBtn
         class="modal__btn modal__btn--violet"
         v-if="!sent"
@@ -37,7 +38,8 @@
         :disabled="isLoading"
         color="#fafafa"
         @click="sendPasswordReset"
-      >Wyślij email</MainBtn>
+      >Wyślij email
+      </MainBtn>
     </div>
   </form>
 </template>

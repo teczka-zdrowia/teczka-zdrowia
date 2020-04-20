@@ -40,7 +40,7 @@ const mutations = {
 }
 
 const actions = {
-  add ({ commit }, data) {
+  add ({commit}, data) {
     return apolloClient
       .mutate({
         mutation: CREATE_HISTORY_MUTATION,
@@ -54,7 +54,7 @@ const actions = {
       .then(data => data.data.createHistory)
       .then(history => commit('SET_HISTORY', history))
   },
-  addRecommendations ({ commit }, { data, historyId }) {
+  addRecommendations ({commit}, {data, historyId}) {
     return apolloClient
       .mutate({
         mutation: CREATE_RECOMMENDATIONS_MUTATION,
@@ -68,7 +68,7 @@ const actions = {
       })
       .then(data => data.data.createRecommendations)
   },
-  addAttachments ({ commit }, { data, historyId }) {
+  addAttachments ({commit}, {data, historyId}) {
     return apolloClient
       .mutate({
         mutation: CREATE_ATTACHMENTS_MUTATION,
@@ -82,13 +82,13 @@ const actions = {
       })
       .then(data => data.data.createAttachments)
   },
-  clearData ({ commit }) {
+  clearData ({commit}) {
     commit('CLEAR')
   },
-  setData ({ commit }, data) {
+  setData ({commit}, data) {
     commit('SET_DATA', data)
   },
-  setPatient ({ commit }, patient) {
+  setPatient ({commit}, patient) {
     commit('SET_PATIENT', patient)
   }
 }

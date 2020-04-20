@@ -23,10 +23,10 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: "MainViewSwitch",
+  name: 'MainViewSwitch',
   props: {
     small: {
       type: Boolean,
@@ -35,86 +35,86 @@ export default {
   },
   methods: {
     ...mapActions({
-      setViewAs: "settings/setViewAs"
+      setViewAs: 'settings/setViewAs'
     }),
-    toggleViewAs: function() {
-      const humanName = this.viewAsPatient ? "doctor" : "patient";
+    toggleViewAs: function () {
+      const humanName = this.viewAsPatient ? 'doctor' : 'patient'
 
-      this.setViewAs(humanName);
+      this.setViewAs(humanName)
 
-      if (humanName === "patient") {
-        this.$router.push({ name: "Dashboard" });
+      if (humanName === 'patient') {
+        this.$router.push({name: 'Dashboard'})
       } else {
-        this.$router.push({ name: "Panel" });
+        this.$router.push({name: 'Panel'})
       }
     }
   },
   computed: {
     ...mapGetters({
-      viewAs: "settings/viewAs",
-      isMobile: "window/isMobile"
+      viewAs: 'settings/viewAs',
+      isMobile: 'window/isMobile'
     }),
-    viewAsPatient: function() {
-      return this.viewAs === "patient";
-    }
-  }
-};
-</script>
-
-<style lang="scss" scoped>
-.switch {
-  display: flex;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  cursor: pointer;
-
-  &__checkbox {
-    position: relative;
-    width: 0;
-    height: 0;
-    padding: 0;
-    margin: 0;
-    opacity: 0;
-    cursor: pointer;
-    z-index: 3;
-  }
-
-  &__icon {
-    padding: 5%;
-    font-size: 1.25rem;
-    width: 2rem;
-  }
-
-  &__text {
-    font-weight: 600;
-    width: 100%;
-    padding: 0 5%;
-    transition: 0.2s ease-in-out;
-
-    &--grey::after {
-      content: "Tryb pacjenta";
-    }
-
-    &--violet::after {
-      content: "Tryb specjalisty";
-    }
-  }
-
-  &__icon,
-  &__text {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &--grey {
-      color: #67676e;
-      background: #eeeef3;
-    }
-
-    &--violet {
-      color: #6a6ee1;
-      background: #e7e7fc;
+    viewAsPatient: function () {
+      return this.viewAs === 'patient'
     }
   }
 }
+</script>
+
+<style lang="scss" scoped>
+  .switch {
+    display: flex;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    cursor: pointer;
+
+    &__checkbox {
+      position: relative;
+      width: 0;
+      height: 0;
+      padding: 0;
+      margin: 0;
+      opacity: 0;
+      cursor: pointer;
+      z-index: 3;
+    }
+
+    &__icon {
+      padding: 5%;
+      font-size: 1.25rem;
+      width: 2rem;
+    }
+
+    &__text {
+      font-weight: 600;
+      width: 100%;
+      padding: 0 5%;
+      transition: 0.2s ease-in-out;
+
+      &--grey::after {
+        content: "Tryb pacjenta";
+      }
+
+      &--violet::after {
+        content: "Tryb specjalisty";
+      }
+    }
+
+    &__icon,
+    &__text {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &--grey {
+        color: #67676e;
+        background: #eeeef3;
+      }
+
+      &--violet {
+        color: #6a6ee1;
+        background: #e7e7fc;
+      }
+    }
+  }
 </style>

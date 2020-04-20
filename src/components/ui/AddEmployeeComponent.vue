@@ -32,13 +32,15 @@
         color="#fafafa"
         :loading="loading.search"
         :disabled="loading.search"
-      >Wyszukaj pracownika po PESEL</MainBtn>
+      >Wyszukaj pracownika po PESEL
+      </MainBtn>
     </form>
     <MainBtn
       class="addemployee__form__btn addemployee__form__btn--red"
       v-if="isPeselCorrect && searchFailed && !initalizeNew"
       v-on:click.native="initalizeNew = !initalizeNew"
-    >Utwórz konto użytkownika</MainBtn>
+    >Utwórz konto użytkownika
+    </MainBtn>
     <form
       class="addemployee__form"
       v-if="initalizeNew"
@@ -86,12 +88,14 @@
         color="#fafafa"
         :loading="loading.initalize"
         :disabled="loading.initalize"
-      >Utwórz konto</MainBtn>
+      >Utwórz konto
+      </MainBtn>
     </form>
     <GreyBlock
       class="addemployee__info"
       v-if="newAccountCreated"
-    >Utworzono nowe konto użytkownika. Dane logowania zostały wysłane na podany wcześniej adres e-mail.</GreyBlock>
+    >Utworzono nowe konto użytkownika. Dane logowania zostały wysłane na podany wcześniej adres e-mail.
+    </GreyBlock>
     <MainUserBlockInfo
       class="addemployee__employee"
       v-if="employee"
@@ -198,55 +202,59 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../main";
+  @import "../../main";
 
-.addemployee {
-  &__place {
-    display: flex;
-    width: 100%;
-    margin-bottom: 1rem;
-    background: #f5f5f5;
-    border-radius: 0.5rem;
-    &__title {
-      @extend %text--center;
-      font-weight: 600;
-      padding: 1rem;
-    }
-    &__info {
+  .addemployee {
+    &__place {
+      display: flex;
       width: 100%;
-    }
-  }
+      margin-bottom: 1rem;
+      background: #f5f5f5;
+      border-radius: 0.5rem;
 
-  &__form {
-    @media only screen and (min-width: 35rem) {
-      width: 30rem;
-    }
+      &__title {
+        @extend %text--center;
+        font-weight: 600;
+        padding: 1rem;
+      }
 
-    label {
-      padding: 1.5rem !important;
-      width: calc(100% - 3rem) !important;
-      background: #eeeef3 !important;
-    }
-    &__btn {
-      margin-top: 1rem;
-      width: 100%;
-      &--red {
-        background: #d91e18 !important;
-        color: #fafafc !important;
+      &__info {
+        width: 100%;
       }
     }
-  }
 
-  &__info {
-    font-size: 1rem;
-    padding: 1rem;
-    margin-top: 1rem;
-    width: 28rem;
-  }
+    &__form {
+      @media only screen and (min-width: 35rem) {
+        width: 30rem;
+      }
 
-  &__employee {
-    width: 100% !important;
-    margin-top: 1rem;
+      label {
+        padding: 1.5rem !important;
+        width: calc(100% - 3rem) !important;
+        background: #eeeef3 !important;
+      }
+
+      &__btn {
+        margin-top: 1rem;
+        width: 100%;
+
+        &--red {
+          background: #d91e18 !important;
+          color: #fafafc !important;
+        }
+      }
+    }
+
+    &__info {
+      font-size: 1rem;
+      padding: 1rem;
+      margin-top: 1rem;
+      width: 28rem;
+    }
+
+    &__employee {
+      width: 100% !important;
+      margin-top: 1rem;
+    }
   }
-}
 </style>

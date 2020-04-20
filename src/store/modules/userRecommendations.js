@@ -24,7 +24,7 @@ const mutations = {
 }
 
 const actions = {
-  get ({ commit }, { page, count }) {
+  get ({commit}, {page, count}) {
     return apolloClient
       .query({
         query: ME_RECOMMENDATIONS_QUERY,
@@ -38,7 +38,7 @@ const actions = {
         commit('SET_DATA', recommendations)
       })
   },
-  update ({ commit }, { data, id }) {
+  update ({commit}, {data, id}) {
     return apolloClient
       .mutate({
         mutation: UPDATE_RECOMMENDATION_MUTATION,

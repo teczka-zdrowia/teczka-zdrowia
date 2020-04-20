@@ -26,14 +26,16 @@
         class="modal__btn modal__btn--grey"
         @click="hideModal"
         type="button"
-      >Anuluj</button>
+      >Anuluj
+      </button>
       <MainBtn
         class="modal__btn modal__btn--violet"
         :loading="isLoading"
         :disabled="isLoading"
         color="#fafafa"
         @click="getPesel"
-      >Pokaż PESEL</MainBtn>
+      >Pokaż PESEL
+      </MainBtn>
     </div>
   </form>
 </template>

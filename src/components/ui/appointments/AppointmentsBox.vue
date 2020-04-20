@@ -5,12 +5,14 @@
         <MainBtn
           v-on:click.native="toggleShowUpcoming"
           v-bind:class="{ active: showUpcoming }"
-          >Nadchodzące</MainBtn
+        >Nadchodzące
+        </MainBtn
         >
         <MainBtn
           v-on:click.native="toggleShowUpcoming"
           v-bind:class="{ active: !showUpcoming }"
-          >Minione</MainBtn
+        >Minione
+        </MainBtn
         >
       </div>
       <MainSearch class="appointments__right">
@@ -45,12 +47,14 @@
                 v-if="maxAppointments != 5"
                 :value="maxAppointments"
                 selected
-                >{{ maxAppointments }}</option
+              >{{ maxAppointments }}
+              </option
               >
               <option
                 value="5"
                 :selected="!maxAppointments || maxAppointments == 5"
-                >5</option
+              >5
+              </option
               >
               <option value="10">10</option>
               <option value="20">20</option>
@@ -81,13 +85,14 @@
     <GreyBlock
       class="appointments__info"
       v-if="!loading.init && !loading.newQuery && appointments.length === 0"
-      >Brak wizyt</GreyBlock
+    >Brak wizyt
+    </GreyBlock
     >
     <GreyBlock
       class="appointments__info appointments__info--loading"
       v-if="loading.init || loading.newQuery"
-      >Ładowanie
-      <MainLoading color="#67676e" />
+    >Ładowanie
+      <MainLoading color="#67676e"/>
     </GreyBlock>
   </div>
 </template>
@@ -148,8 +153,8 @@ export default {
     canShowAppointments: function () {
       return (
         !this.loading.init &&
-        !this.loading.newQuery &&
-        this.appointments.length > 0
+          !this.loading.newQuery &&
+          this.appointments.length > 0
       )
     },
     orderBy: function () {
@@ -268,82 +273,88 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main";
+  @import "../../../main";
 
-.appointments__actions {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  justify-content: space-between;
-  margin-top: -1rem;
-  padding-bottom: 1rem;
-}
-
-.appointments__types {
-  display: flex;
-  padding-bottom: 1rem;
-  button {
-    width: 50%;
-    background: #eeeef3;
-    color: #6a6ee1;
-    border-radius: 0.5em;
-    &.active {
-      color: $primrary-light;
-      background: $darkviolet;
-      background: linear-gradient(to right, $lightviolet, $darkviolet);
-      filter: drop-shadow(0 0 10px $lightgrey);
-      transition: 0.2s ease-in-out;
-      background-position: right center;
-    }
-    &:hover {
-      color: $primrary-light;
-      background: $darkviolet;
-      background: linear-gradient(to right, $lightviolet, $darkviolet);
-      filter: drop-shadow(0 0 10px $lightgrey);
-    }
-    &:first-child {
-      margin-right: 1em;
-    }
-  }
-}
-
-.appointments__content {
-  width: 100%;
-  margin-top: 2em;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-gap: 1rem;
-}
-
-.appointments__info {
-  height: unset;
-  padding: 1rem;
-  margin-top: 0;
-  &--loading {
-    svg {
-      height: 2rem;
-      width: 2rem;
-      margin-left: 1rem;
-    }
-  }
-}
-
-@media only screen and (min-width: 960px) {
   .appointments__actions {
-    margin-top: 0;
-    padding-bottom: 0;
-    flex-direction: row;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: -1rem;
+    padding-bottom: 1rem;
   }
+
   .appointments__types {
-    padding-bottom: 0;
+    display: flex;
+    padding-bottom: 1rem;
+
     button {
-      width: unset;
+      width: 50%;
+      background: #eeeef3;
+      color: #6a6ee1;
+      border-radius: 0.5em;
+
+      &.active {
+        color: $primrary-light;
+        background: $darkviolet;
+        background: linear-gradient(to right, $lightviolet, $darkviolet);
+        filter: drop-shadow(0 0 10px $lightgrey);
+        transition: 0.2s ease-in-out;
+        background-position: right center;
+      }
+
+      &:hover {
+        color: $primrary-light;
+        background: $darkviolet;
+        background: linear-gradient(to right, $lightviolet, $darkviolet);
+        filter: drop-shadow(0 0 10px $lightgrey);
+      }
+
+      &:first-child {
+        margin-right: 1em;
+      }
     }
   }
-  .appointments__info {
-    height: 24rem;
-    padding: 0 1rem;
-    margin-top: 1rem;
+
+  .appointments__content {
+    width: 100%;
+    margin-top: 2em;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 1rem;
   }
-}
+
+  .appointments__info {
+    height: unset;
+    padding: 1rem;
+    margin-top: 0;
+
+    &--loading {
+      svg {
+        height: 2rem;
+        width: 2rem;
+        margin-left: 1rem;
+      }
+    }
+  }
+
+  @media only screen and (min-width: 960px) {
+    .appointments__actions {
+      margin-top: 0;
+      padding-bottom: 0;
+      flex-direction: row;
+    }
+    .appointments__types {
+      padding-bottom: 0;
+
+      button {
+        width: unset;
+      }
+    }
+    .appointments__info {
+      height: 24rem;
+      padding: 0 1rem;
+      margin-top: 1rem;
+    }
+  }
 </style>

@@ -61,31 +61,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main.scss";
+  @import "../../../main.scss";
 
-.attachment {
-  @extend %text--center;
-  justify-content: left;
-  transition: ease-in-out 0.2s;
-  border-radius: 0.5em;
-  overflow: hidden;
-  cursor: pointer;
-  span {
+  .attachment {
     @extend %text--center;
-    width: 1.5rem;
-    margin-left: 0;
-    margin-right: 1rem;
-    padding: 0.5em;
-    font-size: 1.5em;
-    color: #6a6ee1;
-    background: #eeeef3;
+    justify-content: left;
+    transition: ease-in-out 0.2s;
     border-radius: 0.5em;
+    overflow: hidden;
+    cursor: pointer;
+
+    span {
+      @extend %text--center;
+      width: 1.5rem;
+      margin-left: 0;
+      margin-right: 1rem;
+      padding: 0.5em;
+      font-size: 1.5em;
+      color: #6a6ee1;
+      background: #eeeef3;
+      border-radius: 0.5em;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 1em;
+    }
+
+    &:hover {
+      background: #eeeef3;
+    }
   }
-  &:not(:last-child) {
-    margin-bottom: 1em;
-  }
-  &:hover {
-    background: #eeeef3;
-  }
-}
 </style>

@@ -23,7 +23,8 @@
               <option
                 value="date"
                 selected
-              >Data</option>
+              >Data
+              </option>
               <!--<option>Specjalista</option>
               <option>Gabinet</option>-->
               <option value="note">Notatka</option>
@@ -36,7 +37,8 @@
               <option
                 value="DESC"
                 selected
-              >Malejąco</option>
+              >Malejąco
+              </option>
               <option value="ASC">Rosnąco</option>
             </select>
           </label>
@@ -46,7 +48,8 @@
               <option
                 value="5"
                 selected
-              >5</option>
+              >5
+              </option>
               <option value="10">10</option>
               <option value="20">20</option>
             </select>
@@ -85,12 +88,13 @@
     <GreyBlock
       class="histories__info"
       v-if="!loading.init && !loading.newQuery && histories.length === 0"
-    >Brak historii</GreyBlock>
+    >Brak historii
+    </GreyBlock>
     <GreyBlock
       class="histories__info histories__info--loading"
       v-if="loading.init || loading.newQuery"
     >Ładowanie
-      <MainLoading color="#67676e" />
+      <MainLoading color="#67676e"/>
     </GreyBlock>
   </div>
 </template>
@@ -207,159 +211,171 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main";
+  @import "../../../main";
 
-.histories {
-  width: 100%;
-}
+  .histories {
+    width: 100%;
+  }
 
-.histories__info {
-  height: unset;
-  padding: 1rem;
-  margin-top: 1rem;
-  &--loading {
-    svg {
-      height: 2rem;
-      width: 2rem;
-      margin-left: 1rem;
+  .histories__info {
+    height: unset;
+    padding: 1rem;
+    margin-top: 1rem;
+
+    &--loading {
+      svg {
+        height: 2rem;
+        width: 2rem;
+        margin-left: 1rem;
+      }
     }
   }
-}
 
-.histories__top {
-  @extend %text--center;
-  font-weight: 700;
-  justify-content: space-between;
-  font-weight: 600;
-  margin: 1rem 0;
-  width: calc(100% - 2rem);
-  padding: 1rem;
-  border-radius: 0.5rem;
-  -webkit-box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
-  box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
-  background: #fafafc;
-}
-.histories__title {
-  color: #3e3e45;
-  font-size: 1.5em;
-  margin-right: 1.5em;
-  font-weight: 700;
-}
-
-.histories__right {
-  display: flex;
-  position: relative;
-}
-
-.histories__search {
-  border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
-  background: #eeeef3;
-  padding: 0.75rem;
-  font-weight: 600;
-  width: calc(100% - 3rem);
-  transition: 0.2s ease-in-out;
-  &:focus {
-    @include placeholder {
-      opacity: 0;
-    }
+  .histories__top {
+    @extend %text--center;
+    font-weight: 700;
+    justify-content: space-between;
+    font-weight: 600;
+    margin: 1rem 0;
+    width: calc(100% - 2rem);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    -webkit-box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+    background: #fafafc;
   }
-  @include placeholder {
+
+  .histories__title {
+    color: #3e3e45;
+    font-size: 1.5em;
+    margin-right: 1.5em;
+    font-weight: 700;
+  }
+
+  .histories__right {
+    display: flex;
+    position: relative;
+  }
+
+  .histories__search {
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    background: #eeeef3;
+    padding: 0.75rem;
+    font-weight: 600;
+    width: calc(100% - 3rem);
     transition: 0.2s ease-in-out;
-    color: #6a6ee1;
-    font-family: Montserrat, "Font Awesome 5 Free";
-  }
-}
 
-.histories__sort {
-  @extend %text--center;
-  border-top-right-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
-  transition: 0.2s ease-in-out;
-  color: #3e3e45;
-  background: #e4e4ec;
-  padding: 0 1rem;
-  cursor: pointer;
-  &:hover {
-    & ~ .histories__sort__content {
+    &:focus {
+      @include placeholder {
+        opacity: 0;
+      }
+    }
+
+    @include placeholder {
+      transition: 0.2s ease-in-out;
+      color: #6a6ee1;
+      font-family: Montserrat, "Font Awesome 5 Free";
+    }
+  }
+
+  .histories__sort {
+    @extend %text--center;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    transition: 0.2s ease-in-out;
+    color: #3e3e45;
+    background: #e4e4ec;
+    padding: 0 1rem;
+    cursor: pointer;
+
+    &:hover {
+      & ~ .histories__sort__content {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+
+  .histories__sort__content {
+    z-index: 100;
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    padding: 1rem 0.75rem;
+    width: calc(100% - 1.5rem);
+    background: #e4e4ec;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease-in-out;
+
+    label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+
+      select {
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 0.5rem;
+        width: 50%;
+        background: #fafafc;
+        border: 0;
+      }
+    }
+
+    &:hover {
       visibility: visible;
       opacity: 1;
+
+      & ~ .histories__sort {
+        border-radius: 0;
+      }
     }
   }
-}
 
-.histories__sort__content {
-  z-index: 100;
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  top: calc(100% + 0.5rem);
-  padding: 1rem 0.75rem;
-  width: calc(100% - 1.5rem);
-  background: #e4e4ec;
-  border-radius: 0.5rem;
-  transition: all 0.2s ease-in-out;
-  label {
+  .histories__list > div:last-child {
+    margin-bottom: 2em;
+  }
+
+  .list__actions {
+    margin-top: 0.5em;
+    height: 3em;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: center;
+  }
+
+  .list__more {
+    @extend %text--center;
+    border: 0;
+    transition: 0.2s ease-in-out;
+    border-radius: 0.5em;
+    border-radius: 0.25em;
+    padding: 0.5em 1.5em;
+    background: none;
+    color: #1a1b37;
     font-weight: 600;
-    &:not(:last-child) {
-      margin-bottom: 1rem;
+    background: #fafafc;
+    cursor: pointer;
+
+    &:hover {
+      background: #ffffff;
     }
-    select {
-      cursor: pointer;
-      padding: 0.25rem;
-      border-radius: 0.5rem;
-      width: 50%;
-      background: #fafafc;
-      border: 0;
-    }
-  }
-  &:hover {
-    visibility: visible;
-    opacity: 1;
-    & ~ .histories__sort {
-      border-radius: 0;
+
+    i {
+      margin-left: 0.75em;
     }
   }
-}
 
-.histories__list > div:last-child {
-  margin-bottom: 2em;
-}
-
-.list__actions {
-  margin-top: 0.5em;
-  height: 3em;
-  display: flex;
-  justify-content: center;
-}
-
-.list__more {
-  @extend %text--center;
-  border: 0;
-  transition: 0.2s ease-in-out;
-  border-radius: 0.5em;
-  border-radius: 0.25em;
-  padding: 0.5em 1.5em;
-  background: none;
-  color: #1a1b37;
-  font-weight: 600;
-  background: #fafafc;
-  cursor: pointer;
-  &:hover {
-    background: #ffffff;
+  @media only screen and (min-width: 960px) {
+    .histories__info {
+      height: 24rem;
+      padding: 0 1rem;
+    }
   }
-  i {
-    margin-left: 0.75em;
-  }
-}
-
-@media only screen and (min-width: 960px) {
-  .histories__info {
-    height: 24rem;
-    padding: 0 1rem;
-  }
-}
 </style>

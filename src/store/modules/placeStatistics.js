@@ -16,7 +16,7 @@ const mutations = {
 }
 
 const actions = {
-  get ({ commit }, { id, date }) {
+  get ({commit}, {id, date}) {
     return apolloClient
       .query({
         query: PLACE_STATISTICS_QUERY,

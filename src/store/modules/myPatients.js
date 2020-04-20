@@ -15,7 +15,7 @@ const mutations = {
 }
 
 const actions = {
-  get ({ commit }) {
+  get ({commit}) {
     return apolloClient
       .query({
         query: MY_PATIENTS_QUERY

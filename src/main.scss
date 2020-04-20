@@ -108,6 +108,7 @@ button {
   height: auto;
   background: linear-gradient(to bottom right, $background, $background-light);
 }
+
 .input--double-container {
   display: flex;
   border-bottom: 0.5px solid rgba(145, 145, 156, 0.3);
@@ -130,6 +131,7 @@ button {
     }
   }
 }
+
 .fadeOut {
   animation-name: fadeOut;
   @keyframes fadeOut {
@@ -141,6 +143,7 @@ button {
     }
   }
 }
+
 .fadeInUp {
   animation-name: fadeInUp;
   @keyframes fadeInUp {
@@ -154,6 +157,7 @@ button {
     }
   }
 }
+
 .fadeOutDown {
   animation-name: fadeOutDown;
   @keyframes fadeOutDown {

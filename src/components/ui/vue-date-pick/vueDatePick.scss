@@ -133,12 +133,15 @@ $vdpColor: #7485c2 !default;
 .vdpFloating.vdpPositionTop {
   top: 100%;
 }
+
 .vdpFloating.vdpPositionBottom {
   bottom: 100%;
 }
+
 .vdpFloating.vdpPositionLeft {
   left: 0;
 }
+
 .vdpFloating.vdpPositionRight {
   right: 0;
 }
@@ -146,12 +149,15 @@ $vdpColor: #7485c2 !default;
 .vdpPositionTop.vdpPositionLeft {
   transform-origin: top left;
 }
+
 .vdpPositionTop.vdpPositionRight {
   transform-origin: top right;
 }
+
 .vdpPositionBottom.vdpPositionLeft {
   transform-origin: bottom left;
 }
+
 .vdpPositionBottom.vdpPositionRight {
   transform-origin: bottom right;
 }

@@ -16,7 +16,7 @@ export default {
         email: this.$route.params.email
       }
     })
-    this.$router.push({ name: 'Auth' })
+    this.$router.push({name: 'Auth'})
   }
 }
 </script>

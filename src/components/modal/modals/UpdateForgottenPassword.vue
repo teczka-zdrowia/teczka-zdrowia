@@ -42,14 +42,16 @@
         class="modal__btn modal__btn--grey"
         @click="hideModal"
         type="button"
-      >Anuluj</button>
+      >Anuluj
+      </button>
       <MainBtn
         class="modal__btn modal__btn--violet"
         :loading="isLoading"
         :disabled="isLoading"
         color="#fafafa"
         @click="updatePassword"
-      >Zmień hasło</MainBtn>
+      >Zmień hasło
+      </MainBtn>
     </div>
   </form>
 </template>
@@ -108,15 +110,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal__form {
-  border: 1px solid rgba(145, 145, 156, 0.3);
-  border-radius: 0.5rem;
-  label {
-    background: #f5f5f5 !important;
-    padding: 1.5rem !important;
-    width: calc(100% - 3rem) !important;
-    border: 0 !important;
-    border-bottom: 1px solid rgba(145, 145, 156, 0.3) !important;
+  .modal__form {
+    border: 1px solid rgba(145, 145, 156, 0.3);
+    border-radius: 0.5rem;
+
+    label {
+      background: #f5f5f5 !important;
+      padding: 1.5rem !important;
+      width: calc(100% - 3rem) !important;
+      border: 0 !important;
+      border-bottom: 1px solid rgba(145, 145, 156, 0.3) !important;
+    }
   }
-}
 </style>

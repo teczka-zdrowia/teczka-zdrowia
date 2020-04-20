@@ -118,21 +118,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.block--violet {
-  text-align: center;
-  background: #6a6ee1 !important;
-  background: -webkit-gradient(
-    linear,
-    left top,
-    right top,
-    from(#9394eb),
-    to(#6a6ee1)
-  ) !important;
-  background: linear-gradient(to right, #9394eb, #6a6ee1) !important;
-  filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3)) !important;
-  color: #d8d8e0 !important;
-  span {
-    color: #fafafa !important;
+  .block--violet {
+    text-align: center;
+    background: #6a6ee1 !important;
+    background: -webkit-gradient(
+        linear,
+        left top,
+        right top,
+        from(#9394eb),
+        to(#6a6ee1)
+    ) !important;
+    background: linear-gradient(to right, #9394eb, #6a6ee1) !important;
+    filter: drop-shadow(0 0 10px rgba(213, 213, 213, 0.3)) !important;
+    color: #d8d8e0 !important;
+
+    span {
+      color: #fafafa !important;
+    }
   }
-}
 </style>

@@ -27,10 +27,10 @@ const mutations = {
 }
 
 const actions = {
-  setSelected ({ commit }, id) {
+  setSelected ({commit}, id) {
     commit('SET_SELECTED', id)
   },
-  get ({ commit }) {
+  get ({commit}) {
     return apolloClient
       .query({
         query: ME_ROLES_QUERY
@@ -43,7 +43,7 @@ const actions = {
         commit('SET_DATA', filteredRoles)
       })
   },
-  createPlace ({ commit }, data) {
+  createPlace ({commit}, data) {
     return apolloClient
       .mutate({
         mutation: CREATE_PLACE_MUTATION,
@@ -63,7 +63,7 @@ const actions = {
         commit('ADD_TO_ROLES', payload)
       })
   },
-  updatePlace ({ commit }, { id, data }) {
+  updatePlace ({commit}, {id, data}) {
     return apolloClient
       .mutate({
         mutation: UPDATE_PLACE_MUTATION,

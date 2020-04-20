@@ -72,10 +72,11 @@
         v-if="!isEdit && selectedPlace.agreement"
         v-on:click.native="showAgreement"
       ><span
-          aria-hidden="true"
-          class="fas fa-file-contract"
-        /> Zobacz
-        szablon</MainBtn>
+        aria-hidden="true"
+        class="fas fa-file-contract"
+      /> Zobacz
+        szablon
+      </MainBtn>
       <div
         class="settings__content"
         v-if="!isEdit && !selectedPlace.agreement"
@@ -171,273 +172,294 @@
 </template>
 
 <script>
-import MainBtn from "../../components/ui/basic/MainBtn";
-import { API_URL } from "@/apollo/constants";
-import imageCompression from "browser-image-compression";
-import { mapActions, mapGetters } from "vuex";
+import MainBtn from '../../components/ui/basic/MainBtn'
+import { API_URL } from '@/apollo/constants'
+import imageCompression from 'browser-image-compression'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
-  name: "Settings",
+  name: 'Settings',
   components: {
     MainBtn
   },
-  data: function() {
+  data: function () {
     return {
       isEdit: false,
       newData: {
-        name: "",
-        city: "",
-        address: "",
-        agreement: ""
+        name: '',
+        city: '',
+        address: '',
+        agreement: ''
       },
       loading: {
         update: false
       }
-    };
+    }
   },
   computed: {
     ...mapGetters({
-      selectedRole: "userRoles/selected"
+      selectedRole: 'userRoles/selected'
     }),
-    selectedPlace: function() {
-      return this.selectedRole.place;
+    selectedPlace: function () {
+      return this.selectedRole.place
     },
-    agreementInfo: function() {
-      const agreement = this.newData.agreement;
-      const agreementIsString = typeof agreement === "string";
+    agreementInfo: function () {
+      const agreement = this.newData.agreement
+      const agreementIsString = typeof agreement === 'string'
 
       return agreementIsString
         ? agreement
         : `${agreement.name} | ${this.getOriginalFileSizeInMegabytes(
-            agreement
-          )}`;
+          agreement
+        )}`
     }
   },
   watch: {
-    isEdit: function(val) {
+    isEdit: function (val) {
       if (val === true) {
         Object.keys(this.selectedPlace)
           .filter(key => key in this.newData)
           .forEach(key => {
-            this.newData[key] = this.selectedPlace[key];
-          });
+            this.newData[key] = this.selectedPlace[key]
+          })
       }
     }
   },
   methods: {
     ...mapActions({
-      showModal: "modal/show",
-      updateUserPlace: "userRoles/updatePlace"
+      showModal: 'modal/show',
+      updateUserPlace: 'userRoles/updatePlace'
     }),
-    updatePlace: async function() {
-      this.loading.update = true;
+    updatePlace: async function () {
+      this.loading.update = true
 
-      let newData = this.newData;
-      const agreementIsString = typeof newData.agreement === "string";
-      newData.agreement = agreementIsString ? undefined : newData.agreement;
+      let newData = this.newData
+      const agreementIsString = typeof newData.agreement === 'string'
+      newData.agreement = agreementIsString ? undefined : newData.agreement
 
       const payload = {
         id: this.selectedPlace.id,
         data: newData
-      };
+      }
 
       await this.updateUserPlace(payload).catch(error => {
-        const graphQLErrors = error.graphQLErrors;
+        const graphQLErrors = error.graphQLErrors
         const validation = graphQLErrors
           ? graphQLErrors[0].extensions.validation
-          : null;
+          : null
         const errorMessage = validation
           ? validation[Object.keys(validation)[0]][0]
-          : "Wystąpił nieznany błąd";
-        this.$toasted.error(errorMessage);
-        console.error(error);
-      });
+          : 'Wystąpił nieznany błąd'
+        this.$toasted.error(errorMessage)
+        console.error(error)
+      })
 
-      this.isEdit = false;
-      this.loading.update = false;
+      this.isEdit = false
+      this.loading.update = false
     },
-    deactivatePlace: function() {
+    deactivatePlace: function () {
       this.showModal({
-        componentName: "DeactivatePlace",
+        componentName: 'DeactivatePlace',
         data: {
           id: this.selectedPlace.id,
           name: this.selectedPlace.name
         }
-      });
+      })
     },
-    processAgreement: async function(event) {
-      let file = event.target.files[0];
+    processAgreement: async function (event) {
+      let file = event.target.files[0]
       if (this.isImage(file)) {
-        await this.compressImage(file);
-        this.newData.agreement = file;
+        await this.compressImage(file)
+        this.newData.agreement = file
       } else {
-        this.$toasted.error("Dozwolone są jedynie obrazy");
+        this.$toasted.error('Dozwolone są jedynie obrazy')
       }
     },
-    deleteAgreement: function() {
-      this.newData.agreement = null;
+    deleteAgreement: function () {
+      this.newData.agreement = null
     },
-    showAgreement: function() {
-      const path = `${API_URL}/storage/files/${this.selectedPlace.agreement}`;
-      window.open(path, "_blank");
+    showAgreement: function () {
+      const path = `${API_URL}/storage/files/${this.selectedPlace.agreement}`
+      window.open(path, '_blank')
     },
-    getOriginalFileSizeInMegabytes: function(file) {
-      const fileSizeInMegabytes = file.size / 1000 / 1000;
-      const sizeIsSmallerThanOne = fileSizeInMegabytes < 1.0;
+    getOriginalFileSizeInMegabytes: function (file) {
+      const fileSizeInMegabytes = file.size / 1000 / 1000
+      const sizeIsSmallerThanOne = fileSizeInMegabytes < 1.0
       const fileSizeInfo = sizeIsSmallerThanOne
         ? fileSizeInMegabytes.toFixed(2)
-        : fileSizeInMegabytes.toFixed(1);
-      return `${fileSizeInfo} MB`;
+        : fileSizeInMegabytes.toFixed(1)
+      return `${fileSizeInfo} MB`
     },
-    isImage(file) {
-      return file.type.split("/")[0] === "image";
+    isImage (file) {
+      return file.type.split('/')[0] === 'image'
     },
-    compressImage(file) {
-      this.$toasted.info("Kompresowanie...");
+    compressImage (file) {
+      this.$toasted.info('Kompresowanie...')
       const options = {
         maxSizeMB: 5
-      };
-      return imageCompression(file, options);
+      }
+      return imageCompression(file, options)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "../../main";
+  @import "../../main";
 
-.settings {
-  margin-top: -1rem;
-}
-
-.settings__el {
-  width: 100%;
-  display: flex;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  &:not(:last-child) {
-    margin-bottom: 1em;
+  .settings {
+    margin-top: -1rem;
   }
-}
 
-.settings__title,
-.settings__content {
-  padding: 1rem;
-  font-weight: 600;
-}
-
-.settings__title {
-  @extend %text--center;
-  width: 6rem;
-  background: #9394eb;
-  color: #fafafc;
-}
-
-.settings__content {
-  @extend %text--center;
-  width: calc(100% - 2rem);
-  background: #eeeef3;
-  color: #91919c;
-  span {
-    margin-right: 1rem;
-  }
-  &.settings__pesel {
-    @extend %text--center;
-    background: #9394eb;
-    color: #fafafc;
-    cursor: pointer;
-  }
-  &.button {
+  .settings__el {
     width: 100%;
+    display: flex;
+    border-radius: 0.5rem;
+    overflow: hidden;
+
+    &:not(:last-child) {
+      margin-bottom: 1em;
+    }
+  }
+
+  .settings__title,
+  .settings__content {
+    padding: 1rem;
+    font-weight: 600;
+  }
+
+  .settings__title {
+    @extend %text--center;
+    width: 6rem;
     background: #9394eb;
     color: #fafafc;
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
   }
-  &.fileinput {
-    cursor: pointer;
-    input {
-      display: none;
-    }
+
+  .settings__content {
+    @extend %text--center;
+    width: calc(100% - 2rem);
+    background: #eeeef3;
+    color: #91919c;
+
     span {
       margin-right: 1rem;
     }
-  }
-  &--fullcolor {
-    background: #9394eb;
-    color: #fafafc;
-  }
-  &--withbutton {
-    display: grid;
-    grid-template-columns: calc(100% - 4rem) 4rem;
-    padding: 0;
-    &__info {
-      padding: 0.5rem;
-      color: #67676e;
-      width: calc(100% - 1rem);
-      font-weight: 600;
-      word-break: break-word;
-      border-bottom-left-radius: 0.5rem;
-      &:first-child {
-        display: flex;
-        align-items: center;
-        border-top-left-radius: 0.5rem;
-      }
-    }
-    &__btn {
-      padding: 1rem;
-      font-size: 1.5rem;
-      background: #f1f2f7;
-      color: #6a6ee1;
-      border-top-right-radius: 0.5rem;
-      border-bottom-right-radius: 0.5rem;
+
+    &.settings__pesel {
+      @extend %text--center;
+      background: #9394eb;
+      color: #fafafc;
       cursor: pointer;
-      transition: 0.2s ease-in-out;
-      &:hover {
-        filter: brightness(95%);
+    }
+
+    &.button {
+      width: 100%;
+      background: #9394eb;
+      color: #fafafc;
+      border-top-left-radius: 0 !important;
+      border-bottom-left-radius: 0 !important;
+    }
+
+    &.fileinput {
+      cursor: pointer;
+
+      input {
+        display: none;
+      }
+
+      span {
+        margin-right: 1rem;
+      }
+    }
+
+    &--fullcolor {
+      background: #9394eb;
+      color: #fafafc;
+    }
+
+    &--withbutton {
+      display: grid;
+      grid-template-columns: calc(100% - 4rem) 4rem;
+      padding: 0;
+
+      &__info {
+        padding: 0.5rem;
+        color: #67676e;
+        width: calc(100% - 1rem);
+        font-weight: 600;
+        word-break: break-word;
+        border-bottom-left-radius: 0.5rem;
+
+        &:first-child {
+          display: flex;
+          align-items: center;
+          border-top-left-radius: 0.5rem;
+        }
+      }
+
+      &__btn {
+        padding: 1rem;
+        font-size: 1.5rem;
+        background: #f1f2f7;
+        color: #6a6ee1;
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+        cursor: pointer;
+        transition: 0.2s ease-in-out;
+
+        &:hover {
+          filter: brightness(95%);
+        }
       }
     }
   }
-}
 
-input.settings__content {
-  color: #3e3e45;
-}
+  input.settings__content {
+    color: #3e3e45;
+  }
 
-.settings__actions {
-  display: flex;
-  width: 100%;
-  & > *:not(:first-child) {
-    margin-left: 1rem;
-  }
-  &:not(:last-child) {
-    margin-bottom: 1rem;
-  }
-}
+  .settings__actions {
+    display: flex;
+    width: 100%;
 
-.settings__action {
-  padding: 1rem !important;
-  width: 100% !important;
-  background: #eeeef3 !important;
-  font-weight: 600;
-  &--edit {
-    color: #6a6ee1 !important;
+    & > *:not(:first-child) {
+      margin-left: 1rem;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
   }
-  &--cancel {
-    color: #c0392b !important;
+
+  .settings__action {
+    padding: 1rem !important;
+    width: 100% !important;
+    background: #eeeef3 !important;
+    font-weight: 600;
+
+    &--edit {
+      color: #6a6ee1 !important;
+    }
+
+    &--cancel {
+      color: #c0392b !important;
+    }
+
+    &--save {
+      color: #27ae60 !important;
+    }
+
+    &--lock {
+      color: #67676e !important;
+    }
+
+    &--delete {
+      background: #e74c3c !important;
+      color: #fafafa !important;
+    }
+
+    span {
+      margin-right: 1em;
+    }
   }
-  &--save {
-    color: #27ae60 !important;
-  }
-  &--lock {
-    color: #67676e !important;
-  }
-  &--delete {
-    background: #e74c3c !important;
-    color: #fafafa !important;
-  }
-  span {
-    margin-right: 1em;
-  }
-}
 </style>

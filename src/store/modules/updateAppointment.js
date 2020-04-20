@@ -33,7 +33,7 @@ const mutations = {
 }
 
 const actions = {
-  update ({ commit }, { id, data }) {
+  update ({commit}, {id, data}) {
     return apolloClient
       .mutate({
         mutation: UPDATE_APPOINTMENT_MUTATION,
@@ -48,7 +48,7 @@ const actions = {
         return appointment
       })
   },
-  delete ({ commit }, id) {
+  delete ({commit}, id) {
     return apolloClient
       .mutate({
         mutation: DELETE_APPOINTMENT_MUTATION,
@@ -62,10 +62,10 @@ const actions = {
         return appointment
       })
   },
-  setData ({ commit }, data) {
+  setData ({commit}, data) {
     commit('SET_DATA', data)
   },
-  setOldData ({ commit }, data) {
+  setOldData ({commit}, data) {
     commit('SET_OLD_DATA', data)
   }
 }

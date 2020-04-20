@@ -3,13 +3,14 @@
     class="modal--cp"
     @submit.prevent="createEmployee"
   >
-    <AddEmployeeComponent />
+    <AddEmployeeComponent/>
     <div class="modal__actions">
       <button
         class="modal__btn modal__btn--grey"
         type="button"
         v-on:click="hideModal"
-      >Anuluj</button>
+      >Anuluj
+      </button>
       <MainBtn
         class="modal__btn modal__btn--violet"
         :loading="isLoading"
@@ -17,7 +18,8 @@
         color="#fafafa"
         v-if="processCompleted"
         v-on:click.native="createEmployee"
-      >Dodaj pracownika</MainBtn>
+      >Dodaj pracownika
+      </MainBtn>
     </div>
   </form>
 </template>
@@ -82,9 +84,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal--cp {
-  .modal__actions {
-    margin-top: 1rem;
+  .modal--cp {
+    .modal__actions {
+      margin-top: 1rem;
+    }
   }
-}
 </style>

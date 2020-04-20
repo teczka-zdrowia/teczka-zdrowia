@@ -9,7 +9,7 @@ const mutations = {
 }
 
 const actions = {
-  setViewAs ({ commit }, value) {
+  setViewAs ({commit}, value) {
     commit('SET_VIEW_AS', value)
   }
 }

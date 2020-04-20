@@ -20,13 +20,13 @@ const mutations = {
 }
 
 const actions = {
-  show ({ commit }, params) {
+  show ({commit}, params) {
     commit('SHOW_MODAL', params)
   },
-  hide ({ commit }) {
+  hide ({commit}) {
     commit('HIDE_MODAL')
   },
-  updateData ({ commit }, data) {
+  updateData ({commit}, data) {
     commit('UPDATE_MODAL_DATA', data)
   }
 }

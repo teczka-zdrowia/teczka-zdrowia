@@ -34,26 +34,30 @@
               v-bind:title="prevMonthCaption"
               type="button"
               v-on:click="incrementMonth(-1)"
-            >{{ prevMonthCaption }}</button>
+            >{{ prevMonthCaption }}
+            </button>
             <button
               class="vdpArrow vdpArrowNext"
               type="button"
               v-bind:title="nextMonthCaption"
               v-on:click="incrementMonth(1)"
-            >{{ nextMonthCaption }}</button>
+            >{{ nextMonthCaption }}
+            </button>
             <div class="vdpPeriodControls">
               <div class="vdpPeriodControl">
                 <button
                   v-bind:class="directionClass"
                   v-bind:key="currentPeriod.month"
                   type="button"
-                >{{ months[currentPeriod.month] }}</button>
+                >{{ months[currentPeriod.month] }}
+                </button>
                 <select v-model="currentPeriod.month">
                   <option
                     v-for="(month, index) in months"
                     v-bind:value="index"
                     v-bind:key="month"
-                  >{{ month }}</option>
+                  >{{ month }}
+                  </option>
                 </select>
               </div>
               <div class="vdpPeriodControl">
@@ -61,42 +65,44 @@
                   v-bind:class="directionClass"
                   v-bind:key="currentPeriod.year"
                   type="button"
-                >{{ currentPeriod.year }}</button>
+                >{{ currentPeriod.year }}
+                </button>
                 <select v-model="currentPeriod.year">
                   <option
                     v-for="year in yearRange"
                     v-bind:value="year"
                     v-bind:key="year"
-                  >{{ year }}</option>
+                  >{{ year }}
+                  </option>
                 </select>
               </div>
             </div>
           </header>
           <table class="vdpTable">
             <thead>
-              <tr>
-                <th
-                  class="vdpHeadCell"
-                  v-for="weekday in weekdays"
-                  v-bind:key="weekday"
-                >
-                  <span class="vdpHeadCellContent">{{weekday}}</span>
-                </th>
-              </tr>
+            <tr>
+              <th
+                class="vdpHeadCell"
+                v-for="weekday in weekdays"
+                v-bind:key="weekday"
+              >
+                <span class="vdpHeadCellContent">{{weekday}}</span>
+              </th>
+            </tr>
             </thead>
             <tbody
               v-bind:key="currentPeriod.year + '-' + currentPeriod.month"
               v-bind:class="directionClass"
             >
-              <tr
-                class="vdpRow"
-                v-for="(week, weekIndex) in currentPeriodDates"
-                v-bind:key="weekIndex"
-              >
-                <td
-                  class="vdpCell"
-                  v-for="item in week"
-                  v-bind:class="{
+            <tr
+              class="vdpRow"
+              v-for="(week, weekIndex) in currentPeriodDates"
+              v-bind:key="weekIndex"
+            >
+              <td
+                class="vdpCell"
+                v-for="item in week"
+                v-bind:class="{
                                         selectable: !item.disabled,
                                         selected: item.selected,
                                         highlighted: item.highlighted,
@@ -104,13 +110,13 @@
                                         today: item.today,
                                         outOfRange: item.outOfRange
                                     }"
-                  v-bind:data-id="item.dateKey"
-                  v-bind:key="item.dateKey"
-                  v-on:click="selectDateItem(item)"
-                >
-                  <div class="vdpCellContent">{{ item.date.getDate() }}</div>
-                </td>
-              </tr>
+                v-bind:data-id="item.dateKey"
+                v-bind:key="item.dateKey"
+                v-on:click="selectDateItem(item)"
+              >
+                <div class="vdpCellContent">{{ item.date.getDate() }}</div>
+              </td>
+            </tr>
             </tbody>
           </table>
           <div
@@ -182,24 +188,24 @@ const secondsRE = /s+/
 
 export default {
   props: {
-    value: { type: String, default: '' },
-    required: { type: Boolean, default: false },
-    highlighted: { type: Array, deafult: [] },
-    format: { type: String, default: 'YYYY-MM-DD' },
-    displayFormat: { type: String },
-    hasInputElement: { type: Boolean, default: true },
-    inputAttributes: { type: Object },
-    selectableYearRange: { type: Number, default: 40 },
-    parseDate: { type: Function },
-    formatDate: { type: Function },
-    pickTime: { type: Boolean, default: false },
-    pickMinutes: { type: Boolean, default: true },
-    pickSeconds: { type: Boolean, default: false },
-    isDateDisabled: { type: Function, default: () => false },
-    nextMonthCaption: { type: String, default: 'Następny miesiąc' },
-    prevMonthCaption: { type: String, default: 'Poprzedni miesiąc' },
-    setTimeCaption: { type: String, default: 'Ustaw czas:' },
-    mobileBreakpointWidth: { type: Number, default: 500 },
+    value: {type: String, default: ''},
+    required: {type: Boolean, default: false},
+    highlighted: {type: Array, deafult: []},
+    format: {type: String, default: 'YYYY-MM-DD'},
+    displayFormat: {type: String},
+    hasInputElement: {type: Boolean, default: true},
+    inputAttributes: {type: Object},
+    selectableYearRange: {type: Number, default: 40},
+    parseDate: {type: Function},
+    formatDate: {type: Function},
+    pickTime: {type: Boolean, default: false},
+    pickMinutes: {type: Boolean, default: true},
+    pickSeconds: {type: Boolean, default: false},
+    isDateDisabled: {type: Function, default: () => false},
+    nextMonthCaption: {type: String, default: 'Następny miesiąc'},
+    prevMonthCaption: {type: String, default: 'Poprzedni miesiąc'},
+    setTimeCaption: {type: String, default: 'Ustaw czas:'},
+    mobileBreakpointWidth: {type: Number, default: 500},
     weekdays: {
       type: Array,
       default: () => ['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'Sb', 'Nd']
@@ -248,7 +254,7 @@ export default {
     },
 
     currentPeriodDates () {
-      const { year, month } = this.currentPeriod
+      const {year, month} = this.currentPeriod
       const days = []
       const date = new Date(year, month, 1)
       const today = new Date()
@@ -260,12 +266,12 @@ export default {
         for (let i = startDay - 2; i >= 0; i--) {
           const prevDate = new Date(date)
           prevDate.setDate(-i)
-          days.push({ outOfRange: true, date: prevDate })
+          days.push({outOfRange: true, date: prevDate})
         }
       }
 
       while (date.getMonth() === month) {
-        days.push({ date: new Date(date) })
+        days.push({date: new Date(date)})
         date.setDate(date.getDate() + 1)
       }
 
@@ -275,7 +281,7 @@ export default {
       for (let i = 1; i <= daysLeft; i++) {
         const nextDate = new Date(date)
         nextDate.setDate(i)
-        days.push({ outOfRange: true, date: nextDate })
+        days.push({outOfRange: true, date: nextDate})
       }
 
       // define day states
@@ -345,11 +351,11 @@ export default {
       const oldDate = new Date(oldPeriod.year, oldPeriod.month).getTime()
 
       this.direction =
-        currentDate !== oldDate
-          ? currentDate > oldDate
-            ? 'Next'
-            : 'Prev'
-          : undefined
+          currentDate !== oldDate
+            ? currentDate > oldDate
+              ? 'Next'
+              : 'Prev'
+            : undefined
     }
   },
 
@@ -371,7 +377,7 @@ export default {
     getPeriodFromValue (dateString, format) {
       const date = this.parseDateString(dateString, format) || new Date()
 
-      return { month: date.getMonth(), year: date.getFullYear() }
+      return {month: date.getMonth(), year: date.getFullYear()}
     },
 
     parseDateString (dateString, dateFormat) {
@@ -514,7 +520,7 @@ export default {
         event.keyCode === 27 && this.close()
       } else if (
         !(event.target === this.$el) &&
-        !this.$el.contains(event.target)
+          !this.$el.contains(event.target)
       ) {
         this.close()
       }
@@ -555,7 +561,7 @@ export default {
           if (
             inputRect.top + inputRect.height + floaterHeight >
               window.innerHeight &&
-            inputRect.top - floaterHeight > 0
+              inputRect.top - floaterHeight > 0
           ) {
             verticalClass = 'vdpPositionBottom'
           }
@@ -610,7 +616,7 @@ export default {
 
     inputTime (method, event) {
       const currentDate = this.valueDate
-      const maxValues = { setHours: 23, setMinutes: 59, setSeconds: 59 }
+      const maxValues = {setHours: 23, setMinutes: 59, setSeconds: 59}
 
       let numValue = parseInt(event.target.value, 10) || 0
 
@@ -649,501 +655,509 @@ function chunkArray (inputArray, chunkSize) {
 function areSameDates (date1, date2) {
   return (
     date1.getDate() === date2.getDate() &&
-    date1.getMonth() === date2.getMonth() &&
-    date1.getFullYear() === date2.getFullYear()
+      date1.getMonth() === date2.getMonth() &&
+      date1.getFullYear() === date2.getFullYear()
   )
 }
 </script>
 
 <style lang="scss">
-$vdpColor: #7485c2 !default;
+  $vdpColor: #7485c2 !default;
 
-@keyframes vdpSlideFromLeft {
-  from {
-    opacity: 0;
-    transform: translate3d(-0.5em, 0, 0);
+  @keyframes vdpSlideFromLeft {
+    from {
+      opacity: 0;
+      transform: translate3d(-0.5em, 0, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
   }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
+
+  @keyframes vdpSlideFromRight {
+    from {
+      opacity: 0;
+      transform: translate3d(0.5em, 0, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
   }
-}
 
-@keyframes vdpSlideFromRight {
-  from {
-    opacity: 0;
-    transform: translate3d(0.5em, 0, 0);
+  @keyframes vdpToggleCalendar {
+    from {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
+
+  @keyframes vdpFadeCalendar {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
-}
 
-@keyframes vdpToggleCalendar {
-  from {
-    opacity: 0;
-    transform: scale(0.5);
+  .vdp-toggle-calendar-enter-active.vdpPositionReady {
+    transform-origin: top left;
+    animation: vdpToggleCalendar 0.2s;
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
+
+  .vdp-toggle-calendar-leave-active {
+    animation: vdpToggleCalendar 0.15s reverse;
   }
-}
 
-@keyframes vdpFadeCalendar {
-  from {
-    opacity: 0;
+  .vdp-toggle-calendar-enter-active.vdpPositionFixed {
+    animation: vdpFadeCalendar 0.3s;
   }
-  to {
-    opacity: 1;
+
+  .vdp-toggle-calendar-leave-active.vdpPositionFixed {
+    animation: vdpFadeCalendar 0.3s reverse;
   }
-}
 
-.vdp-toggle-calendar-enter-active.vdpPositionReady {
-  transform-origin: top left;
-  animation: vdpToggleCalendar 0.2s;
-}
+  .vdpComponent {
+    position: relative;
+    display: inline-block;
+    font-size: 10px;
+    color: #303030;
+    /*font-family: Helvetica, Arial, sans-serif;*/
+  }
 
-.vdp-toggle-calendar-leave-active {
-  animation: vdpToggleCalendar 0.15s reverse;
-}
+  .vdpComponent.vdpWithInput {
+    display: block;
+    width: 100%;
 
-.vdp-toggle-calendar-enter-active.vdpPositionFixed {
-  animation: vdpFadeCalendar 0.3s;
-}
+    & > input {
+      box-sizing: border-box;
+      margin-top: 0.5em;
+      width: 80%;
+      font-size: 1rem;
+      background: transparent;
+      color: #3e3e45;
+      font-weight: 600;
+    }
+  }
 
-.vdp-toggle-calendar-leave-active.vdpPositionFixed {
-  animation: vdpFadeCalendar 0.3s reverse;
-}
+  .vdpClearInput {
+    font-size: 1em;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 3em;
+  }
 
-.vdpComponent {
-  position: relative;
-  display: inline-block;
-  font-size: 10px;
-  color: #303030;
-  /*font-family: Helvetica, Arial, sans-serif;*/
-}
-
-.vdpComponent.vdpWithInput {
-  display: block;
-  width: 100%;
-  & > input {
+  .vdpClearInput:before {
+    content: "×";
+    width: 1.4em;
+    height: 1.4em;
+    line-height: 1.1em;
     box-sizing: border-box;
-    margin-top: 0.5em;
-    width: 80%;
-    font-size: 1rem;
-    background: transparent;
-    color: #3e3e45;
-    font-weight: 600;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -0.7em 0 0 -0.7em;
+    color: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 50%;
+    background-color: #fff;
   }
-}
 
-.vdpClearInput {
-  font-size: 1em;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 3em;
-}
+  .vdpClearInput:hover:before {
+    box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.15);
+  }
 
-.vdpClearInput:before {
-  content: "×";
-  width: 1.4em;
-  height: 1.4em;
-  line-height: 1.1em;
-  box-sizing: border-box;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin: -0.7em 0 0 -0.7em;
-  color: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 50%;
-  background-color: #fff;
-}
+  .vdpOuterWrap.vdpFloating {
+    position: absolute;
+    padding: 0.5em 0;
+    z-index: 220;
+  }
 
-.vdpClearInput:hover:before {
-  box-shadow: 0 0.2em 0.5em rgba(0, 0, 0, 0.15);
-}
+  .vdpOuterWrap.vdpPositionFixed {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    padding: 2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
 
-.vdpOuterWrap.vdpFloating {
-  position: absolute;
-  padding: 0.5em 0;
-  z-index: 220;
-}
+  .vdpFloating .vdpInnerWrap {
+    max-width: 30em;
+  }
 
-.vdpOuterWrap.vdpPositionFixed {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  padding: 2em;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.3);
-}
+  .vdpPositionFixed .vdpInnerWrap {
+    max-width: 30em;
+    margin: 0 auto;
+    border: 0;
+    animation: vdpToggleCalendar 0.3s;
+  }
 
-.vdpFloating .vdpInnerWrap {
-  max-width: 30em;
-}
+  .vdpFloating.vdpPositionTop {
+    top: 100%;
+  }
 
-.vdpPositionFixed .vdpInnerWrap {
-  max-width: 30em;
-  margin: 0 auto;
-  border: 0;
-  animation: vdpToggleCalendar 0.3s;
-}
+  .vdpFloating.vdpPositionBottom {
+    bottom: 100%;
+  }
 
-.vdpFloating.vdpPositionTop {
-  top: 100%;
-}
-.vdpFloating.vdpPositionBottom {
-  bottom: 100%;
-}
-.vdpFloating.vdpPositionLeft {
-  left: 0;
-}
-.vdpFloating.vdpPositionRight {
-  right: 0;
-}
+  .vdpFloating.vdpPositionLeft {
+    left: 0;
+  }
 
-.vdpPositionTop.vdpPositionLeft {
-  transform-origin: top left;
-}
-.vdpPositionTop.vdpPositionRight {
-  transform-origin: top right;
-}
-.vdpPositionBottom.vdpPositionLeft {
-  transform-origin: bottom left;
-}
-.vdpPositionBottom.vdpPositionRight {
-  transform-origin: bottom right;
-}
+  .vdpFloating.vdpPositionRight {
+    right: 0;
+  }
 
-.vdpInnerWrap {
-  overflow: hidden;
-  min-width: 28em;
-  box-sizing: border-box;
-  padding: 1em;
-  background: #fff;
-  box-shadow: 0 0.2em 1.5em rgba(0, 0, 0, 0.06);
-  border-radius: 0.5em;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-}
+  .vdpPositionTop.vdpPositionLeft {
+    transform-origin: top left;
+  }
 
-.vdpHeader {
-  position: relative;
-  padding: 0 1em 2.5em;
-  margin: -1em -1em -2.5em;
-  text-align: center;
-  background: #f5f5f5;
-}
+  .vdpPositionTop.vdpPositionRight {
+    transform-origin: top right;
+  }
 
-.vdpClearInput,
-.vdpArrow,
-.vdpPeriodControl > button {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  cursor: pointer;
-  background: none;
-}
+  .vdpPositionBottom.vdpPositionLeft {
+    transform-origin: bottom left;
+  }
 
-.vdpArrow::-moz-focus-inner,
-.vdpClearInput::-moz-focus-inner,
-.vdpPeriodControl > button::-moz-focus-inner {
-  padding: 0;
-  border: 0;
-}
+  .vdpPositionBottom.vdpPositionRight {
+    transform-origin: bottom right;
+  }
 
-.vdpArrow {
-  font-size: 1em;
-  width: 5em;
-  text-indent: -999em;
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  bottom: 2.5em;
-  text-align: left;
-}
+  .vdpInnerWrap {
+    overflow: hidden;
+    min-width: 28em;
+    box-sizing: border-box;
+    padding: 1em;
+    background: #fff;
+    box-shadow: 0 0.2em 1.5em rgba(0, 0, 0, 0.06);
+    border-radius: 0.5em;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+  }
 
-.vdpArrow:before {
-  content: "";
-  width: 2.2em;
-  height: 2.2em;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin: -1.1em 0 0 -1.1em;
-  border-radius: 100%;
-  transition: background-color 0.2s;
-}
+  .vdpHeader {
+    position: relative;
+    padding: 0 1em 2.5em;
+    margin: -1em -1em -2.5em;
+    text-align: center;
+    background: #f5f5f5;
+  }
 
-.vdpArrow:hover,
-.vdpArrow:focus,
-.vdpArrow:active {
-  outline: 0;
-}
+  .vdpClearInput,
+  .vdpArrow,
+  .vdpPeriodControl > button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    background: none;
+  }
 
-.vdpArrow:hover:before,
-.vdpArrow:focus:before {
-  background-color: rgba(0, 0, 0, 0.03);
-}
+  .vdpArrow::-moz-focus-inner,
+  .vdpClearInput::-moz-focus-inner,
+  .vdpPeriodControl > button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+  }
 
-.vdpArrow:active:before {
-  background-color: rgba(0, 0, 0, 0.07);
-}
+  .vdpArrow {
+    font-size: 1em;
+    width: 5em;
+    text-indent: -999em;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    bottom: 2.5em;
+    text-align: left;
+  }
 
-.vdpArrowNext:before {
-  margin-left: -1.4em;
-}
+  .vdpArrow:before {
+    content: "";
+    width: 2.2em;
+    height: 2.2em;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -1.1em 0 0 -1.1em;
+    border-radius: 100%;
+    transition: background-color 0.2s;
+  }
 
-.vdpArrow:after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin-top: -0.5em;
-  width: 0;
-  height: 0;
-  border: 0.5em solid transparent;
-}
+  .vdpArrow:hover,
+  .vdpArrow:focus,
+  .vdpArrow:active {
+    outline: 0;
+  }
 
-.vdpArrowPrev {
-  left: -0.3em;
-}
+  .vdpArrow:hover:before,
+  .vdpArrow:focus:before {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
 
-.vdpArrowPrev:after {
-  margin-left: -0.8em;
-  border-right-color: $vdpColor;
-}
+  .vdpArrow:active:before {
+    background-color: rgba(0, 0, 0, 0.07);
+  }
 
-.vdpArrowNext {
-  right: -0.6em;
-}
+  .vdpArrowNext:before {
+    margin-left: -1.4em;
+  }
 
-.vdpArrowNext:after {
-  margin-left: -0.5em;
-  border-left-color: $vdpColor;
-}
+  .vdpArrow:after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -0.5em;
+    width: 0;
+    height: 0;
+    border: 0.5em solid transparent;
+  }
 
-.vdpPeriodControl {
-  display: inline-block;
-  position: relative;
-}
+  .vdpArrowPrev {
+    left: -0.3em;
+  }
 
-.vdpPeriodControl > button {
-  font-size: 1.5em;
-  padding: 1em 0.4em;
-  display: inline-block;
-}
+  .vdpArrowPrev:after {
+    margin-left: -0.8em;
+    border-right-color: $vdpColor;
+  }
 
-.vdpPeriodControl > select {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-  opacity: 0;
-  font-size: 1.6em;
-}
+  .vdpArrowNext {
+    right: -0.6em;
+  }
 
-.vdpTable {
-  width: 100%;
-  table-layout: fixed;
-  position: relative;
-  z-index: 5;
-}
+  .vdpArrowNext:after {
+    margin-left: -0.5em;
+    border-left-color: $vdpColor;
+  }
 
-.vdpNextDirection {
-  animation: vdpSlideFromRight 0.5s;
-}
+  .vdpPeriodControl {
+    display: inline-block;
+    position: relative;
+  }
 
-.vdpPrevDirection {
-  animation: vdpSlideFromLeft 0.5s;
-}
+  .vdpPeriodControl > button {
+    font-size: 1.5em;
+    padding: 1em 0.4em;
+    display: inline-block;
+  }
 
-.vdpCell,
-.vdpHeadCell {
-  text-align: center;
-  box-sizing: border-box;
-}
+  .vdpPeriodControl > select {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    opacity: 0;
+    font-size: 1.6em;
+  }
 
-.vdpCell {
-  padding: 0.5em 0;
-}
+  .vdpTable {
+    width: 100%;
+    table-layout: fixed;
+    position: relative;
+    z-index: 5;
+  }
 
-.vdpHeadCell {
-  padding: 0.3em 0.5em 1.8em;
-}
+  .vdpNextDirection {
+    animation: vdpSlideFromRight 0.5s;
+  }
 
-.vdpHeadCellContent {
-  font-size: 1.3em;
-  font-weight: normal;
-  color: #848484;
-}
+  .vdpPrevDirection {
+    animation: vdpSlideFromLeft 0.5s;
+  }
 
-.vdpCellContent {
-  font-size: 1.4em;
-  display: block;
-  margin: 0 auto;
-  width: 1.857em;
-  height: 1.857em;
-  line-height: 1.857em;
-  text-align: center;
-  border-radius: 0.5em;
-  transition: background 0.1s, color 0.1s;
-}
+  .vdpCell,
+  .vdpHeadCell {
+    text-align: center;
+    box-sizing: border-box;
+  }
 
-.vdpCell.outOfRange {
-  color: #c7c7c7;
-}
+  .vdpCell {
+    padding: 0.5em 0;
+  }
 
-.vdpCell.today {
-  color: $vdpColor;
-}
+  .vdpHeadCell {
+    padding: 0.3em 0.5em 1.8em;
+  }
 
-.vdpCell.selected .vdpCellContent {
-  color: #fff;
-  background: $vdpColor;
-}
+  .vdpHeadCellContent {
+    font-size: 1.3em;
+    font-weight: normal;
+    color: #848484;
+  }
 
-.vdpCell.highlighted .vdpCellContent {
-  color: #67676e;
-  background: #eeeef3;
-  border-radius: 0.5em;
-}
+  .vdpCellContent {
+    font-size: 1.4em;
+    display: block;
+    margin: 0 auto;
+    width: 1.857em;
+    height: 1.857em;
+    line-height: 1.857em;
+    text-align: center;
+    border-radius: 0.5em;
+    transition: background 0.1s, color 0.1s;
+  }
 
-@media (hover: hover) {
-  .vdpCell.selectable:hover .vdpCellContent {
+  .vdpCell.outOfRange {
+    color: #c7c7c7;
+  }
+
+  .vdpCell.today {
+    color: $vdpColor;
+  }
+
+  .vdpCell.selected .vdpCellContent {
     color: #fff;
     background: $vdpColor;
   }
-}
 
-.vdpCell.selectable {
-  cursor: pointer;
-}
-
-.vdpCell.disabled {
-  opacity: 0.5;
-}
-
-.vdpTimeControls {
-  padding: 1.2em 2em;
-  position: relative;
-  margin: 1em -1em -1em;
-  text-align: center;
-  background: #f5f5f5;
-  /*border-top: 1px solid rgba(0,0,0,0.15);*/
-}
-
-.vdpTimeUnit {
-  display: inline-block;
-  position: relative;
-  vertical-align: middle;
-}
-
-.vdpTimeUnit > pre,
-.vdpTimeUnit > input {
-  font-size: 1.7em;
-  line-height: 1.3;
-  padding: 0.1em 0.1em;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  resize: none;
-  margin: 0;
-  box-sizing: border-box;
-  color: #000;
-  border: 0;
-  border-bottom: 1px solid transparent;
-  text-align: center;
-}
-
-.vdpTimeUnit > pre {
-  visibility: hidden;
-  font-family: inherit;
-}
-
-.vdpTimeUnit > input {
-  position: absolute;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  height: 100%;
-  width: 100%;
-  outline: none;
-  padding: 0;
-  appearance: none;
-  border-radius: 0;
-  background: transparent;
-
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
-.vdpTimeUnit > input:hover,
-.vdpTimeUnit > input:focus {
-  border-bottom-color: $vdpColor;
-}
-
-.vdpTimeUnit > input::-webkit-inner-spin-button,
-.vdpTimeUnit > input::-webkit-outer-spin-button {
-  margin: 0;
-  -webkit-appearance: none;
-}
-
-.vdpTimeSeparator,
-.vdpTimeCaption {
-  display: inline-block;
-  vertical-align: middle;
-  font-size: 1.3em;
-  color: #848484;
-}
-
-.vdpTimeCaption {
-  margin-right: 0.5em;
-}
-
-.vdpHeader {
-  border-radius: 0;
-  overflow: hidden;
-  .vdpPeriodControl button {
-    font-weight: 600;
-    color: #3e3e45;
+  .vdpCell.highlighted .vdpCellContent {
+    color: #67676e;
+    background: #eeeef3;
+    border-radius: 0.5em;
   }
-}
 
-.vdpInnerWrap {
-  width: 100%;
-  background: #fafafc;
-  font-weight: 600;
-  box-shadow: none;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  border: 0;
-  border-radius: 0;
-}
+  @media (hover: hover) {
+    .vdpCell.selectable:hover .vdpCellContent {
+      color: #fff;
+      background: $vdpColor;
+    }
+  }
 
-.vdpCell.today {
-  color: #6a6ee1;
-}
+  .vdpCell.selectable {
+    cursor: pointer;
+  }
 
-.vdpCell.selected .vdpCellContent {
-  color: #fff;
-  background: #6a6ee1;
-}
+  .vdpCell.disabled {
+    opacity: 0.5;
+  }
 
-@media (hover: hover) {
-  .vdpCell.selectable:hover .vdpCellContent {
+  .vdpTimeControls {
+    padding: 1.2em 2em;
+    position: relative;
+    margin: 1em -1em -1em;
+    text-align: center;
+    background: #f5f5f5;
+    /*border-top: 1px solid rgba(0,0,0,0.15);*/
+  }
+
+  .vdpTimeUnit {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+  }
+
+  .vdpTimeUnit > pre,
+  .vdpTimeUnit > input {
+    font-size: 1.7em;
+    line-height: 1.3;
+    padding: 0.1em 0.1em;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    resize: none;
+    margin: 0;
+    box-sizing: border-box;
+    color: #000;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    text-align: center;
+  }
+
+  .vdpTimeUnit > pre {
+    visibility: hidden;
+    font-family: inherit;
+  }
+
+  .vdpTimeUnit > input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    outline: none;
+    padding: 0;
+    appearance: none;
+    border-radius: 0;
+    background: transparent;
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  .vdpTimeUnit > input:hover,
+  .vdpTimeUnit > input:focus {
+    border-bottom-color: $vdpColor;
+  }
+
+  .vdpTimeUnit > input::-webkit-inner-spin-button,
+  .vdpTimeUnit > input::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+  }
+
+  .vdpTimeSeparator,
+  .vdpTimeCaption {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 1.3em;
+    color: #848484;
+  }
+
+  .vdpTimeCaption {
+    margin-right: 0.5em;
+  }
+
+  .vdpHeader {
+    border-radius: 0;
+    overflow: hidden;
+
+    .vdpPeriodControl button {
+      font-weight: 600;
+      color: #3e3e45;
+    }
+  }
+
+  .vdpInnerWrap {
+    width: 100%;
+    background: #fafafc;
+    font-weight: 600;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .vdpCell.today {
+    color: #6a6ee1;
+  }
+
+  .vdpCell.selected .vdpCellContent {
     color: #fff;
     background: #6a6ee1;
   }
-}
+
+  @media (hover: hover) {
+    .vdpCell.selectable:hover .vdpCellContent {
+      color: #fff;
+      background: #6a6ee1;
+    }
+  }
 </style>

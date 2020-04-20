@@ -3,20 +3,22 @@
     class="modal--ua"
     @submit.prevent="updateAppointment"
   >
-    <UpdateAppointmentComponent />
+    <UpdateAppointmentComponent/>
     <div class="modal__actions">
       <button
         class="modal__btn modal__btn--grey"
         type="button"
         v-on:click="hideModal"
-      >Anuluj</button>
+      >Anuluj
+      </button>
       <MainBtn
         class="modal__btn modal__btn--violet"
         :loading="isLoading"
         :disabled="isLoading"
         color="#fafafa"
         v-on:click="updateAppointment"
-      >Zaktualizuj wizytę</MainBtn>
+      >Zaktualizuj wizytę
+      </MainBtn>
     </div>
   </form>
 </template>
@@ -91,21 +93,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal--ua {
-  display: flex;
-  flex-direction: column;
-  background: #f5f5f5;
-  border-radius: 0.5rem;
-  .modal__actions {
-    padding: 1rem;
-  }
-}
-
-@media only screen and (max-width: 720px) {
   .modal--ua {
-    width: 100vw;
-    border-radius: 0;
-    height: calc(100vh - 56px);
+    display: flex;
+    flex-direction: column;
+    background: #f5f5f5;
+    border-radius: 0.5rem;
+
+    .modal__actions {
+      padding: 1rem;
+    }
   }
-}
+
+  @media only screen and (max-width: 720px) {
+    .modal--ua {
+      width: 100vw;
+      border-radius: 0;
+      height: calc(100vh - 56px);
+    }
+  }
 </style>

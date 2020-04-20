@@ -2,7 +2,7 @@
   <div>
     <Block class="addappointment__content">
       <form @submit.prevent="addAppointment">
-        <AddAppointmentComponent />
+        <AddAppointmentComponent/>
         <div class="addappointment__actions">
           <button
             class="addappointment__btn addappointment__btn--grey"
@@ -17,7 +17,8 @@
             :disabled="isLoading"
             color="#fafafa"
             v-on:click="addAppointment"
-            >Dodaj wizytę</MainBtn
+          >Dodaj wizytę
+          </MainBtn
           >
         </div>
       </form>
@@ -72,31 +73,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.addappointment__content {
-  padding: 0 !important;
-}
-
-.addappointment__actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  overflow: hidden;
-  border-bottom-left-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
-}
-
-.addappointment__btn {
-  padding: 1rem;
-  font-weight: 600;
-  border-radius: 0;
-  cursor: pointer;
-  transition: 0.2s ease-in-out;
-  &--grey {
-    background: #f5f5f5;
-    color: #1a1b37;
+  .addappointment__content {
+    padding: 0 !important;
   }
-  &--violet {
-    background: #6a6ee1;
-    color: #fafafc;
+
+  .addappointment__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
   }
-}
+
+  .addappointment__btn {
+    padding: 1rem;
+    font-weight: 600;
+    border-radius: 0;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+
+    &--grey {
+      background: #f5f5f5;
+      color: #1a1b37;
+    }
+
+    &--violet {
+      background: #6a6ee1;
+      color: #fafafc;
+    }
+  }
 </style>

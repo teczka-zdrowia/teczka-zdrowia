@@ -5,12 +5,14 @@
         <MainBtn
           v-on:click.native="toggleShowUpcoming"
           v-bind:class="{ active: showUpcoming }"
-          >Nadchodzące</MainBtn
+        >Nadchodzące
+        </MainBtn
         >
         <MainBtn
           v-on:click.native="toggleShowUpcoming"
           v-bind:class="{ active: !showUpcoming }"
-          >Minione</MainBtn
+        >Minione
+        </MainBtn
         >
       </div>
       <MainSearch class="appointments__right">
@@ -62,29 +64,30 @@
     <GreyBlock
       class="appointments__info"
       v-if="!loading.init && !loading.newQuery && appointments.length === 0"
-      >Brak wizyt</GreyBlock
+    >Brak wizyt
+    </GreyBlock
     >
     <GreyBlock
       class="appointments__info appointments__info--loading"
       v-if="loading.init || loading.newQuery"
-      >Ładowanie
-      <MainLoading color="#67676e" />
+    >Ładowanie
+      <MainLoading color="#67676e"/>
     </GreyBlock>
   </div>
 </template>
 
 <script>
-import MainBtn from "../../components/ui/basic/MainBtn"
-import MainSearch from "../../components/ui/basic/MainSearch"
-import MainLoading from "../../components/ui/basic/MainLoading"
-import GreyBlock from "../../components/ui/blocks/GreyBlock"
-import AppointmentsSmall from "../../components/ui/appointments/AppointmentsSmall"
+import MainBtn from '../../components/ui/basic/MainBtn'
+import MainSearch from '../../components/ui/basic/MainSearch'
+import MainLoading from '../../components/ui/basic/MainLoading'
+import GreyBlock from '../../components/ui/blocks/GreyBlock'
+import AppointmentsSmall from '../../components/ui/appointments/AppointmentsSmall'
 
-import { mapGetters, mapActions } from "vuex"
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: "Timetable",
-  data: function() {
+  name: 'Timetable',
+  data: function () {
     return {
       maxAppointments: 0,
       showUpcoming: true,
@@ -94,30 +97,30 @@ export default {
         next: false
       },
       query: {
-        search: "",
+        search: '',
         first: 5,
         sortData: {
-          order: "ASC",
-          field: "date"
+          order: 'ASC',
+          field: 'date'
         }
       }
     }
   },
   computed: {
     ...mapGetters({
-      isMobile: "window/isMobile",
-      selectedRole: "userRoles/selected",
-      appointments: "placeAppointments/list",
-      pageInfo: "placeAppointments/pageInfo"
+      isMobile: 'window/isMobile',
+      selectedRole: 'userRoles/selected',
+      appointments: 'placeAppointments/list',
+      pageInfo: 'placeAppointments/pageInfo'
     }),
-    canShowAppointments: function() {
+    canShowAppointments: function () {
       return (
         !this.loading.init &&
-        !this.loading.newQuery &&
-        this.appointments.length > 0
+          !this.loading.newQuery &&
+          this.appointments.length > 0
       )
     },
-    orderBy: function() {
+    orderBy: function () {
       return [
         {
           field: this.query.sortData.field,
@@ -125,62 +128,62 @@ export default {
         }
       ]
     },
-    date: function() {
+    date: function () {
       const today = new Date().toISOString().slice(0, 10)
-      const futureSafeDate = "2100-01-01"
-      const oldSafeDate = "2000-01-01"
+      const futureSafeDate = '2100-01-01'
+      const oldSafeDate = '2000-01-01'
 
       return this.showUpcoming
         ? {
-            from: today,
-            to: futureSafeDate
-          }
+          from: today,
+          to: futureSafeDate
+        }
         : {
-            from: oldSafeDate,
-            to: today
-          }
+          from: oldSafeDate,
+          to: today
+        }
     },
-    placeId: function() {
+    placeId: function () {
       return this.selectedRole.place.id
     }
   },
   methods: {
     ...mapActions({
-      getUserAppointments: "placeAppointments/get",
-      viewerInfo: "userInfo/full"
+      getUserAppointments: 'placeAppointments/get',
+      viewerInfo: 'userInfo/full'
     }),
-    toggleShowUpcoming: function() {
+    toggleShowUpcoming: function () {
       this.showUpcoming = !this.showUpcoming
 
       const sortData = this.query.sortData
-      if (sortData.field === "date") {
-        sortData.order = this.showUpcoming ? "ASC" : "DESC"
+      if (sortData.field === 'date') {
+        sortData.order = this.showUpcoming ? 'ASC' : 'DESC'
       }
     },
-    getAppointments: async function(payload, type) {
+    getAppointments: async function (payload, type) {
       this.loading[type] = true
 
       await this.getUserAppointments(payload).catch(error => {
-        this.$toasted.error("Wystąpił błąd podczas ładowania wizyt")
+        this.$toasted.error('Wystąpił błąd podczas ładowania wizyt')
         console.error(error)
       })
 
       this.loading[type] = false
     },
-    getFirstAppointments: function() {
+    getFirstAppointments: function () {
       const payload = {
         id: this.placeId,
         first: this.query.first,
-        after: "",
-        note: "",
+        after: '',
+        note: '',
         date: this.date,
         orderBy: this.orderBy,
-        type: "SET"
+        type: 'SET'
       }
 
-      this.getAppointments(payload, "init")
+      this.getAppointments(payload, 'init')
     },
-    getNextAppointments: function() {
+    getNextAppointments: function () {
       const payload = {
         id: this.placeId,
         first: this.query.first,
@@ -188,30 +191,30 @@ export default {
         note: `%${this.query.search}%`,
         date: this.date,
         orderBy: this.orderBy,
-        type: "ADD"
+        type: 'ADD'
       }
 
-      this.getAppointments(payload, "next")
+      this.getAppointments(payload, 'next')
     }
   },
   watch: {
     query: {
-      handler() {
+      handler () {
         const payload = {
           id: this.placeId,
           first: this.query.first,
-          after: "",
+          after: '',
           note: `%${this.query.search}%`,
           date: this.date,
           orderBy: this.orderBy,
-          type: "SET"
+          type: 'SET'
         }
 
-        this.getAppointments(payload, "newQuery")
+        this.getAppointments(payload, 'newQuery')
       },
       deep: true
     },
-    placeId: function() {
+    placeId: function () {
       this.getFirstAppointments()
     }
   },
@@ -222,119 +225,125 @@ export default {
     GreyBlock,
     MainLoading
   },
-  mounted() {
+  mounted () {
     this.getFirstAppointments()
   },
-  created() {
-    this.$eventBus.$on("new-appointment", this.getFirstAppointments)
+  created () {
+    this.$eventBus.$on('new-appointment', this.getFirstAppointments)
   },
-  beforeDestroy() {
-    this.$eventBus.$off("new-appointment")
+  beforeDestroy () {
+    this.$eventBus.$off('new-appointment')
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "../../main";
+  @import "../../main";
 
-.appointments__info {
-  height: unset;
-  padding: 1rem;
-  margin-top: 1rem;
-  &--loading {
-    svg {
-      height: 2rem;
-      width: 2rem;
-      margin-left: 1rem;
-    }
-  }
-}
-
-.appointments__actions {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  justify-content: space-between;
-  padding: 1rem;
-  width: calc(100% - 2rem);
-  margin-bottom: 1rem;
-  background: #fdfdfd;
-  box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
-  border-radius: 0.5rem;
-}
-
-.appointments__types {
-  display: flex;
-  padding-bottom: 1rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 1rem;
-  button {
-    width: 100%;
-    background: #eeeef3;
-    color: #6a6ee1;
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-    &.active {
-      color: $primrary-light;
-      background: $darkviolet;
-      background: linear-gradient(to right, $lightviolet, $darkviolet);
-      filter: drop-shadow(0 0 10px $lightgrey);
-      transition: 0.2s ease-in-out;
-      background-position: right center;
-    }
-    &:hover {
-      color: $primrary-light;
-      background: $darkviolet;
-      background: linear-gradient(to right, $lightviolet, $darkviolet);
-      filter: drop-shadow(0 0 10px $lightgrey);
-    }
-  }
-}
-
-.appointments__bottom {
-  margin-top: 0.5em;
-  height: 3em;
-  display: flex;
-  justify-content: center;
-}
-
-.appointments__more {
-  @extend %text--center;
-  border: 0;
-  transition: 0.2s ease-in-out;
-  border-radius: 0.5em;
-  border-radius: 0.25em;
-  padding: 0.5em 1.5em;
-  background: none;
-  color: #1a1b37;
-  font-weight: 600;
-  background: #fafafc;
-  cursor: pointer;
-  &:hover {
-    background: #ffffff;
-  }
-  i {
-    margin-left: 0.75em;
-  }
-}
-
-@media only screen and (min-width: 360px) {
-  .appointments__types button {
-    padding: 0.5rem 1rem;
-  }
-}
-
-@media only screen and (min-width: 1150px) {
-  .appointments__actions {
-    flex-direction: row;
-  }
-  .appointments__types {
-    padding-bottom: 0;
-  }
   .appointments__info {
-    height: 24rem;
-    padding: 0 1rem;
+    height: unset;
+    padding: 1rem;
+    margin-top: 1rem;
+
+    &--loading {
+      svg {
+        height: 2rem;
+        width: 2rem;
+        margin-left: 1rem;
+      }
+    }
   }
-}
+
+  .appointments__actions {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-between;
+    padding: 1rem;
+    width: calc(100% - 2rem);
+    margin-bottom: 1rem;
+    background: #fdfdfd;
+    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+    border-radius: 0.5rem;
+  }
+
+  .appointments__types {
+    display: flex;
+    padding-bottom: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
+
+    button {
+      width: 100%;
+      background: #eeeef3;
+      color: #6a6ee1;
+      border-radius: 0.5rem;
+      padding: 0.5rem;
+
+      &.active {
+        color: $primrary-light;
+        background: $darkviolet;
+        background: linear-gradient(to right, $lightviolet, $darkviolet);
+        filter: drop-shadow(0 0 10px $lightgrey);
+        transition: 0.2s ease-in-out;
+        background-position: right center;
+      }
+
+      &:hover {
+        color: $primrary-light;
+        background: $darkviolet;
+        background: linear-gradient(to right, $lightviolet, $darkviolet);
+        filter: drop-shadow(0 0 10px $lightgrey);
+      }
+    }
+  }
+
+  .appointments__bottom {
+    margin-top: 0.5em;
+    height: 3em;
+    display: flex;
+    justify-content: center;
+  }
+
+  .appointments__more {
+    @extend %text--center;
+    border: 0;
+    transition: 0.2s ease-in-out;
+    border-radius: 0.5em;
+    border-radius: 0.25em;
+    padding: 0.5em 1.5em;
+    background: none;
+    color: #1a1b37;
+    font-weight: 600;
+    background: #fafafc;
+    cursor: pointer;
+
+    &:hover {
+      background: #ffffff;
+    }
+
+    i {
+      margin-left: 0.75em;
+    }
+  }
+
+  @media only screen and (min-width: 360px) {
+    .appointments__types button {
+      padding: 0.5rem 1rem;
+    }
+  }
+
+  @media only screen and (min-width: 1150px) {
+    .appointments__actions {
+      flex-direction: row;
+    }
+    .appointments__types {
+      padding-bottom: 0;
+    }
+    .appointments__info {
+      height: 24rem;
+      padding: 0 1rem;
+    }
+  }
 </style>

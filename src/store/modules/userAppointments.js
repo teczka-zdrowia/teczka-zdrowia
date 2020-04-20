@@ -38,7 +38,7 @@ const mutations = {
 }
 
 const actions = {
-  get ({ commit }, { first, after, note, date, orderBy, type }) {
+  get ({commit}, {first, after, note, date, orderBy, type}) {
     return apolloClient
       .query({
         query: ME_APPOINTMENTS_QUERY,
@@ -61,7 +61,7 @@ const actions = {
         }
       })
   },
-  updateConfirmation ({ commit }, { id, confirmed }) {
+  updateConfirmation ({commit}, {id, confirmed}) {
     return apolloClient
       .mutate({
         mutation: UPDATE_APPOINTMENT_CONFIRMATION_MUTATION,
@@ -75,7 +75,7 @@ const actions = {
         commit('UPDATE_CONFIRMATION_LOCAL', appointment)
       })
   },
-  update ({ commit }, { data, id }) {
+  update ({commit}, {data, id}) {
     return apolloClient
       .mutate({
         mutation: UPDATE_APPOINTMENT_MUTATION,
@@ -89,13 +89,13 @@ const actions = {
         commit('UPDATE_LOCAL', appointment)
       })
   },
-  addLocal ({ commit }, data) {
+  addLocal ({commit}, data) {
     commit('ADD_LOCAL', data)
   },
-  updateLocal ({ commit }, data) {
+  updateLocal ({commit}, data) {
     commit('UPDATE_LOCAL', data)
   },
-  deleteLocal ({ commit }, data) {
+  deleteLocal ({commit}, data) {
     commit('DELETE_LOCAL', data)
   }
 }

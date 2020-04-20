@@ -35,14 +35,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.btn--nextstep {
-  padding: 1rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s ease-in-out;
-  &:hover {
-    filter: brightness(95%);
+  .btn--nextstep {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+      filter: brightness(95%);
+    }
   }
-}
 </style>

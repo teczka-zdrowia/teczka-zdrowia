@@ -24,7 +24,7 @@ const mutations = {
 }
 
 const actions = {
-  add ({ commit }, data) {
+  add ({commit}, data) {
     return apolloClient
       .mutate({
         mutation: CREATE_APPOINTMENT_MUTATION,
@@ -38,7 +38,7 @@ const actions = {
         return appointment
       })
   },
-  setData ({ commit }, data) {
+  setData ({commit}, data) {
     commit('SET_DATA', data)
   }
 }

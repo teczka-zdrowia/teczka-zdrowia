@@ -4,13 +4,13 @@ const state = {
 }
 
 const actions = {
-  updateWidthAndHeight ({ commit }, params) {
+  updateWidthAndHeight ({commit}, params) {
     commit('SET_WINDOW_DIMENSIONS', params)
   }
 }
 
 const mutations = {
-  SET_WINDOW_DIMENSIONS (state, { width, height }) {
+  SET_WINDOW_DIMENSIONS (state, {width, height}) {
     state.width = width
     state.height = height
   }

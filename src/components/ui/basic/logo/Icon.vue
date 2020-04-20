@@ -14,19 +14,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../../main";
+  @import "../../../../main";
 
-.icon {
-  color: #fafafa;
-  font-size: 2em;
-  display: flex;
-  vertical-align: middle;
-  span {
-    margin-right: 0.5em;
+  .icon {
+    color: #fafafa;
+    font-size: 2em;
+    display: flex;
+    vertical-align: middle;
+
+    span {
+      margin-right: 0.5em;
+    }
+
+    span {
+      font-weight: 600;
+      margin-left: 10px;
+    }
   }
-  span {
-    font-weight: 600;
-    margin-left: 10px;
-  }
-}
 </style>

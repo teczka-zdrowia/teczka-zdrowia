@@ -51,7 +51,7 @@ const mutations = {
 }
 
 const actions = {
-  login ({ commit }, credentials) {
+  login ({commit}, credentials) {
     return apolloClient
       .mutate({
         mutation: LOGIN_MUTATION,
@@ -64,7 +64,7 @@ const actions = {
         window.localStorage.setItem(AUTH_TOKEN, login.access_token)
       })
   },
-  signup ({ commit }, data) {
+  signup ({commit}, data) {
     return apolloClient
       .mutate({
         mutation: CREATE_USER_MUTATION,
@@ -74,7 +74,7 @@ const actions = {
       })
       .then(data => data.data.createUser)
   },
-  getFreePlan ({ commit }, data) {
+  getFreePlan ({commit}, data) {
     return apolloClient
       .mutate({
         mutation: GET_FREE_PLAN_MUTATION
@@ -86,15 +86,15 @@ const actions = {
         }
       })
   },
-  getData ({ commit }) {
+  getData ({commit}) {
     return apolloClient
-      .query({ query: ME_QUERY })
+      .query({query: ME_QUERY})
       .then(data => data.data.me)
       .then(me => {
         commit('SET_DATA', me)
       })
   },
-  updateData ({ commit }, data) {
+  updateData ({commit}, data) {
     return apolloClient
       .mutate({
         mutation: UPDATE_ME_MUTATION,
@@ -108,7 +108,7 @@ const actions = {
       .then(data => data.data.updateMe)
       .then(me => commit('SET_DATA', me))
   },
-  updatePassword ({ commit }, data) {
+  updatePassword ({commit}, data) {
     return apolloClient
       .mutate({
         mutation: UPDATE_PASSWORD_MUTATION,
@@ -123,7 +123,7 @@ const actions = {
         }
       })
   },
-  updateForgottenPassword ({ commit }, data) {
+  updateForgottenPassword ({commit}, data) {
     return apolloClient
       .mutate({
         mutation: UPDATE_FORGOTTEN_PASSWORD_MUTATION,
@@ -138,7 +138,7 @@ const actions = {
         }
       })
   },
-  logout ({ commit }) {
+  logout ({commit}) {
     return apolloClient
       .mutate({
         mutation: LOGOUT_MUTATION
@@ -153,7 +153,7 @@ const actions = {
         }
       })
   },
-  delete ({ commit }, data) {
+  delete ({commit}, data) {
     return apolloClient
       .mutate({
         mutation: DELETE_ME_MUTATION,
@@ -167,7 +167,7 @@ const actions = {
         window.localStorage.removeItem(AUTH_TOKEN)
       })
   },
-  forgotPassword ({ commit }, data) {
+  forgotPassword ({commit}, data) {
     return apolloClient
       .mutate({
         mutation: FORGOT_PASSWORD_MUTATION,
@@ -182,7 +182,7 @@ const actions = {
         }
       })
   },
-  getPESEL ({ commit }, password) {
+  getPESEL ({commit}, password) {
     return apolloClient
       .query({
         query: ME_PESEL_QUERY,
@@ -195,7 +195,7 @@ const actions = {
         commit('SET_PESEL', pesel)
       })
   },
-  getStorage ({ commit }) {
+  getStorage ({commit}) {
     return apolloClient
       .query({
         query: ME_STORAGE_QUERY,
@@ -203,10 +203,10 @@ const actions = {
       })
       .then(data => data.data.me.storage)
       .then(storage => {
-        commit('SET_DATA', { storage: storage })
+        commit('SET_DATA', {storage: storage})
       })
   },
-  hidePESEL ({ commit }) {
+  hidePESEL ({commit}) {
     commit('SET_PESEL', null)
   }
 }

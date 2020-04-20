@@ -28,7 +28,7 @@ const mutations = {
 }
 
 const actions = {
-  get ({ commit }, id) {
+  get ({commit}, id) {
     return apolloClient
       .query({
         query: PLACE_EMPLOYEES_QUERY,
@@ -41,7 +41,7 @@ const actions = {
         commit('SET_DATA', employees)
       })
   },
-  createRole ({ commit }, { userId, placeId, permissionType }) {
+  createRole ({commit}, {userId, placeId, permissionType}) {
     return apolloClient
       .mutate({
         mutation: CREATE_ROLE_MUTATION,
@@ -66,7 +66,7 @@ const actions = {
         }
       })
   },
-  updateRole ({ commit }, { id, data }) {
+  updateRole ({commit}, {id, data}) {
     return apolloClient
       .mutate({
         mutation: UPDATE_ROLE_MUTATION,
@@ -80,7 +80,7 @@ const actions = {
         commit('UPDATE_LOCAL', role)
       })
   },
-  deleteRole ({ commit }, id) {
+  deleteRole ({commit}, id) {
     return apolloClient
       .mutate({
         mutation: DELETE_ROLE_MUTATION,

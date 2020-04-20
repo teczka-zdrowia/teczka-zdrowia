@@ -35,7 +35,8 @@
         class="modal__btn fullwidth modal__btn--grey"
         type="button"
         @click="hideModal"
-      >Zamknij</button>
+      >Zamknij
+      </button>
     </div>
   </div>
 </template>
@@ -69,72 +70,81 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main";
+  @import "../../../main";
 
-.modal--di {
-  max-width: 90vw;
-  &__img {
-    display: block;
-    width: 8rem;
-    height: 8rem;
-    object-fit: cover;
-    margin: auto;
-    margin-bottom: -1.5rem;
-    border-radius: 2rem;
-    border: 5px solid #fafafa;
-  }
-  &__content {
-    border-radius: 0.5em;
-    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
-    background: #fafafc;
-    overflow: hidden;
-  }
-  &__title {
-    padding: 1rem;
-    padding-top: 2rem;
-    width: calc(100% - 2rem);
-    color: #3e3e45;
-    font-weight: 700;
-    text-align: center;
-    background: #ececec;
-    font-size: 1.5rem;
-  }
-  &__spec {
-    padding: 1rem;
-    width: calc(100% - 2rem);
-    color: #67676e;
-    font-weight: 600;
-    background: #f5f5f5;
-    text-align: center;
-  }
-  &__info {
-    padding: 1.5rem;
+  .modal--di {
+    max-width: 90vw;
+
+    &__img {
+      display: block;
+      width: 8rem;
+      height: 8rem;
+      object-fit: cover;
+      margin: auto;
+      margin-bottom: -1.5rem;
+      border-radius: 2rem;
+      border: 5px solid #fafafa;
+    }
+
+    &__content {
+      border-radius: 0.5em;
+      box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+      background: #fafafc;
+      overflow: hidden;
+    }
+
     &__title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      padding-bottom: 0.5rem;
+      padding: 1rem;
+      padding-top: 2rem;
+      width: calc(100% - 2rem);
+      color: #3e3e45;
+      font-weight: 700;
+      text-align: center;
+      background: #ececec;
+      font-size: 1.5rem;
     }
-    &__el {
-      padding: 0.5rem 0;
-      display: flex;
-      span {
-        padding: 1rem;
-        border-radius: 0.5rem;
-        background: #ececec;
-      }
-      a {
-        margin-left: 1rem;
+
+    &__spec {
+      padding: 1rem;
+      width: calc(100% - 2rem);
+      color: #67676e;
+      font-weight: 600;
+      background: #f5f5f5;
+      text-align: center;
+    }
+
+    &__info {
+      padding: 1.5rem;
+
+      &__title {
+        font-size: 1.25rem;
         font-weight: 600;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        background: #f5f5f5;
-        width: 100%;
-        max-width: 15rem;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        padding-bottom: 0.5rem;
+      }
+
+      &__el {
+        padding: 0.5rem 0;
+        display: flex;
+
+        span {
+          padding: 1rem;
+          border-radius: 0.5rem;
+          background: #ececec;
+        }
+
+        a {
+          margin-left: 1rem;
+          font-weight: 600;
+          padding: 1rem;
+          border-radius: 0.5rem;
+          background: #f5f5f5;
+          width: 100%;
+          max-width: 15rem;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
       }
     }
   }
-}
 </style>

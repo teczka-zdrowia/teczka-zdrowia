@@ -29,7 +29,7 @@ const mutations = {
 }
 
 const actions = {
-  select ({ commit }, id) {
+  select ({commit}, id) {
     const selectPreviousStep = id < state.steps[state.selectedStep].id
     const nextStep = state.steps[id - 1]
     const canSelectNextStep = nextStep ? nextStep.completed : false
@@ -37,10 +37,10 @@ const actions = {
       commit('UPDATE_SELECTED_STEP', id)
     }
   },
-  complete ({ commit }) {
+  complete ({commit}) {
     commit('SET_COMPLETED_STEP', state.selectedStep)
   },
-  next ({ commit }) {
+  next ({commit}) {
     commit('UPDATE_SELECTED_STEP', state.selectedStep + 1)
   }
 }

@@ -54,29 +54,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main.scss";
+  @import "../../../main.scss";
 
-.place-info {
-  padding: 1rem;
-  border-radius: 0.5rem;
-  color: #3e3e45;
-  cursor: pointer;
-  transition: 0.2s ease-in-out;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  &.nopadding {
-    padding: 0;
-  }
-  span {
-    margin-right: 0.75rem;
-    &.violet {
-      color: #6a6ee1;
+  .place-info {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    color: #3e3e45;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &.nopadding {
+      padding: 0;
+    }
+
+    span {
+      margin-right: 0.75rem;
+
+      &.violet {
+        color: #6a6ee1;
+      }
+    }
+
+    &:hover {
+      background: #eeeef3;
     }
   }
-  &:hover {
-    background: #eeeef3;
-  }
-}
 </style>

@@ -2,20 +2,22 @@
   <div>
     <Block class="addhistory__content">
       <form @submit.prevent="createHistory">
-        <AddHistoryComponent />
+        <AddHistoryComponent/>
         <div class="addhistory__actions">
           <button
             class="addhistory__btn addhistory__btn--grey"
             type="button"
             v-on:click="$router.go(-1)"
-          >Anuluj</button>
+          >Anuluj
+          </button>
           <MainBtn
             class="addhistory__btn addhistory__btn--violet"
             :loading="isLoading"
             :disabled="isLoading"
             color="#fafafa"
             v-on:click="createHistory"
-          >Dodaj historię</MainBtn>
+          >Dodaj historię
+          </MainBtn>
         </div>
       </form>
     </Block>
@@ -51,7 +53,7 @@ export default {
     createHistory: async function () {
       this.isLoading = true
 
-      const { recommendations, attachments, ...history } = this.historyData
+      const {recommendations, attachments, ...history} = this.historyData
 
       await this.addUserHistory(history)
         .then(() =>
@@ -94,31 +96,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.addhistory__content {
-  padding: 0 !important;
-}
-
-.addhistory__actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  overflow: hidden;
-  border-bottom-left-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
-}
-
-.addhistory__btn {
-  padding: 1rem;
-  font-weight: 600;
-  border-radius: 0;
-  cursor: pointer;
-  transition: 0.2s ease-in-out;
-  &--grey {
-    background: #f5f5f5;
-    color: #1a1b37;
+  .addhistory__content {
+    padding: 0 !important;
   }
-  &--violet {
-    background: #6a6ee1;
-    color: #fafafc;
+
+  .addhistory__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
   }
-}
+
+  .addhistory__btn {
+    padding: 1rem;
+    font-weight: 600;
+    border-radius: 0;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+
+    &--grey {
+      background: #f5f5f5;
+      color: #1a1b37;
+    }
+
+    &--violet {
+      background: #6a6ee1;
+      color: #fafafc;
+    }
+  }
 </style>

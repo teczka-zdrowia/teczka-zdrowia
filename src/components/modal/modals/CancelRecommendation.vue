@@ -16,14 +16,16 @@
         class="modal__btn modal__btn--grey"
         @click="hideModal"
         type="button"
-      >Anuluj</button>
+      >Anuluj
+      </button>
       <MainBtn
         class="modal__btn modal__btn--violet"
         :loading="isLoading"
         :disabled="isLoading"
         color="#fafafa"
         @click="cancelRecommendation"
-      >Zakończ zalecenie</MainBtn>
+      >Zakończ zalecenie
+      </MainBtn>
     </div>
   </form>
 </template>
@@ -58,7 +60,7 @@ export default {
     }),
     cancelRecommendation () {
       this.isLoading = true
-      const data = { is_active: false }
+      const data = {is_active: false}
       const id = this.recommendation.id
       const payload = {
         id: id,

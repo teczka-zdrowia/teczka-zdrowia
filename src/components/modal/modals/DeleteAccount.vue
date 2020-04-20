@@ -44,14 +44,16 @@
         class="modal__btn modal__btn--grey"
         @click="hideModal"
         type="button"
-      >Anuluj</button>
+      >Anuluj
+      </button>
       <MainBtn
         class="modal__btn modal__btn--red"
         :loading="isLoading"
         :disabled="isLoading"
         color="#fafafa"
         @click="deleteAccount"
-      >Usuń konto</MainBtn>
+      >Usuń konto
+      </MainBtn>
     </div>
   </form>
 </template>
@@ -86,7 +88,7 @@ export default {
       this.isLoading = true
       this.deleteUser(this.data)
         .then(() => {
-          this.$router.push({ name: 'Auth' })
+          this.$router.push({name: 'Auth'})
           this.$toasted.success('Pomyślnie usunięto konto')
           this.hideModal()
         })
@@ -103,45 +105,50 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main";
+  @import "../../../main";
 
-.modal--da__top {
-  margin-bottom: 1rem;
-}
+  .modal--da__top {
+    margin-bottom: 1rem;
+  }
 
-.modal--da__checkbox {
-  display: flex;
-  margin-top: 1rem;
-  & > input {
-    display: none !important;
-  }
-  .checkbox--modal--da {
-    height: 1em;
-    width: 1em;
-    border-radius: 0.2em;
-    border: 2px solid #1a1b37;
-    margin-right: 0.5em;
-    cursor: pointer;
-    transition: 0.2s ease-in-out;
-  }
-  input:checked + label {
-    background: $darkviolet;
-    border: 2px solid $darkviolet;
-    &:after {
-      content: "";
-      font-family: $font-awesome;
-      font-weight: 600;
-      font-size: 0.7em;
-      color: #fafafa;
-      height: 100%;
-      @extend %text--center;
+  .modal--da__checkbox {
+    display: flex;
+    margin-top: 1rem;
+
+    & > input {
+      display: none !important;
+    }
+
+    .checkbox--modal--da {
+      height: 1em;
+      width: 1em;
+      border-radius: 0.2em;
+      border: 2px solid #1a1b37;
+      margin-right: 0.5em;
+      cursor: pointer;
+      transition: 0.2s ease-in-out;
+    }
+
+    input:checked + label {
+      background: $darkviolet;
+      border: 2px solid $darkviolet;
+
+      &:after {
+        content: "";
+        font-family: $font-awesome;
+        font-weight: 600;
+        font-size: 0.7em;
+        color: #fafafa;
+        height: 100%;
+        @extend %text--center;
+      }
+    }
+
+    p {
+      margin: 0;
+      margin-top: 1px;
+      font-weight: 550;
+      color: #1a1b37;
     }
   }
-  p {
-    margin: 0;
-    margin-top: 1px;
-    font-weight: 550;
-    color: #1a1b37;
-  }
-}
 </style>

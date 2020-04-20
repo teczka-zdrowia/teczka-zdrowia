@@ -7,7 +7,8 @@
       <option
         selected
         disabled
-      >Wybierz okres</option>
+      >Wybierz okres
+      </option>
       <option value="7">Ostatni tydzień</option>
       <option value="14">Ostatnie 2 tygodnie</option>
       <option value="30">Ostatnie 30 dni</option>
@@ -32,7 +33,7 @@
       class="stats__info stats__info--loading"
       v-if="loading"
     >Ładowanie
-      <MainLoading color="#67676e" />
+      <MainLoading color="#67676e"/>
     </GreyBlock>
   </div>
 </template>
@@ -110,68 +111,73 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../main";
+  @import "../../main";
 
-.stats__info {
-  height: unset;
-  padding: 1rem;
-  &--loading {
-    border-top-left-radius: 0 !important;
-    border-top-right-radius: 0 !important;
-    svg {
-      height: 2rem;
-      width: 2rem;
-      margin-left: 1rem;
+  .stats__info {
+    height: unset;
+    padding: 1rem;
+
+    &--loading {
+      border-top-left-radius: 0 !important;
+      border-top-right-radius: 0 !important;
+
+      svg {
+        height: 2rem;
+        width: 2rem;
+        margin-left: 1rem;
+      }
     }
   }
-}
 
-.stats {
-  margin-top: -1rem;
-}
-
-.stats__select {
-  width: 100%;
-  text-align-last: center;
-  background-color: #eeeef3 !important;
-  &:not(:last-child) {
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
+  .stats {
+    margin-top: -1rem;
   }
-}
 
-.stats__el {
-  display: flex;
-  flex-direction: column;
-  font-weight: 600;
-  background: #eeeef3;
-  &:not(:last-child) {
-    border-bottom: 1px solid rgba(213, 213, 213, 0.6);
+  .stats__select {
+    width: 100%;
+    text-align-last: center;
+    background-color: #eeeef3 !important;
+
+    &:not(:last-child) {
+      border-bottom-left-radius: 0 !important;
+      border-bottom-right-radius: 0 !important;
+    }
   }
-  &:last-child {
-    border-bottom-left-radius: 0.5rem;
-    border-bottom-right-radius: 0.5rem;
+
+  .stats__el {
+    display: flex;
+    flex-direction: column;
+    font-weight: 600;
+    background: #eeeef3;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba(213, 213, 213, 0.6);
+    }
+
+    &:last-child {
+      border-bottom-left-radius: 0.5rem;
+      border-bottom-right-radius: 0.5rem;
+    }
   }
-}
 
-.stats__title,
-.stats__data {
-  padding: 0.75rem 0;
-  text-align: center;
-}
-
-.stats__title {
-  color: #67676e;
-}
-
-.stats__data {
-  color: #3e3e45;
-}
-
-@media only screen and (min-width: 960px) {
-  .stats__info {
-    height: 24rem;
-    padding: 0 1rem;
+  .stats__title,
+  .stats__data {
+    padding: 0.75rem 0;
+    text-align: center;
   }
-}
+
+  .stats__title {
+    color: #67676e;
+  }
+
+  .stats__data {
+    color: #3e3e45;
+  }
+
+  @media only screen and (min-width: 960px) {
+    .stats__info {
+      height: 24rem;
+      padding: 0 1rem;
+    }
+  }
 </style>

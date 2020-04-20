@@ -13,14 +13,16 @@
         class="modal__btn modal__btn--grey"
         @click="hideModal"
         type="button"
-      >Anuluj</button>
+      >Anuluj
+      </button>
       <MainBtn
         class="modal__btn modal__btn--violet"
         :loading="isLoading"
         :disabled="isLoading"
         color="#fafafa"
         @click="createPlace"
-      >Utwórz gabinet</MainBtn>
+      >Utwórz gabinet
+      </MainBtn>
     </div>
   </form>
 </template>
@@ -61,9 +63,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal--cp {
-  .modal__actions {
-    margin-top: 1rem;
+  .modal--cp {
+    .modal__actions {
+      margin-top: 1rem;
+    }
   }
-}
 </style>

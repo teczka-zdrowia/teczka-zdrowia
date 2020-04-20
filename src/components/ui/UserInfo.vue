@@ -89,7 +89,7 @@ export default {
         this.$toasted.show('Wylogowywanie...')
         this.userLogout()
           .then(() => {
-            const logoutRoute = this.$router.resolve({ name: 'Auth' })
+            const logoutRoute = this.$router.resolve({name: 'Auth'})
             this.$toasted.success('Poprawnie wylogowano')
             window.location.href = logoutRoute.href
           })
@@ -117,144 +117,157 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../main";
+  @import "../../main";
 
-.info {
-  position: relative;
-  cursor: pointer;
-  width: auto;
-  border: 10px solid transparent;
-  border-radius: 0.5em;
-  margin: -10px;
-  transition: 0.2s ease-in-out;
-  height: 100%;
-  margin-bottom: -30%;
-  @media only screen and (max-width: 960px) {
-    height: 3em;
-    width: 4em;
-    margin-left: auto;
-    margin-right: 0;
-  }
-  * {
-    pointer-events: none;
-  }
-  &:hover {
-    background: #fff;
-    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.5);
-    border: 10px solid #fff;
-  }
-  img {
-    height: 3em;
-    width: 3rem;
-    object-fit: cover;
-    border-radius: 1em;
-    margin-right: 1em;
-    float: left;
-    filter: drop-shadow(0 0 10px $lightgrey);
+  .info {
+    position: relative;
+    cursor: pointer;
+    width: auto;
+    border: 10px solid transparent;
+    border-radius: 0.5em;
+    margin: -10px;
+    transition: 0.2s ease-in-out;
+    height: 100%;
+    margin-bottom: -30%;
     @media only screen and (max-width: 960px) {
+      height: 3em;
+      width: 4em;
+      margin-left: auto;
       margin-right: 0;
     }
-  }
-  .info__content {
-    height: 90%;
-    margin: 1.25% 0;
-    display: grid;
-    flex-direction: column;
 
-    .info__name {
-      @extend %text--center;
-      font-weight: 700;
-      color: #3e3e45;
-      justify-content: left;
-      p {
-        margin: 0;
+    * {
+      pointer-events: none;
+    }
+
+    &:hover {
+      background: #fff;
+      box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.5);
+      border: 10px solid #fff;
+    }
+
+    img {
+      height: 3em;
+      width: 3rem;
+      object-fit: cover;
+      border-radius: 1em;
+      margin-right: 1em;
+      float: left;
+      filter: drop-shadow(0 0 10px $lightgrey);
+      @media only screen and (max-width: 960px) {
+        margin-right: 0;
+      }
+    }
+
+    .info__content {
+      height: 90%;
+      margin: 1.25% 0;
+      display: grid;
+      flex-direction: column;
+
+      .info__name {
+        @extend %text--center;
+        font-weight: 700;
+        color: #3e3e45;
+        justify-content: left;
+
+        p {
+          margin: 0;
+          @media only screen and (max-width: 960px) {
+            display: none;
+          }
+        }
+
+        .info__btn {
+          cursor: pointer;
+          color: #91919c;
+          background: none;
+          margin-left: 0.25em;
+        }
+      }
+
+      .info__specialization {
+        @extend %text--center;
+        font-weight: 600;
+        color: #67676e;
+        justify-content: left;
         @media only screen and (max-width: 960px) {
           display: none;
         }
       }
-      .info__btn {
-        cursor: pointer;
-        color: #91919c;
-        background: none;
-        margin-left: 0.25em;
-      }
-    }
-    .info__specialization {
-      @extend %text--center;
-      font-weight: 600;
-      color: #67676e;
-      justify-content: left;
-      @media only screen and (max-width: 960px) {
-        display: none;
-      }
     }
   }
-}
 
-.wrapper {
-  position: relative;
-  top: 0em;
-  left: -10px;
-  width: calc(100% + 20px);
-  height: 0;
-  top: 1rem;
-  @media only screen and (max-width: 960px) {
-    width: auto;
-    left: -100%;
+  .wrapper {
+    position: relative;
+    top: 0em;
+    left: -10px;
+    width: calc(100% + 20px);
+    height: 0;
+    top: 1rem;
+    @media only screen and (max-width: 960px) {
+      width: auto;
+      left: -100%;
+    }
   }
-}
 
-.info__menu {
-  position: relative;
-  margin-top: 5em;
-  width: 100%;
-  height: auto;
-  background: #fff;
-  box-shadow: 0 0 20px 0px $grey;
-  background: #fff;
-  z-index: 0;
-  border-radius: 0.5em;
-  font-weight: 600;
-  overflow: hidden;
-  opacity: 0;
-  visibility: hidden;
-  transition: visibility 0s, opacity 0.2s ease-in-out;
-  @media only screen and (max-width: 960px) {
-    margin-top: 1.5rem;
-    width: 12rem;
-  }
-  &.visible {
-    z-index: 9999999;
-    opacity: 1;
-    visibility: visible;
-    transition: visibility 0s, opacity 0.2s ease-in-out;
-  }
-  .menu__el {
-    transition: 0.2s ease-in-out;
-    color: #67676e;
-    @extend %text--center;
-    justify-content: left;
-    width: auto;
+  .info__menu {
+    position: relative;
+    margin-top: 5em;
+    width: 100%;
     height: auto;
-    padding: 1.5em 2em;
-    font-size: 1em;
-    cursor: pointer;
-    * {
-      pointer-events: none;
+    background: #fff;
+    box-shadow: 0 0 20px 0px $grey;
+    background: #fff;
+    z-index: 0;
+    border-radius: 0.5em;
+    font-weight: 600;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transition: visibility 0s, opacity 0.2s ease-in-out;
+    @media only screen and (max-width: 960px) {
+      margin-top: 1.5rem;
+      width: 12rem;
     }
-    span {
+
+    &.visible {
+      z-index: 9999999;
+      opacity: 1;
+      visibility: visible;
+      transition: visibility 0s, opacity 0.2s ease-in-out;
+    }
+
+    .menu__el {
       transition: 0.2s ease-in-out;
-      color: #3e3e45;
-      font-size: 1.2em;
-      margin-right: 1em;
-    }
-    &:hover {
-      background: #f5f5f5;
-      color: #5356ae;
+      color: #67676e;
+      @extend %text--center;
+      justify-content: left;
+      width: auto;
+      height: auto;
+      padding: 1.5em 2em;
+      font-size: 1em;
+      cursor: pointer;
+
+      * {
+        pointer-events: none;
+      }
+
       span {
+        transition: 0.2s ease-in-out;
+        color: #3e3e45;
+        font-size: 1.2em;
+        margin-right: 1em;
+      }
+
+      &:hover {
+        background: #f5f5f5;
         color: #5356ae;
+
+        span {
+          color: #5356ae;
+        }
       }
     }
   }
-}
 </style>

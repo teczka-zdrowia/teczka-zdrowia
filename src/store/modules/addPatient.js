@@ -32,10 +32,10 @@ const mutations = {
 }
 
 const actions = {
-  initPlace ({ commit }, place) {
+  initPlace ({commit}, place) {
     commit('SET_PLACE', place)
   },
-  searchByPesel ({ commit }, pesel) {
+  searchByPesel ({commit}, pesel) {
     return apolloClient
       .query({
         query: USER_BY_PESEL_QUERY,
@@ -55,7 +55,7 @@ const actions = {
         }
       })
   },
-  initalizePatient ({ commit }, data) {
+  initalizePatient ({commit}, data) {
     return apolloClient
       .mutate({
         mutation: INITIALIZE_USER_MUTATION,
@@ -70,10 +70,10 @@ const actions = {
         commit('SET_SEARCH_FAILED_VALUE', false)
       })
   },
-  clear ({ commit }) {
+  clear ({commit}) {
     commit('CLEAR_ADDPATIENT')
   },
-  clearPatient ({ commit }) {
+  clearPatient ({commit}) {
     commit('SET_PATIENT', false)
   }
 }

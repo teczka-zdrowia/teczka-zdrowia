@@ -19,46 +19,49 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../main";
+  @import "../../main";
 
-.main {
-  @extend %text--center;
-  height: 100vh;
-  width: 100%;
-  background: $darkviolet;
-  background: linear-gradient(to right, $lightviolet, $darkviolet);
-}
+  .main {
+    @extend %text--center;
+    height: 100vh;
+    width: 100%;
+    background: $darkviolet;
+    background: linear-gradient(to right, $lightviolet, $darkviolet);
+  }
 
-.logo {
-  @extend %text--center;
-  margin-bottom: 2rem;
-}
+  .logo {
+    @extend %text--center;
+    margin-bottom: 2rem;
+  }
 
-.error {
-  @extend %text--center;
-  color: #fafafc;
-  display: block;
-  text-align: center;
-  &__title {
-    font-weight: 700;
-    font-size: 3em;
-    margin-bottom: 1rem;
+  .error {
+    @extend %text--center;
+    color: #fafafc;
+    display: block;
+    text-align: center;
+
+    &__title {
+      font-weight: 700;
+      font-size: 3em;
+      margin-bottom: 1rem;
+    }
+
+    &__info {
+      font-weight: 600;
+      font-size: 1.5em;
+      padding: 0 0.5rem;
+    }
+
+    &__back {
+      cursor: pointer;
+      margin-top: 1.5rem;
+      color: #6a6ee1;
+      background: #f0f0ff;
+      border-radius: 0.5em;
+      padding: 0.5em;
+      font-weight: 600;
+      font-size: 1.5rem;
+      display: inline-block;
+    }
   }
-  &__info {
-    font-weight: 600;
-    font-size: 1.5em;
-    padding: 0 0.5rem;
-  }
-  &__back {
-    cursor: pointer;
-    margin-top: 1.5rem;
-    color: #6a6ee1;
-    background: #f0f0ff;
-    border-radius: 0.5em;
-    padding: 0.5em;
-    font-weight: 600;
-    font-size: 1.5rem;
-    display: inline-block;
-  }
-}
 </style>

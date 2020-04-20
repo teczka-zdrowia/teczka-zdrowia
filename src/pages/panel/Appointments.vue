@@ -52,29 +52,30 @@
     <GreyBlock
       class="appointments__info"
       v-if="!loading.init && !loading.newQuery && appointments.length === 0"
-      >Brak wizyt</GreyBlock
+    >Brak wizyt
+    </GreyBlock
     >
     <GreyBlock
       class="appointments__info appointments__info--loading"
       v-if="loading.init || loading.newQuery"
-      >Ładowanie
-      <MainLoading color="#67676e" />
+    >Ładowanie
+      <MainLoading color="#67676e"/>
     </GreyBlock>
   </div>
 </template>
 
 <script>
-import MainBtn from "../../components/ui/basic/MainBtn"
-import MainSearch from "../../components/ui/basic/MainSearch"
-import MainLoading from "../../components/ui/basic/MainLoading"
-import GreyBlock from "../../components/ui/blocks/GreyBlock"
-import AppointmentsSmall from "../../components/ui/appointments/AppointmentsSmall"
+import MainBtn from '../../components/ui/basic/MainBtn'
+import MainSearch from '../../components/ui/basic/MainSearch'
+import MainLoading from '../../components/ui/basic/MainLoading'
+import GreyBlock from '../../components/ui/blocks/GreyBlock'
+import AppointmentsSmall from '../../components/ui/appointments/AppointmentsSmall'
 
-import { mapGetters, mapActions } from "vuex"
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: "Appointments",
-  data: function() {
+  name: 'Appointments',
+  data: function () {
     return {
       loading: {
         init: true,
@@ -82,47 +83,47 @@ export default {
         next: false
       },
       query: {
-        search: "",
+        search: '',
         first: 5,
         sortData: {
-          order: "ASC",
-          field: "date"
+          order: 'ASC',
+          field: 'date'
         }
       }
     }
   },
   computed: {
     ...mapGetters({
-      isMobile: "window/isMobile",
-      selectedRole: "userRoles/selected",
-      appointmentsByMe: "appointmentsByMe/list",
-      placeAppointments: "placeAppointments/list",
-      appointmentsByMePageInfo: "appointmentsByMe/pageInfo",
-      placeAppointmentsPageInfo: "placeAppointments/pageInfo",
-      selectedDate: "appointmentsByMe/date",
-      viewer: "userInfo/full"
+      isMobile: 'window/isMobile',
+      selectedRole: 'userRoles/selected',
+      appointmentsByMe: 'appointmentsByMe/list',
+      placeAppointments: 'placeAppointments/list',
+      appointmentsByMePageInfo: 'appointmentsByMe/pageInfo',
+      placeAppointmentsPageInfo: 'placeAppointments/pageInfo',
+      selectedDate: 'appointmentsByMe/date',
+      viewer: 'userInfo/full'
     }),
-    type: function() {
-      return this.selectedRole ? "PLACE" : "ALL"
+    type: function () {
+      return this.selectedRole ? 'PLACE' : 'ALL'
     },
-    appointments: function() {
-      return this.type === "ALL"
+    appointments: function () {
+      return this.type === 'ALL'
         ? this.appointmentsByMe
         : this.placeAppointments
     },
-    pageInfo: function() {
-      return this.type === "ALL"
+    pageInfo: function () {
+      return this.type === 'ALL'
         ? this.appointmentsByMePageInfo
         : this.placeAppointmentsPageInfo
     },
-    canShowAppointments: function() {
+    canShowAppointments: function () {
       return (
         !this.loading.init &&
-        !this.loading.newQuery &&
-        this.appointments.length > 0
+          !this.loading.newQuery &&
+          this.appointments.length > 0
       )
     },
-    orderBy: function() {
+    orderBy: function () {
       return [
         {
           field: this.query.sortData.field,
@@ -130,9 +131,9 @@ export default {
         }
       ]
     },
-    date: function() {
+    date: function () {
       const today = new Date().toISOString().slice(0, 10)
-      const futureSafeDate = "2100-01-01"
+      const futureSafeDate = '2100-01-01'
 
       if (this.selectedDate) {
         const selected = new Date(this.selectedDate)
@@ -153,28 +154,28 @@ export default {
         to: futureSafeDate
       }
     },
-    title: function() {
+    title: function () {
       const enter =
-        this.type === "ALL" ? "Wszystkie twoje wizyty" : "Twoje wizyty"
+          this.type === 'ALL' ? 'Wszystkie twoje wizyty' : 'Twoje wizyty'
       const when = this.selectedDate
         ? ` ${new Date(this.selectedDate).toLocaleDateString()}`
-        : ""
+        : ''
       const where =
-        this.type === "PLACE" ? ` w ${this.selectedRole.place.name}` : ""
+          this.type === 'PLACE' ? ` w ${this.selectedRole.place.name}` : ''
       return `${enter}${when}${where}`
     }
   },
   methods: {
     ...mapActions({
-      getAppointmentsByMe: "appointmentsByMe/get",
-      getPlaceAppointments: "placeAppointments/get"
+      getAppointmentsByMe: 'appointmentsByMe/get',
+      getPlaceAppointments: 'placeAppointments/get'
     }),
-    getAppointments: async function(payload, type) {
+    getAppointments: async function (payload, type) {
       this.loading[type] = true
 
-      if (this.type === "ALL") {
+      if (this.type === 'ALL') {
         await this.getAppointmentsByMe(payload).catch(error => {
-          this.$toasted.error("Wystąpił błąd podczas ładowania wizyt")
+          this.$toasted.error('Wystąpił błąd podczas ładowania wizyt')
           console.error(error)
         })
       } else {
@@ -184,58 +185,58 @@ export default {
         })
 
         await this.getPlaceAppointments(payload).catch(error => {
-          this.$toasted.error("Wystąpił błąd podczas ładowania wizyt")
+          this.$toasted.error('Wystąpił błąd podczas ładowania wizyt')
           console.error(error)
         })
       }
 
       this.loading[type] = false
     },
-    getFirstAppointments: function() {
+    getFirstAppointments: function () {
       const payload = {
         first: this.query.first,
-        after: "",
-        note: "",
+        after: '',
+        note: '',
         date: this.date,
         orderBy: this.orderBy,
-        type: "SET"
+        type: 'SET'
       }
 
-      this.getAppointments(payload, "init")
+      this.getAppointments(payload, 'init')
     },
-    getNextAppointments: function() {
+    getNextAppointments: function () {
       const payload = {
         first: this.query.first,
         after: this.pageInfo.endCursor,
         note: `%${this.query.search}%`,
         date: this.date,
         orderBy: this.orderBy,
-        type: "ADD"
+        type: 'ADD'
       }
 
-      this.getAppointments(payload, "next")
+      this.getAppointments(payload, 'next')
     }
   },
   watch: {
     query: {
-      handler() {
+      handler () {
         const payload = {
           first: this.query.first,
-          after: "",
+          after: '',
           note: `%${this.query.search}%`,
           date: this.date,
           orderBy: this.orderBy,
-          type: "SET"
+          type: 'SET'
         }
 
-        this.getAppointments(payload, "newQuery")
+        this.getAppointments(payload, 'newQuery')
       },
       deep: true
     },
-    selectedDate: function(val) {
+    selectedDate: function (val) {
       this.getFirstAppointments()
     },
-    selectedRole: function(val) {
+    selectedRole: function (val) {
       this.getFirstAppointments()
     }
   },
@@ -246,163 +247,173 @@ export default {
     GreyBlock,
     MainLoading
   },
-  mounted() {
+  mounted () {
     this.getFirstAppointments()
   },
-  created() {
-    this.$eventBus.$on("new-appointment", this.getFirstAppointments)
+  created () {
+    this.$eventBus.$on('new-appointment', this.getFirstAppointments)
   },
-  beforeDestroy() {
-    this.$eventBus.$off("new-appointment")
+  beforeDestroy () {
+    this.$eventBus.$off('new-appointment')
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "../../main";
+  @import "../../main";
 
-.appointments {
-  width: 100%;
-}
+  .appointments {
+    width: 100%;
+  }
 
-.appointments__info {
-  height: unset;
-  padding: 1rem;
-  margin-top: 1rem;
-  &--loading {
-    svg {
-      height: 2rem;
-      width: 2rem;
-      margin-left: 1rem;
+  .appointments__info {
+    height: unset;
+    padding: 1rem;
+    margin-top: 1rem;
+
+    &--loading {
+      svg {
+        height: 2rem;
+        width: 2rem;
+        margin-left: 1rem;
+      }
     }
   }
-}
 
-.appointments__top {
-  @extend %text--center;
-  font-weight: 700;
-  justify-content: space-between;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  width: calc(100% - 2rem);
-  padding: 1rem;
-  border-radius: 0.5rem;
-  -webkit-box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
-  box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
-  background: #fafafc;
-}
-.appointments__title {
-  color: #3e3e45;
-  font-size: 1.5em;
-  margin-right: 1.5em;
-  font-weight: 700;
-}
-
-.appointments__right {
-  display: flex;
-  position: relative;
-}
-
-.appointments__search {
-  border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
-  background: #eeeef3;
-  padding: 0.75rem;
-  font-weight: 600;
-  width: calc(100% - 3rem);
-  transition: 0.2s ease-in-out;
-  &:focus {
-    @include placeholder {
-      opacity: 0;
-    }
+  .appointments__top {
+    @extend %text--center;
+    font-weight: 700;
+    justify-content: space-between;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    width: calc(100% - 2rem);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    -webkit-box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+    background: #fafafc;
   }
-  @include placeholder {
+
+  .appointments__title {
+    color: #3e3e45;
+    font-size: 1.5em;
+    margin-right: 1.5em;
+    font-weight: 700;
+  }
+
+  .appointments__right {
+    display: flex;
+    position: relative;
+  }
+
+  .appointments__search {
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    background: #eeeef3;
+    padding: 0.75rem;
+    font-weight: 600;
+    width: calc(100% - 3rem);
     transition: 0.2s ease-in-out;
-    color: #6a6ee1;
-    font-family: Montserrat, "Font Awesome 5 Free";
-  }
-}
 
-.appointments__sort {
-  @extend %text--center;
-  border-top-right-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
-  transition: 0.2s ease-in-out;
-  color: #3e3e45;
-  background: #e4e4ec;
-  padding: 0 1rem;
-  cursor: pointer;
-  &:hover {
-    & ~ .appointments__sort__content {
+    &:focus {
+      @include placeholder {
+        opacity: 0;
+      }
+    }
+
+    @include placeholder {
+      transition: 0.2s ease-in-out;
+      color: #6a6ee1;
+      font-family: Montserrat, "Font Awesome 5 Free";
+    }
+  }
+
+  .appointments__sort {
+    @extend %text--center;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    transition: 0.2s ease-in-out;
+    color: #3e3e45;
+    background: #e4e4ec;
+    padding: 0 1rem;
+    cursor: pointer;
+
+    &:hover {
+      & ~ .appointments__sort__content {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+
+  .appointments__sort__content {
+    z-index: 100;
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    padding: 1rem 0.75rem;
+    width: calc(100% - 1.5rem);
+    background: #e4e4ec;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease-in-out;
+
+    label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+
+      &:not(:last-child) {
+        margin-bottom: 1rem;
+      }
+
+      select {
+        cursor: pointer;
+        padding: 0.25rem;
+        border-radius: 0.5rem;
+        width: 50%;
+        background: #fafafc;
+        border: 0;
+      }
+    }
+
+    &:hover {
       visibility: visible;
       opacity: 1;
-    }
-  }
-}
 
-.appointments__sort__content {
-  z-index: 100;
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  top: calc(100% + 0.5rem);
-  padding: 1rem 0.75rem;
-  width: calc(100% - 1.5rem);
-  background: #e4e4ec;
-  border-radius: 0.5rem;
-  transition: all 0.2s ease-in-out;
-  label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: 600;
-    &:not(:last-child) {
-      margin-bottom: 1rem;
-    }
-    select {
-      cursor: pointer;
-      padding: 0.25rem;
-      border-radius: 0.5rem;
-      width: 50%;
-      background: #fafafc;
-      border: 0;
+      & ~ .appointments__sort {
+        border-radius: 0;
+      }
     }
   }
-  &:hover {
-    visibility: visible;
-    opacity: 1;
-    & ~ .appointments__sort {
-      border-radius: 0;
-    }
-  }
-}
 
-@media only screen and (min-width: 1150px) {
-  .appointments__info {
-    height: 24rem;
-    padding: 0 1rem;
+  @media only screen and (min-width: 1150px) {
+    .appointments__info {
+      height: 24rem;
+      padding: 0 1rem;
+    }
   }
-}
 
-@media only screen and (max-width: 1200px) {
-  .appointment--panel {
-    display: block !important;
-    height: auto !important;
-  }
-  .appointments__top {
-    flex-direction: column;
-    align-items: normal;
-    width: calc(100% - 2.5rem);
-    padding: 1.25rem;
-  }
-  .appointments__title {
-    padding-bottom: 1rem;
-  }
-  .appointments__list {
-    & /deep/ .appointment {
+  @media only screen and (max-width: 1200px) {
+    .appointment--panel {
+      display: block !important;
+      height: auto !important;
+    }
+    .appointments__top {
       flex-direction: column;
-      height: auto;
+      align-items: normal;
+      width: calc(100% - 2.5rem);
+      padding: 1.25rem;
+    }
+    .appointments__title {
+      padding-bottom: 1rem;
+    }
+    .appointments__list {
+      & /deep/ .appointment {
+        flex-direction: column;
+        height: auto;
+      }
     }
   }
-}
 </style>

@@ -36,6 +36,7 @@
 
 <script>
 import { API_URL } from '@/apollo/constants'
+
 const moment = require('moment')
 moment.locale('pl')
 
@@ -80,41 +81,47 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main";
+  @import "../../../main";
 
-.user {
-  width: 100%;
-  display: flex;
-  background: #f5f5f5;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  &__img {
-    padding: 1rem;
-    img {
-      @extend %text--center;
-      height: 5rem;
-      border-radius: 1rem;
-    }
-  }
-  &__info {
-    background: #ececec;
-    padding: 1rem;
+  .user {
     width: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    span {
-      padding-right: 1rem;
+    background: #f5f5f5;
+    border-radius: 0.5rem;
+    overflow: hidden;
+
+    &__img {
+      padding: 1rem;
+
+      img {
+        @extend %text--center;
+        height: 5rem;
+        border-radius: 1rem;
+      }
     }
-    &__name {
-      font-weight: 700;
-    }
-    &__phone,
-    &__email {
-      font-weight: 600;
-      max-width: 50vw;
-      word-break: break-word;
+
+    &__info {
+      background: #ececec;
+      padding: 1rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      span {
+        padding-right: 1rem;
+      }
+
+      &__name {
+        font-weight: 700;
+      }
+
+      &__phone,
+      &__email {
+        font-weight: 600;
+        max-width: 50vw;
+        word-break: break-word;
+      }
     }
   }
-}
 </style>

@@ -28,7 +28,7 @@ const mutations = {
 }
 
 const actions = {
-  get ({ commit }, { id, first, after, note, orderBy, type }) {
+  get ({commit}, {id, first, after, note, orderBy, type}) {
     return apolloClient
       .query({
         query: PATIENT_HISTORIES_QUERY,
@@ -52,7 +52,7 @@ const actions = {
         }
       })
   },
-  getMore ({ commit }, id) {
+  getMore ({commit}, id) {
     return apolloClient
       .query({
         query: HISTORY_MORE_QUERY,

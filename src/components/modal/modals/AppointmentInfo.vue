@@ -37,7 +37,8 @@
       class="modal__btn fullwidth rounded modal__btn--grey modal--ai__action"
       type="button"
       @click="hideModal"
-    >Zamknij</button>
+    >Zamknij
+    </button>
   </div>
 </template>
 
@@ -95,7 +96,7 @@ export default {
 
       if (this.isMobile) {
         this.hideModal()
-        this.$router.push({ name: 'UpdateAppointment' })
+        this.$router.push({name: 'UpdateAppointment'})
       } else {
         this.showModal({
           componentName: 'UpdateAppointment',
@@ -132,14 +133,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal--ai {
-  &__action {
-    margin-top: 1rem;
-    border-radius: 0.5rem;
-    overflow: hidden;
-    span {
-      margin-right: 0.5rem;
+  .modal--ai {
+    &__action {
+      margin-top: 1rem;
+      border-radius: 0.5rem;
+      overflow: hidden;
+
+      span {
+        margin-right: 0.5rem;
+      }
     }
   }
-}
 </style>

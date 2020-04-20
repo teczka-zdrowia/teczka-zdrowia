@@ -5,16 +5,16 @@
         class="management__block"
         title="Ustawienia"
       >
-        <Settings />
+        <Settings/>
       </Block>
       <Block
         class="management__block"
         title="Statystyki"
       >
-        <Statistics />
+        <Statistics/>
       </Block>
     </div>
-    <Employees />
+    <Employees/>
   </div>
 </template>
 
@@ -38,28 +38,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../main";
+  @import "../../main";
 
-.management {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-gap: 2rem;
-}
-
-.management__block {
-  padding: 1rem;
-  &:not(:last-child) {
-    margin-bottom: 1rem;
-  }
-  .block__top {
-    margin-bottom: 1rem;
-  }
-}
-
-@media only screen and (min-width: 960px) {
   .management {
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 2rem;
   }
-}
+
+  .management__block {
+    padding: 1rem;
+
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+
+    .block__top {
+      margin-bottom: 1rem;
+    }
+  }
+
+  @media only screen and (min-width: 960px) {
+    .management {
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 1rem;
+    }
+  }
 </style>

@@ -23,10 +23,10 @@ const mutations = {
 }
 
 const actions = {
-  setSelected ({ commit }, id) {
+  setSelected ({commit}, id) {
     commit('SET_SELECTED', id)
   },
-  get ({ commit }, id) {
+  get ({commit}, id) {
     return apolloClient
       .query({
         query: PATIENT_ROLES_QUERY,

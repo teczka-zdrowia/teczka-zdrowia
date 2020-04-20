@@ -2,20 +2,22 @@
   <div>
     <Block class="addappointment__content">
       <form @submit.prevent="updateAppointment">
-        <UpdateAppointmentComponent />
+        <UpdateAppointmentComponent/>
         <div class="addappointment__actions">
           <button
             class="addappointment__btn addappointment__btn--grey"
             type="button"
             v-on:click="$router.go(-1)"
-          >Anuluj</button>
+          >Anuluj
+          </button>
           <MainBtn
             class="addappointment__btn addappointment__btn--violet"
             :loading="isLoading"
             :disabled="isLoading"
             color="#fafafa"
             v-on:click="updateAppointment"
-          >Zaktualizuj</MainBtn>
+          >Zaktualizuj
+          </MainBtn>
         </div>
       </form>
     </Block>
@@ -87,31 +89,33 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.addappointment__content {
-  padding: 0 !important;
-}
-
-.addappointment__actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  overflow: hidden;
-  border-bottom-left-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
-}
-
-.addappointment__btn {
-  padding: 1rem;
-  font-weight: 600;
-  border-radius: 0;
-  cursor: pointer;
-  transition: 0.2s ease-in-out;
-  &--grey {
-    background: #f5f5f5;
-    color: #1a1b37;
+  .addappointment__content {
+    padding: 0 !important;
   }
-  &--violet {
-    background: #6a6ee1;
-    color: #fafafc;
+
+  .addappointment__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    overflow: hidden;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
   }
-}
+
+  .addappointment__btn {
+    padding: 1rem;
+    font-weight: 600;
+    border-radius: 0;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+
+    &--grey {
+      background: #f5f5f5;
+      color: #1a1b37;
+    }
+
+    &--violet {
+      background: #6a6ee1;
+      color: #fafafc;
+    }
+  }
 </style>

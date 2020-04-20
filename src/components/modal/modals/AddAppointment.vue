@@ -1,6 +1,6 @@
 <template>
   <form class="modal--aa" @submit.prevent="addAppointment">
-    <AddAppointmentComponent />
+    <AddAppointmentComponent/>
     <div class="modal__actions">
       <button
         class="modal__btn modal__btn--grey"
@@ -15,7 +15,8 @@
         :disabled="isLoading"
         color="#fafafa"
         v-on:click="addAppointment"
-        >Dodaj wizytę</MainBtn
+      >Dodaj wizytę
+      </MainBtn
       >
     </div>
   </form>
@@ -69,21 +70,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal--aa {
-  display: flex;
-  flex-direction: column;
-  background: #f5f5f5;
-  border-radius: 0.5rem;
-  .modal__actions {
-    padding: 1rem;
-  }
-}
-
-@media only screen and (max-width: 720px) {
   .modal--aa {
-    width: 100vw;
-    border-radius: 0;
-    height: calc(100vh - 56px);
+    display: flex;
+    flex-direction: column;
+    background: #f5f5f5;
+    border-radius: 0.5rem;
+
+    .modal__actions {
+      padding: 1rem;
+    }
   }
-}
+
+  @media only screen and (max-width: 720px) {
+    .modal--aa {
+      width: 100vw;
+      border-radius: 0;
+      height: calc(100vh - 56px);
+    }
+  }
 </style>

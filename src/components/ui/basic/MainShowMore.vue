@@ -15,7 +15,7 @@
       v-if="loading"
     >
       Ładowanie
-      <MainLoading color="#1a1b37" />
+      <MainLoading color="#1a1b37"/>
     </div>
   </div>
 </template>
@@ -38,37 +38,40 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main.scss";
+  @import "../../../main.scss";
 
-.more {
-  margin-top: 0.5em;
-  height: 3em;
-  display: flex;
-  justify-content: center;
-}
+  .more {
+    margin-top: 0.5em;
+    height: 3em;
+    display: flex;
+    justify-content: center;
+  }
 
-.more__content {
-  @extend %text--center;
-  border: 0;
-  transition: 0.2s ease-in-out;
-  border-radius: 0.5em;
-  border-radius: 0.25em;
-  padding: 0.5em 1.5em;
-  background: none;
-  color: #1a1b37;
-  font-weight: 600;
-  background: #fafafc;
-  cursor: pointer;
-  &:hover {
-    background: #ffffff;
+  .more__content {
+    @extend %text--center;
+    border: 0;
+    transition: 0.2s ease-in-out;
+    border-radius: 0.5em;
+    border-radius: 0.25em;
+    padding: 0.5em 1.5em;
+    background: none;
+    color: #1a1b37;
+    font-weight: 600;
+    background: #fafafc;
+    cursor: pointer;
+
+    &:hover {
+      background: #ffffff;
+    }
+
+    svg {
+      margin-left: 0.75em;
+      height: 1.25rem;
+      width: 1.25rem;
+    }
+
+    span {
+      margin-left: 0.75em;
+    }
   }
-  svg {
-    margin-left: 0.75em;
-    height: 1.25rem;
-    width: 1.25rem;
-  }
-  span {
-    margin-left: 0.75em;
-  }
-}
 </style>

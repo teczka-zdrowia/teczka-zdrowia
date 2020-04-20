@@ -36,11 +36,11 @@
 </template>
 
 <script>
-import MainBtn from "../basic/MainBtn";
-import AppointmentBig from "./AppointmentBig";
+import MainBtn from '../basic/MainBtn'
+import AppointmentBig from './AppointmentBig'
 
 export default {
-  name: "AppointmentsBig",
+  name: 'AppointmentsBig',
   props: {
     showAppointmentsLink: {
       type: Boolean,
@@ -59,32 +59,34 @@ export default {
     },
     showUserAs: {
       type: String,
-      default: "patient"
+      default: 'patient'
     }
   },
   components: {
     MainBtn,
     AppointmentBig
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import "../../../main";
+  @import "../../../main";
 
-.appointments__more {
-  width: 100%;
-  & > button,
-  &.button {
+  .appointments__more {
     width: 100%;
-    padding: 1em;
-    border-radius: 0.5em;
-    box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
-    background: #eeeef3 !important;
-    color: #6a6ee1 !important;
+
+    & > button,
+    &.button {
+      width: 100%;
+      padding: 1em;
+      border-radius: 0.5em;
+      box-shadow: 0 0 20px 0px rgba(213, 213, 213, 0.3);
+      background: #eeeef3 !important;
+      color: #6a6ee1 !important;
+    }
+
+    span {
+      margin-left: 0.75rem;
+    }
   }
-  span {
-    margin-left: 0.75rem;
-  }
-}
 </style>
