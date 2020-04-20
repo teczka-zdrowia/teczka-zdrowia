@@ -1,6 +1,8 @@
-# fizjo-dziennik
+# Teczka Zdrowia
 
-> Managing App for physiotherapeuts
+Web application for doctors appointments, office and patients data management.
+
+Made with Vue, Vuex, SCSS and Apollo.
 
 ## Build Setup
 
@@ -13,9 +15,10 @@ npm run dev
 
 # build for production with minification
 npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## License
+
+Teczka Zdrowia is [fair-code](http://faircode.io) licensed under [**Apache 2.0 with Commons Clause**](https://github.com/teczka-zdrowia/teczka-zdrowia-api/blob/master/LICENSE.md).
+
+Learn more about **Commons Clause** [here](https://commonsclause.com/).
